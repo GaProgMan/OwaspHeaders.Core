@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace integration_test
+namespace OwaspHeaders.Core.IntegrationTests
 {
     public class Program
     {

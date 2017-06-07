@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace integration_test.Controllers
+namespace OwaspHeaders.Core.IntegrationTests.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller

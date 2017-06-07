@@ -1,7 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <Description>A .NET Core Middleware which adds the OWASP recommended HTTP headers for enhanced security.</Description>
+    <VersionPrefix>0.0.0.1</VersionPrefix>
+    <Authors>Jamie Taylor</Authors>
+    <AssemblyName>OwaspHeaders.Core.IntegrationTests</AssemblyName>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PackageId>OwaspHeaders.Core.IntegrationTests</PackageId>
+    <RuntimeFrameworkVersion>1.1.0</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <ItemGroup>

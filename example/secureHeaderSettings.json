@@ -24,6 +24,11 @@
             "XssSetting": "oneReport",
             "ReportUri": "https://github.com/GaProgMan/OwaspHeaders.Core"
         },
-        "UseXContentTypeOptions": "true"
+        "UseXContentTypeOptions": "true",
+        "UseContentSecurityPolicy": "true",
+        "ContentSecurityPolicyConfiguration": {
+            "BlockAllMixedContent": "true",
+            "UpgradeInsecureRequests": "true"
+        }
     }
 }

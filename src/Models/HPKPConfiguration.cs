@@ -30,10 +30,7 @@ namespace OwaspHeaders.Core.Models
 
         public HPKPConfiguration()
         {
-            PinSha256 = new List<string>
-            {
-                "d6qzRu9zOECb90Uez27xWltNsj0e1Md7GkYYkVoZWmM="
-            } ;
+            PinSha256 = new List<string>();
             ReportUri = "http://example.com/pkp-report";
             MaxAge = 10000;
             IncludeSubDomains = true;
@@ -45,17 +42,16 @@ namespace OwaspHeaders.Core.Models
         /// <returns>A string representing the HTTP header value</returns>
         public string BuildHeaderValue()
         {
-            //report-uri="http://example.com/pkp-report"; max-age=10000; includeSubDomains
             var stringBuilder = new StringBuilder();
             foreach (var pinSha256 in PinSha256)
             {
-                stringBuilder.Append("pin-sha256=");
+                stringBuilder.Append("pin-sha256=\"");
                 stringBuilder.Append(pinSha256);
-                stringBuilder.Append(";");
+                stringBuilder.Append("\";");
             }
-            stringBuilder.Append("report-url=");
+            stringBuilder.Append("report-url=\"");
             stringBuilder.Append(ReportUri);
-            stringBuilder.Append("max-age=");
+            stringBuilder.Append("\";max-age=");
             stringBuilder.Append(MaxAge);
             stringBuilder.Append(IncludeSubDomains ? "; includeSubDomains" : string.Empty);
 

@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 
-namespace OwaspHeaders.Core.IntegrationTests
+namespace OwaspHeaders.Core.Example
 {
     public class Startup
     {

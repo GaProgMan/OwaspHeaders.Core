@@ -3,7 +3,7 @@ using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models
 {
-    public class XssConfiguration
+    public class XssConfiguration : IConfigurationBase
     {
         public enum XssMode { zero, one, oneBlock, oneReport };
 
@@ -47,6 +47,5 @@ namespace OwaspHeaders.Core.Models
 
             return stringBuilder.ToString();
         }
-
     }
 }

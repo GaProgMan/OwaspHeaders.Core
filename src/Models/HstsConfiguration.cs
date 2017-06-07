@@ -5,7 +5,7 @@ namespace OwaspHeaders.Core.Models
     /// <summary>
     /// Represents the HTTP Strict Transport Security configuration
     /// </summary>
-    public class HstsConfiguration
+    public class HstsConfiguration : IConfigurationBase
     {
         /// <summary>
         /// (OPTIONAL) Whether this rule applies to all of the site's subdomains as well
@@ -27,7 +27,7 @@ namespace OwaspHeaders.Core.Models
         /// Builds the HTTP header value
         /// </summary>
         /// <returns>A string representing the HTTP header value</returns>
-        public string BuilderHeaderValue()
+        public string BuildHeaderValue()
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.Append("max-age=");

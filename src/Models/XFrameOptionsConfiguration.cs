@@ -4,7 +4,7 @@ using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models
 {
-    public class XFrameOptionsConfiguration
+    public class XFrameOptionsConfiguration : IConfigurationBase
     {
         public enum XFrameOptions { deny, sameorigin, allowfrom };
         public XFrameOptions OptionValue { get; set; }

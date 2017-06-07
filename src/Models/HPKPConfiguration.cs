@@ -6,7 +6,7 @@ namespace OwaspHeaders.Core.Models
     /// <summary>
     /// Represents the Public Key Pinning Extension for HTTP configuration
     /// </summary>
-    public class HPKPConfiguration
+    public class HPKPConfiguration : IConfigurationBase
     {
         /// <summary>
         /// The quoted string is the Base64 encoded Subject Public Key Information (SPKI) fingerprint

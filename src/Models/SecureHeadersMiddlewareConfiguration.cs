@@ -28,6 +28,11 @@ namespace OwaspHeaders.Core.Models
         public bool UseXContentTypeOptions { get; set; }
 
         /// <summary>
+        /// Indicates whether the response should use Content-Security-Policy
+        /// </summary>
+        public bool UseContentSecurityPolicy { get; set; }
+
+        /// <summary>
         /// The HTTP Strict Transport Security configuration to use
         /// </summary>
         public HstsConfiguration HstsConfiguration { get; set; }
@@ -46,6 +51,11 @@ namespace OwaspHeaders.Core.Models
         /// The X-XSS-Protection configuration to use
         /// </summary>
         public XssConfiguration XssConfiguration { get; set; }
+
+        /// <summary>
+        /// The Content-Security-Policy configuration to use
+        /// </summary>
+        public ContentSecurityPolicyConfiguration ContentSecurityPolicyConfiguration { get; set; }
         
         public SecureHeadersMiddlewareConfiguration()
         {
@@ -54,11 +64,13 @@ namespace OwaspHeaders.Core.Models
             UseXFrameOptions = true;
             UseXssProtection = true;
             UseXContentTypeOptions = true;
+            UseContentSecurityPolicy = true;
 
             HstsConfiguration = new HstsConfiguration();
             HpkpConfiguration = new HPKPConfiguration();
             XFrameOptionsConfiguration = new XFrameOptionsConfiguration();
             XssConfiguration = new XssConfiguration();
+            ContentSecurityPolicyConfiguration = new ContentSecurityPolicyConfiguration();
         }
         
     }

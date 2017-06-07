@@ -31,7 +31,7 @@ namespace OwaspHeaders.Core
         {
             if(_config.UseHsts)
             {
-                httpContext.Response.Headers.Add("Strict-Transport-Security", _config.HstsConfiguration.BuilderHeaderValue());
+                httpContext.Response.Headers.Add("Strict-Transport-Security", _config.HstsConfiguration.BuildHeaderValue());
             }
 
             if (_config.UseHpkp)
@@ -54,7 +54,12 @@ namespace OwaspHeaders.Core
                 httpContext.Response.Headers.Add("X-Content-Type-Options", "nosniff");
             }
 
-            // TODO implement these https://www.owasp.org/index.php/OWASP_Secure_Headers_Project#tab=Headers - X-Content-Type-Options next
+            if (_config.UseContentSecurityPolicy)
+            {
+                httpContext.Response.Headers.Add("Content-Security-Policy", _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
+            }
+
+            // TODO implement these https://www.owasp.org/index.php/OWASP_Secure_Headers_Project#tab=Headers - X-Permitted-Cross-Domain-Policies next
 
             // Call the next middleware in the chain
             await _next.Invoke(httpContext);

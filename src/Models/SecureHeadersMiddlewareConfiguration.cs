@@ -1,6 +1,6 @@
 namespace OwaspHeaders.Core.Models
 {
-    public class SecureHeadersMiddlewareConfiguration
+    public class SecureHeadersMiddlewareConfiguration : ISecureHeadersMiddlewareConfiguration
     {
         /// <summary>
         /// Indicates whether the response should use HTTP Strict Transport Security
@@ -33,7 +33,7 @@ namespace OwaspHeaders.Core.Models
 
         /// <summary>
         /// Inidcates whether to use XSS-Protection options
-        /// </summary>
+        /// </summary>                
         public bool UseXssProtection { get; set; }
 
         public XssConfiguration XssConfiguration { get; set; }

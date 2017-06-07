@@ -49,6 +49,11 @@ namespace OwaspHeaders.Core
                 httpContext.Response.Headers.Add("X-XSS-Protection", _config.XssConfiguration.BuildHeaderValue());
             }
 
+            if (_config.UseXContentTypeOptions)
+            {
+                httpContext.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+            }
+
             // TODO implement these https://www.owasp.org/index.php/OWASP_Secure_Headers_Project#tab=Headers - X-Content-Type-Options next
 
             // Call the next middleware in the chain

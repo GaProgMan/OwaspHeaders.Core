@@ -23,6 +23,7 @@
         "XssConfiguration": {
             "XssSetting": "oneReport",
             "ReportUri": "https://github.com/GaProgMan/OwaspHeaders.Core"
-        }
+        },
+        "UseXContentTypeOptions": "true"
     }
 }

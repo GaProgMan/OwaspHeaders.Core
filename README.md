@@ -84,6 +84,8 @@ Add the `SecureHeadersMiddleware` into the ASP.NET Core pipeline, in the Startup
     }
 Run the application, request one of the pages that it serves and view the headers for the page.
 
-This can be done in Google Chrome, using the Dev tools and checking the network tab
+This can be done in Google Chrome, using the Dev tools and checking the network tab.
 
 ![secure headers shown in network tab](screenshots/secure-headers-screenshot.png "Headers on the right-hand side here")
+
+Shown above in the `Response Headers` section of the `Values` response.

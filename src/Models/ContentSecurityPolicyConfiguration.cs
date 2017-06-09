@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using OwaspHeaders.Core.Extensions;
 
 namespace OwaspHeaders.Core.Models
@@ -122,20 +121,20 @@ namespace OwaspHeaders.Core.Models
 
             if (AnyValues())
             {
-                stringBuilder = BuildValuesForDirective(stringBuilder, "base-uri", BaseUri);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "default-src", DefaultSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "script-src", ScriptSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "object-src", ObjectSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "style-src", StyleSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "img-src", ImgSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "media-src", MediaSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "frame-src", FrameSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "child-src", ChildSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "frame-ancestors", FrameAncestors);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "font-src", FontSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "connect-src", ConnectSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "manifest-src", ManifestSrc);
-                stringBuilder = BuildValuesForDirective(stringBuilder, "form-action", FormAction);
+                stringBuilder.BuildValuesForDirective("base-uri", BaseUri);
+                stringBuilder.BuildValuesForDirective("default-src", DefaultSrc);
+                stringBuilder.BuildValuesForDirective("script-src", ScriptSrc);
+                stringBuilder.BuildValuesForDirective("object-src", ObjectSrc);
+                stringBuilder.BuildValuesForDirective("style-src", StyleSrc);
+                stringBuilder.BuildValuesForDirective("img-src", ImgSrc);
+                stringBuilder.BuildValuesForDirective("media-src", MediaSrc);
+                stringBuilder.BuildValuesForDirective("frame-src", FrameSrc);
+                stringBuilder.BuildValuesForDirective("child-src", ChildSrc);
+                stringBuilder.BuildValuesForDirective("frame-ancestors", FrameAncestors);
+                stringBuilder.BuildValuesForDirective("font-src", FontSrc);
+                stringBuilder.BuildValuesForDirective("connect-src", ConnectSrc);
+                stringBuilder.BuildValuesForDirective("manifest-src", ManifestSrc);
+                stringBuilder.BuildValuesForDirective("form-action", FormAction);
 
             }
 
@@ -161,24 +160,6 @@ namespace OwaspHeaders.Core.Models
                 || StyleSrc.Any()   || ImgSrc.Any()     || MediaSrc.Any()   || FrameSrc.Any()
                 || ChildSrc.Any()   || FrameAncestors.Any() || FontSrc.Any()|| ConnectSrc.Any()
                 || ManifestSrc.Any()|| FormAction.Any();
-        }
-
-        /// <summary>
-        /// Used to build the concatenated string value for the given values
-        /// </summary>
-        /// <param name="stringBuilder">The <see cref="StringBuilder" /> to use</param>
-        /// <param name="directiveName">The name of the CSP directive</param>
-        /// <param name="directiveValues">A list of strings representing the directive values</param>
-        /// <returns>The updated <see cref="StringBuilder" /> instance</returns>
-        private static StringBuilder BuildValuesForDirective(StringBuilder stringBuilder, string directiveName, List<string> directiveValues)
-        {
-            if (directiveValues.Any())
-            {
-                stringBuilder.Append(directiveName);
-                directiveValues.Select(s => stringBuilder.Append($"'{s}' "));
-                stringBuilder.Append(";");
-            }
-            return stringBuilder;
         }
     }
 }

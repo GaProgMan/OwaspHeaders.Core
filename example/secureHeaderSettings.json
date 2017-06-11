@@ -2,7 +2,7 @@
     "SecureHeadersMiddlewareConfiguration": {
         "UseHsts": "true",
         "HstsConfiguration": {
-            "MaxAge": 42,
+            "MaxAge": 63072000,
             "IncludeSubDomains": "true"
         },
         "UseHpkp": "true",
@@ -16,19 +16,20 @@
         },
         "UseXFrameOptions": "true",
         "XFrameOptionsConfiguration": {
-            "OptionValue": "allowfrom",
-            "AllowFromDomain": "com.gaprogman.dotnetcore"
+            "OptionValue": "deny"
         },
         "UseXssProtection": "true",
         "XssConfiguration": {
-            "XssSetting": "oneReport",
-            "ReportUri": "https://github.com/GaProgMan/OwaspHeaders.Core"
+            "XssSetting": "oneBlock"
         },
         "UseXContentTypeOptions": "true",
         "UseContentSecurityPolicy": "true",
         "ContentSecurityPolicyConfiguration": {
-            "BlockAllMixedContent": "true",
-            "UpgradeInsecureRequests": "true"
+            "ScriptSrc" : [
+                "self"
+            ],
+            "BlockAllMixedContent": "false",
+            "UpgradeInsecureRequests": "false"
         }
     }
 }

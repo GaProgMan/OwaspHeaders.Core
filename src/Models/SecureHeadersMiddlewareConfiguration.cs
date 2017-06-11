@@ -33,6 +33,11 @@ namespace OwaspHeaders.Core.Models
         public bool UseContentSecurityPolicy { get; set; }
 
         /// <summary>
+        /// Indicates whether the response should use X-Permitted-Cross-Domain-Policy
+        /// </summary>
+        public bool UsePermittedCrossDomainPolicy { get; set; }
+
+        /// <summary>
         /// The HTTP Strict Transport Security configuration to use
         /// </summary>
         public HstsConfiguration HstsConfiguration { get; set; }
@@ -56,6 +61,12 @@ namespace OwaspHeaders.Core.Models
         /// The Content-Security-Policy configuration to use
         /// </summary>
         public ContentSecurityPolicyConfiguration ContentSecurityPolicyConfiguration { get; set; }
+
+        /// <summary>
+        /// The X-Permitted-Cross-Domain-Policy configuration to use
+        /// </summary>
+        /// <returns></returns>
+        public PermittedCrossDomainPolicyConfiguration PermittedCrossDomainPolicyConfiguration { get; set; }
         
         public SecureHeadersMiddlewareConfiguration()
         {
@@ -65,12 +76,14 @@ namespace OwaspHeaders.Core.Models
             UseXssProtection = true;
             UseXContentTypeOptions = true;
             UseContentSecurityPolicy = true;
+            UsePermittedCrossDomainPolicy = true;
 
             HstsConfiguration = new HstsConfiguration();
             HpkpConfiguration = new HPKPConfiguration();
             XFrameOptionsConfiguration = new XFrameOptionsConfiguration();
             XssConfiguration = new XssConfiguration();
             ContentSecurityPolicyConfiguration = new ContentSecurityPolicyConfiguration();
+            PermittedCrossDomainPolicyConfiguration = new PermittedCrossDomainPolicyConfiguration();
         }
         
     }

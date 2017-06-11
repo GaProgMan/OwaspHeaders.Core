@@ -58,8 +58,10 @@ namespace OwaspHeaders.Core
             {
                 httpContext.Response.Headers.Add("Content-Security-Policy", _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
             }
-
-            // TODO implement these https://www.owasp.org/index.php/OWASP_Secure_Headers_Project#tab=Headers - X-Permitted-Cross-Domain-Policies next
+            if (_config.UsePermittedCrossDomainPolicy)
+            {
+                httpContext.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", _config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
+            }
 
             // Call the next middleware in the chain
             await _next.Invoke(httpContext);

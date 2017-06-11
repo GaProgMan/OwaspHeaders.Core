@@ -30,6 +30,10 @@
             ],
             "BlockAllMixedContent": "false",
             "UpgradeInsecureRequests": "false"
+        },
+        "UsePermittedCrossDomainPolicy": "true",
+        "PermittedCrossDomainPolicyConfiguration": {
+            "OptionValue" : "none"
         }
     }
 }

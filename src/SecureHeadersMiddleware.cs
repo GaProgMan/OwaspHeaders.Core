@@ -63,6 +63,11 @@ namespace OwaspHeaders.Core
                 httpContext.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", _config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
             }
 
+            if (_config.UseReferrerPolicy)
+            {
+                httpContext.Response.Headers.Add("Referrer-Policy", _config.ReferrerPolicy.BuildHeaderValue());
+            }
+
             // Call the next middleware in the chain
             await _next.Invoke(httpContext);
         }

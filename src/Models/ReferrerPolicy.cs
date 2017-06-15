@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models
 {
-    public class PermittedCrossDomainPolicyConfiguration : IConfigurationBase
+    public class ReferrerPolicy : IConfigurationBase
     {
         public string OptionValue { get; set; }
 
@@ -16,6 +12,7 @@ namespace OwaspHeaders.Core.Models
             {
                 ArgumentExceptionHelper.RaiseException(nameof(OptionValue));
             }
+
             return OptionValue;
         }
     }

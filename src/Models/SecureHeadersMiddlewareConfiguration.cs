@@ -38,6 +38,11 @@ namespace OwaspHeaders.Core.Models
         public bool UsePermittedCrossDomainPolicy { get; set; }
 
         /// <summary>
+        /// Indicated wether the response should use Referrer-Policy
+        /// </summary>
+        public bool UseReferrerPolicy { get; set; }
+
+        /// <summary>
         /// The HTTP Strict Transport Security configuration to use
         /// </summary>
         public HstsConfiguration HstsConfiguration { get; set; }
@@ -65,8 +70,12 @@ namespace OwaspHeaders.Core.Models
         /// <summary>
         /// The X-Permitted-Cross-Domain-Policy configuration to use
         /// </summary>
-        /// <returns></returns>
         public PermittedCrossDomainPolicyConfiguration PermittedCrossDomainPolicyConfiguration { get; set; }
+
+        /// <summary>
+        /// The Referrer-Policy configuration to use
+        /// </summary>
+        public ReferrerPolicy ReferrerPolicy { get; set; }
         
         public SecureHeadersMiddlewareConfiguration()
         {

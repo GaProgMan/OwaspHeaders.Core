@@ -34,6 +34,10 @@
         "UsePermittedCrossDomainPolicy": "true",
         "PermittedCrossDomainPolicyConfiguration": {
             "OptionValue" : "none"
+        },
+        "UseReferrerPolicy" : "true",
+        "ReferrerPolicy": {
+            "OptionValue" : "no-referrer"
         }
     }
 }

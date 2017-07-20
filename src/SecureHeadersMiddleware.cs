@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Abstractions;
+using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 
 namespace OwaspHeaders.Core
@@ -29,43 +31,53 @@ namespace OwaspHeaders.Core
         /// <returns></returns>
         public async Task Invoke(HttpContext httpContext)
         {
-            if(_config.UseHsts)
+            if (_config.UseHsts && !httpContext.ResponseContainsHeader(Constants.StrictTransportSecurityHeaderName))
             {
-                httpContext.Response.Headers.Add("Strict-Transport-Security", _config.HstsConfiguration.BuildHeaderValue());
+                httpContext.Response.Headers.Add(Constants.StrictTransportSecurityHeaderName,
+                    _config.HstsConfiguration.BuildHeaderValue());
             }
 
-            if (_config.UseHpkp)
+            if (_config.UseHpkp && !httpContext.ResponseContainsHeader(Constants.PublicKeyPinsHeaderName))
             {
-                httpContext.Response.Headers.Add("Public-Key-Pins", _config.HpkpConfiguration.BuildHeaderValue());
-            }
-            
-            if (_config.UseXFrameOptions)
-            {
-                httpContext.Response.Headers.Add("X-Frame-Options", _config.XFrameOptionsConfiguration.BuildHeaderValue());
+                httpContext.Response.Headers.Add(Constants.PublicKeyPinsHeaderName,
+                    _config.HpkpConfiguration.BuildHeaderValue());
             }
 
-            if (_config.UseXssProtection)
+            if (_config.UseXFrameOptions && !httpContext.ResponseContainsHeader(Constants.XFrameOptionsHeaderName))
             {
-                httpContext.Response.Headers.Add("X-XSS-Protection", _config.XssConfiguration.BuildHeaderValue());
+                httpContext.Response.Headers.Add(Constants.XFrameOptionsHeaderName,
+                    _config.XFrameOptionsConfiguration.BuildHeaderValue());
             }
 
-            if (_config.UseXContentTypeOptions)
+            if (_config.UseXssProtection && !httpContext.ResponseContainsHeader(Constants.XssProtectionHeaderName))
             {
-                httpContext.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                httpContext.Response.Headers.Add(Constants.XssProtectionHeaderName,
+                    _config.XssConfiguration.BuildHeaderValue());
             }
 
-            if (_config.UseContentSecurityPolicy)
+            if (_config.UseXContentTypeOptions &&
+                !httpContext.ResponseContainsHeader(Constants.XContentTypeOptionsHeaderName))
             {
-                httpContext.Response.Headers.Add("Content-Security-Policy", _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
-            }
-            if (_config.UsePermittedCrossDomainPolicy)
-            {
-                httpContext.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", _config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
+                httpContext.Response.Headers.Add(Constants.XContentTypeOptionsHeaderName, "nosniff");
             }
 
-            if (_config.UseReferrerPolicy)
+            if (_config.UseContentSecurityPolicy &&
+                !httpContext.ResponseContainsHeader(Constants.ContentSecurityPolicyHeaderName))
             {
-                httpContext.Response.Headers.Add("Referrer-Policy", _config.ReferrerPolicy.BuildHeaderValue());
+                httpContext.Response.Headers.Add(Constants.ContentSecurityPolicyHeaderName,
+                    _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
+            }
+            if (_config.UsePermittedCrossDomainPolicy &&
+                !httpContext.ResponseContainsHeader(Constants.PermittedCrossDomainPoliciesHeaderName))
+            {
+                httpContext.Response.Headers.Add(Constants.PermittedCrossDomainPoliciesHeaderName,
+                    _config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
+            }
+
+            if (_config.UseReferrerPolicy && !httpContext.ResponseContainsHeader(Constants.ReferrerPolicyHeaderName))
+            {
+                httpContext.Response.Headers.Add(Constants.ReferrerPolicyHeaderName,
+                    _config.ReferrerPolicy.BuildHeaderValue());
             }
 
             // Call the next middleware in the chain

@@ -1,6 +1,5 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-<PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
     <Description>A .NET Core Middleware which adds the OWASP recommended HTTP headers for enhanced security.</Description>
     <VersionPrefix>0.0.0.1</VersionPrefix>
     <Authors>Jamie Taylor</Authors>
@@ -12,5 +11,4 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.1.*" />
   </ItemGroup>
-
 </Project>

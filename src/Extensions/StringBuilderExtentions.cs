@@ -12,7 +12,8 @@ namespace OwaspHeaders.Core.Extensions
         /// <param name="directiveName">The name of the CSP directive</param>
         /// <param name="directiveValues">A list of strings representing the directive values</param>
         /// <returns>The updated <see cref="StringBuilder" /> instance</returns>
-        public static StringBuilder BuildValuesForDirective(this StringBuilder @stringBuilder, string directiveName, List<string> directiveValues)
+        public static StringBuilder BuildValuesForDirective(this StringBuilder @stringBuilder,
+            string directiveName, List<string> directiveValues)
         {
             if (directiveValues.Any())
             {

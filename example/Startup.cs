@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,11 +30,12 @@ namespace OwaspHeaders.Core.Example
             // Add framework services.
             services.AddMvc();
 
-            // Add functionality to inject IOptions<T>
+            // Add functionality to inject IOptions<T>, we'll need this for our middleware
             services.AddOptions();
 
-            // Add our Config object so it can be injected
-            services.Configure<SecureHeadersMiddlewareConfiguration>(Configuration.GetSection("SecureHeadersMiddlewareConfiguration"));
+            // Add our SecureHeadersMiddlewareConfiguration object so it can be injected
+            services.Configure<SecureHeadersMiddlewareConfiguration>(
+                Configuration.GetSection("SecureHeadersMiddlewareConfiguration"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +46,7 @@ namespace OwaspHeaders.Core.Example
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.SecureHeadersMiddleware(secureHeaderSettings.Value);
+            app.UseSecureHeadersMiddleware(secureHeaderSettings.Value);
             app.UseMvc();
         }
     }

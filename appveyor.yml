@@ -21,7 +21,7 @@ build_script:
 after_build:
   # For once the build has completed
 artifacts:
- - path: '\src\nupkgs\src.*.nupkg'
+ - path: '\src\nupkgs\OwaspHeaders.*.nupkg'
    name: NugetPackage
    type: Auto
 test_script:

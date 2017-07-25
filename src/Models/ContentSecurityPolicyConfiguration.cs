@@ -109,6 +109,10 @@ namespace OwaspHeaders.Core.Models
             ConnectSrc = new List<string>();
             ManifestSrc = new List<string>();
             FormAction = new List<string>();
+
+            BlockAllMixedContent = true;
+            UpgradeInsecureRequests = true;
+            ReportUri = "https://gaprogman.com";
         }
 
         /// <summary>
@@ -140,11 +144,11 @@ namespace OwaspHeaders.Core.Models
 
             if (BlockAllMixedContent)
             {
-                stringBuilder.Append("block-all-mixed-content;");
+                stringBuilder.Append("block-all-mixed-content; ");
             }
             if (UpgradeInsecureRequests)
             {
-                stringBuilder.Append("upgrade-insecure-requests;");
+                stringBuilder.Append("upgrade-insecure-requests; ");
             }
             if (!string.IsNullOrWhiteSpace(ReportUri))
             {

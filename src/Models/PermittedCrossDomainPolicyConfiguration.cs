@@ -8,7 +8,7 @@ namespace OwaspHeaders.Core.Models
 {
     public class PermittedCrossDomainPolicyConfiguration : IConfigurationBase
     {
-        public string OptionValue { get; set; }
+        public string OptionValue { get; set; } = "none;";
 
         public string BuildHeaderValue()
         {

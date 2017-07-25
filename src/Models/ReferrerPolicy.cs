@@ -4,7 +4,7 @@ namespace OwaspHeaders.Core.Models
 {
     public class ReferrerPolicy : IConfigurationBase
     {
-        public string OptionValue { get; set; }
+        public string OptionValue { get; set; } = "no-referrer;";
 
         public string BuildHeaderValue()
         {

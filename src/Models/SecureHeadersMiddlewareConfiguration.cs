@@ -86,6 +86,7 @@ namespace OwaspHeaders.Core.Models
             UseXContentTypeOptions = true;
             UseContentSecurityPolicy = true;
             UsePermittedCrossDomainPolicy = true;
+            UseReferrerPolicy = true;
 
             HstsConfiguration = new HstsConfiguration();
             HpkpConfiguration = new HPKPConfiguration();
@@ -93,6 +94,7 @@ namespace OwaspHeaders.Core.Models
             XssConfiguration = new XssConfiguration();
             ContentSecurityPolicyConfiguration = new ContentSecurityPolicyConfiguration();
             PermittedCrossDomainPolicyConfiguration = new PermittedCrossDomainPolicyConfiguration();
+            ReferrerPolicy = new ReferrerPolicy();
         }
         
     }

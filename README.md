@@ -10,6 +10,11 @@ A .NET Core middleware for injecting the Owasp recommended HTTP Headers for incr
 
 See the contents of the LICENSE file for details
 
+## Code of Conduct
+ClacksMiddleware has a Code of Conduct which all contributors, maintainers and forkers must adhere to. When contributing, maintaining, forking or in any other way changing the code presented in this repository, all users must agree to this Code of Conduct.
+
+See [Code of Conduct.md](Code-of-Conduct.md) for details.
+
 # NuGet package
 
 OwaspHeaders.Core is now availble as a NuGet package. The NuGet package can be accessed [here](https://www.nuget.org/packages/OwaspHeaders.Core/)

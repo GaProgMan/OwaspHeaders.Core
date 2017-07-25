@@ -6,7 +6,6 @@ using OwaspHeaders.Core;
 using OwaspHeaders.Core.Models;
 using Xunit;
 
-
 namespace tests
 {
     public class SecureHeadersInjectedTest

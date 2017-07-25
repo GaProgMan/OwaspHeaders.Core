@@ -10,9 +10,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
     <ProjectReference Include="..\src\OwaspHeaders.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="OwaspHeaders.Core.Example, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\example\bin\Debug\netcoreapp1.1\OwaspHeaders.Core.Example.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>

@@ -28,7 +28,7 @@ test_script:
   # tests in here
   - cmd: dotnet restore ./tests/tests.csproj --verbosity m
   - cmd: cd tests
-  - cmd: dotnet xunit
+  - cmd: dotnet test
   - cmd: cd ..
 clone_depth: 1
 deploy:

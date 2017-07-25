@@ -12,7 +12,7 @@ before_build:
   # Display .NET Core version
   - cmd: dotnet --version
   # Display minimal restore text
-  - cmd: dotnet restore ./src/OwaspHeaders.csproj --verbosity m
+  - cmd: dotnet restore ./src/OwaspHeaders.Core.csproj --verbosity m
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
   - cmd: dotnet publish --configuration Production ./src/OwaspHeaders.Core.csproj.csproj

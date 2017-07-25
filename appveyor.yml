@@ -24,6 +24,12 @@ artifacts:
  - path: '\src\nupkgs\src.*.nupkg'
    name: NugetPackage
    type: Auto
+test_script:
+  # tests in here
+  - cmd: dotnet restore ./tests/tests.csproj --verbosity m
+  - cmd: cd tests
+  - cmd: dotnet xunit
+  - cmd: cd ..
 clone_depth: 1
 deploy:
  provider: Environment

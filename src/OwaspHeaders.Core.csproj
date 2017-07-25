@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>A .NET Core Middleware which adds the OWASP recommended HTTP headers for enhanced security.</Description>
-    <VersionPrefix>0.0.0.1</VersionPrefix>
+    <VersionPrefix>1.0.0.0</VersionPrefix>
     <Authors>Jamie Taylor</Authors>
     <AssemblyName>OwaspHeaders.Core</AssemblyName>
     <TargetFramework>netstandard1.4</TargetFramework>

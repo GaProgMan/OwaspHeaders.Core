@@ -6,6 +6,10 @@ A .NET Core middleware for injecting the Owasp recommended HTTP Headers for incr
 
 See the contents of the LICENSE file for details
 
+# NuGet package
+
+OwaspHeaders.Core is now availble as a NuGet package. The NuGet package can be accessed [here](https://www.nuget.org/packages/OwaspHeaders.Core/)
+
 ## Description
 A collection of ASP.NET Core middleware classes designed to increase web application security by adopting the recommended [OWASP](https://www.owasp.org/index.php/Main_Page) settings.
 

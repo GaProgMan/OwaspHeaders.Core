@@ -22,7 +22,7 @@ after_build:
   # For once the build has completed
 artifacts:
  - path: '\src\nupkgs\OwaspHeaders.*.nupkg'
-   name: NugetPackage
+   name: NuGet-OwaspHeaders
    type: Auto
 test_script:
   # tests in here

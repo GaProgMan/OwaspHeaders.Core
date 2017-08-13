@@ -9,7 +9,7 @@
         "HPKPConfiguration" :{
             "PinSha256" : [
                 "e927fad33f9eb96126896413502a1034be0ca379dec377fb891feb9ebc720e47"
-                ],
+            ],
             "MaxAge": 3,
             "IncludeSubDomains": "true",
             "ReportUri": "https://github.com/GaProgMan/OwaspHeaders.Core"
@@ -29,7 +29,8 @@
                 "self"
             ],
             "BlockAllMixedContent": "false",
-            "UpgradeInsecureRequests": "false"
+            "UpgradeInsecureRequests": "false",
+            "ReportUri" : "https://gaprogman.com/Owasp-Report-Uri"
         },
         "UsePermittedCrossDomainPolicy": "true",
         "PermittedCrossDomainPolicyConfiguration": {

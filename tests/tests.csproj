@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+  <Description>A Unit Test project (using xunit) for the OwaspHeaders.Core project</Description>
+    <VersionPrefix>1.5.0.0</VersionPrefix>
+    <Authors>Jamie Taylor</Authors>
+    <AssemblyName>OwaspHeaders.Core.tests</AssemblyName>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>

@@ -25,7 +25,7 @@ namespace OwaspHeaders.Core
         /// The main task of the middleware. This will be invoked whenever
         /// the middleware fires
         /// </summary>
-        /// <param name="HttpContext">The <see cref="HttpContext" /> for the current request or response</param>
+        /// <param name="httpContext">The <see cref="HttpContext" /> for the current request or response</param>
         /// <returns></returns>
         public async Task Invoke(HttpContext httpContext)
         {

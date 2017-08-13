@@ -146,7 +146,7 @@ namespace tests
             if (_middlewareConfig.UseContentSecurityPolicy)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
-                Assert.Equal("block-all-mixed-content; upgrade-insecure-requests; report-uri https://gaprogman.com;",
+                Assert.Equal("block-all-mixed-content; upgrade-insecure-requests; report-uri https://dotnetcore.gaprogman.com;",
                     _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName]);
             }
             else

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models

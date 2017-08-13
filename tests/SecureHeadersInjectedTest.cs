@@ -131,7 +131,6 @@ namespace tests
             {
                 Assert.False(_context.Response.Headers.ContainsKey(Constants.XContentTypeOptionsHeaderName));
             }
-            
         }
 
         [Fact]
@@ -176,7 +175,6 @@ namespace tests
             {
                 Assert.False(_context.Response.Headers.ContainsKey(Constants.PermittedCrossDomainPoliciesHeaderName));
             }
-            
         }
         
         [Fact]
@@ -198,7 +196,6 @@ namespace tests
             {
                 Assert.False(_context.Response.Headers.ContainsKey(Constants.ReferrerPolicyHeaderName));
             }
-
         }
     }
 }

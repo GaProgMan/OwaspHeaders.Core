@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -112,7 +111,7 @@ namespace OwaspHeaders.Core.Models
 
             BlockAllMixedContent = true;
             UpgradeInsecureRequests = true;
-            ReportUri = "https://gaprogman.com";
+            ReportUri = "https://dotnetcore.gaprogman.com";
         }
 
         /// <summary>

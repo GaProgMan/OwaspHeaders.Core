@@ -79,14 +79,14 @@ namespace OwaspHeaders.Core.Models
         
         public SecureHeadersMiddlewareConfiguration()
         {
-            UseHsts = true;
-            UseHpkp = true;
-            UseXFrameOptions = true;
-            UseXssProtection = true;
-            UseXContentTypeOptions = true;
-            UseContentSecurityPolicy = true;
-            UsePermittedCrossDomainPolicy = true;
-            UseReferrerPolicy = true;
+            UseHsts = false;
+            UseHpkp = false;
+            UseXFrameOptions = false;
+            UseXssProtection = false;
+            UseXContentTypeOptions = false;
+            UseContentSecurityPolicy = false;
+            UsePermittedCrossDomainPolicy = false;
+            UseReferrerPolicy = false;
 
             HstsConfiguration = new HstsConfiguration();
             HpkpConfiguration = new HPKPConfiguration();

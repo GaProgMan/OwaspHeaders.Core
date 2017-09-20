@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using OwaspHeaders.Core;
 using OwaspHeaders.Core.Models;
 using Xunit;

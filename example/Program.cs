@@ -7,10 +7,6 @@ namespace example
 {
     public class Program
     {
-        protected static readonly List<string> LocalConfigFileNames = new List<string>()
-        {
-            "secureHeaderSettings.json"
-        };
         
         public static void Main(string[] args)
         {

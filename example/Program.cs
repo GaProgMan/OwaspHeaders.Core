@@ -1,25 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
-namespace OwaspHeaders.Core.Example
+namespace example
 {
     public class Program
     {
+        protected static readonly List<string> LocalConfigFileNames = new List<string>()
+        {
+            "secureHeaderSettings.json"
+        };
+        
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+            var webHost = BuildWebHost(args);
+
+            webHost.Run();
+        }
+
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    config.AddJsonFile("secureHeaderSettings.json", optional: true, reloadOnChange: true);
+                })
                 .UseStartup<Startup>()
                 .Build();
-
-            host.Run();
-        }
     }
 }

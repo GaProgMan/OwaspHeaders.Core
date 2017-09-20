@@ -1,4 +1,4 @@
-{
+﻿{
     "SecureHeadersMiddlewareConfiguration": {
         "UseHsts": "true",
         "HstsConfiguration": {

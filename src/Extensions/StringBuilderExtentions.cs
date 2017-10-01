@@ -17,8 +17,9 @@ namespace OwaspHeaders.Core.Extensions
         {
             if (!directiveValues.Any()) return stringBuilder;
             
-            @stringBuilder.Append(directiveName);
-            directiveValues.Select(s => @stringBuilder.Append($"'{s}' "));
+            @stringBuilder.Append(directiveName);            
+            @stringBuilder.Append(" ");
+            @stringBuilder.Append(string.Join(' ', directiveValues));
             @stringBuilder.Append(";");
             return stringBuilder;
         }

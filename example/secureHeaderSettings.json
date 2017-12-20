@@ -26,7 +26,7 @@
         "UseContentSecurityPolicy": "true",
         "ContentSecurityPolicyConfiguration": {
             "ScriptSrc" : [
-                "self"
+                "'self'"
             ],
             "BlockAllMixedContent": "false",
             "UpgradeInsecureRequests": "false",

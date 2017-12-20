@@ -4,7 +4,7 @@
     <VersionPrefix>2.0.0.1</VersionPrefix>
     <Authors>Jamie Taylor</Authors>
     <AssemblyName>OwaspHeaders.Core</AssemblyName>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>OwaspHeaders.Core</PackageId>
     <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
   </PropertyGroup>

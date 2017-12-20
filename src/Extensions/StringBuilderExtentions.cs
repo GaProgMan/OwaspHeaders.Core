@@ -19,7 +19,7 @@ namespace OwaspHeaders.Core.Extensions
             
             @stringBuilder.Append(directiveName);            
             @stringBuilder.Append(" ");
-            @stringBuilder.Append(string.Join(' ', directiveValues));
+            @stringBuilder.Append(string.Join(" ", directiveValues));
             @stringBuilder.Append(";");
             return stringBuilder;
         }

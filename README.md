@@ -114,7 +114,7 @@ Add the `SecureHeadersMiddleware` into the ASP.NET Core pipeline, in the Startup
         IOptions<SecureHeadersMiddlewareConfiguration> secureHeaderSettings)
     {
         // Add SecureHeadersMiddleware to the pipeline
-        app.SecureHeadersMiddleware(secureHeaderSettings.Value);
+        app.UseSecureHeadersMiddleware(secureHeaderSettings.Value);
     }
 Run the application, request one of the pages that it serves and view the headers for the page.
 

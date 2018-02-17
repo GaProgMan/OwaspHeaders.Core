@@ -2,7 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OwaspHeaders.Core;
-using OwaspHeaders.Core.Models;
+using OwaspHeaders.Core.Extensions;
 using Xunit;
 
 namespace tests
@@ -13,7 +13,6 @@ namespace tests
         private readonly Task _onNextResult = Task.FromResult(0);
         private readonly RequestDelegate _onNext;
         private readonly DefaultHttpContext _context;
-        private readonly SecureHeadersMiddlewareConfiguration _middlewareConfig;
         
         public SecureHeadersInjectedTest()
         {
@@ -23,49 +22,41 @@ namespace tests
                 return _onNextResult;
             };
             _context = new DefaultHttpContext();
-            _middlewareConfig = new SecureHeadersMiddlewareConfiguration();
         }
 
         [Fact]
         public async Task Invoke_StrictTransportSecurityHeaderName_HeaderIsPresent()
         {
             // arrange
-            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, _middlewareConfig);
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseHsts().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
             
             // assert
-            if (_middlewareConfig.UseHsts)
+            if (headerPresentConfig.UseHsts)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
-                Assert.Equal("max-age=31536000; includeSubDomains",
+                Assert.Equal("max-age=63072000; includeSubDomains",
                     _context.Response.Headers[Constants.StrictTransportSecurityHeaderName]);
             }
-            else
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
-            }
         }
+        
         [Fact]
-        public async Task Invoke_PublicKeyPinsHeaderName_HeaderIsPresent()
+        public async Task Invoke_StrictTransportSecurityHeaderName_HeaderIsNotPresent()
         {
             // arrange
-            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, _middlewareConfig);
+            var headerNotPresetConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresetConfig);
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
             
             // assert
-            if (_middlewareConfig.UseHpkp)
+            if (!headerNotPresetConfig.UseHsts)
             {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.PublicKeyPinsHeaderName));
-                Assert.Equal("report-url=\"http://example.com/pkp-report\";max-age=10000; includeSubDomains",
-                    _context.Response.Headers[Constants.PublicKeyPinsHeaderName]);
-            }
-            else
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.PublicKeyPinsHeaderName));
+                Assert.False(_context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
             }
         }
         
@@ -73,18 +64,32 @@ namespace tests
         public async Task Invoke_XFrameOptionsHeaderName_HeaderIsPresent()
         {
             // arrange
-            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, _middlewareConfig);
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseXFrameOptions().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
             
             // assert
-            if (_middlewareConfig.UseXFrameOptions)
+            if (headerPresentConfig.UseXFrameOptions)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.XFrameOptionsHeaderName));
                 Assert.Equal("sameorigin", _context.Response.Headers[Constants.XFrameOptionsHeaderName]);
             }
-            else
+        }
+        
+        [Fact]
+        public async Task Invoke_XFrameOptionsHeaderName_HeaderIsNotPresent()
+        {
+            // arrange
+            var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+            
+            // assert
+            if (!headerNotPresentConfig.UseXFrameOptions)
             {
                 Assert.False(_context.Response.Headers.ContainsKey(Constants.XFrameOptionsHeaderName));
             }
@@ -94,39 +99,68 @@ namespace tests
         public async Task Invoke_XssProtectionHeaderName_HeaderIsPresent()
         {
             // arrange
-            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, _middlewareConfig);
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseXSSProtection().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
             
             // assert
-            if (_middlewareConfig.UseXssProtection)
+            if (headerPresentConfig.UseXssProtection)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.XssProtectionHeaderName));
                 Assert.Equal("1; mode=block", _context.Response.Headers[Constants.XssProtectionHeaderName]);
             }
-            else
+        }
+        
+        [Fact]
+        public async Task Invoke_XssProtectionHeaderName_HeaderIsNotPresent()
+        {
+            // arrange
+            var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+            
+            // assert
+            if (!headerNotPresentConfig.UseXssProtection)
             {
                 Assert.False(_context.Response.Headers.ContainsKey(Constants.XssProtectionHeaderName));
             }
         }
+
         
         [Fact]
         public async Task Invoke_XContentTypeOptionsHeaderName_HeaderIsPresent()
         {
             // arrange
-            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, _middlewareConfig);
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseContentTypeOptions().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
             
             // assert
-            if (_middlewareConfig.UseXContentTypeOptions)
+            if (headerPresentConfig.UseXContentTypeOptions)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.XContentTypeOptionsHeaderName));
                 Assert.Equal("nosniff", _context.Response.Headers[Constants.XContentTypeOptionsHeaderName]);
             }
-            else
+        }
+        
+        [Fact]
+        public async Task Invoke_XContentTypeOptionsHeaderName_HeaderIsNotPresent()
+        {
+            // arrange
+            var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+            
+            // assert
+            if (!headerNotPresentConfig.UseXContentTypeOptions)
             {
                 Assert.False(_context.Response.Headers.ContainsKey(Constants.XContentTypeOptionsHeaderName));
             }
@@ -136,13 +170,14 @@ namespace tests
         public async Task Invoke_ContentSecurityPolicyHeaderName_HeaderIsPresent()
         {
             // arrange
-            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, _middlewareConfig);
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseContentDefaultSecurityPolicy().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
             
             // assert
-            if (_middlewareConfig.UseContentSecurityPolicy)
+            if (headerPresentConfig.UseContentSecurityPolicy)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
                 Assert.Equal("block-all-mixed-content; upgrade-insecure-requests; report-uri https://dotnetcore.gaprogman.com;",
@@ -155,22 +190,54 @@ namespace tests
         }
         
         [Fact]
-        public async Task Invoke_PermittedCrossDomainPoliciesHeaderName_HeaderIsPresent()
+        public async Task Invoke_ContentSecurityPolicyHeaderName_HeaderIsNotPresent()
         {
             // arrange
-            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, _middlewareConfig);
+            var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
             
             // assert
-            if (_middlewareConfig.UsePermittedCrossDomainPolicy)
+            if (!headerNotPresentConfig.UseContentSecurityPolicy)
+            {
+                Assert.False(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName)); 
+            }
+        }
+
+        [Fact]
+        public async Task Invoke_PermittedCrossDomainPoliciesHeaderName_HeaderIsPresent()
+        {
+            // arrange
+            var headerPresentConfig =
+                SecureHeadersMiddlewareBuilder.CreateBuilder().UsePermittedCrossDomainPolicies().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+
+            // assert
+            if (headerPresentConfig.UsePermittedCrossDomainPolicy)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.PermittedCrossDomainPoliciesHeaderName));
                 Assert.Equal("none;",
                     _context.Response.Headers[Constants.PermittedCrossDomainPoliciesHeaderName]);
             }
-            else
+        }
+
+        [Fact]
+        public async Task Invoke_PermittedCrossDomainPoliciesHeaderName_HeaderIsNotPresent()
+        {
+            // arrange
+            var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+            
+            // assert
+            if (!headerNotPresentConfig.UsePermittedCrossDomainPolicy)
             {
                 Assert.False(_context.Response.Headers.ContainsKey(Constants.PermittedCrossDomainPoliciesHeaderName));
             }
@@ -180,18 +247,32 @@ namespace tests
         public async Task Invoke_ReferrerPolicyHeaderName_HeaderIsPresent()
         {
             // arrange
-            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, _middlewareConfig);
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseReferrerPolicy().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
             
             // assert
-            if (_middlewareConfig.UseReferrerPolicy)
+            if (headerPresentConfig.UseReferrerPolicy)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.ReferrerPolicyHeaderName));
                 Assert.Equal("no-referrer;", _context.Response.Headers[Constants.ReferrerPolicyHeaderName]);
             }
-            else
+        }
+        
+        [Fact]
+        public async Task Invoke_ReferrerPolicyHeaderName_HeaderIsNotPresent()
+        {
+            // arrange
+            var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+            
+            // assert
+            if (headerNotPresentConfig.UseReferrerPolicy)
             {
                 Assert.False(_context.Response.Headers.ContainsKey(Constants.ReferrerPolicyHeaderName));
             }

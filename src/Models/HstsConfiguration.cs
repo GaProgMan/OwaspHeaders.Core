@@ -17,10 +17,16 @@ namespace OwaspHeaders.Core.Models
         /// </summary>
         public int MaxAge { get; set; }
 
-        public HstsConfiguration()
+        /// <summary>
+        /// Protected constructor, we can no longer create instances of this
+        /// class without using the public constructor
+        /// </summary>
+        protected HstsConfiguration() { }
+
+        public HstsConfiguration(int maxAge, bool includeSubDomains)
         {
-            IncludeSubDomains = true;
-            MaxAge = 31536000;
+            MaxAge = maxAge;
+            IncludeSubDomains = includeSubDomains;
         }
 
         /// <summary>

@@ -1,17 +1,20 @@
 using System.Text;
 using OwaspHeaders.Core.Helpers;
+using OwaspHeaders.Core.Enums;
 
 namespace OwaspHeaders.Core.Models
 {
     public class XFrameOptionsConfiguration : IConfigurationBase
     {
-        public enum XFrameOptions { deny, sameorigin, allowfrom };
         public XFrameOptions OptionValue { get; set; }
         public string AllowFromDomain { get; set; }
 
-        public XFrameOptionsConfiguration()
+        protected XFrameOptionsConfiguration() { }
+
+        public XFrameOptionsConfiguration(XFrameOptions xFrameOption, string allowFromDomain)
         {
-            OptionValue = XFrameOptions.sameorigin;
+            OptionValue = xFrameOption;
+            AllowFromDomain = allowFromDomain;
         }
 
         /// <summary>

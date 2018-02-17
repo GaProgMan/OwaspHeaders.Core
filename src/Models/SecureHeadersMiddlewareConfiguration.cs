@@ -1,16 +1,11 @@
 namespace OwaspHeaders.Core.Models
 {
-    public class SecureHeadersMiddlewareConfiguration : ISecureHeadersMiddlewareConfiguration
+    public class SecureHeadersMiddlewareConfiguration
     {
         /// <summary>
         /// Indicates whether the response should use HTTP Strict Transport Security
         /// </summary>
         public bool UseHsts { get; set; }
-
-        /// <summary>
-        /// Indicates whether the response should use Public Key Pinning Extension for HTTP
-        /// </summary>
-        public bool UseHpkp { get; set; }
 
         /// <summary>
         /// Indicates whether the response should use X-Frame-Options
@@ -48,11 +43,6 @@ namespace OwaspHeaders.Core.Models
         public HstsConfiguration HstsConfiguration { get; set; }
 
         /// <summary>
-        /// The Public Key Pinning Extension for HTTP configuration to use
-        /// </summary>
-        public HPKPConfiguration HpkpConfiguration { get; set; }
-
-        /// <summary>
         /// The X-Frame-Options configuration to use
         /// </summary>
         public XFrameOptionsConfiguration XFrameOptionsConfiguration { get; set; }
@@ -75,27 +65,6 @@ namespace OwaspHeaders.Core.Models
         /// <summary>
         /// The Referrer-Policy configuration to use
         /// </summary>
-        public ReferrerPolicy ReferrerPolicy { get; set; }
-        
-        public SecureHeadersMiddlewareConfiguration()
-        {
-            UseHsts = false;
-            UseHpkp = false;
-            UseXFrameOptions = false;
-            UseXssProtection = false;
-            UseXContentTypeOptions = false;
-            UseContentSecurityPolicy = false;
-            UsePermittedCrossDomainPolicy = false;
-            UseReferrerPolicy = false;
-
-            HstsConfiguration = new HstsConfiguration();
-            HpkpConfiguration = new HPKPConfiguration();
-            XFrameOptionsConfiguration = new XFrameOptionsConfiguration();
-            XssConfiguration = new XssConfiguration();
-            ContentSecurityPolicyConfiguration = new ContentSecurityPolicyConfiguration();
-            PermittedCrossDomainPolicyConfiguration = new PermittedCrossDomainPolicyConfiguration();
-            ReferrerPolicy = new ReferrerPolicy();
-        }
-        
+        public ReferrerPolicy ReferrerPolicy { get; set; } 
     }
 }

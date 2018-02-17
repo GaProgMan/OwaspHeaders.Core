@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using OwaspHeaders.Core.Extensions;
@@ -76,6 +77,16 @@ namespace OwaspHeaders.Core.Models
         /// The form-action values to use (restricts the URLs which can be used as the target of a form submissions from a given context)
         /// </summary>
         public List<string> FormAction { get; set; }
+        
+        /// <summary>
+        /// Specifies an HTML sandbox policy that the user agent applies to the protected resource.
+        /// </summary>
+        public ContentSecurityPolicySandBox Sandbox { get; set; }
+        
+        /// <summary>
+        /// Define the set of plugins that can be invoked by the protected resource by limiting the types of resources that can be embedded
+        /// </summary>
+        public string PluginTypes { get; set; }
 
         /// <summary>
         /// Whether to include the block-all-mixed-content directive (prevents loading any assets using HTTP when the page is loaded using HTTPS)
@@ -86,13 +97,21 @@ namespace OwaspHeaders.Core.Models
         /// Whether to include the upgrade-insecure-requests directive (instructs user agents to treat all of a site's insecure URLs as though they have been replaced with secure URLs)
         /// </summary>
         public bool UpgradeInsecureRequests { get; set; }
+        
+        /// <summary>
+        /// Define information user agent must send in Referer header
+        /// </summary>
+        public string Referrer { get; set; }
 
         /// <summary>
         /// Whether to instruct the user agent to report attempts to violate the Content Security Policy
         /// </summary>
         public string ReportUri { get; set; }
 
-        public ContentSecurityPolicyConfiguration()
+        protected ContentSecurityPolicyConfiguration() { }
+
+        public ContentSecurityPolicyConfiguration(string pluginTypes, bool blockAllMixedContent,
+            bool upgradeInsecureRequests, string referrer, string reportUri)
         {
             BaseUri = new List<string>();
             DefaultSrc = new List<string>();
@@ -109,9 +128,11 @@ namespace OwaspHeaders.Core.Models
             ManifestSrc = new List<string>();
             FormAction = new List<string>();
 
-            BlockAllMixedContent = true;
-            UpgradeInsecureRequests = true;
-            ReportUri = "https://dotnetcore.gaprogman.com";
+            PluginTypes = pluginTypes;
+            BlockAllMixedContent = blockAllMixedContent;
+            UpgradeInsecureRequests = upgradeInsecureRequests;
+            Referrer = referrer;
+            ReportUri = reportUri;
         }
 
         /// <summary>
@@ -138,20 +159,36 @@ namespace OwaspHeaders.Core.Models
                 stringBuilder.BuildValuesForDirective("connect-src", ConnectSrc);
                 stringBuilder.BuildValuesForDirective("manifest-src", ManifestSrc);
                 stringBuilder.BuildValuesForDirective("form-action", FormAction);
+            }
 
+            if (Sandbox != null)
+            {
+                stringBuilder.Append(Sandbox.BuildHeaderValue());
+            }
+
+            if (!string.IsNullOrWhiteSpace(PluginTypes))
+            {
+                stringBuilder.Append($"plugin-types {PluginTypes}; ");
             }
 
             if (BlockAllMixedContent)
             {
                 stringBuilder.Append("block-all-mixed-content; ");
             }
+            
             if (UpgradeInsecureRequests)
             {
                 stringBuilder.Append("upgrade-insecure-requests; ");
             }
+
+            if (!string.IsNullOrWhiteSpace(Referrer))
+            {
+                stringBuilder.Append($"referrer {Referrer}; ");
+            }
+            
             if (!string.IsNullOrWhiteSpace(ReportUri))
             {
-                stringBuilder.Append($"report-uri {ReportUri};");
+                stringBuilder.Append($"report-uri {ReportUri}; ");
             }
 
             return stringBuilder.ToString();

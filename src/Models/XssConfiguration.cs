@@ -1,19 +1,20 @@
 using System.Text;
+using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models
 {
     public class XssConfiguration : IConfigurationBase
     {
-        public enum XssMode { zero, one, oneBlock, oneReport };
-
         public XssMode XssSetting { get; set; }
         public string ReportUri { get; set; }
 
-        public XssConfiguration()
+        protected XssConfiguration() { }
+
+        public XssConfiguration(XssMode xssMode, string reportUri = null)
         {
-            XssSetting = XssMode.oneBlock;
-            ReportUri = string.Empty;
+            XssSetting = xssMode;
+            ReportUri = reportUri;
         }
 
         /// <summary>

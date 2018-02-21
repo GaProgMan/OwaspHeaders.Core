@@ -47,75 +47,147 @@ Add a reference to the [NuGet package](https://www.nuget.org/packages/OwaspHeade
 
     dotnet add package OwaspHeaders.Core
 
+#### Configuration in Version 3.x
+
+Version 3.x of OwaspHaders.Core no longer uses the `secureHeaderSettings.json` file as this is a runtime dependency. It now uses the builder pattern to set up the header information, which is a compile time dependency.
+
+In your `Startup` class, add a using statement for the OwaspHeaders.Core middleware
+
+``` csharp
+using OwaspHeaders.Core.Extensions;
+````
+
+Then in the `Configure` method, add the following
+
+``` charp
+app.UseSecureHeadersMiddleware(SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration());
+```
+
+This will use the default configuration for the OwaspHeaders.Core middleware. The method (found in `/src/Extensions/SecureHeadersMiddlewareExtensions.cs`) looks like this:
+
+``` csharp
+public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration()
+{
+    return SecureHeadersMiddlewareBuilder
+        .CreateBuilder()
+        .UseHsts()
+        .UseXFrameOptions()
+        .UseXSSProtection()
+        .UseContentTypeOptions()
+        .UseContentDefaultSecurityPolicy()
+        .UsePermittedCrossDomainPolicies()
+        .UseReferrerPolicy()
+        .Build();
+}
+```
+
+In order to use a custom configuration, follow the same pattern (perhaps creating your own extension method to encapsulate it):
+
+``` csharp
+public static SecureHeadersMiddlewareConfiguration CustomConfiguration()
+{
+    return SecureHeadersMiddlewareBuilder
+        .CreateBuilder()
+        .UseHsts(1200, false)
+        .UseXSSProtection(XssMode.oneReport, "https://reporturi.com/some-report-url")
+        .UseContentDefaultSecurityPolicy()
+        .UsePermittedCrossDomainPolicies(XPermittedCrossDomainOptionValue.masterOnly)
+        .UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin)
+        .Build();
+}
+```
+
+Then consume it in the following manner:
+
+``` charp
+app.UseSecureHeadersMiddleware(CustomSecureHeaderExtensions.CustomConfiguration());
+```
+
+
+
+#### Configuration in Version 2.x
+
 In the constructor for the `Startup` class, add a reference to a `secureHeaderSettings.json`
 
-    public Startup(IHostingEnvironment env)
-    {
-        var builder = new ConfigurationBuilder()
-        .SetBasePath(env.ContentRootPath)
-        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-        .AddJsonFile("secureHeaderSettings.json", optional:true, reloadOnChange: true)
-        .AddEnvironmentVariables();
-        Configuration = builder.Build();
-    }
+``` csharp
+public Startup(IHostingEnvironment env)
+{
+    var builder = new ConfigurationBuilder()
+    .SetBasePath(env.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+    .AddJsonFile("secureHeaderSettings.json", optional:true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+    Configuration = builder.Build();
+}
+```
 The contents of the `secureHeaderSettings.json` file take the following format:
 
-    {
-        "SecureHeadersMiddlewareConfiguration": {
-            "UseHsts": "true",
-            "HstsConfiguration": {
-                "MaxAge": 42,
-                "IncludeSubDomains": "true"
-            },
-            "UseHpkp": "true",
-            "HPKPConfiguration" :{
-                "PinSha256" : [
-                    "e927fad33f9eb96126896413502a1034be0ca379dec377fb891feb9ebc720e47"
-                    ],
-                "MaxAge": 3,
-                "IncludeSubDomains": "true",
-                "ReportUri": "https://github.com/GaProgMan/OwaspHeaders.Core"
-            },
-            "UseXFrameOptions": "true",
-            "XFrameOptionsConfiguration": {
-                "OptionValue": "allowfrom",
-                "AllowFromDomain": "com.gaprogman.dotnetcore"
-            },
-            "UseXssProtection": "true",
-            "XssConfiguration": {
-                "XssSetting": "oneReport",
-                "ReportUri": "https://github.com/GaProgMan/OwaspHeaders.Core"
-            },
-            "UseXContentTypeOptions": "true",
-            "UseContentSecurityPolicy": "true",
-            "ContentSecurityPolicyConfiguration": {
-                "BlockAllMixedContent": "true",
-                "UpgradeInsecureRequests": "true"
-            }
+``` json
+{
+    "SecureHeadersMiddlewareConfiguration": {
+        "UseHsts": "true",
+        "HstsConfiguration": {
+            "MaxAge": 42,
+            "IncludeSubDomains": "true"
+        },
+        "UseHpkp": "true",
+        "HPKPConfiguration" :{
+            "PinSha256" : [
+                "e927fad33f9eb96126896413502a1034be0ca379dec377fb891feb9ebc720e47"
+                ],
+            "MaxAge": 3,
+            "IncludeSubDomains": "true",
+            "ReportUri": "https://github.com/GaProgMan/OwaspHeaders.Core"
+        },
+        "UseXFrameOptions": "true",
+        "XFrameOptionsConfiguration": {
+            "OptionValue": "allowfrom",
+            "AllowFromDomain": "com.gaprogman.dotnetcore"
+        },
+        "UseXssProtection": "true",
+        "XssConfiguration": {
+            "XssSetting": "oneReport",
+            "ReportUri": "https://github.com/GaProgMan/OwaspHeaders.Core"
+        },
+        "UseXContentTypeOptions": "true",
+        "UseContentSecurityPolicy": "true",
+        "ContentSecurityPolicyConfiguration": {
+            "BlockAllMixedContent": "true",
+            "UpgradeInsecureRequests": "true"
         }
     }
+}
+```
 (the above file is provided for illustration purposes)
 
 Load the contents of the `secureHeaderSettings.json` into an instance of the `SecureHeadersMiddlewareConfiguration` in the Startup class'  `ConfigureServices` method.
 
-    public void ConfigureServices(IServiceCollection services)
-    {
-        // Add framework services
-        // Add functionality to inject IOptions<T>
-        services.AddOptions();
+``` csharp
+public void ConfigureServices(IServiceCollection services)
+{
+    // Add framework services
+    // Add functionality to inject IOptions<T>
+    services.AddOptions();
 
-        // Add our Config object so it can be injected
-        services.Configure<SecureHeadersMiddlewareConfiguration>(Configuration.GetSection("SecureHeadersMiddlewareConfiguration"));
-    }
+    // Add our Config object so it can be injected
+    services.Configure<SecureHeadersMiddlewareConfiguration>(Configuration.GetSection("SecureHeadersMiddlewareConfiguration"));
+}
+```
+
 Add the `SecureHeadersMiddleware` into the ASP.NET Core pipeline, in the Startup class' `Configure` method.
 
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env,
-        IOptions<SecureHeadersMiddlewareConfiguration> secureHeaderSettings)
-    {
-        // Add SecureHeadersMiddleware to the pipeline
-        app.UseSecureHeadersMiddleware(secureHeaderSettings.Value);
-    }
+``` csharp
+public void Configure(IApplicationBuilder app, IHostingEnvironment env,
+    IOptions<SecureHeadersMiddlewareConfiguration> secureHeaderSettings)
+{
+    // Add SecureHeadersMiddleware to the pipeline
+    app.UseSecureHeadersMiddleware(secureHeaderSettings.Value);
+}
+```
+
+#### Testing the Middleware
+
 Run the application, request one of the pages that it serves and view the headers for the page.
 
 This can be done in Google Chrome, using the Dev tools and checking the network tab.

@@ -21,20 +21,20 @@ namespace OwaspHeaders.Core.Models
             switch (xPermittedCrossDomainOptionValue)
             {
                 case XPermittedCrossDomainOptionValue.none:
-                    return "none";
+                    return "none;";
                 case XPermittedCrossDomainOptionValue.masterOnly:
-                    return "master-only";
+                    return "master-only;";
                 case XPermittedCrossDomainOptionValue.byContentType:
-                    return "by-content-type";
+                    return "by-content-type;";
                 case XPermittedCrossDomainOptionValue.byFtpFileType:
-                    return "by-ftp-file-type";
+                    return "by-ftp-file-type;";
                 case XPermittedCrossDomainOptionValue.all:
-                    return "all";
+                    return "all;";
                 default:
                     ArgumentExceptionHelper.RaiseException(nameof(xPermittedCrossDomainOptionValue));
                     break;
             }
-            return "";
+            return ";";
         }
     }
 }

@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OwaspHeaders.Core.Enums;
+using OwaspHeaders.Core.Models;
+
 namespace OwaspHeaders.Core.Extensions
 {
     public static class StringBuilderExtentions
@@ -13,13 +16,26 @@ namespace OwaspHeaders.Core.Extensions
         /// <param name="directiveValues">A list of strings representing the directive values</param>
         /// <returns>The updated <see cref="StringBuilder" /> instance</returns>
         public static StringBuilder BuildValuesForDirective(this StringBuilder @stringBuilder,
-            string directiveName, List<string> directiveValues)
+            string directiveName, List<ContenSecurityPolicyElement> directiveValues)
         {
             if (!directiveValues.Any()) return stringBuilder;
             
             @stringBuilder.Append(directiveName);            
-            @stringBuilder.Append(" ");
-            @stringBuilder.Append(string.Join(" ", directiveValues));
+            if (directiveValues.Any(d => d.CommandType == CspCommandType.Directive))
+            {
+                @stringBuilder.Append(" ");
+                @stringBuilder.Append(string.Join(" ",
+                    directiveValues.Where(command => (command.CommandType == CspCommandType.Directive))
+                        .Select(directive => $"'{directive.DirectiveOrUri}'")));
+            }
+
+            if (directiveValues.Any(d => d.CommandType == CspCommandType.Uri))
+            {
+                @stringBuilder.Append(" ");
+                @stringBuilder.Append(string.Join(" ",
+                    directiveValues.Where(command => (command.CommandType == CspCommandType.Uri))
+                        .Select(e => e.DirectiveOrUri)));
+            }
             @stringBuilder.Append(";");
             return stringBuilder;
         }

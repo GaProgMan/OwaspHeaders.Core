@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using OwaspHeaders.Core.Enums;
+using OwaspHeaders.Core.Helpers;
 using OwaspHeaders.Core.Models;
 
 namespace OwaspHeaders.Core.Extensions
@@ -67,6 +68,7 @@ namespace OwaspHeaders.Core.Extensions
                 XFrameOptions xFrameOption = XFrameOptions.deny,
                 string domain = null)
         {
+            config.UseXFrameOptions = true;
             config.XFrameOptionsConfiguration = new XFrameOptionsConfiguration(xFrameOption, domain);
             
             return config;
@@ -90,6 +92,7 @@ namespace OwaspHeaders.Core.Extensions
                 XssMode xssMode = XssMode.oneBlock,
                 string reportUri = null)
         {
+            config.UseXssProtection = true;
             config.XssConfiguration = new XssConfiguration(xssMode, reportUri);
             return config;
         }
@@ -126,11 +129,18 @@ namespace OwaspHeaders.Core.Extensions
         public static SecureHeadersMiddlewareConfiguration UseContentDefaultSecurityPolicy
         (this SecureHeadersMiddlewareConfiguration config)
         {
+            config.UseContentSecurityPolicy = true;
+            
             config.ContentSecurityPolicyConfiguration = new ContentSecurityPolicyConfiguration
                 (null, true, true, null, null);
 
-            config.SetCspUris(new List<string> {"self"}, CspUriType.Script);
-            config.SetCspUris(new List<string> {"self"}, CspUriType.Object);
+            config.SetCspUris(
+                new List<ContenSecurityPolicyElement> {ContentSecurityPolicyHelpers.CreateSelfDirective()},
+                CspUriType.Script);
+
+            config.SetCspUris(
+                new List<ContenSecurityPolicyElement> {ContentSecurityPolicyHelpers.CreateSelfDirective()},
+                CspUriType.Object);
             
             return config;
         }
@@ -139,6 +149,10 @@ namespace OwaspHeaders.Core.Extensions
         /// CSP prevents a wide range of attacks, including Cross-site scripting and other
         /// cross-site injections.
         /// </summary>
+        /// <param name="pluginTypes">
+        /// The set of plugins that can be invoked by the protected resource by limiting the
+        /// types of resources that can be embedded
+        /// </param>
         /// <param name="blockAllMixedContent">
         /// Prevent user agent from loading mixed content.
         /// </param>
@@ -148,12 +162,18 @@ namespace OwaspHeaders.Core.Extensions
         /// <param name="reportUri">
         /// Specifies a URI to which the user agent sends reports about policy violation.
         /// </param>
+        /// <remarks>
+        /// Requires consumer to set up their own Content Security Policy Rules via calls to
+        /// SetCspUris, which is an extension method on the <see cref="SecureHeadersMiddlewareConfiguration"/> object
+        /// </remarks>
         public static SecureHeadersMiddlewareConfiguration UseContentSecurityPolicy
             (this SecureHeadersMiddlewareConfiguration config,
                 string pluginTypes = null, bool blockAllMixedContent = true,
                 bool upgradeInsecureRequests = true, string referrer = null,
                 string reportUri = null)
         {
+            config.UseContentSecurityPolicy = true;
+            
             config.ContentSecurityPolicyConfiguration = new ContentSecurityPolicyConfiguration
                 (pluginTypes, blockAllMixedContent, upgradeInsecureRequests, referrer, reportUri);
             
@@ -172,6 +192,8 @@ namespace OwaspHeaders.Core.Extensions
             XPermittedCrossDomainOptionValue xPermittedCrossDomainOptionValue =
                 XPermittedCrossDomainOptionValue.none)
         {
+            config.UsePermittedCrossDomainPolicy = true;
+            
             config.PermittedCrossDomainPolicyConfiguration =
                 new PermittedCrossDomainPolicyConfiguration(xPermittedCrossDomainOptionValue);
 
@@ -190,6 +212,8 @@ namespace OwaspHeaders.Core.Extensions
                 ReferrerPolicyOptions referrerPolicyOption =
                     ReferrerPolicyOptions.noReferrer)
         {
+            config.UseReferrerPolicy = true;
+            
             config.ReferrerPolicy = new ReferrerPolicy(referrerPolicyOption);
             return config;
         }

@@ -27,18 +27,17 @@ namespace OwaspHeaders.Core.Models
             switch (OptionValue)
             {
                 case XFrameOptions.deny:
-                    stringBuilder.Append("deny");
+                    stringBuilder.Append("deny;");
                     break;
                 case XFrameOptions.sameorigin:
-                    stringBuilder.Append("sameorigin");
+                    stringBuilder.Append("sameorigin;");
                     break;
                 case XFrameOptions.allowfrom:
                     if (string.IsNullOrWhiteSpace(AllowFromDomain))
                     {
                         ArgumentExceptionHelper.RaiseException(nameof(AllowFromDomain));
                     }
-                    stringBuilder.Append("allow-from: ");
-                    stringBuilder.Append(AllowFromDomain);
+                    stringBuilder.Append($"allow-from: {AllowFromDomain};");
                     break;
             }
 

@@ -10,7 +10,8 @@ namespace OwaspHeaders.Core.Extensions
         /// Used to set the Content Security Policy URIs for a given <see cref="CspUriType"/>
         /// </summary>
         public static SecureHeadersMiddlewareConfiguration SetCspUris
-            (this SecureHeadersMiddlewareConfiguration config, List<string> baseUri, CspUriType cspUriType)
+            (this SecureHeadersMiddlewareConfiguration config, List<ContenSecurityPolicyElement> baseUri,
+            CspUriType cspUriType)
         {
             if (config.UseContentSecurityPolicy)
             {

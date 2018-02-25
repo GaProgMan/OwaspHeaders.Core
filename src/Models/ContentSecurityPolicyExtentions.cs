@@ -10,7 +10,8 @@ namespace OwaspHeaders.Core.Models
         /// Used to set the Content Security Policy URIs for a given <see cref="CspUriType"/>
         /// </summary>
         public static ContentSecurityPolicyConfiguration SetCspUri
-            (this ContentSecurityPolicyConfiguration @this, List<string> uris, CspUriType uriType)
+            (this ContentSecurityPolicyConfiguration @this, List<ContenSecurityPolicyElement> uris,
+            CspUriType uriType)
         {
             switch (uriType)
             {

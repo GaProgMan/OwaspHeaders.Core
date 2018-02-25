@@ -74,7 +74,7 @@ namespace tests
             if (headerPresentConfig.UseXFrameOptions)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.XFrameOptionsHeaderName));
-                Assert.Equal("sameorigin", _context.Response.Headers[Constants.XFrameOptionsHeaderName]);
+                Assert.Equal("deny;", _context.Response.Headers[Constants.XFrameOptionsHeaderName]);
             }
         }
         
@@ -180,7 +180,7 @@ namespace tests
             if (headerPresentConfig.UseContentSecurityPolicy)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
-                Assert.Equal("block-all-mixed-content; upgrade-insecure-requests; report-uri https://dotnetcore.gaprogman.com;",
+                Assert.Equal("script-src 'self';object-src 'self';block-all-mixed-content; upgrade-insecure-requests;",
                     _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName]);
             }
             else

@@ -19,25 +19,26 @@ namespace OwaspHeaders.Core.Models
             switch (ReferrerPolicyOption)
             {
                 case ReferrerPolicyOptions.noReferrer:
-                    return "no-referrer";
+                    return "no-referrer;";
                 case ReferrerPolicyOptions.noReferrerWhenDowngrade:
-                    return "no-referrer-when-downgrade";
+                    return "no-referrer-when-downgrade;";
                 case ReferrerPolicyOptions.origin:
-                    return "origin";
+                    return "origin;";
                 case ReferrerPolicyOptions.originWhenCrossOrigin:
-                    return "origin-when-cross-origin";
+                    return "origin-when-cross-origin;";
                 case ReferrerPolicyOptions.sameOrigin:
-                    return "same-origin";
+                    return "same-origin;";
                 case ReferrerPolicyOptions.strictOrigin:
-                    return "strict-origin";
+                    return "strict-origin;";
                 case ReferrerPolicyOptions.strictWhenCrossOrigin:
-                    return "strict-origin-when-cross-origin";
+                    return "strict-origin-when-cross-origin;";
                 case ReferrerPolicyOptions.unsafeUrl:
-                    return "unsafe-url";
+                    return "unsafe-url;";
                 default:
                     ArgumentExceptionHelper.RaiseException(nameof(ReferrerPolicyOption));
-                    return "";
+                    break;
             }
+            return ";";
         }
     }
 }

@@ -2,8 +2,9 @@
 {
     public enum XFrameOptions
     {
-        deny,
-        sameorigin,
-        allowfrom
+        Deny,
+        Sameorigin,
+        Allowfrom,
+        AllowAll
     };
 }

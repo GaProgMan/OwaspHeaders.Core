@@ -65,7 +65,7 @@ namespace OwaspHeaders.Core.Extensions
         /// </remarks>
         public static SecureHeadersMiddlewareConfiguration UseXFrameOptions
             (this SecureHeadersMiddlewareConfiguration config,
-                XFrameOptions xFrameOption = XFrameOptions.deny,
+                XFrameOptions xFrameOption = XFrameOptions.Deny,
                 string domain = null)
         {
             config.UseXFrameOptions = true;

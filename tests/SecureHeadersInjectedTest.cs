@@ -74,7 +74,7 @@ namespace tests
             if (headerPresentConfig.UseXFrameOptions)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.XFrameOptionsHeaderName));
-                Assert.Equal("deny;", _context.Response.Headers[Constants.XFrameOptionsHeaderName]);
+                Assert.Equal("DENY", _context.Response.Headers[Constants.XFrameOptionsHeaderName]);
             }
         }
         

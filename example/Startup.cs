@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Extensions;
 
 
@@ -34,7 +35,6 @@ namespace example
             }
             
             app.GnuTerryPratchett();
-
             app.UseSecureHeadersMiddleware(SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration());
             app.UseMvc();
         }

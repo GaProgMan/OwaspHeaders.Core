@@ -257,7 +257,7 @@ namespace tests
             if (headerPresentConfig.UseReferrerPolicy)
             {
                 Assert.True(_context.Response.Headers.ContainsKey(Constants.ReferrerPolicyHeaderName));
-                Assert.Equal("no-referrer;", _context.Response.Headers[Constants.ReferrerPolicyHeaderName]);
+                Assert.Equal("no-referrer", _context.Response.Headers[Constants.ReferrerPolicyHeaderName]);
             }
         }
         

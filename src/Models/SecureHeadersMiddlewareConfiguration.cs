@@ -36,6 +36,8 @@ namespace OwaspHeaders.Core.Models
         /// Indicated wether the response should use Referrer-Policy
         /// </summary>
         public bool UseReferrerPolicy { get; set; }
+        
+        public bool RemoveXPoweredByHeader { get; set; }
 
         /// <summary>
         /// The HTTP Strict Transport Security configuration to use

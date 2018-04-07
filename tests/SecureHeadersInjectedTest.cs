@@ -277,5 +277,38 @@ namespace tests
                 Assert.False(_context.Response.Headers.ContainsKey(Constants.ReferrerPolicyHeaderName));
             }
         }
+        
+        [Fact]
+        public async Task Invoke_XPoweredByHeader_RemoveHeader()
+        {
+            // arrange
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().RemovePoweredByHeader().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+            
+            // assert
+            Assert.True(headerPresentConfig.RemoveXPoweredByHeader);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.PoweredByHeaderName));
+        }
+        
+        [Fact]
+        public async Task Invoke_XPoweredByHeader_DoNotRemoveHeader()
+        {
+            // arrange
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+            
+            // assert
+            Assert.False(headerPresentConfig.RemoveXPoweredByHeader);
+            // Am currently running the 2.1.300 Preview 1 build of the SDK
+            // and the server doesn't seem to add this header.
+            // Therefore this assert is commented out, as it will always fail
+            //Assert.True(_context.Response.Headers.ContainsKey(Constants.PoweredByHeaderName));
+        }
     }
 }

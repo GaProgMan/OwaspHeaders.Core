@@ -76,6 +76,11 @@ namespace OwaspHeaders.Core
                     _config.ReferrerPolicy.BuildHeaderValue());
             }
 
+            if (_config.RemoveXPoweredByHeader)
+            {
+                httpContext.TryRemoveHeader(Constants.PoweredByHeaderName);
+            }
+
             // Call the next middleware in the chain
             await _next.Invoke(httpContext);
         }

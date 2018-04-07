@@ -219,6 +219,24 @@ namespace OwaspHeaders.Core.Extensions
         }
         
         /// <summary>
+        /// Thanks to Stack Overflow userrawb for this description:
+        /// This is a common non-standard HTTP response header. It's often included by default in responses constructed via a particular scripting technology.
+        /// Source: https://stackoverflow.com/a/33580769/1143474
+        /// </summary>
+        /// <remarks>
+        /// A lot of web security experts recommend removing this header as it exposes the version
+        /// of the server software. Malicious actors can target your application with attacks relevant
+        /// to the version of the server software you are using. 
+        /// </remarks>
+        public static SecureHeadersMiddlewareConfiguration RemovePoweredByHeader
+            (this SecureHeadersMiddlewareConfiguration config)
+        {
+            config.RemoveXPoweredByHeader = true;
+            
+            return config;
+        }
+        
+        /// <summary>
         /// Return the completed <see cref="SecureHeadersMiddlewareConfiguration"/> ready for consumption by the
         /// <see cref="SecureHeadersMiddleware"/> class
         /// </summary>

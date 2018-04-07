@@ -15,5 +15,7 @@
         public static readonly string PermittedCrossDomainPoliciesHeaderName = "X-Permitted-Cross-Domain-Policies";
 
         public static readonly string ReferrerPolicyHeaderName = "Referrer-Policy";
+
+        public static readonly string PoweredByHeaderName = "X-Powered-By";
     }
 }

@@ -23,5 +23,26 @@ namespace OwaspHeaders.Core.Extensions
                 return false;
             }
         }
+
+        /// <summary>
+        /// Used to remove a header (supplied via <see cref="headerName"/>) from the current
+        /// <see cref="httpContext"/>
+        /// </summary>
+        /// <param name="httpContext">The current <see cref="HttpContext"/></param>
+        /// <param name="headerName">The name of the HTTP header to remove</param>
+        /// <returns></returns>
+        public static bool TryRemoveHeader(this HttpContext httpContext, string headerName)
+        {
+            if (!httpContext.ResponseContainsHeader(headerName)) return true;
+            try
+            {
+                httpContext.Response.Headers.Remove(headerName);
+                return true;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace OwaspHeaders.Core.Models
                     stringBuilder.Append("DENY");
                     break;
                 case XFrameOptions.Sameorigin:
-                    stringBuilder.Append("SOMEORIGIN");
+                    stringBuilder.Append("SAMEORIGIN");
                     break;
                 case XFrameOptions.Allowfrom:
                     if (string.IsNullOrWhiteSpace(AllowFromDomain))

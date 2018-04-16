@@ -33,9 +33,14 @@ namespace OwaspHeaders.Core.Models
         public bool UsePermittedCrossDomainPolicy { get; set; }
 
         /// <summary>
-        /// Indicated wether the response should use Referrer-Policy
+        /// Indicates whether the response should use Referrer-Policy
         /// </summary>
         public bool UseReferrerPolicy { get; set; }
+        
+        /// <summary>
+        /// Indicates whether the response should use Expect-CT
+        /// </summary>
+        public bool UseExpectCt { get; set; }
         
         public bool RemoveXPoweredByHeader { get; set; }
 
@@ -67,6 +72,11 @@ namespace OwaspHeaders.Core.Models
         /// <summary>
         /// The Referrer-Policy configuration to use
         /// </summary>
-        public ReferrerPolicy ReferrerPolicy { get; set; } 
+        public ReferrerPolicy ReferrerPolicy { get; set; }
+        
+        /// <summary>
+        /// The Expect-CT configuration to use
+        /// </summary>
+        public ExpectCt ExpectCt { get; set; }
     }
 }

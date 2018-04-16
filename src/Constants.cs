@@ -16,6 +16,8 @@
 
         public static readonly string ReferrerPolicyHeaderName = "Referrer-Policy";
 
+        public static readonly string ExpectCtHeaderName = "Expect-CT";
+
         public static readonly string PoweredByHeaderName = "X-Powered-By";
     }
 }

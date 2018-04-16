@@ -11,8 +11,5 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A .NET Core middleware for injecting the Owasp recommended HTTP Headers for increased security</description>
     <tags>OWASP Http-headers Security ASP-NET-Core Middleware</tags>
-    <dependencies>
-      <dependency id="Microsoft.AspNetCore.Http.Abstractions" />
-    </dependencies>
   </metadata>
 </package>

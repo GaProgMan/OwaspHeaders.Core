@@ -1,4 +1,3 @@
-# OwaspHeaders.Core
 A .NET Core middleware for injecting the Owasp recommended HTTP Headers for increased security.
 
 ## Licence Used

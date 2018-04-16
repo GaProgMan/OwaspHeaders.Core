@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>OwaspHeaders.Core</id>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
     <authors>GaProgMan</authors>
     <owners>GaProgMan</owners>
     <licenseUrl>https://github.com/GaProgMan/OwaspHeaders.Core/blob/master/LICENSE</licenseUrl>
@@ -11,5 +11,13 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A .NET Core middleware for injecting the Owasp recommended HTTP Headers for increased security</description>
     <tags>OWASP Http-headers Security ASP-NET-Core Middleware</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNetCore.All" version="2.0.0" />
+    </dependencies>
   </metadata>
+    <files>
+	  <file src=".\bin\Release\netstandard2.0\OwaspHeaders.Core.dll" target="lib" />
+    <file src=".\**\*.cs" target="src" />
+    <file src=".\**\*.csproj" target="src" />
+  </files>
 </package>

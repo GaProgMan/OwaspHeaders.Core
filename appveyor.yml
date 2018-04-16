@@ -14,9 +14,9 @@ before_build:
   - cmd: dotnet restore ./src/OwaspHeaders.Core.csproj --verbosity m
 build_script:
   # output will be in ./src/bin/debug/netcoreapp1.1/publish
-  - cmd: dotnet publish --configuration Production ./src/OwaspHeaders.Core.csproj
+  - cmd: dotnet publish --configuration Release --no-restore ./src/OwaspHeaders.Core.csproj
   # Create a NuGet packge for uploading
-  - cmd: dotnet pack ./src/OwaspHeaders.Core.csproj --configuration Production --output nupkgs
+  - cmd: dotnet pack ./src/OwaspHeaders.Core.csproj --configuration Release --no-build --no-restore --output nupkgs /p:NuspecFile=OwaspHeadersCore.nuspec
 after_build:
   # For once the build has completed
 artifacts:

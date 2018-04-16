@@ -76,6 +76,12 @@ namespace OwaspHeaders.Core
                     _config.ReferrerPolicy.BuildHeaderValue());
             }
 
+            if (_config.UseExpectCt)
+            {
+                httpContext.TryAddHeader(Constants.ExpectCtHeaderName,
+                    _config.ExpectCt.BuildHeaderValue());
+            }
+
             if (_config.RemoveXPoweredByHeader)
             {
                 httpContext.TryRemoveHeader(Constants.PoweredByHeaderName);

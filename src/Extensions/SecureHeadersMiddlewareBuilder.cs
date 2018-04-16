@@ -2,7 +2,12 @@
 //        parameters for each header) are taken from the OWASP Secure Headers
 //        page. The original comments can be found at:
 //                https://www.owasp.org/index.php/OWASP_Secure_Headers_Project
+// Note:  the description of the Expect-CT header (used above the UseExpectCt
+//        method is taken from the MDN page for the header, which can be found
+//        at the following url:
+//          https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
+using System;
 using System.Collections.Generic;
 using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Helpers;
@@ -215,6 +220,46 @@ namespace OwaspHeaders.Core.Extensions
             config.UseReferrerPolicy = true;
             
             config.ReferrerPolicy = new ReferrerPolicy(referrerPolicyOption);
+            return config;
+        }
+
+        /// <summary>
+        /// Governs whether the site can opt-into reporting or enforcement of certificate
+        /// transparency requirements, which prevents the use of misissued certificates
+        /// for that site from going unnoticed
+        /// </summary>
+        /// <param name="reportUri">
+        /// [REQUIRED]
+        /// Specifies the URI to which the user agent should report Expect-CT failures.
+        /// </param>
+        /// <param name="maxAge">
+        /// [REQUIRED, HAS DEFAULT]
+        /// Specifies the number of seconds after reception of the Expect-CT header field
+        /// during which the user agent should regard the host from whom the message was
+        /// received as a known Expect-CT host
+        /// </param>
+        /// <param name="enforce">
+        /// [OPTIONAL]
+        /// Signals to the user agent that compliance with the Certificate Transparency
+        /// policy should be enforced (rather than only reporting compliance) and that the
+        /// user agent should refuse future connections that violate its Certificate
+        /// Transparency policy.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// An ArgumentException is thrown when no Report URI is supplied 
+        /// </exception>
+        public static SecureHeadersMiddlewareConfiguration UseExpectCt
+            (this SecureHeadersMiddlewareConfiguration config,
+                string reportUri, int maxAge = 86400, bool enforce = false)
+        {
+            config.UseExpectCt = true;
+
+            if (string.IsNullOrWhiteSpace(reportUri))
+            {
+                throw new ArgumentException($"Must supply value of {nameof(reportUri)} in {nameof(SecureHeadersMiddleware)}");
+            }
+            
+            config.ExpectCt = new ExpectCt(reportUri, maxAge, enforce);
             return config;
         }
         

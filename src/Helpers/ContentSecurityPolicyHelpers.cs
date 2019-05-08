@@ -11,12 +11,12 @@ namespace OwaspHeaders.Core.Helpers
         /// or to the 'default-src' rule to cover them all.
         /// </summary>
         /// <returns>
-        /// A new instance of the <see cref="ContenSecurityPolicyElement"/>
+        /// A new instance of the <see cref="ContentSecurityPolicyElement"/>
         /// class which represents a 'self' CSP rule.
         /// </returns>
-        public static ContenSecurityPolicyElement CreateSelfDirective()
+        public static ContentSecurityPolicyElement CreateSelfDirective()
         {
-            return new ContenSecurityPolicyElement
+            return new ContentSecurityPolicyElement
             {
                 CommandType = CspCommandType.Directive,
                 DirectiveOrUri = "self"

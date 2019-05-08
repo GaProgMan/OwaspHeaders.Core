@@ -24,7 +24,7 @@ namespace OwaspHeaders.Core.Models
                     return $"{returnStr} allow-modals; ";
                 case CspSandboxType.allowOrientationLock:
                     return $"{returnStr} allow-orientation-lock; ";
-                case CspSandboxType.allowpPointerLock:
+                case CspSandboxType.allowPointerLock:
                     return $"{returnStr} allow-pointer-lock; ";
                 case CspSandboxType.allowPopups:
                     return $"{returnStr} allow-popups; ";

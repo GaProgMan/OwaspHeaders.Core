@@ -5,7 +5,7 @@
         allowForms,
         allowModals,
         allowOrientationLock,
-        allowpPointerLock,
+        allowPointerLock,
         allowPopups,
         allowPopupsToEscapeSandbox,
         allowPresentation,

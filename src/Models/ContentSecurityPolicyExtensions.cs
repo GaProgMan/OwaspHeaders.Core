@@ -4,13 +4,13 @@ using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models
 {
-    public static class ContentSecurityPolicyExtentions
+    public static class ContentSecurityPolicyExtensions
     {
         /// <summary>
         /// Used to set the Content Security Policy URIs for a given <see cref="CspUriType"/>
         /// </summary>
         public static ContentSecurityPolicyConfiguration SetCspUri
-            (this ContentSecurityPolicyConfiguration @this, List<ContenSecurityPolicyElement> uris,
+            (this ContentSecurityPolicyConfiguration @this, List<ContentSecurityPolicyElement> uris,
             CspUriType uriType)
         {
             switch (uriType)

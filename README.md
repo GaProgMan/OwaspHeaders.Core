@@ -10,6 +10,12 @@ A .NET Core middleware for injecting the Owasp recommended HTTP Headers for incr
 
 See the contents of the LICENSE file for details
 
+## Support This Project
+
+If you have found this project helpful, either as a library that you use or as a learning tool, please consider buying me a coffee:
+
+[![buy me a Coffee link](https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png)](https://www.buymeacoffee.com/dotnetcoreshow/)
+
 ## Code Triage Status
 
 [![Code Triagers Badge](https://www.codetriage.com/gaprogman/owaspheaders.core/badges/users.svg)](https://www.codetriage.com/gaprogman/owaspheaders.core)

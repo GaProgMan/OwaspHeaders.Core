@@ -31,7 +31,7 @@ namespace OwaspHeaders.Core.Extensions
                 .UseContentDefaultSecurityPolicy()
                 .UsePermittedCrossDomainPolicies()
                 .UseReferrerPolicy()
-                .UseExpectCt("https://gaprogman.com/report", enforce:true)
+                .UseExpectCt(string.Empty, enforce:true)
                 .RemovePoweredByHeader()
                 .Build();
         }

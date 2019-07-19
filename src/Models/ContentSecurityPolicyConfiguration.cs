@@ -11,72 +11,72 @@ namespace OwaspHeaders.Core.Models
         /// <summary>
         /// The base-uri values to use (which can be used in a document's base element)
         /// </summary>
-        public List<ContenSecurityPolicyElement> BaseUri { get; set; }
+        public List<ContentSecurityPolicyElement> BaseUri { get; set; }
 
         /// <summary>
         /// The default-src values to use (as a fallback for the other CSP rules)
         /// </summary>
-        public List<ContenSecurityPolicyElement> DefaultSrc { get; set; }
+        public List<ContentSecurityPolicyElement> DefaultSrc { get; set; }
 
         /// <summary>
         /// The script-src values to use (valid sources for sources for JavaScript)
         /// </summary>
-        public List<ContenSecurityPolicyElement> ScriptSrc { get; set; }
+        public List<ContentSecurityPolicyElement> ScriptSrc { get; set; }
 
         /// <summary>
         /// The object-src values to use (valid sources for the object, embed, and applet elements)
         /// </summary>
-        public List<ContenSecurityPolicyElement> ObjectSrc { get; set; }
+        public List<ContentSecurityPolicyElement> ObjectSrc { get; set; }
 
         /// <summary>
         /// The style-src values to use (valid sources for style sheets)
         /// </summary>
-        public List<ContenSecurityPolicyElement> StyleSrc { get; set; }
+        public List<ContentSecurityPolicyElement> StyleSrc { get; set; }
 
         /// <summary>
         /// The img-src values to use (valid sources for images and favicons)
         /// </summary>
-        public List<ContenSecurityPolicyElement> ImgSrc { get; set; }
+        public List<ContentSecurityPolicyElement> ImgSrc { get; set; }
 
         /// <summary>
         /// The media-src values to use (valid sources for loading media using the audio and video elements)
         /// </summary>
-        public List<ContenSecurityPolicyElement> MediaSrc { get; set; }
+        public List<ContentSecurityPolicyElement> MediaSrc { get; set; }
 
         /// <summary>
         /// The frame-src values to use (valid sources for nested browsing contexts loading using elements such as frame and iframe)
         /// </summary>
-        public List<ContenSecurityPolicyElement> FrameSrc { get; set; }
+        public List<ContentSecurityPolicyElement> FrameSrc { get; set; }
 
         /// <summary>
         /// The child-src values to use (valid sources for web workers and nested browsing contexts loaded using elements such as frame and iframe)
         /// </summary>
-        public List<ContenSecurityPolicyElement> ChildSrc { get; set; }
+        public List<ContentSecurityPolicyElement> ChildSrc { get; set; }
 
         /// <summary>
         /// The frame-ancestors values to use (valid parents that may embed a page using frame, iframe, object, embed, or applet)
         /// </summary>
-        public List<ContenSecurityPolicyElement> FrameAncestors { get; set; }
+        public List<ContentSecurityPolicyElement> FrameAncestors { get; set; }
 
         /// <summary>
         /// The font-src values to use (valid sources for fonts loaded using @font-face)
         /// </summary>
-        public List<ContenSecurityPolicyElement> FontSrc { get; set; }
+        public List<ContentSecurityPolicyElement> FontSrc { get; set; }
 
         /// <summary>
         /// The connect-src values to use (restricts the URLs which can be loaded using script interfaces)
         /// </summary>
-        public List<ContenSecurityPolicyElement> ConnectSrc { get; set; }
+        public List<ContentSecurityPolicyElement> ConnectSrc { get; set; }
 
         /// <summary>
         /// The manifest-src values to use (which manifest can be applied to the resource)
         /// </summary>
-        public List<ContenSecurityPolicyElement> ManifestSrc { get; set; }
+        public List<ContentSecurityPolicyElement> ManifestSrc { get; set; }
 
         /// <summary>
         /// The form-action values to use (restricts the URLs which can be used as the target of a form submissions from a given context)
         /// </summary>
-        public List<ContenSecurityPolicyElement> FormAction { get; set; }
+        public List<ContentSecurityPolicyElement> FormAction { get; set; }
         
         /// <summary>
         /// Specifies an HTML sandbox policy that the user agent applies to the protected resource.
@@ -113,20 +113,20 @@ namespace OwaspHeaders.Core.Models
         public ContentSecurityPolicyConfiguration(string pluginTypes, bool blockAllMixedContent,
             bool upgradeInsecureRequests, string referrer, string reportUri)
         {
-            BaseUri = new List<ContenSecurityPolicyElement>();
-            DefaultSrc = new List<ContenSecurityPolicyElement>();
-            ScriptSrc = new List<ContenSecurityPolicyElement>();
-            ObjectSrc = new List<ContenSecurityPolicyElement>();
-            StyleSrc = new List<ContenSecurityPolicyElement>();
-            ImgSrc = new List<ContenSecurityPolicyElement>();
-            MediaSrc = new List<ContenSecurityPolicyElement>();
-            FrameSrc = new List<ContenSecurityPolicyElement>();
-            ChildSrc = new List<ContenSecurityPolicyElement>();
-            FrameAncestors = new List<ContenSecurityPolicyElement>();
-            FontSrc = new List<ContenSecurityPolicyElement>();
-            ConnectSrc = new List<ContenSecurityPolicyElement>();
-            ManifestSrc = new List<ContenSecurityPolicyElement>();
-            FormAction = new List<ContenSecurityPolicyElement>();
+            BaseUri = new List<ContentSecurityPolicyElement>();
+            DefaultSrc = new List<ContentSecurityPolicyElement>();
+            ScriptSrc = new List<ContentSecurityPolicyElement>();
+            ObjectSrc = new List<ContentSecurityPolicyElement>();
+            StyleSrc = new List<ContentSecurityPolicyElement>();
+            ImgSrc = new List<ContentSecurityPolicyElement>();
+            MediaSrc = new List<ContentSecurityPolicyElement>();
+            FrameSrc = new List<ContentSecurityPolicyElement>();
+            ChildSrc = new List<ContentSecurityPolicyElement>();
+            FrameAncestors = new List<ContentSecurityPolicyElement>();
+            FontSrc = new List<ContentSecurityPolicyElement>();
+            ConnectSrc = new List<ContentSecurityPolicyElement>();
+            ManifestSrc = new List<ContentSecurityPolicyElement>();
+            FormAction = new List<ContentSecurityPolicyElement>();
 
             PluginTypes = pluginTypes;
             BlockAllMixedContent = blockAllMixedContent;

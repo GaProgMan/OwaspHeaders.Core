@@ -6,7 +6,7 @@ using OwaspHeaders.Core.Models;
 
 namespace OwaspHeaders.Core.Extensions
 {
-    public static class StringBuilderExtentions
+    public static class StringBuilderExtensions
     {
         /// <summary>
         /// Used to build the concatenated string value for the given values
@@ -16,7 +16,7 @@ namespace OwaspHeaders.Core.Extensions
         /// <param name="directiveValues">A list of strings representing the directive values</param>
         /// <returns>The updated <see cref="StringBuilder" /> instance</returns>
         public static StringBuilder BuildValuesForDirective(this StringBuilder @stringBuilder,
-            string directiveName, List<ContenSecurityPolicyElement> directiveValues)
+            string directiveName, List<ContentSecurityPolicyElement> directiveValues)
         {
             if (!directiveValues.Any()) return stringBuilder;
             

@@ -3,7 +3,7 @@
 //        page. The original comments can be found at:
 //                https://www.owasp.org/index.php/OWASP_Secure_Headers_Project
 // Note:  the description of the Expect-CT header (used above the UseExpectCt
-//        method is taken from the MDN page for the header, which can be found
+//        method) is taken from the MDN page for the header, which can be found
 //        at the following url:
 //          https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
@@ -140,11 +140,11 @@ namespace OwaspHeaders.Core.Extensions
                 (null, true, true, null, null);
 
             config.SetCspUris(
-                new List<ContenSecurityPolicyElement> {ContentSecurityPolicyHelpers.CreateSelfDirective()},
+                new List<ContentSecurityPolicyElement> {ContentSecurityPolicyHelpers.CreateSelfDirective()},
                 CspUriType.Script);
 
             config.SetCspUris(
-                new List<ContenSecurityPolicyElement> {ContentSecurityPolicyHelpers.CreateSelfDirective()},
+                new List<ContentSecurityPolicyElement> {ContentSecurityPolicyHelpers.CreateSelfDirective()},
                 CspUriType.Object);
             
             return config;

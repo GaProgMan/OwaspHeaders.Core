@@ -8,6 +8,13 @@ namespace OwaspHeaders.Core.Extensions
 {
     public static class StringBuilderExtensions
     {
+        private static List<string> UnquotedDirectiveValues = new List<string>
+        {
+            "blob", "*", "data"
+        };
+        
+        private static string EmptySpace = " ";
+
         /// <summary>
         /// Used to build the concatenated string value for the given values
         /// </summary>
@@ -23,16 +30,21 @@ namespace OwaspHeaders.Core.Extensions
             @stringBuilder.Append(directiveName);            
             if (directiveValues.Any(d => d.CommandType == CspCommandType.Directive))
             {
-                @stringBuilder.Append(" ");
-                @stringBuilder.Append(string.Join(" ",
-                    directiveValues.Where(command => (command.CommandType == CspCommandType.Directive))
-                        .Select(directive => $"'{directive.DirectiveOrUri}'")));
+                @stringBuilder.Append(EmptySpace);
+
+                var unquoted = directiveValues.Where(command => (command.CommandType == CspCommandType.Directive))
+                        .Where(directive => UnquotedDirectiveValues.Contains(directive.DirectiveOrUri));
+                var quoted = directiveValues.Except(unquoted);
+
+                @stringBuilder.Append(string.Join(EmptySpace, unquoted.Select(directive => directive.DirectiveOrUri)));
+                @stringBuilder.Append(EmptySpace);
+                @stringBuilder.Append(string.Join(EmptySpace, quoted.Select(directive => $"'{directive.DirectiveOrUri}'")));
             }
 
             if (directiveValues.Any(d => d.CommandType == CspCommandType.Uri))
             {
-                @stringBuilder.Append(" ");
-                @stringBuilder.Append(string.Join(" ",
+                @stringBuilder.Append(EmptySpace);
+                @stringBuilder.Append(string.Join(EmptySpace,
                     directiveValues.Where(command => (command.CommandType == CspCommandType.Uri))
                         .Select(e => e.DirectiveOrUri)));
             }

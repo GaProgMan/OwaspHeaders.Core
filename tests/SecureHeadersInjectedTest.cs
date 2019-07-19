@@ -299,6 +299,26 @@ namespace tests
         }
 
         [Fact]
+        public async Task Invoke_ExpectCtHeaderName_HeaderIsPresent_ReportUri_Optional()
+        {
+            // arrange
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+                .UseExpectCt(string.Empty).Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+            
+            // assert
+            if (headerPresentConfig.UseExpectCt)
+            {
+                Assert.True(_context.Response.Headers.ContainsKey(Constants.ExpectCtHeaderName));
+                Assert.Equal(headerPresentConfig.ExpectCt.BuildHeaderValue(),
+                    _context.Response.Headers[Constants.ExpectCtHeaderName]);
+            }
+        }
+
+        [Fact]
         public async Task Invoke_ExpectCtHeaderName_HeaderIsNotPresent()
         {
             // arrange

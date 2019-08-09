@@ -13,7 +13,7 @@ namespace tests
         private readonly Task _onNextResult = Task.FromResult(0);
         private readonly RequestDelegate _onNext;
         private readonly DefaultHttpContext _context;
-        
+
         public SecureHeadersInjectedTest()
         {
             _onNext = _ =>
@@ -33,16 +33,14 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (headerPresentConfig.UseHsts)
-            {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
-                Assert.Equal("max-age=63072000; includeSubDomains",
-                    _context.Response.Headers[Constants.StrictTransportSecurityHeaderName]);
-            }
+            Assert.True(headerPresentConfig.UseHsts);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
+            Assert.Equal("max-age=63072000; includeSubDomains",
+                _context.Response.Headers[Constants.StrictTransportSecurityHeaderName]);
         }
-        
+
         [Fact]
         public async Task Invoke_StrictTransportSecurityHeaderName_HeaderIsNotPresent()
         {
@@ -52,14 +50,12 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (!headerNotPresetConfig.UseHsts)
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
-            }
+            Assert.False(headerNotPresetConfig.UseHsts);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
         }
-        
+
         [Fact]
         public async Task Invoke_XFrameOptionsHeaderName_HeaderIsPresent()
         {
@@ -69,15 +65,13 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (headerPresentConfig.UseXFrameOptions)
-            {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.XFrameOptionsHeaderName));
-                Assert.Equal("DENY", _context.Response.Headers[Constants.XFrameOptionsHeaderName]);
-            }
+            Assert.True(headerPresentConfig.UseXFrameOptions);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.XFrameOptionsHeaderName));
+            Assert.Equal("DENY", _context.Response.Headers[Constants.XFrameOptionsHeaderName]);
         }
-        
+
         [Fact]
         public async Task Invoke_XFrameOptionsHeaderName_HeaderIsNotPresent()
         {
@@ -87,14 +81,12 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (!headerNotPresentConfig.UseXFrameOptions)
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.XFrameOptionsHeaderName));
-            }
+            Assert.False(headerNotPresentConfig.UseXFrameOptions);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.XFrameOptionsHeaderName));
         }
-        
+
         [Fact]
         public async Task Invoke_XssProtectionHeaderName_HeaderIsPresent()
         {
@@ -104,15 +96,13 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (headerPresentConfig.UseXssProtection)
-            {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.XssProtectionHeaderName));
-                Assert.Equal("1; mode=block", _context.Response.Headers[Constants.XssProtectionHeaderName]);
-            }
+            Assert.True(headerPresentConfig.UseXssProtection);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.XssProtectionHeaderName));
+            Assert.Equal("1; mode=block", _context.Response.Headers[Constants.XssProtectionHeaderName]);
         }
-        
+
         [Fact]
         public async Task Invoke_XssProtectionHeaderName_HeaderIsNotPresent()
         {
@@ -122,15 +112,13 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (!headerNotPresentConfig.UseXssProtection)
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.XssProtectionHeaderName));
-            }
+            Assert.False(headerNotPresentConfig.UseXssProtection);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.XssProtectionHeaderName));
         }
 
-        
+
         [Fact]
         public async Task Invoke_XContentTypeOptionsHeaderName_HeaderIsPresent()
         {
@@ -140,15 +128,13 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (headerPresentConfig.UseXContentTypeOptions)
-            {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.XContentTypeOptionsHeaderName));
-                Assert.Equal("nosniff", _context.Response.Headers[Constants.XContentTypeOptionsHeaderName]);
-            }
+            Assert.True(headerPresentConfig.UseXContentTypeOptions);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.XContentTypeOptionsHeaderName));
+            Assert.Equal("nosniff", _context.Response.Headers[Constants.XContentTypeOptionsHeaderName]);
         }
-        
+
         [Fact]
         public async Task Invoke_XContentTypeOptionsHeaderName_HeaderIsNotPresent()
         {
@@ -158,12 +144,10 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (!headerNotPresentConfig.UseXContentTypeOptions)
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.XContentTypeOptionsHeaderName));
-            }
+            Assert.False(headerNotPresentConfig.UseXContentTypeOptions);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.XContentTypeOptionsHeaderName));
         }
 
         [Fact]
@@ -175,20 +159,15 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (headerPresentConfig.UseContentSecurityPolicy)
-            {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
-                Assert.Equal("script-src 'self';object-src 'self';block-all-mixed-content; upgrade-insecure-requests;",
-                    _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName]);
-            }
-            else
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
-            }
+            Assert.True(headerPresentConfig.UseContentSecurityPolicy);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
+            Assert.Equal("script-src 'self';object-src 'self';block-all-mixed-content; upgrade-insecure-requests;",
+                _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName]);
+
         }
-        
+
         [Fact]
         public async Task Invoke_ContentSecurityPolicyHeaderName_HeaderIsNotPresent()
         {
@@ -198,12 +177,10 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (!headerNotPresentConfig.UseContentSecurityPolicy)
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName)); 
-            }
+            Assert.False(headerNotPresentConfig.UseContentSecurityPolicy);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
         }
 
         [Fact]
@@ -218,12 +195,10 @@ namespace tests
             await secureHeadersMiddleware.Invoke(_context);
 
             // assert
-            if (headerPresentConfig.UsePermittedCrossDomainPolicy)
-            {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.PermittedCrossDomainPoliciesHeaderName));
-                Assert.Equal("none;",
-                    _context.Response.Headers[Constants.PermittedCrossDomainPoliciesHeaderName]);
-            }
+            Assert.True(headerPresentConfig.UsePermittedCrossDomainPolicy);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.PermittedCrossDomainPoliciesHeaderName));
+            Assert.Equal("none;",
+                _context.Response.Headers[Constants.PermittedCrossDomainPoliciesHeaderName]);
         }
 
         [Fact]
@@ -235,14 +210,12 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (!headerNotPresentConfig.UsePermittedCrossDomainPolicy)
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.PermittedCrossDomainPoliciesHeaderName));
-            }
+            Assert.False(headerNotPresentConfig.UsePermittedCrossDomainPolicy);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.PermittedCrossDomainPoliciesHeaderName));
         }
-        
+
         [Fact]
         public async Task Invoke_ReferrerPolicyHeaderName_HeaderIsPresent()
         {
@@ -252,15 +225,13 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (headerPresentConfig.UseReferrerPolicy)
-            {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.ReferrerPolicyHeaderName));
-                Assert.Equal("no-referrer", _context.Response.Headers[Constants.ReferrerPolicyHeaderName]);
-            }
+            Assert.True(headerPresentConfig.UseReferrerPolicy);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.ReferrerPolicyHeaderName));
+            Assert.Equal("no-referrer", _context.Response.Headers[Constants.ReferrerPolicyHeaderName]);
         }
-        
+
         [Fact]
         public async Task Invoke_ReferrerPolicyHeaderName_HeaderIsNotPresent()
         {
@@ -270,14 +241,12 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (headerNotPresentConfig.UseReferrerPolicy)
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.ReferrerPolicyHeaderName));
-            }
+            Assert.False(headerNotPresentConfig.UseReferrerPolicy);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.ReferrerPolicyHeaderName));
         }
-        
+
         [Fact]
         public async Task Invoke_ExpectCtHeaderName_HeaderIsPresent()
         {
@@ -288,14 +257,12 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (headerPresentConfig.UseExpectCt)
-            {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.ExpectCtHeaderName));
-                Assert.Equal(headerPresentConfig.ExpectCt.BuildHeaderValue(),
-                    _context.Response.Headers[Constants.ExpectCtHeaderName]);
-            }
+            Assert.True(headerPresentConfig.UseExpectCt);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.ExpectCtHeaderName));
+            Assert.Equal(headerPresentConfig.ExpectCt.BuildHeaderValue(),
+                _context.Response.Headers[Constants.ExpectCtHeaderName]);
         }
 
         [Fact]
@@ -308,32 +275,27 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
-            if (headerPresentConfig.UseExpectCt)
-            {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.ExpectCtHeaderName));
-                Assert.Equal(headerPresentConfig.ExpectCt.BuildHeaderValue(),
-                    _context.Response.Headers[Constants.ExpectCtHeaderName]);
-            }
+            Assert.True(headerPresentConfig.UseExpectCt);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.ExpectCtHeaderName));
+            Assert.Equal(headerPresentConfig.ExpectCt.BuildHeaderValue(),
+                _context.Response.Headers[Constants.ExpectCtHeaderName]);
         }
 
         [Fact]
         public async Task Invoke_ExpectCtHeaderName_HeaderIsNotPresent()
         {
             // arrange
-            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
-                .UseExpectCt("https://test.com/report").Build();
-            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+            var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
 
             // assert
-            if (!headerPresentConfig.UseExpectCt)
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.ExpectCtHeaderName));
-            }
+            Assert.False(headerNotPresentConfig.UseExpectCt);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.ExpectCtHeaderName));
         }
 
         [Fact]
@@ -345,12 +307,12 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
             Assert.True(headerPresentConfig.RemoveXPoweredByHeader);
             Assert.False(_context.Response.Headers.ContainsKey(Constants.PoweredByHeaderName));
         }
-        
+
         [Fact]
         public async Task Invoke_XPoweredByHeader_DoNotRemoveHeader()
         {
@@ -360,7 +322,7 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
             Assert.False(headerPresentConfig.RemoveXPoweredByHeader);
             // Am currently running the 2.1.300 Preview 1 build of the SDK

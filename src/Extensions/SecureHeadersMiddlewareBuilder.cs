@@ -167,6 +167,9 @@ namespace OwaspHeaders.Core.Extensions
         /// <param name="reportUri">
         /// Specifies a URI to which the user agent sends reports about policy violation.
         /// </param>
+        /// <param name="useXContentSecurityPolicy">
+        /// Specifies if we should use X-Content-Security-Policy header as well for compatibility with Internet Explorer.
+        /// </param>
         /// <remarks>
         /// Requires consumer to set up their own Content Security Policy Rules via calls to
         /// SetCspUris, which is an extension method on the <see cref="SecureHeadersMiddlewareConfiguration"/> object
@@ -175,10 +178,11 @@ namespace OwaspHeaders.Core.Extensions
             (this SecureHeadersMiddlewareConfiguration config,
                 string pluginTypes = null, bool blockAllMixedContent = true,
                 bool upgradeInsecureRequests = true, string referrer = null,
-                string reportUri = null)
+                string reportUri = null, bool useXContentSecurityPolicy = false)
         {
             config.UseContentSecurityPolicy = true;
-            
+            config.UseXContentSecurityPolicy = useXContentSecurityPolicy;
+
             config.ContentSecurityPolicyConfiguration = new ContentSecurityPolicyConfiguration
                 (pluginTypes, blockAllMixedContent, upgradeInsecureRequests, referrer, reportUri);
             

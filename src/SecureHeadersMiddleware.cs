@@ -64,6 +64,12 @@ namespace OwaspHeaders.Core
                     _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
             }
 
+            if (_config.UseXContentSecurityPolicy)
+            {
+                httpContext.TryAddHeader(Constants.XContentSecurityPolicyHeaderName,
+                _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
+            }
+
             if (_config.UsePermittedCrossDomainPolicy)
             {
                 httpContext.TryAddHeader(Constants.PermittedCrossDomainPoliciesHeaderName,

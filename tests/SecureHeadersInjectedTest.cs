@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OwaspHeaders.Core;
+using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Extensions;
 using Xunit;
 
@@ -190,6 +191,23 @@ namespace tests
         }
         
         [Fact]
+        public async Task Invoke_ContentSecurityPolicyHeaderName_HeaderIsPresent_WithMultipleCspSandboxTypes()
+        {
+            // arrange
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseContentSecurityPolicy().Build();
+            headerPresentConfig.SetCspSandBox(CspSandboxType.allowForms, CspSandboxType.allowScripts, CspSandboxType.allowSameOrigin);
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+
+            // assert
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
+            Assert.Equal("sandbox allow-forms allow-scripts allow-same-origin; block-all-mixed-content; upgrade-insecure-requests;",
+                _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName]);
+        }
+
+        [Fact]
         public async Task Invoke_ContentSecurityPolicyHeaderName_HeaderIsNotPresent()
         {
             // arrange
@@ -204,6 +222,39 @@ namespace tests
             {
                 Assert.False(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName)); 
             }
+        }
+
+        [Fact]
+        public async Task Invoke_XContentSecurityPolicyHeaderName_HeaderIsPresent()
+        {
+            // arrange
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseContentSecurityPolicy(useXContentSecurityPolicy: true).Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+
+            // assert
+            Assert.True(headerPresentConfig.UseXContentSecurityPolicy);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.XContentSecurityPolicyHeaderName));
+            Assert.Equal("block-all-mixed-content; upgrade-insecure-requests;",
+                _context.Response.Headers[Constants.XContentSecurityPolicyHeaderName]);
+
+        }
+
+        [Fact]
+        public async Task Invoke_XContentSecurityPolicyHeaderName_HeaderIsNotPresent()
+        {
+            // arrange
+            var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+
+            // assert
+            Assert.False(headerNotPresentConfig.UseXContentSecurityPolicy);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.XContentSecurityPolicyHeaderName));
         }
 
         [Fact]
@@ -308,7 +359,7 @@ namespace tests
 
             // act
             await secureHeadersMiddleware.Invoke(_context);
-            
+
             // assert
             if (headerPresentConfig.UseExpectCt)
             {

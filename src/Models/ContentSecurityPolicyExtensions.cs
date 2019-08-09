@@ -66,10 +66,10 @@ namespace OwaspHeaders.Core.Models
         }
 
         /// <summary>
-        /// Used the set the <see cref="CspSandboxType"/> forthe Content Secuity Policy
+        /// Sets the <see cref="CspSandboxType"/>s for the Content Security Policy
         /// </summary>
         public static ContentSecurityPolicyConfiguration SetSandbox
-            (this ContentSecurityPolicyConfiguration @this, CspSandboxType sandboxType)
+            (this ContentSecurityPolicyConfiguration @this, params CspSandboxType[] sandboxType)
         {
             @this.Sandbox = new ContentSecurityPolicySandBox(sandboxType);
 

@@ -1,46 +1,63 @@
 using OwaspHeaders.Core.Enums;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace OwaspHeaders.Core.Models
 {
     public class ContentSecurityPolicySandBox : IConfigurationBase
     {
-        protected ContentSecurityPolicySandBox() {}
+        protected ContentSecurityPolicySandBox() { }
 
-        public CspSandboxType SandboxType { get; set; }
-        
-        public ContentSecurityPolicySandBox(CspSandboxType sandboxType)
+        public IList<CspSandboxType> SandboxTypes { get; set; }
+
+        public ContentSecurityPolicySandBox(params CspSandboxType[] sandboxType)
         {
-            SandboxType = sandboxType;
+            SandboxTypes = sandboxType;
         }
 
         public string BuildHeaderValue()
         {
-            var returnStr = "sandbox";
-            switch (SandboxType)
+            var returnStr = new StringBuilder("sandbox");
+            foreach (var sandboxType in SandboxTypes)
             {
-                case CspSandboxType.allowForms:
-                    return $"{returnStr} allow-forms; ";
-                case CspSandboxType.allowModals:
-                    return $"{returnStr} allow-modals; ";
-                case CspSandboxType.allowOrientationLock:
-                    return $"{returnStr} allow-orientation-lock; ";
-                case CspSandboxType.allowPointerLock:
-                    return $"{returnStr} allow-pointer-lock; ";
-                case CspSandboxType.allowPopups:
-                    return $"{returnStr} allow-popups; ";
-                case CspSandboxType.allowPopupsToEscapeSandbox:
-                    return $"{returnStr} allow-popups-to-escape-sandbox; ";
-                case CspSandboxType.allowPresentation:
-                    return $"{returnStr} allow-presentation; ";
-                case CspSandboxType.allowSameOrigin:
-                    return $"{returnStr} allow-same-origin; ";
-                case CspSandboxType.allowScripts:
-                    return $"{returnStr} allow-scripts; ";
-                case CspSandboxType.allowTopNavigation:
-                    return $"{returnStr} allow-top-navigation; ";
+                switch (sandboxType)
+                {
+                    case CspSandboxType.allowForms:
+                        returnStr.Append(" allow-forms");
+                        break;
+                    case CspSandboxType.allowModals:
+                        returnStr.Append(" allow-modals");
+                        break;
+                    case CspSandboxType.allowOrientationLock:
+                        returnStr.Append(" allow-orientation-lock");
+                        break;
+                    case CspSandboxType.allowPointerLock:
+                        returnStr.Append(" allow-pointer-lock");
+                        break;
+                    case CspSandboxType.allowPopups:
+                        returnStr.Append(" allow-popups");
+                        break;
+                    case CspSandboxType.allowPopupsToEscapeSandbox:
+                        returnStr.Append(" allow-popups-to-escape-sandbox");
+                        break;
+                    case CspSandboxType.allowPresentation:
+                        returnStr.Append(" allow-presentation");
+                        break;
+                    case CspSandboxType.allowSameOrigin:
+                        returnStr.Append(" allow-same-origin");
+                        break;
+                    case CspSandboxType.allowScripts:
+                        returnStr.Append(" allow-scripts");
+                        break;
+                    case CspSandboxType.allowTopNavigation:
+                        returnStr.Append(" allow-top-navigation");
+                        break;
+                }
             }
 
-            return $"{returnStr}; ";
+            returnStr.Append("; ");
+            return returnStr.ToString();
         }
     }
 }

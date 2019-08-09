@@ -28,6 +28,11 @@ namespace OwaspHeaders.Core.Models
         public bool UseContentSecurityPolicy { get; set; }
 
         /// <summary>
+        /// Indicates whether the response should use X-Content-Security-Policy for Internet Explorer compatibility
+        /// </summary>
+        public bool UseXContentSecurityPolicy { get; set; }
+
+        /// <summary>
         /// Indicates whether the response should use X-Permitted-Cross-Domain-Policy
         /// </summary>
         public bool UsePermittedCrossDomainPolicy { get; set; }

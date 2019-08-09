@@ -22,10 +22,10 @@ namespace OwaspHeaders.Core.Extensions
         }
 
         /// <summary>
-        /// Used to set up the Content Security Policy Sandbox for a given <see cref="CspSandboxType"/>
+        /// Used to set up the Content Security Policy Sandbox for a given or multiple <see cref="CspSandboxType"/>s
         /// </summary>
         public static SecureHeadersMiddlewareConfiguration SetCspSandBox
-            (this SecureHeadersMiddlewareConfiguration config, CspSandboxType sandboxType)
+            (this SecureHeadersMiddlewareConfiguration config, params CspSandboxType[] sandboxType)
         {
             if (config.UseContentSecurityPolicy)
             {

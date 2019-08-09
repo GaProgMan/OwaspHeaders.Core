@@ -12,6 +12,8 @@
 
         public static readonly string ContentSecurityPolicyHeaderName = "Content-Security-Policy";
 
+        public static readonly string XContentSecurityPolicyHeaderName = "X-Content-Security-Policy";
+
         public static readonly string PermittedCrossDomainPoliciesHeaderName = "X-Permitted-Cross-Domain-Policies";
 
         public static readonly string ReferrerPolicyHeaderName = "Referrer-Policy";

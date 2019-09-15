@@ -30,17 +30,21 @@ namespace OwaspHeaders.Core.Extensions
             @stringBuilder.Append(directiveName);            
             if (directiveValues.Any(d => d.CommandType == CspCommandType.Directive))
             {
+
+                var directives = directiveValues.Where(command => (command.CommandType == CspCommandType.Directive));
+
                 @stringBuilder.Append(EmptySpace);
 
-                var unquoted = directiveValues.Where(command => (command.CommandType == CspCommandType.Directive))
+                var unquoted = directives
                         .Where(directive => UnquotedDirectiveValues.Contains(directive.DirectiveOrUri));
-                var quoted = directiveValues.Except(unquoted);
+                var quoted = directives.Except(unquoted);
 
                 if (unquoted.Any())
                 {
                     @stringBuilder.Append(string.Join(EmptySpace, unquoted.Select(directive => directive.DirectiveOrUri)));
                     @stringBuilder.Append(EmptySpace);
                 }
+
                 if (quoted.Any())
                 {
                     @stringBuilder.Append(string.Join(EmptySpace, quoted.Select(directive => $"'{directive.DirectiveOrUri}'")));

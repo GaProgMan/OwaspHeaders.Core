@@ -39,43 +39,41 @@ namespace OwaspHeaders.Core.Extensions
         /// <param name="directiveName">The name of the CSP directive</param>
         /// <param name="directiveValues">A list of strings representing the directive values</param>
         /// <returns>The updated <see cref="StringBuilder" /> instance</returns>
-        public static StringBuilder BuildValuesForDirective(this StringBuilder @stringBuilder,
+        public static StringBuilder BuildValuesForDirective(this StringBuilder stringBuilder,
             string directiveName, List<ContentSecurityPolicyElement> directiveValues)
         {
             if (!directiveValues.Any()) return stringBuilder;
             
-            @stringBuilder.Append(directiveName);            
+            stringBuilder.Append(directiveName);            
             if (directiveValues.Any(d => d.CommandType == CspCommandType.Directive))
             {
 
-                var directives = directiveValues.Where(command => (command.CommandType == CspCommandType.Directive));
-
-                @stringBuilder.Append(EmptySpace);
-
+                var directives = directiveValues.Where(command => command.CommandType == CspCommandType.Directive);
                 var uris = directiveValues.Where(command => command.CommandType== CspCommandType.Uri);
-                var directives = directiveValues.Except(uris);
+
+                stringBuilder.Append(EmptySpace);
                 
                 if (directives.Any())
                 {
-                    @stringBuilder.Append(string.Join(EmptySpace, directives.Select(directive => $"'{directive.DirectiveOrUri}'")));
-                    @stringBuilder.Append(EmptySpace);
+                    stringBuilder.Append(string.Join(EmptySpace, directives.Select(directive => $"'{directive.DirectiveOrUri}'")));
+                    stringBuilder.Append(EmptySpace);
                 }
                 if (uris.Any())
                 {
-                    @stringBuilder.Append(string.Join(EmptySpace, uris.Select(directive => directive.DirectiveOrUri)));
+                    stringBuilder.Append(string.Join(EmptySpace, uris.Select(directive => directive.DirectiveOrUri)));
                 }
             }
 
             if (directiveValues.Any(d => d.CommandType == CspCommandType.Uri))
             {
-                @stringBuilder.Append(EmptySpace);
-                @stringBuilder.Append(string.Join(EmptySpace,
+                stringBuilder.Append(EmptySpace);
+                stringBuilder.Append(string.Join(EmptySpace,
                     directiveValues.Where(command => (command.CommandType == CspCommandType.Uri))
                         .Select(e => e.DirectiveOrUri)));
             }
 
-            @stringBuilder.TrimEnd();
-            @stringBuilder.Append(";");
+            stringBuilder.TrimEnd();
+            stringBuilder.Append(";");
             return stringBuilder;
         }
     }

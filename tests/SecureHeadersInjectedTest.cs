@@ -76,7 +76,7 @@ namespace tests
         }
 
         [Fact]
-        public async Task Invoke_XFrameOptionsHeaderName_HeaderIsNotPresent()
+        public async Task Invoke_XFrameOptionsHeaderName_HeaderIsNotPresentInDefault()
         {
             // arrange
             var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();

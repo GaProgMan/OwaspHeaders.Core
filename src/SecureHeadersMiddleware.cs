@@ -31,8 +31,7 @@ namespace OwaspHeaders.Core
         {
             if (_config == null)
             {
-                throw new ArgumentException($@"Expected an instance of the
-                        {nameof(SecureHeadersMiddlewareConfiguration)} object.");
+                throw new ArgumentException($@"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.");
             }
 
             if (_config.UseHsts)

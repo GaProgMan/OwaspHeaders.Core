@@ -168,27 +168,27 @@ namespace OwaspHeaders.Core.Models
 
             if (!string.IsNullOrWhiteSpace(PluginTypes))
             {
-                stringBuilder.Append($"plugin-types {PluginTypes}; ");
+                stringBuilder.Append($"plugin-types {PluginTypes};");
             }
 
             if (BlockAllMixedContent)
             {
-                stringBuilder.Append("block-all-mixed-content; ");
+                stringBuilder.Append("block-all-mixed-content;");
             }
             
             if (UpgradeInsecureRequests)
             {
-                stringBuilder.Append("upgrade-insecure-requests; ");
+                stringBuilder.Append("upgrade-insecure-requests;");
             }
 
             if (!string.IsNullOrWhiteSpace(Referrer))
             {
-                stringBuilder.Append($"referrer {Referrer}; ");
+                stringBuilder.Append($"referrer {Referrer};");
             }
             
             if (!string.IsNullOrWhiteSpace(ReportUri))
             {
-                stringBuilder.Append($"report-uri {ReportUri}; ");
+                stringBuilder.Append($"report-uri {ReportUri};");
             }
 
             return stringBuilder.ToString().TrimEnd();

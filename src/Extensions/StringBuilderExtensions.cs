@@ -8,12 +8,29 @@ namespace OwaspHeaders.Core.Extensions
 {
     public static class StringBuilderExtensions
     {
-        private static List<string> UnquotedDirectiveValues = new List<string>
-        {
-            "blob", "*", "data"
-        };
-        
         private static string EmptySpace = " ";
+        
+        /// <summary>
+        /// This method is adapted from the following Stack Overflow answer:
+        ///     https://stackoverflow.com/a/24769702/1143474
+        /// It trims empty spaces from the end of an instance of the <seealso cref="StringBuilder"/> class
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <returns></returns>
+        private static StringBuilder TrimEnd(this StringBuilder sb)
+        {
+            if (sb == null || sb.Length == 0) return sb;
+
+            int i = sb.Length - 1;
+            for (; i >= 0; i--)
+                if (!char.IsWhiteSpace(sb[i]))
+                    break;
+
+            if (i < sb.Length - 1)
+                sb.Length = i + 1;
+
+            return sb;
+        }
 
         /// <summary>
         /// Used to build the concatenated string value for the given values
@@ -22,43 +39,41 @@ namespace OwaspHeaders.Core.Extensions
         /// <param name="directiveName">The name of the CSP directive</param>
         /// <param name="directiveValues">A list of strings representing the directive values</param>
         /// <returns>The updated <see cref="StringBuilder" /> instance</returns>
-        public static StringBuilder BuildValuesForDirective(this StringBuilder @stringBuilder,
+        public static StringBuilder BuildValuesForDirective(this StringBuilder stringBuilder,
             string directiveName, List<ContentSecurityPolicyElement> directiveValues)
         {
             if (!directiveValues.Any()) return stringBuilder;
             
-            @stringBuilder.Append(directiveName);            
+            stringBuilder.Append(directiveName);            
             if (directiveValues.Any(d => d.CommandType == CspCommandType.Directive))
             {
 
-                var directives = directiveValues.Where(command => (command.CommandType == CspCommandType.Directive));
+                var directives = directiveValues.Where(command => command.CommandType == CspCommandType.Directive);
+                var uris = directiveValues.Where(command => command.CommandType== CspCommandType.Uri);
 
-                @stringBuilder.Append(EmptySpace);
-
-                var unquoted = directives
-                        .Where(directive => UnquotedDirectiveValues.Contains(directive.DirectiveOrUri));
-                var quoted = directives.Except(unquoted);
-
-                if (unquoted.Any())
+                stringBuilder.Append(EmptySpace);
+                
+                if (directives.Any())
                 {
-                    @stringBuilder.Append(string.Join(EmptySpace, unquoted.Select(directive => directive.DirectiveOrUri)));
-                    @stringBuilder.Append(EmptySpace);
+                    stringBuilder.Append(string.Join(EmptySpace, directives.Select(directive => $"'{directive.DirectiveOrUri}'")));
+                    stringBuilder.Append(EmptySpace);
                 }
-
-                if (quoted.Any())
+                if (uris.Any())
                 {
-                    @stringBuilder.Append(string.Join(EmptySpace, quoted.Select(directive => $"'{directive.DirectiveOrUri}'")));
+                    stringBuilder.Append(string.Join(EmptySpace, uris.Select(directive => directive.DirectiveOrUri)));
                 }
             }
 
             if (directiveValues.Any(d => d.CommandType == CspCommandType.Uri))
             {
-                @stringBuilder.Append(EmptySpace);
-                @stringBuilder.Append(string.Join(EmptySpace,
+                stringBuilder.Append(EmptySpace);
+                stringBuilder.Append(string.Join(EmptySpace,
                     directiveValues.Where(command => (command.CommandType == CspCommandType.Uri))
                         .Select(e => e.DirectiveOrUri)));
             }
-            @stringBuilder.Append(";");
+
+            stringBuilder.TrimEnd();
+            stringBuilder.Append(";");
             return stringBuilder;
         }
     }

@@ -56,7 +56,7 @@ namespace OwaspHeaders.Core.Models
                 }
             }
 
-            returnStr.Append("; ");
+            returnStr.Append(";");
             return returnStr.ToString();
         }
     }

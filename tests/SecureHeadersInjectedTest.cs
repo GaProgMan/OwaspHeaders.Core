@@ -1,9 +1,11 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OwaspHeaders.Core;
 using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Extensions;
+using OwaspHeaders.Core.Models;
 using Xunit;
 
 namespace tests
@@ -162,11 +164,16 @@ namespace tests
             await secureHeadersMiddleware.Invoke(_context);
 
             // assert
-            Assert.True(headerPresentConfig.UseContentSecurityPolicy);
-            Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
-            Assert.Equal("script-src 'self';object-src 'self';block-all-mixed-content; upgrade-insecure-requests;",
-                _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName]);
-
+            if (headerPresentConfig.UseContentSecurityPolicy)
+            {
+                Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
+                Assert.Equal("script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;",
+                    _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName]);
+            }
+            else
+            {
+                Assert.False(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
+            }
         }
 
         [Fact]

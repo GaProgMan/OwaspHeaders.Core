@@ -26,7 +26,6 @@ namespace OwaspHeaders.Core.Extensions
                 .CreateBuilder()
                 .UseHsts()
                 .UseXFrameOptions()
-                .UseXSSProtection()
                 .UseContentTypeOptions()
                 .UseContentDefaultSecurityPolicy()
                 .UsePermittedCrossDomainPolicies()
@@ -35,7 +34,7 @@ namespace OwaspHeaders.Core.Extensions
                 .RemovePoweredByHeader()
                 .Build();
         }
-        
+
         /// <summary>
         /// Extention method to include the <see cref="SecureHeadersMiddleware" /> in
         /// an instance of an <see cref="IApplicationBuilder" />.

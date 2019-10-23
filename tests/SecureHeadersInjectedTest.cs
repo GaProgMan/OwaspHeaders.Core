@@ -177,6 +177,21 @@ namespace tests
         }
 
         [Fact]
+        public async Task invoke_NullConfig_ExceptionThrown()
+        {
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, null);
+
+            var exception = await Record.ExceptionAsync(() => secureHeadersMiddleware.Invoke(_context));
+            
+            Assert.NotNull(exception);
+            Assert.IsAssignableFrom<ArgumentException>(exception);
+            
+            var argEx = exception as ArgumentException;
+            Assert.NotNull(argEx);
+            Assert.Contains(nameof(SecureHeadersMiddlewareConfiguration), exception.Message);
+        }
+        
+        [Fact]
         public async Task Invoke_ContentSecurityPolicyHeaderName_HeaderIsPresent_WithMultipleCspSandboxTypes()
         {
             // arrange

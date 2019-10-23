@@ -40,7 +40,7 @@ namespace tests
             // assert
             Assert.True(headerPresentConfig.UseHsts);
             Assert.True(_context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
-            Assert.Equal("max-age=63072000; includeSubDomains",
+            Assert.Equal("max-age=63072000;includeSubDomains",
                 _context.Response.Headers[Constants.StrictTransportSecurityHeaderName]);
         }
 
@@ -103,7 +103,7 @@ namespace tests
             // assert
             Assert.True(headerPresentConfig.UseXssProtection);
             Assert.True(_context.Response.Headers.ContainsKey(Constants.XssProtectionHeaderName));
-            Assert.Equal("1; mode=block", _context.Response.Headers[Constants.XssProtectionHeaderName]);
+            Assert.Equal("1;mode=block", _context.Response.Headers[Constants.XssProtectionHeaderName]);
         }
 
         [Fact]
@@ -189,7 +189,7 @@ namespace tests
 
             // assert
             Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
-            Assert.Equal("sandbox allow-forms allow-scripts allow-same-origin; block-all-mixed-content; upgrade-insecure-requests;",
+            Assert.Equal("sandbox allow-forms allow-scripts allow-same-origin;block-all-mixed-content;upgrade-insecure-requests;",
                 _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName]);
         }
 
@@ -221,7 +221,7 @@ namespace tests
             // assert
             Assert.True(headerPresentConfig.UseXContentSecurityPolicy);
             Assert.True(_context.Response.Headers.ContainsKey(Constants.XContentSecurityPolicyHeaderName));
-            Assert.Equal("block-all-mixed-content; upgrade-insecure-requests;",
+            Assert.Equal("block-all-mixed-content;upgrade-insecure-requests;",
                 _context.Response.Headers[Constants.XContentSecurityPolicyHeaderName]);
 
         }

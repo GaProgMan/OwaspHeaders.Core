@@ -38,7 +38,7 @@ namespace OwaspHeaders.Core.Models
             var stringBuilder = new StringBuilder();
             stringBuilder.Append("max-age=");
             stringBuilder.Append(MaxAge);
-            stringBuilder.Append(IncludeSubDomains ? "; includeSubDomains" : string.Empty);
+            stringBuilder.Append(IncludeSubDomains ? ";includeSubDomains" : string.Empty);
 
             return stringBuilder.ToString();
         }

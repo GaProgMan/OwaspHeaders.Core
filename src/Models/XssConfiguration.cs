@@ -34,14 +34,14 @@ namespace OwaspHeaders.Core.Models
                     stringBuilder.Append(1);
                     break;
                 case XssMode.oneBlock:
-                    stringBuilder.Append("1; mode=block");
+                    stringBuilder.Append("1;mode=block");
                     break;
                 case XssMode.oneReport:
                     if (string.IsNullOrWhiteSpace(ReportUri))
                     {
                         ArgumentExceptionHelper.RaiseException(nameof(ReportUri));
                     }
-                    stringBuilder.Append("1; report=");
+                    stringBuilder.Append("1;report=");
                     stringBuilder.Append(ReportUri);
                     break;
             }

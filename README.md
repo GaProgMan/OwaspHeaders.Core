@@ -1,11 +1,17 @@
 # OwaspHeaders.Core
+
 A .NET Core middleware for injecting the Owasp recommended HTTP Headers for increased security.
 
 ## Build status
 
 [![Build status](https://ci.appveyor.com/api/projects/status/atq517fyr9r7vl7m?svg=true)](https://ci.appveyor.com/project/GaProgMan/owaspheaders-core)
 
+## Changelog
+
+See the [changelog](changelog.md) file for a rough breakdown of the changes made to each of the major versions of the repo.
+
 ## Licence Used
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 See the contents of the LICENSE file for details

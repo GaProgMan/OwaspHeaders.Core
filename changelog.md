@@ -43,21 +43,35 @@ public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration()
 }
 ```
 
-#### TODO
+#### Version 3.0.0.0-2 Specific Changes
 
-Add a description of the changes for the following commits:
+The `CspCommandType` enum was added, and consumed when creating Content Security Policy directives. This greatly simplifies the creation of Content Security policy directives, as the previous versions of the library used hard coded rules to decide whether a CSP rule was a directive (e.g. 'self') or a URL.
 
-- [#64755e2ee737ebcc78f5c29ae46b415b19aff73e](https://github.com/GaProgMan/OwaspHeaders.Core/commit/64755e2ee737ebcc78f5c29ae46b415b19aff73e#diff-f27c7085d1d957d0187b20ee09fe6eea) 3.0.0.0
-- [#e798771be5df9cda3a0caed47fafa4100b75bc5c](https://github.com/GaProgMan/OwaspHeaders.Core/commit/e798771be5df9cda3a0caed47fafa4100b75bc5c#diff-f27c7085d1d957d0187b20ee09fe6eea) 3.0.0.2
-- [#1d67636e5cba8bde9cc8db2a532bd222ae0bbd4d](https://github.com/GaProgMan/OwaspHeaders.Core/commit/1d67636e5cba8bde9cc8db2a532bd222ae0bbd4d#diff-f27c7085d1d957d0187b20ee09fe6eea) 3.0.0.3
-- [#267dd95d8a19d71357c39f94368e2e93ff11be3c](https://github.com/GaProgMan/OwaspHeaders.Core/commit/267dd95d8a19d71357c39f94368e2e93ff11be3c#diff-f27c7085d1d957d0187b20ee09fe6eea) 3.1.0.0
-- [#8ed2f38f638baf72875188a8eaf8857d4721ffe8](https://github.com/GaProgMan/OwaspHeaders.Core/commit/8ed2f38f638baf72875188a8eaf8857d4721ffe8#diff-f27c7085d1d957d0187b20ee09fe6eea) 3.1.1.0
-- [#c991bede1a7ee1946d5850bc292044b70617e6e4](https://github.com/GaProgMan/OwaspHeaders.Core/commit/c991bede1a7ee1946d5850bc292044b70617e6e4#diff-f27c7085d1d957d0187b20ee09fe6eea) 3.1.1
-  - Added SVG logo
-- [#e64a5a3355e45456982ef5d080d1b747865b6c4b](https://github.com/GaProgMan/OwaspHeaders.Core/commit/e64a5a3355e45456982ef5d080d1b747865b6c4b#diff-f27c7085d1d957d0187b20ee09fe6eea) 3.2.0
-- [#ce2bb6683e1349da0a54c6498e4c1d866f9dd5aa](https://github.com/GaProgMan/OwaspHeaders.Core/commit/ce2bb6683e1349da0a54c6498e4c1d866f9dd5aa#diff-f27c7085d1d957d0187b20ee09fe6eea) 3.3.2
-- [#7fa1b4c62cf5cf4f0304bc01549ce52d5886fc02](https://github.com/GaProgMan/OwaspHeaders.Core/commit/7fa1b4c62cf5cf4f0304bc01549ce52d5886fc02#diff-f27c7085d1d957d0187b20ee09fe6eea) 3.5.2
+Also included where various changes in the placement of semi-colon characters (i.e. ';') within the hard coded string values for certain headers. These are replaced with a single semi-colon which is appended to the header at the very end of rendering it's value.
 
+#### Version 3.0.0.3 Specific Changes
+
+This version fixed casing based typos to the `XFrameOptions` enum. It also fixed case based typos in the rendered values for the X-Frame-Options header value (i.e. `sameorigin` was replaced with `SOMEORIGIN`)
+
+#### Version 3.1.0.0 Specific Changes
+
+Added support for removing the `X-Powered-By` header value. This required the creation of an extension method called `TryRemoveHeader`, which would return true/false based on whether the header was present and could be removed. This was also added to the default configuration by adding a call to `RemovePoweredByHeader()` to the default config builder.
+
+#### Version 3.1.0.1 Specific Changes
+
+This version fixed a typo-based issue which was created during the 3.0.0.3 changes: namely `XFrameOptions.Sameorigin` was rendering as `SOMEORIGIN`. This was changed to `SAMEORIGIN` in this version.
+
+#### Version 3.1.1 Specific Changes
+
+An SVG logo was added to the project, ready to be consumed in the NuSpec file.
+
+#### Version 3.2.0 Specific Changes
+
+Support for the `Expect-CT` header was added - as per [this issue](https://github.com/GaProgMan/OwaspHeaders.Core/issues/19). The addition of this header was exposed via an extension method called `UseExpectCt()` which can be called when building the configuration object.
+
+#### Version 3.2.2 Specific Changes
+
+Removed the explicit dependency on the Microsoft.AspNetcore.All metapackage - as per [this issue](https://github.com/GaProgMan/OwaspHeaders.Core/issues/28). This change required taking a direct dependency on the Microsoft.AspNetCore.Http.Abstractions package (which is what the metapackage was supplying).
 
 ---
 

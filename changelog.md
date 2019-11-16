@@ -15,6 +15,10 @@ This changelog represents all of the major (i.e. breaking) changes made to the O
 
 This version of the repo removed the XSS Protection Header from the list of default headers in the `BuildDefaultConfiguration()` extension method. This is related to [issue #44](https://github.com/GaProgMan/OwaspHeaders.Core/issues/44).
 
+#### Version 4.0.1 Specific Changes
+
+It was noticed that the `server:` header was not removed (this is defaulted to `server: kestrel` when running locally). Removal of this header was added when the `RemovePoweredByHeader` option (in the `SecureHeadersMiddlewareBuilder`) was chosen.
+
 ### Version 3
 
 This version of the repo removed the dependency on .NET Core 2.0, and replaced it with a dependency on .NET Standard 2.0 (via the `netstandard2.0` Target Framework Moniker), and the version of the [Microsoft.AspNetCore.Http.Abstractions](https://www.nuget.org/packages/Microsoft.AspNetCore.Http.Abstractions/) was upped to version 2.1.1

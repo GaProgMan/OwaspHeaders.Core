@@ -21,5 +21,7 @@
         public static readonly string ExpectCtHeaderName = "Expect-CT";
 
         public static readonly string PoweredByHeaderName = "X-Powered-By";
+        
+        public static readonly string ServerHeaderName = "Server";
     }
 }

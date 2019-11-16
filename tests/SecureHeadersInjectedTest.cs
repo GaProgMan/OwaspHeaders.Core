@@ -384,6 +384,7 @@ namespace tests
             // assert
             Assert.True(headerPresentConfig.RemoveXPoweredByHeader);
             Assert.False(_context.Response.Headers.ContainsKey(Constants.PoweredByHeaderName));
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.ServerHeaderName));
         }
 
         [Fact]

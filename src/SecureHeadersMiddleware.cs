@@ -90,6 +90,7 @@ namespace OwaspHeaders.Core
             if (_config.RemoveXPoweredByHeader)
             {
                 httpContext.TryRemoveHeader(Constants.PoweredByHeaderName);
+                httpContext.TryRemoveHeader(Constants.ServerHeaderName);
             }
 
             // Call the next middleware in the chain

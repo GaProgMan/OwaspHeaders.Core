@@ -19,6 +19,10 @@ This version of the repo removed the XSS Protection Header from the list of defa
 
 It was noticed that the `server:` header was not removed (this is defaulted to `server: kestrel` when running locally). Removal of this header was added when the `RemovePoweredByHeader` option (in the `SecureHeadersMiddlewareBuilder`) was chosen.
 
+#### Version 4.2.0 Specific Changes
+
+It was [requested](https://github.com/GaProgMan/OwaspHeaders.Core/issues/60) that a `Content-Security-Policy-Report-Only` header could be added. This header was added in version 4.0.2 of the library.
+
 ### Version 3
 
 This version of the repo removed the dependency on .NET Core 2.0, and replaced it with a dependency on .NET Standard 2.0 (via the `netstandard2.0` Target Framework Moniker), and the version of the [Microsoft.AspNetCore.Http.Abstractions](https://www.nuget.org/packages/Microsoft.AspNetCore.Http.Abstractions/) was upped to version 2.1.1

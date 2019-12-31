@@ -57,7 +57,13 @@ namespace OwaspHeaders.Core
                 httpContext.TryAddHeader(Constants.XContentTypeOptionsHeaderName, "nosniff");
             }
 
-            if (_config.UseContentSecurityPolicy)
+            if (_config.UseContentSecurityPolicyReportOnly)
+            {
+                
+                httpContext.TryAddHeader(Constants.ContentSecurityPolicyReportOnlyHeaderName,
+                    _config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue());
+            }
+            else if (_config.UseContentSecurityPolicy)
             {
                 httpContext.TryAddHeader(Constants.ContentSecurityPolicyHeaderName,
                     _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());

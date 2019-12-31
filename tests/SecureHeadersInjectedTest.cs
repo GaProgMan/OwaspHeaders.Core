@@ -224,6 +224,39 @@ namespace tests
         }
 
         [Fact]
+        public async Task Invoke_ContentSecurityPolicyReportOnly_HeaderIsPresent_WithMultipleCspSandboxTypes()
+        {
+            const string reportUri = "https://localhost:5001/report-uri";
+            // arrange
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseContentSecurityPolicyReportOnly(reportUri).Build();
+            headerPresentConfig.SetCspSandBox(CspSandboxType.allowForms, CspSandboxType.allowScripts, CspSandboxType.allowSameOrigin);
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+
+            // assert
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyReportOnlyHeaderName));
+            Assert.Equal($"block-all-mixed-content;upgrade-insecure-requests;report-uri {reportUri};",
+                _context.Response.Headers[Constants.ContentSecurityPolicyReportOnlyHeaderName]);
+        }
+        
+        [Fact]
+        public async Task Invoke_ContentSecurityPolicyReportOnly_HeaderIsNotPresent()
+        {
+            // arrange
+            var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+
+            // assert
+            Assert.False(headerNotPresentConfig.UseContentSecurityPolicyReportOnly);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyReportOnlyHeaderName));
+        }
+
+        [Fact]
         public async Task Invoke_XContentSecurityPolicyHeaderName_HeaderIsPresent()
         {
             // arrange

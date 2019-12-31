@@ -188,6 +188,26 @@ namespace OwaspHeaders.Core.Extensions
             
             return config;
         }
+        
+        public static SecureHeadersMiddlewareConfiguration UseContentSecurityPolicyReportOnly
+        (this SecureHeadersMiddlewareConfiguration config, string reportUri,
+            string pluginTypes = null, bool blockAllMixedContent = true,
+            bool upgradeInsecureRequests = true, string referrer = null, bool useXContentSecurityPolicy = false)
+        {
+            // Check whether the URI is valid before continuing
+            if (!reportUri.IsValidHttpsUri())
+            {
+                ArgumentExceptionHelper.RaiseException(nameof(reportUri));
+            }
+            
+            config.UseContentSecurityPolicyReportOnly = true;
+            config.UseXContentSecurityPolicy = useXContentSecurityPolicy;
+
+            config.ContentSecurityPolicyReportOnlyConfiguration  = new ContentSecurityPolicyReportOnlyConfiguration
+                (pluginTypes, blockAllMixedContent, upgradeInsecureRequests, referrer, reportUri);
+            
+            return config;
+        }
 
         /// <summary>
         /// A cross-domain policy grants a web client permission to handle data across domains

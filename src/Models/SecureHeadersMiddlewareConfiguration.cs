@@ -26,6 +26,15 @@ namespace OwaspHeaders.Core.Models
         /// Indicates whether the response should use Content-Security-Policy
         /// </summary>
         public bool UseContentSecurityPolicy { get; set; }
+        
+        /// <summary>
+        /// <para>Indicates whether the response should use a Report-Only version of the
+        /// Content-Security-Policy</para>
+        /// <para>This can be useful when in development mode, as the browser will not block
+        /// content which violates the CSP rule set - it will report to the supplied ReportUri</para>
+        /// This can be
+        /// </summary>
+        public bool UseContentSecurityPolicyReportOnly { get; set; }
 
         /// <summary>
         /// Indicates whether the response should use X-Content-Security-Policy for Internet Explorer compatibility
@@ -68,6 +77,11 @@ namespace OwaspHeaders.Core.Models
         /// The Content-Security-Policy configuration to use
         /// </summary>
         public ContentSecurityPolicyConfiguration ContentSecurityPolicyConfiguration { get; set; }
+        
+        /// <summary>
+        /// The Content-Security-Policy-Report-Only configuration to use 
+        /// </summary>
+        public ContentSecurityPolicyReportOnlyConfiguration ContentSecurityPolicyReportOnlyConfiguration { get; set; }
 
         /// <summary>
         /// The X-Permitted-Cross-Domain-Policy configuration to use

@@ -6,6 +6,10 @@ A .NET Core middleware for injecting the Owasp recommended HTTP Headers for incr
 
 [![Build status](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml)
 
+## Release status
+
+[![Release](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/release.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/release.yml)
+
 ## Changelog
 
 See the [changelog](changelog.md) file for a rough breakdown of the changes made to each of the major versions of the repo.

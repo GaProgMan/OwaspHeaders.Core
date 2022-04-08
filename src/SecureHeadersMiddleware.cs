@@ -93,6 +93,12 @@ namespace OwaspHeaders.Core
                     _config.ExpectCt.BuildHeaderValue());
             }
 
+            if (_config.UseCacheControl)
+            {
+                httpContext.TryAddHeader(Constants.CacheControlHeaderName,
+                    _config.CacheControl.BuildHeaderValue());
+            }
+
             if (_config.RemoveXPoweredByHeader)
             {
                 httpContext.TryRemoveHeader(Constants.PoweredByHeaderName);

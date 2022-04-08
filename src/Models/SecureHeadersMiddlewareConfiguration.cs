@@ -56,6 +56,11 @@ namespace OwaspHeaders.Core.Models
         /// </summary>
         public bool UseExpectCt { get; set; }
         
+        /// <summary>
+        /// Indicates whether the response should use Cache-Control
+        /// </summary>
+        public bool UseCacheControl { get; set; }
+
         public bool RemoveXPoweredByHeader { get; set; }
 
         /// <summary>
@@ -92,6 +97,11 @@ namespace OwaspHeaders.Core.Models
         /// The Referrer-Policy configuration to use
         /// </summary>
         public ReferrerPolicy ReferrerPolicy { get; set; }
+        
+        /// <summary>
+        /// The Cache-Control configuration to use
+        /// </summary>
+        public CacheControl CacheControl { get; set; }
         
         /// <summary>
         /// The Expect-CT configuration to use

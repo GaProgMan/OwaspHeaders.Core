@@ -248,9 +248,10 @@ namespace OwaspHeaders.Core.Extensions
         }
 
         /// <summary>
-        /// Governs whether the site can opt-into reporting or enforcement of certificate
-        /// transparency requirements, which prevents the use of misissued certificates
-        /// for that site from going unnoticed
+        /// The server did not return or returned an invalid 'Cache-Control' header which means page
+        /// containing sensitive information (password, credit card, personal data, social security 
+        /// number, etc) could be stored on client side disk and then be exposed to unauthorised persons. 
+        /// This URL is flagged as a specific example.
         /// </summary>
         /// <param name="private">
         /// [OPTIONAL]

@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+
+      run: dotnet test --no-restore --no-build --verbosity normal
+    - name: pack
+
+      run: dotnet pack --configuration Release --no-build --no-restore
+        
+  release:
+
+    needs: [build]
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Push NuGet package
+      run: dotnet nuget  push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{secrets.NUGET_API_KEY}}
+      env:
+        GITHUB_TOKEN: ${{ secrets.NUGET_API_KEY }}

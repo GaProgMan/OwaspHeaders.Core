@@ -34,14 +34,7 @@ jobs:
     - name: pack
 
       run: dotnet pack --configuration Release --no-build --no-restore
-        
-  release:
-
-    needs: [build]
-
-    runs-on: ubuntu-latest
     
-    steps:
     - name: Push NuGet package
       run: dotnet nuget  push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{secrets.NUGET_API_KEY}}
       env:

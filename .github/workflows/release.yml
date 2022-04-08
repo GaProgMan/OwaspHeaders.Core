@@ -33,7 +33,7 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
     - name: pack
 
-      run: dotnet pack --configuration Release --no-build --no-restore
+      run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release --no-build --no-restore
     
     - name: Push NuGet package
       run: dotnet nuget  push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{secrets.NUGET_API_KEY}}

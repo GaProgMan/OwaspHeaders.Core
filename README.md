@@ -4,7 +4,7 @@ A .NET Core middleware for injecting the Owasp recommended HTTP Headers for incr
 
 ## Build status
 
-[![Build status](https://ci.appveyor.com/api/projects/status/atq517fyr9r7vl7m?svg=true)](https://ci.appveyor.com/project/GaProgMan/owaspheaders-core)
+[![Build status](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml)
 
 ## Changelog
 

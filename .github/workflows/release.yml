@@ -30,7 +30,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
 
-      run: dotnet test --no-restore --no-build --verbosity normal
+      run: dotnet test --no-restore --verbosity normal
     - name: pack
 
       run: dotnet pack --configuration Release --no-build --no-restore

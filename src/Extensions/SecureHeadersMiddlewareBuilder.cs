@@ -248,6 +248,33 @@ namespace OwaspHeaders.Core.Extensions
         }
 
         /// <summary>
+        /// The server did not return or returned an invalid 'Cache-Control' header which means page
+        /// containing sensitive information (password, credit card, personal data, social security 
+        /// number, etc) could be stored on client side disk and then be exposed to unauthorised persons. 
+        /// This URL is flagged as a specific example.
+        /// </summary>
+        /// <param name="private">
+        /// [OPTIONAL]
+        /// Whether all or part of the HTTP response message is intended for a single user and must 
+        /// not be cached by a shared cache.
+        /// </param>
+        /// <param name="maxAge">
+        /// [OPTIONAL]
+        /// The maximum age, specified in seconds, that the HTTP client is willing to accept a response.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// An ArgumentException is thrown when no Report URI is supplied 
+        /// </exception>
+        public static SecureHeadersMiddlewareConfiguration UseCacheControl
+        (this SecureHeadersMiddlewareConfiguration config,
+            bool @private = true, int maxAge = 31536000)
+        {
+            config.UseCacheControl = true;
+            config.CacheControl = new CacheControl(@private, maxAge);
+            return config;
+        }
+        
+        /// <summary>
         /// Governs whether the site can opt-into reporting or enforcement of certificate
         /// transparency requirements, which prevents the use of misissued certificates
         /// for that site from going unnoticed

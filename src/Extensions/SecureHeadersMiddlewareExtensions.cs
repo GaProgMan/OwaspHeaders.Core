@@ -30,6 +30,7 @@ namespace OwaspHeaders.Core.Extensions
                 .UseContentDefaultSecurityPolicy()
                 .UsePermittedCrossDomainPolicies()
                 .UseReferrerPolicy()
+                .UseCacheControl()
                 .UseExpectCt(string.Empty, enforce:true)
                 .RemovePoweredByHeader()
                 .Build();

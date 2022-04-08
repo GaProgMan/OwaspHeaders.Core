@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OwaspHeaders.Core.Enums;
@@ -9,7 +9,7 @@ namespace OwaspHeaders.Core.Extensions
     public static class StringBuilderExtensions
     {
         private static string EmptySpace = " ";
-        
+
         /// <summary>
         /// This method is adapted from the following Stack Overflow answer:
         ///     https://stackoverflow.com/a/24769702/1143474
@@ -43,16 +43,16 @@ namespace OwaspHeaders.Core.Extensions
             string directiveName, List<ContentSecurityPolicyElement> directiveValues)
         {
             if (!directiveValues.Any()) return stringBuilder;
-            
-            stringBuilder.Append(directiveName);            
+
+            stringBuilder.Append(directiveName);
             if (directiveValues.Any(d => d.CommandType == CspCommandType.Directive))
             {
 
                 var directives = directiveValues.Where(command => command.CommandType == CspCommandType.Directive);
-                var uris = directiveValues.Where(command => command.CommandType== CspCommandType.Uri);
+                var uris = directiveValues.Where(command => command.CommandType == CspCommandType.Uri);
 
                 stringBuilder.Append(EmptySpace);
-                
+
                 if (directives.Any())
                 {
                     stringBuilder.Append(string.Join(EmptySpace, directives.Select(directive => $"'{directive.DirectiveOrUri}'")));

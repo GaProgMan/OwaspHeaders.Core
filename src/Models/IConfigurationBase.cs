@@ -1,6 +1,6 @@
-namespace OwaspHeaders.Core.Models
+﻿namespace OwaspHeaders.Core.Models
 {
-    public interface IConfigurationBase 
+    public interface IConfigurationBase
     {
         string BuildHeaderValue();
     }

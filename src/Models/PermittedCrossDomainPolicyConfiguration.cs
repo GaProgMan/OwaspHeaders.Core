@@ -1,14 +1,14 @@
-using OwaspHeaders.Core.Enums;
+﻿using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models
-{   
+{
     public class PermittedCrossDomainPolicyConfiguration : IConfigurationBase
     {
-        
+
         public XPermittedCrossDomainOptionValue xPermittedCrossDomainOptionValue { get; set; }
 
-        protected PermittedCrossDomainPolicyConfiguration(){ }
+        protected PermittedCrossDomainPolicyConfiguration() { }
 
         public PermittedCrossDomainPolicyConfiguration(
             XPermittedCrossDomainOptionValue permittedCrossDomainOptionValue)

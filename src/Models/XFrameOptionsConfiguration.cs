@@ -1,6 +1,6 @@
-using System.Text;
-using OwaspHeaders.Core.Helpers;
+﻿using System.Text;
 using OwaspHeaders.Core.Enums;
+using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models
 {

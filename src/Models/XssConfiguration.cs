@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Helpers;
 
@@ -25,7 +25,7 @@ namespace OwaspHeaders.Core.Models
         {
             var stringBuilder = new StringBuilder();
 
-            switch(XssSetting)
+            switch (XssSetting)
             {
                 case XssMode.zero:
                     stringBuilder.Append(0);

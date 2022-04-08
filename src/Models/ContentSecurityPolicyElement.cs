@@ -1,4 +1,4 @@
-using OwaspHeaders.Core.Enums;
+﻿using OwaspHeaders.Core.Enums;
 
 namespace OwaspHeaders.Core.Models
 {

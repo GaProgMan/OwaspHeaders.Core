@@ -1,10 +1,10 @@
-using OwaspHeaders.Core.Enums;
+﻿using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models
 {
     public class ReferrerPolicy : IConfigurationBase
-    {        
+    {
         public ReferrerPolicyOptions ReferrerPolicyOption { get; set; }
 
         protected ReferrerPolicy() { }

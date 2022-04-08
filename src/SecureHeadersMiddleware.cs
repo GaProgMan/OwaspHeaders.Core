@@ -59,7 +59,7 @@ namespace OwaspHeaders.Core
 
             if (_config.UseContentSecurityPolicyReportOnly)
             {
-                
+
                 httpContext.TryAddHeader(Constants.ContentSecurityPolicyReportOnlyHeaderName,
                     _config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue());
             }

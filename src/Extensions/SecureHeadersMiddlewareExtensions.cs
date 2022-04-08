@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using OwaspHeaders.Core.Models;
 
 namespace OwaspHeaders.Core.Extensions
@@ -31,7 +31,7 @@ namespace OwaspHeaders.Core.Extensions
                 .UsePermittedCrossDomainPolicies()
                 .UseReferrerPolicy()
                 .UseCacheControl()
-                .UseExpectCt(string.Empty, enforce:true)
+                .UseExpectCt(string.Empty, enforce: true)
                 .RemovePoweredByHeader()
                 .Build();
         }

@@ -20,21 +20,21 @@ namespace OwaspHeaders.Core.Models
         /// browser to enforce the policy or just report on it.
         /// </summary>
         public bool Enforce { get; set; }
-        
+
         /// <summary>
         /// The max-age directive specifies the number of seconds that the browser
         /// should cache and apply the received policy for, whether enforced or
         /// report-only
         /// </summary>
         public int MaxAge { get; set; }
-        
+
         /// <summary>
         /// The report-uri directive specifies where the browser should send reports
         /// if it does not receive valid CT information. This is specified as an
         /// absolute URI
         /// </summary>
         public string ReportUri { get; set; }
-        
+
         /// <summary>
         /// Protected constructor, we can no longer create instances of this
         /// class without using the public constructor
@@ -47,7 +47,7 @@ namespace OwaspHeaders.Core.Models
             MaxAge = maxAge;
             Enforce = enforce;
         }
-        
+
         /// <summary>
         /// Builds the HTTP header value
         /// </summary>

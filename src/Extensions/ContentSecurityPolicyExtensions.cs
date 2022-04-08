@@ -17,7 +17,7 @@ namespace OwaspHeaders.Core.Extensions
             {
                 config.ContentSecurityPolicyConfiguration?.SetCspUri(baseUri, cspUriType);
             }
-            
+
             return config;
         }
 
@@ -31,7 +31,7 @@ namespace OwaspHeaders.Core.Extensions
             {
                 config.ContentSecurityPolicyConfiguration?.SetSandbox(sandboxType);
             }
-            
+
             return config;
         }
     }

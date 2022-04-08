@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace OwaspHeaders.Core.Extensions
 {
@@ -13,7 +13,7 @@ namespace OwaspHeaders.Core.Extensions
         public static bool IsValidHttpsUri(this string uri)
         {
             Uri uriResult;
-            return Uri.TryCreate(uri, UriKind.Absolute, out uriResult) 
+            return Uri.TryCreate(uri, UriKind.Absolute, out uriResult)
                    && uriResult.Scheme == Uri.UriSchemeHttps;
         }
     }

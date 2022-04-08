@@ -1,4 +1,4 @@
-using OwaspHeaders.Core.Helpers;
+﻿using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models
 {

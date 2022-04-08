@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -182,15 +182,15 @@ namespace tests
             var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, null);
 
             var exception = await Record.ExceptionAsync(() => secureHeadersMiddleware.Invoke(_context));
-            
+
             Assert.NotNull(exception);
             Assert.IsAssignableFrom<ArgumentException>(exception);
-            
+
             var argEx = exception as ArgumentException;
             Assert.NotNull(argEx);
             Assert.Contains(nameof(SecureHeadersMiddlewareConfiguration), exception.Message);
         }
-        
+
         [Fact]
         public async Task Invoke_ContentSecurityPolicyHeaderName_HeaderIsPresent_WithMultipleCspSandboxTypes()
         {
@@ -240,7 +240,7 @@ namespace tests
             Assert.Equal($"block-all-mixed-content;upgrade-insecure-requests;report-uri {reportUri};",
                 _context.Response.Headers[Constants.ContentSecurityPolicyReportOnlyHeaderName]);
         }
-        
+
         [Fact]
         public async Task Invoke_ContentSecurityPolicyReportOnly_HeaderIsNotPresent()
         {

@@ -1,4 +1,4 @@
-namespace OwaspHeaders.Core.Models
+﻿namespace OwaspHeaders.Core.Models
 {
     public class SecureHeadersMiddlewareConfiguration
     {
@@ -26,7 +26,7 @@ namespace OwaspHeaders.Core.Models
         /// Indicates whether the response should use Content-Security-Policy
         /// </summary>
         public bool UseContentSecurityPolicy { get; set; }
-        
+
         /// <summary>
         /// <para>Indicates whether the response should use a Report-Only version of the
         /// Content-Security-Policy</para>
@@ -50,12 +50,12 @@ namespace OwaspHeaders.Core.Models
         /// Indicates whether the response should use Referrer-Policy
         /// </summary>
         public bool UseReferrerPolicy { get; set; }
-        
+
         /// <summary>
         /// Indicates whether the response should use Expect-CT
         /// </summary>
         public bool UseExpectCt { get; set; }
-        
+
         /// <summary>
         /// Indicates whether the response should use Cache-Control
         /// </summary>
@@ -82,7 +82,7 @@ namespace OwaspHeaders.Core.Models
         /// The Content-Security-Policy configuration to use
         /// </summary>
         public ContentSecurityPolicyConfiguration ContentSecurityPolicyConfiguration { get; set; }
-        
+
         /// <summary>
         /// The Content-Security-Policy-Report-Only configuration to use 
         /// </summary>
@@ -97,12 +97,12 @@ namespace OwaspHeaders.Core.Models
         /// The Referrer-Policy configuration to use
         /// </summary>
         public ReferrerPolicy ReferrerPolicy { get; set; }
-        
+
         /// <summary>
         /// The Cache-Control configuration to use
         /// </summary>
         public CacheControl CacheControl { get; set; }
-        
+
         /// <summary>
         /// The Expect-CT configuration to use
         /// </summary>

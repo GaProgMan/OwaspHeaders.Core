@@ -1,7 +1,7 @@
-using OwaspHeaders.Core.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OwaspHeaders.Core.Enums;
 
 namespace OwaspHeaders.Core.Models
 {

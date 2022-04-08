@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -77,12 +77,12 @@ namespace OwaspHeaders.Core.Models
         /// The form-action values to use (restricts the URLs which can be used as the target of a form submissions from a given context)
         /// </summary>
         public List<ContentSecurityPolicyElement> FormAction { get; set; }
-        
+
         /// <summary>
         /// Specifies an HTML sandbox policy that the user agent applies to the protected resource.
         /// </summary>
         public ContentSecurityPolicySandBox Sandbox { get; set; }
-        
+
         /// <summary>
         /// Define the set of plugins that can be invoked by the protected resource by limiting the types of resources that can be embedded
         /// </summary>
@@ -97,7 +97,7 @@ namespace OwaspHeaders.Core.Models
         /// Whether to include the upgrade-insecure-requests directive (instructs user agents to treat all of a site's insecure URLs as though they have been replaced with secure URLs)
         /// </summary>
         public bool UpgradeInsecureRequests { get; set; }
-        
+
         /// <summary>
         /// Define information user agent must send in Referer header
         /// </summary>
@@ -175,7 +175,7 @@ namespace OwaspHeaders.Core.Models
             {
                 stringBuilder.Append("block-all-mixed-content;");
             }
-            
+
             if (UpgradeInsecureRequests)
             {
                 stringBuilder.Append("upgrade-insecure-requests;");
@@ -185,7 +185,7 @@ namespace OwaspHeaders.Core.Models
             {
                 stringBuilder.Append($"referrer {Referrer};");
             }
-            
+
             if (!string.IsNullOrWhiteSpace(ReportUri))
             {
                 stringBuilder.Append($"report-uri {ReportUri};");
@@ -196,10 +196,10 @@ namespace OwaspHeaders.Core.Models
 
         private bool AnyValues()
         {
-            return BaseUri.Any()    || DefaultSrc.Any() || ScriptSrc.Any()  || ObjectSrc.Any()
-                || StyleSrc.Any()   || ImgSrc.Any()     || MediaSrc.Any()   || FrameSrc.Any()
-                || ChildSrc.Any()   || FrameAncestors.Any() || FontSrc.Any()|| ConnectSrc.Any()
-                || ManifestSrc.Any()|| FormAction.Any();
+            return BaseUri.Any() || DefaultSrc.Any() || ScriptSrc.Any() || ObjectSrc.Any()
+                || StyleSrc.Any() || ImgSrc.Any() || MediaSrc.Any() || FrameSrc.Any()
+                || ChildSrc.Any() || FrameAncestors.Any() || FontSrc.Any() || ConnectSrc.Any()
+                || ManifestSrc.Any() || FormAction.Any();
         }
     }
 }

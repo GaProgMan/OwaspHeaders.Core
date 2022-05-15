@@ -3,10 +3,7 @@
 // Full details can be found at the folloing url:
 // https://scotthelme.co.uk/a-new-security-header-expect-ct/
 
-using System.Collections.Generic;
 using System.Text;
-using OwaspHeaders.Core.Enums;
-using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Models
 {

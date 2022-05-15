@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
 using OwaspHeaders.Core;
 using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Extensions;

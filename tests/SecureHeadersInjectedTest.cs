@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using OwaspHeaders.Core;
 using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Extensions;
@@ -436,6 +438,42 @@ namespace tests
             // and the server doesn't seem to add this header.
             // Therefore this assert is commented out, as it will always fail
             //Assert.True(_context.Response.Headers.ContainsKey(Constants.PoweredByHeaderName));
+        }
+
+        [Fact]
+        public async Task Invoke_CacheControl_HeaderIsPresent()
+        {
+            // arrange
+            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+                .UseCacheControl().Build();
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+
+            // assert
+            Assert.True(headerPresentConfig.UseCacheControl);
+            Assert.True(_context.Response.Headers.ContainsKey(Constants.CacheControlHeaderName));
+            Assert.Equal(headerPresentConfig.CacheControl.BuildHeaderValue(),
+                _context.Response.Headers[Constants.CacheControlHeaderName]);
+        }
+        
+        [Fact]
+        public async Task Invoke_CacheControl_HeaderIsNotPresent()
+        {
+            // arrange
+            var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder();
+            headerNotPresentConfig.UseCacheControl = false;
+            headerNotPresentConfig.Build();
+            
+            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
+
+            // act
+            await secureHeadersMiddleware.Invoke(_context);
+
+            // assert
+            Assert.False(headerNotPresentConfig.UseCacheControl);
+            Assert.False(_context.Response.Headers.ContainsKey(Constants.CacheControlHeaderName));
         }
     }
 }

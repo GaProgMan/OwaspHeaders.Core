@@ -23,6 +23,37 @@ It was noticed that the `server:` header was not removed (this is defaulted to `
 
 It was [requested](https://github.com/GaProgMan/OwaspHeaders.Core/issues/60) that a `Content-Security-Policy-Report-Only` header could be added. This header was added in version 4.0.2 of the library.
 
+#### Version 4.4.0 Specific Changes
+
+The beginnings of the Cache-Control header were added via a [PR](https://github.com/GaProgMan/OwaspHeaders.Core/pull/63). This PR was sent in via GitHub user [mkokabi](https://github.com/mkokabi).
+
+#### Version 4.5.0 Specific Changes
+
+It was pointed out that the Cache-Control header PR was incomplete, and caused production systems to begin caching responses which should not have been cached. This version brings in a configuration for the Cache-Control header which allows the user to add the following directives:
+
+- `no-cache`
+- `no-store`
+- `must-revalidate`
+
+These directives are added when building the configuration:
+
+```c#
+return SecureHeadersMiddlewareBuilder
+    .CreateBuilder()
+    .UseHsts()
+    .UseXFrameOptions()
+    .UseContentTypeOptions()
+    .UseContentDefaultSecurityPolicy()
+    .UsePermittedCrossDomainPolicies()
+    .UseReferrerPolicy()
+    .UseCacheControl() // <- this line
+    .UseExpectCt(string.Empty, enforce: true)
+    .RemovePoweredByHeader()
+    .Build();
+```
+
+The above directives are added via `bool`s. For example, in order to add the `no-cache` header, you need to alter the call to `UseCacheControl()` to look like `UseCacheControl(noCache: true)`.
+
 ### Version 3
 
 This version of the repo removed the dependency on .NET Core 2.0, and replaced it with a dependency on .NET Standard 2.0 (via the `netstandard2.0` Target Framework Moniker), and the version of the [Microsoft.AspNetCore.Http.Abstractions](https://www.nuget.org/packages/Microsoft.AspNetCore.Http.Abstractions/) was upped to version 2.1.1

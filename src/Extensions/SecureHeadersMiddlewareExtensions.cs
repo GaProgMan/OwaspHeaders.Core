@@ -31,14 +31,13 @@ namespace OwaspHeaders.Core.Extensions
                 .UsePermittedCrossDomainPolicies()
                 .UseReferrerPolicy()
                 .UseCacheControl()
-                .UseExpectCt(string.Empty, enforce: true)
                 .RemovePoweredByHeader()
                 .UseXssProtection()
                 .Build();
         }
 
         /// <summary>
-        /// Extention method to include the <see cref="SecureHeadersMiddleware" /> in
+        /// Extension method to include the <see cref="SecureHeadersMiddleware" /> in
         /// an instance of an <see cref="IApplicationBuilder" />.
         /// This works in the same way was the MVC, Static files, etc. middleware
         /// </summary>

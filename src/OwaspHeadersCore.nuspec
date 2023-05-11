@@ -5,11 +5,11 @@
     <version>4.5.1</version>
     <authors>GaProgMan</authors>
     <owners>GaProgMan</owners>
-    <licenseUrl>https://github.com/GaProgMan/OwaspHeaders.Core/blob/master/LICENSE</licenseUrl>
+    <readme>docs\README.md</readme>
     <projectUrl>https://github.com/GaProgMan/OwaspHeaders.Core</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/GaProgMan/OwaspHeaders.Core/master/OwaspHeaders.Core-Logo-small.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A .NET Core middleware for injecting the Owasp recommended HTTP Headers for increased security</description>
+    <description>An ASP.NET Core Middleware which adds the OWASP recommended HTTP headers for enhanced security.</description>
     <tags>OWASP Http-headers Security ASP-NET-Core Middleware</tags>
     <dependencies>
       <group targetFramework="netstandard2.0">
@@ -21,5 +21,6 @@
 	  <file src=".\bin\Release\netstandard2.0\OwaspHeaders.Core.dll" target="lib/netstandard2.0" />
     <file src=".\**\*.cs" target="src" />
     <file src=".\**\*.csproj" target="src" />
+    <file src="..\README.md" target="docs/" />
   </files>
 </package>

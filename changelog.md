@@ -4,12 +4,27 @@ This changelog represents all of the major (i.e. breaking) changes made to the O
 
 ## TL;DR
 
-| Major Verison Number | Changes |
+| Major Version Number | Changes |
 |---|---|
-| 1 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4 |
-| 2 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0 |
-| 3 | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0 |
+| 5 | XSS Protection is now hard-coded to return "0" if enabled |
 | 4 | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> uses .NET Standard 2.0 <br /> Removed XSS Protection header from defaults |
+| 3 | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0 |
+| 2 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0 |
+| 1 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4 |
+
+### Version 6
+
+This version removes Expect-CT Header from the list of default headers in the `BuildDefaultConfiguration()` extension method. This is related to [issue #72](https://github.com/GaProgMan/OwaspHeaders.Core/issues/72).
+
+All code which generates the header and it's value are still present, but it is removed from the defaults. Please see the above referenced issue for details.
+
+### Version 5
+
+This version of the repo ensure that the XSS Protection header (which was removed from the list of defaults in Version 4) is simplified down to the only recommended value (i.e. "0"), so that if a consumer enables XSS Protection they will only get the one possible value.
+
+This is related to [guidance by MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection) and by OWASP:
+
+> Warning: The X-XSS-Protection header has been deprecated by modern browsers and its use can introduce additional security issues on the client side. As such, it is recommended to set the header as X-XSS-Protection: 0 in order to disable the XSS Auditor, and not allow it to take the default behavior of the browser handling the response. Please use Content-Security-Policy instead.
 
 ### Version 4
 

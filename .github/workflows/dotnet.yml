@@ -7,30 +7,30 @@ on:
 
 jobs:
 
-  # check-code-formatting:
-  #   runs-on: ubuntu-latest
-  #   name: Check code formatting against editorconfig
+  check-code-formatting:
+    runs-on: ubuntu-latest
+    name: Check code formatting against editorconfig
 
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v3
-  #     with:
-  #       fetch-depth: 1
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
 
-  #   - name: Setup .NET
-  #     uses: actions/setup-dotnet@v3
-  #     with:
-  #       dotnet-version: 6.0.x
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
 
-  #   - name: Install dotnet-format tool
-  #     run: dotnet tool install -g dotnet-format
+    - name: Install dotnet-format tool
+      run: dotnet tool install -g dotnet-format
     
-  #   - name: Check Code Format
-  #     run: dotnet-format --check
+    - name: Check Code Format
+      run: dotnet-format --check
 
   build:
 
-    # needs: [check-code-formatting]
+    needs: [check-code-formatting]
 
     runs-on: ubuntu-latest
 

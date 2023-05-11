@@ -27,7 +27,7 @@ namespace OwaspHeaders.Core
         /// </summary>
         /// <param name="httpContext">The <see cref="HttpContext" /> for the current request or response</param>
         /// <returns></returns>
-        public async Task Invoke(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext)
         {
             if (_config == null)
             {
@@ -106,7 +106,7 @@ namespace OwaspHeaders.Core
             }
 
             // Call the next middleware in the chain
-            await _next.Invoke(httpContext);
+            await _next(httpContext);
         }
     }
 }

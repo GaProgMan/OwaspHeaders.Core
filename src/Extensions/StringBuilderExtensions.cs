@@ -47,20 +47,13 @@ namespace OwaspHeaders.Core.Extensions
             stringBuilder.Append(directiveName);
             if (directiveValues.Any(d => d.CommandType == CspCommandType.Directive))
             {
-
                 var directives = directiveValues.Where(command => command.CommandType == CspCommandType.Directive);
-                var uris = directiveValues.Where(command => command.CommandType == CspCommandType.Uri);
-
                 stringBuilder.Append(EmptySpace);
 
                 if (directives.Any())
                 {
                     stringBuilder.Append(string.Join(EmptySpace, directives.Select(directive => $"'{directive.DirectiveOrUri}'")));
                     stringBuilder.Append(EmptySpace);
-                }
-                if (uris.Any())
-                {
-                    stringBuilder.Append(string.Join(EmptySpace, uris.Select(directive => directive.DirectiveOrUri)));
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using Xunit;
 
 namespace tests;
 
+[ExcludeFromCodeCoverage]
 public class CacheControlHeaderOptionsTests
 {
     private int _onNextCalledTimes;
@@ -34,7 +36,7 @@ public class CacheControlHeaderOptionsTests
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
         // act
-        await secureHeadersMiddleware.Invoke(_context);
+        await secureHeadersMiddleware.InvokeAsync(_context);
 
         // assert
         Assert.True(headerPresentConfig.UseCacheControl);
@@ -56,7 +58,7 @@ public class CacheControlHeaderOptionsTests
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
         // act
-        await secureHeadersMiddleware.Invoke(_context);
+        await secureHeadersMiddleware.InvokeAsync(_context);
 
         // assert
         Assert.True(headerPresentConfig.UseCacheControl);
@@ -78,7 +80,7 @@ public class CacheControlHeaderOptionsTests
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
         // act
-        await secureHeadersMiddleware.Invoke(_context);
+        await secureHeadersMiddleware.InvokeAsync(_context);
 
         // assert
         Assert.True(headerPresentConfig.UseCacheControl);
@@ -100,7 +102,7 @@ public class CacheControlHeaderOptionsTests
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
         // act
-        await secureHeadersMiddleware.Invoke(_context);
+        await secureHeadersMiddleware.InvokeAsync(_context);
 
         // assert
         Assert.True(headerPresentConfig.UseCacheControl);

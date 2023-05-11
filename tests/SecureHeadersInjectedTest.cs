@@ -96,7 +96,7 @@ public class SecureHeadersInjectedTest
     public async Task Invoke_XssProtectionHeaderName_HeaderIsPresent()
     {
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseXSSProtection().Build();
+        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseXssProtection().Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
         // act
@@ -105,7 +105,7 @@ public class SecureHeadersInjectedTest
         // assert
         Assert.True(headerPresentConfig.UseXssProtection);
         Assert.True(_context.Response.Headers.ContainsKey(Constants.XssProtectionHeaderName));
-        Assert.Equal("1;mode=block", _context.Response.Headers[Constants.XssProtectionHeaderName]);
+        Assert.Equal("0", _context.Response.Headers[Constants.XssProtectionHeaderName]);
     }
 
     [Fact]
@@ -457,7 +457,7 @@ public class SecureHeadersInjectedTest
         Assert.Equal(headerPresentConfig.CacheControl.BuildHeaderValue(),
             _context.Response.Headers[Constants.CacheControlHeaderName]);
     }
-        
+
     [Fact]
     public async Task Invoke_CacheControl_HeaderIsNotPresent()
     {
@@ -465,7 +465,7 @@ public class SecureHeadersInjectedTest
         var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder();
         headerNotPresentConfig.UseCacheControl = false;
         headerNotPresentConfig.Build();
-            
+
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
         // act

@@ -82,23 +82,19 @@ namespace OwaspHeaders.Core.Extensions
         /// <summary>
         /// Enables the Cross Site Scripting protection filter in the client browser.
         /// </summary>
-        /// <param name="xssMode">
-        /// The XSS Filter mode to use. Acceptable values are: zero, one, oneBlock, oneReport
-        /// </param>
-        /// <param name="reportUri">
-        /// An option uri to report any XSS filter voilation to. This parameter is optional
-        /// and will only be used if the value of <param name="xssMode"/> is set to oneReport
-        /// </param>
-        /// If no value for <param name="xssMode"/> is supplied, then the default one will
-        /// be used. This default is based on the OWASP best practises for XSS Protection
-        /// <remarks></remarks>
-        public static SecureHeadersMiddlewareConfiguration UseXSSProtection
-            (this SecureHeadersMiddlewareConfiguration config,
-                XssMode xssMode = XssMode.oneBlock,
-                string reportUri = null)
+        /// <remarks>
+        /// This overload will use the X-XSS-Protection value of 0. This effectively disables
+        /// the XSS Auditor, and is required for modern browsers. Please ensure that you have
+        /// a value Content-Security Policy enabled, otherwise you are opening yourself up to
+        /// a world of trouble.
+        /// The XSS Auditor needs to be disabled because it can lead to client-side security
+        /// issues in modern browsers.
+        /// </remarks>
+        public static SecureHeadersMiddlewareConfiguration UseXssProtection
+        (this SecureHeadersMiddlewareConfiguration config)
         {
             config.UseXssProtection = true;
-            config.XssConfiguration = new XssConfiguration(xssMode, reportUri);
+            config.XssConfiguration = new XssConfiguration();
             return config;
         }
 

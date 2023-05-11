@@ -33,6 +33,7 @@ namespace OwaspHeaders.Core.Extensions
                 .UseCacheControl()
                 .UseExpectCt(string.Empty, enforce: true)
                 .RemovePoweredByHeader()
+                .UseXssProtection()
                 .Build();
         }
 

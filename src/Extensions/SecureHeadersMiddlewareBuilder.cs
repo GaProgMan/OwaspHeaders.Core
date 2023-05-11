@@ -273,7 +273,7 @@ namespace OwaspHeaders.Core.Extensions
 
         /// <summary>
         /// Governs whether the site can opt-into reporting or enforcement of certificate
-        /// transparency requirements, which prevents the use of misissued certificates
+        /// transparency requirements, which prevents the use of mis-issued certificates
         /// for that site from going unnoticed
         /// </summary>
         /// <param name="reportUri">

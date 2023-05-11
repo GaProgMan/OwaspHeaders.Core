@@ -26,7 +26,7 @@ public class CacheControlHeaderOptionsTests
         };
         _context = new DefaultHttpContext();
     }
-        
+
     [Fact]
     public async Task Invoke_CacheControl_IsPrivate_HeaderIsPresent()
     {
@@ -48,7 +48,7 @@ public class CacheControlHeaderOptionsTests
         Assert.DoesNotContain("no-cache", headerValues.First());
         Assert.DoesNotContain("no-store", headerValues.First());
     }
-        
+
     [Fact]
     public async Task Invoke_CacheControl_MustRevalidate_HeaderIsPresent()
     {
@@ -70,7 +70,7 @@ public class CacheControlHeaderOptionsTests
         Assert.DoesNotContain("no-cache", headerValues.First());
         Assert.DoesNotContain("no-store", headerValues.First());
     }
-        
+
     [Fact]
     public async Task Invoke_CacheControl_NoCache_HeaderIsPresent()
     {
@@ -92,7 +92,7 @@ public class CacheControlHeaderOptionsTests
         Assert.DoesNotContain("private", headerValues.First());
         Assert.DoesNotContain("must-revalidate", headerValues.First());
     }
-        
+
     [Fact]
     public async Task Invoke_CacheControl_NoStore_HeaderIsPresent()
     {

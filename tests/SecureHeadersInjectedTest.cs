@@ -457,7 +457,7 @@ public class SecureHeadersInjectedTest
         Assert.Equal(headerPresentConfig.CacheControl.BuildHeaderValue(),
             _context.Response.Headers[Constants.CacheControlHeaderName]);
     }
-        
+
     [Fact]
     public async Task Invoke_CacheControl_HeaderIsNotPresent()
     {
@@ -465,7 +465,7 @@ public class SecureHeadersInjectedTest
         var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder();
         headerNotPresentConfig.UseCacheControl = false;
         headerNotPresentConfig.Build();
-            
+
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
         // act

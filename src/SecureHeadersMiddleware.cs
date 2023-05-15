@@ -14,6 +14,7 @@ namespace OwaspHeaders.Core
     {
         private readonly RequestDelegate _next;
         private readonly SecureHeadersMiddlewareConfiguration _config;
+        private string _calculatedContentSecurityPolicy;
 
         public SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config)
         {
@@ -33,7 +34,7 @@ namespace OwaspHeaders.Core
             {
                 throw new ArgumentException($@"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.");
             }
-
+            
             if (_config.UseHsts)
             {
                 httpContext.TryAddHeader(Constants.StrictTransportSecurityHeaderName,
@@ -56,23 +57,30 @@ namespace OwaspHeaders.Core
             {
                 httpContext.TryAddHeader(Constants.XContentTypeOptionsHeaderName, "nosniff");
             }
-
+            
             if (_config.UseContentSecurityPolicyReportOnly)
             {
-
+                if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
+                {
+                    _calculatedContentSecurityPolicy = _config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue();
+                }
                 httpContext.TryAddHeader(Constants.ContentSecurityPolicyReportOnlyHeaderName,
-                    _config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue());
+                    _calculatedContentSecurityPolicy);
             }
             else if (_config.UseContentSecurityPolicy)
             {
+                if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
+                {
+                    _calculatedContentSecurityPolicy = _config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
+                }
                 httpContext.TryAddHeader(Constants.ContentSecurityPolicyHeaderName,
-                    _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
+                    _calculatedContentSecurityPolicy);
             }
 
             if (_config.UseXContentSecurityPolicy)
             {
                 httpContext.TryAddHeader(Constants.XContentSecurityPolicyHeaderName,
-                _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
+                    _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
             }
 
             if (_config.UsePermittedCrossDomainPolicy)

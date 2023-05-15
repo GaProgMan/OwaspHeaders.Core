@@ -28,36 +28,42 @@ app.UseSecureHeadersMiddleware(
     SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration()
         .UseContentSecurityPolicy()
         .SetCspUris(
-            new List<ContentSecurityPolicyElement>()
+            new List<ContentSecurityPolicyElement>
             {
-                new ContentSecurityPolicyElement() { CommandType = CspCommandType.Directive, DirectiveOrUri = "self" },
-                new ContentSecurityPolicyElement()
-                {
-                    CommandType = CspCommandType.Uri,
-                    DirectiveOrUri =
-                        "https://api.github.com https://*.githubusercontent.com https://*.google-analytics.com https://owaspadmin.azurewebsites.net https://*.twimg.com https://platform.twitter.com https://www.youtube.com https://*.doubleclick.net"
-                }
+                new() { CommandType = CspCommandType.Directive, DirectiveOrUri = "self" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://api.github.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.githubusercontent.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.google-analytics.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://owaspadmin.azurewebsites.net" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.twimg.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://platform.twitter.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://www.youtube.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.doubleclick.net" }
             }, CspUriType.DefaultUri)
         .SetCspUris(
-            new List<ContentSecurityPolicyElement>()
+            new List<ContentSecurityPolicyElement>
             {
-                new ContentSecurityPolicyElement() { CommandType = CspCommandType.Directive, DirectiveOrUri = "self" },
-                new ContentSecurityPolicyElement()
-                {
-                    CommandType = CspCommandType.Uri,
-                    DirectiveOrUri =
-                        "https://api.github.com https://*.githubusercontent.com https://*.google-analytics.com https://owaspadmin.azurewebsites.net https://*.twimg.com https://platform.twitter.com https://www.youtube.com https://*.doubleclick.net"
-                }
+                new() { CommandType = CspCommandType.Directive, DirectiveOrUri = "self" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://api.github.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.githubusercontent.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.google-analytics.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://owaspadmin.azurewebsites.net" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.twimg.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://platform.twitter.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://www.youtube.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.doubleclick.net" },
             }, CspUriType.FrameAncestors)
         .SetCspUris(
-            new List<ContentSecurityPolicyElement>()
+            new List<ContentSecurityPolicyElement>
             {
-                new ContentSecurityPolicyElement()
-                {
-                    CommandType = CspCommandType.Uri,
-                    DirectiveOrUri =
-                        "https://*.vuejs.org https://*.stripe.com https://*.wufoo.com https://*.sched.com https://*.google.com https://*.twitter.com https://www.youtube.com https://w.soundcloud.com"
-                }
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.vuejs.org" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.stripe.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.wufoo.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.sched.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.google.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.twitter.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://www.youtube.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://w.soundcloud.com" },
             }, CspUriType.Frame)
         .SetCspUris(
             new List<ContentSecurityPolicyElement>
@@ -65,24 +71,35 @@ app.UseSecureHeadersMiddleware(
                 new() { CommandType = CspCommandType.Directive, DirectiveOrUri = "self" },
                 new() { CommandType = CspCommandType.Directive, DirectiveOrUri = "unsafe-inline" },
                 new() { CommandType = CspCommandType.Directive, DirectiveOrUri = "unsafe-eval" },
-                new()
-                {
-                    CommandType = CspCommandType.Uri,
-                    DirectiveOrUri =
-                        "https://fonts.googleapis.com https://app.diagrams.net https://cdnjs.cloudflare.com https://cse.google.com https://*.vuejs.org https://*.stripe.com https://*.wufoo.com https://*.youtube.com https://*.meetup.com https://*.sched.com https://*.google-analytics.com https://unpkg.com https://buttons.github.io https://www.google.com https://*.gstatic.com https://*.twitter.com https://*.twimg.com"
-                }
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://fonts.googleapis.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://app.diagrams.net" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://cdnjs.cloudflare.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://cse.google.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.vuejs.org" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.stripe.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.wufoo.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.youtube.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.meetup.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.sched.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.google-analytics.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://unpkg.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://buttons.github.io" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://www.google.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.gstatic.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.twitter.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.twimg.com" },
             }, CspUriType.Script)
         .SetCspUris(
             new List<ContentSecurityPolicyElement>
             {
                 new() { CommandType = CspCommandType.Directive, DirectiveOrUri = "self" },
                 new() { CommandType = CspCommandType.Directive, DirectiveOrUri = "unsafe-inline" },
-                new()
-                {
-                    CommandType = CspCommandType.Uri,
-                    DirectiveOrUri =
-                        "https://*.gstatic.com https://cdnjs.cloudflare.com https://www.google.com https://fonts.googleapis.com https://platform.twitter.com https://*.twimg.com"
-                },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.gstatic.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://cdnjs.cloudflare.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://www.google.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://fonts.googleapis.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://platform.twitter.com" },
+                new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.twimg.com" },
                 new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "data:" },
             }, CspUriType.Style)
         .SetCspUris(
@@ -127,7 +144,7 @@ app.UseSecureHeadersMiddleware(
                 new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.google.com" },
                 new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.gstatic.com" },
             }, CspUriType.Img)
-);
+    );
 
 app.MapControllers();
 

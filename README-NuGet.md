@@ -12,7 +12,7 @@ Example;
 dotnet new webapi -n exampleProject
 ```
 
-1. Add a reference to the OwaspHeaders.Core NuGet package.
+2. Add a reference to the OwaspHeaders.Core NuGet package.
 
 Example:
 
@@ -20,7 +20,7 @@ Example:
 dotnet add package OwaspHeaders.Core
 ```
 
-1. Alter the Startup (pre .NET 6) or program (post .NET 6) class to include the following:
+3. Alter the Startup (pre .NET 6) or program (post .NET 6) class to include the following:
 
 ```csharp
 app.UseSecureHeadersMiddleware(

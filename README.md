@@ -1,40 +1,12 @@
 # OwaspHeaders.Core
 
-A .NET Core middleware for injecting the Owasp recommended HTTP Headers for increased security.
+A collection of ASP.NET Core middleware classes designed to increase web application security by adopting the recommended [OWASP](https://www.owasp.org/index.php/Main_Page) settings.
 
-## Build status
+| Build Status | Release Status | License used | Changelog | Code of Conduct |
+| -------------|----------------|-----------|--------------|-----------------|
+| [![Build status](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml) | [![Release](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/release.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/release.yml) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) | [changelog](changelog.md) | [Code of Conduct.md](Code-of-Conduct.md) |
 
-[![Build status](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml)
-
-## Release status
-
-[![Release](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/release.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/release.yml)
-
-## Changelog
-
-See the [changelog](changelog.md) file for a rough breakdown of the changes made to each of the major versions of the repo.
-
-## Licence Used
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-See the contents of the LICENSE file for details
-
-## Support This Project
-
-If you have found this project helpful, either as a library that you use or as a learning tool, please consider buying me a coffee:
-
-<a href="https://www.buymeacoffee.com/dotnetcoreshow" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important" ></a>
-
-## Code Triage Status
-
-[![Code Triagers Badge](https://www.codetriage.com/gaprogman/owaspheaders.core/badges/users.svg)](https://www.codetriage.com/gaprogman/owaspheaders.core)
-
-## Code of Conduct
-
-ClacksMiddleware has a Code of Conduct which all contributors, maintainers and forkers must adhere to. When contributing, maintaining, forking or in any other way changing the code presented in this repository, all users must agree to this Code of Conduct.
-
-See [Code of Conduct.md](Code-of-Conduct.md) for details.
+Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIONS**. This is because setting up secure HTTP headers in a WebAssembly context is a non-trivial task.
 
 ## Pull Requests
 
@@ -42,51 +14,53 @@ See [Code of Conduct.md](Code-of-Conduct.md) for details.
 
 Pull requests are welcome, but please take a moment to read the Code of Conduct before submitting them or commenting on any work in this repo.
 
-# NuGet package
+## Getting Started
 
-OwaspHeaders.Core is now availble as a NuGet package. The NuGet package can be accessed [here](https://www.nuget.org/packages/OwaspHeaders.Core/)
+Assuming that you have an ASP .NET Core project, add the NuGet package:
 
-# Development Logs
+```bash
+dotnet add package OwaspHeaders.Core
+```
 
-This repository forms the basis for a series of blog posts that I have written on the topic of ASP.NET Core middleware.
+Alter the Startup (pre .NET 6) or program (post .NET 6) class to include the following:
 
-If you would like to read about how I have developed the code in this repository, please see the first in the blog post series entitled: [".NET Core Middleware – OWASP Headers Part 1"](https://dotnetcore.gaprogman.com/2017/07/20/net-core-middleware-owasp-headers-part-1/)
+```csharp
+app.UseSecureHeadersMiddleware(
+    SecureHeadersMiddlewareExtensions
+        .BuildDefaultConfiguration()
+    );
+```
 
-# Description
+This will add a number of default HTTP headers to all responses from your server component.
 
-A collection of ASP.NET Core middleware classes designed to increase web application security by adopting the recommended [OWASP](https://www.owasp.org/index.php/Main_Page) settings.
+The following is an example of the response headers from version 6.0.2 (taken on May 15th, 2023)
 
-![OwaspHeaders.Core logo](OwaspHeaders.Core-Logo.png)
+``` plaintext
+cache-control: max-age=31536000, private
+strict-transport-security: max-age=63072000;includeSubDomains
+x-frame-options: DENY
+x-xss-protection: 0
+x-content-type-options: nosniff
+content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
+x-permitted-cross-domain-policies: none;
+referrer-policy: no-referrer
+```
+
+Please note: The above example contains only the headers added by the Middleware.
 
 ### Secure Headers
 
 The `SecureHeadersMiddleware` is used to inject the HTTP headers recommended by the [OWASP Secure Headers](https://www.owasp.org/index.php/OWASP_Secure_Headers_Project) project into all responses generated by the ASP.NET Core pipeline.
 
-#### Usage
-
-Add a reference to the [NuGet package](https://www.nuget.org/packages/OwaspHeaders.Core) to your project
-
-    dotnet add package OwaspHeaders.Core
+Listing and commenting on the default values that this middleware provides is out of scope for this readme. Please note that you will need to read through the above link to the Secure Headers Project in order to understand what these headers do, and the affect their presence will have on your applications when running in a web browser.
 
 ## Configuration
 
-For both versions 1.x and 2.x, a `secureHeaderSettings.json` file was used. However, from version 3.x onwards, a build-time builder pattern is now used for configuring the secure headers.
+This Middleware uses the builder pattern to set up the header information, which is a compile time dependency.
 
-Please see the following sections for how to configure the OwaspHeaders.Core middlware.
+In your `Startup` class (or `Program.cs` for .NET 6 onwards):
 
-#### Configuration in Version 3.x
-
-Version 3.x of OwaspHaders.Core no longer uses the `secureHeaderSettings.json` file as this is a runtime dependency. It now uses the builder pattern to set up the header information, which is a compile time dependency.
-
-In your `Startup` class, add a using statement for the OwaspHeaders.Core middleware
-
-``` csharp
-using OwaspHeaders.Core.Extensions;
-````
-
-Then in the `Configure` method, add the following
-
-``` charp
+```csharp
 app.UseSecureHeadersMiddleware(SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration());
 ```
 
@@ -99,14 +73,18 @@ public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration()
         .CreateBuilder()
         .UseHsts()
         .UseXFrameOptions()
-        .UseXSSProtection()
         .UseContentTypeOptions()
         .UseContentDefaultSecurityPolicy()
         .UsePermittedCrossDomainPolicies()
         .UseReferrerPolicy()
+        .UseCacheControl()
+        .RemovePoweredByHeader()
+        .UseXssProtection()
         .Build();
 }
 ```
+
+### Custom Configuration
 
 In order to use a custom configuration, follow the same pattern (perhaps creating your own extension method to encapsulate it):
 
@@ -116,7 +94,6 @@ public static SecureHeadersMiddlewareConfiguration CustomConfiguration()
     return SecureHeadersMiddlewareBuilder
         .CreateBuilder()
         .UseHsts(1200, false)
-        .UseXSSProtection(XssMode.oneReport, "https://reporturi.com/some-report-url")
         .UseContentDefaultSecurityPolicy()
         .UsePermittedCrossDomainPolicies(XPermittedCrossDomainOptionValue.masterOnly)
         .UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin)
@@ -126,94 +103,15 @@ public static SecureHeadersMiddlewareConfiguration CustomConfiguration()
 
 Then consume it in the following manner:
 
-``` charp
+```csharp
 app.UseSecureHeadersMiddleware(CustomSecureHeaderExtensions.CustomConfiguration());
-```
-
-#### Configuration in Version 2.x
-
-In the constructor for the `Startup` class, add a reference to a `secureHeaderSettings.json`
-
-``` csharp
-public Startup(IHostingEnvironment env)
-{
-    var builder = new ConfigurationBuilder()
-    .SetBasePath(env.ContentRootPath)
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-    .AddJsonFile("secureHeaderSettings.json", optional:true, reloadOnChange: true)
-    .AddEnvironmentVariables();
-    Configuration = builder.Build();
-}
-```
-The contents of the `secureHeaderSettings.json` file take the following format:
-
-``` json
-{
-    "SecureHeadersMiddlewareConfiguration": {
-        "UseHsts": "true",
-        "HstsConfiguration": {
-            "MaxAge": 42,
-            "IncludeSubDomains": "true"
-        },
-        "UseHpkp": "true",
-        "HPKPConfiguration" :{
-            "PinSha256" : [
-                "e927fad33f9eb96126896413502a1034be0ca379dec377fb891feb9ebc720e47"
-                ],
-            "MaxAge": 3,
-            "IncludeSubDomains": "true",
-            "ReportUri": "https://github.com/GaProgMan/OwaspHeaders.Core"
-        },
-        "UseXFrameOptions": "true",
-        "XFrameOptionsConfiguration": {
-            "OptionValue": "allowfrom",
-            "AllowFromDomain": "com.gaprogman.dotnetcore"
-        },
-        "UseXssProtection": "true",
-        "XssConfiguration": {
-            "XssSetting": "oneReport",
-            "ReportUri": "https://github.com/GaProgMan/OwaspHeaders.Core"
-        },
-        "UseXContentTypeOptions": "true",
-        "UseContentSecurityPolicy": "true",
-        "ContentSecurityPolicyConfiguration": {
-            "BlockAllMixedContent": "true",
-            "UpgradeInsecureRequests": "true"
-        }
-    }
-}
-```
-(the above file is provided for illustration purposes)
-
-Load the contents of the `secureHeaderSettings.json` into an instance of the `SecureHeadersMiddlewareConfiguration` in the Startup class'  `ConfigureServices` method.
-
-``` csharp
-public void ConfigureServices(IServiceCollection services)
-{
-    // Add framework services
-    // Add functionality to inject IOptions<T>
-    services.AddOptions();
-
-    // Add our Config object so it can be injected
-    services.Configure<SecureHeadersMiddlewareConfiguration>(Configuration.GetSection("SecureHeadersMiddlewareConfiguration"));
-}
-```
-
-Add the `SecureHeadersMiddleware` into the ASP.NET Core pipeline, in the Startup class' `Configure` method.
-
-``` csharp
-public void Configure(IApplicationBuilder app, IHostingEnvironment env,
-    IOptions<SecureHeadersMiddlewareConfiguration> secureHeaderSettings)
-{
-    // Add SecureHeadersMiddleware to the pipeline
-    app.UseSecureHeadersMiddleware(secureHeaderSettings.Value);
-}
 ```
 
 #### Testing the Middleware
 
-Run the application, request one of the pages that it serves and view the headers for the page.
+An example ASP .NET Core application - with the middleware installed -  is provided as part of this repo (see the code in the `example` directory). As such, you can run this example application to see the middleware in use.
+
+Or you could add the middleware to an existing application and run through the following Run the application, request one of the pages that it serves and view the headers for the page.
 
 This can be done in Google Chrome, using the Dev tools and checking the network tab.
 

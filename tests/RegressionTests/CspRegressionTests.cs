@@ -70,7 +70,7 @@ public class CspRegressionTests
                 .Split(" ")
                 .Count(hv => hv.Contains("cdnjs.cloudflare.com", StringComparison.InvariantCultureIgnoreCase)));
     }
-    
+
     /// <summary>
     /// This test exercises and proves regression against unnecessary spaces being added between the final
     /// directive and first URI in a CSP
@@ -81,7 +81,7 @@ public class CspRegressionTests
         // arrange
         const string targetCsp = "style-src 'self' cdnjs.cloudflare.com;";
         var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests:false)
+            .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests: false)
             .SetCspUris(
                 // originally PRODUCES: style-src 'self'  cdnjs.cloudflare.com;
                 new List<ContentSecurityPolicyElement>
@@ -99,15 +99,15 @@ public class CspRegressionTests
 
         var headerStrings = _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName].ToList();
         Assert.NotNull(headerStrings);
-        
+
         var actualCsp = headerStrings.First();
         var actualCharCount = actualCsp.Length;
         var targetCharCount = targetCsp.Length;
-        
+
         Assert.True(string.Equals(targetCsp, actualCsp, StringComparison.InvariantCultureIgnoreCase));
         Assert.Equal(targetCharCount, actualCharCount);
     }
-    
+
     /// <summary>
     /// This test exercises and proves regression against unnecessary spaces being added after a
     /// directive in a generated CSP, when no URIs are provided
@@ -118,7 +118,7 @@ public class CspRegressionTests
         // arrange
         const string targetCsp = "style-src 'self';";
         var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests:false)
+            .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests: false)
             .SetCspUris(
                 // originally PRODUCES: style-src 'self' ;
                 new List<ContentSecurityPolicyElement>
@@ -135,15 +135,15 @@ public class CspRegressionTests
 
         var headerStrings = _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName].ToList();
         Assert.NotNull(headerStrings);
-        
+
         var actualCsp = headerStrings.First();
         var actualCharCount = actualCsp.Length;
         var targetCharCount = targetCsp.Length;
-        
+
         Assert.True(string.Equals(targetCsp, actualCsp, StringComparison.InvariantCultureIgnoreCase));
         Assert.Equal(targetCharCount, actualCharCount);
     }
-    
+
     /// <summary>
     /// This test exercises and proves regression against unnecessary spaces being added before the first
     /// URI in a CSP, when no Directives are provided
@@ -154,7 +154,7 @@ public class CspRegressionTests
         // arrange
         const string targetCsp = "style-src cdnjs.cloudflare.com;";
         var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests:false)
+            .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests: false)
             .SetCspUris(
                 // originally PRODUCES: style-src  cdnjs.cloudflare.com;
                 new List<ContentSecurityPolicyElement>
@@ -171,11 +171,11 @@ public class CspRegressionTests
 
         var headerStrings = _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName].ToList();
         Assert.NotNull(headerStrings);
-        
+
         var actualCsp = headerStrings.First();
         var actualCharCount = actualCsp.Length;
         var targetCharCount = targetCsp.Length;
-        
+
         Assert.True(string.Equals(targetCsp, actualCsp, StringComparison.InvariantCultureIgnoreCase));
         Assert.Equal(targetCharCount, actualCharCount);
     }

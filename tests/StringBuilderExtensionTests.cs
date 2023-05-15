@@ -17,7 +17,7 @@ public class StringBuilderExtensionTests
         // assert
         Assert.Null(builder);
     }
-    
+
     [Fact]
     public void TrimEnd_StringBuilder_Is_Empty_Return_StringBuilder()
     {

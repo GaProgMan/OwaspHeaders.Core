@@ -34,7 +34,7 @@ namespace OwaspHeaders.Core
             {
                 throw new ArgumentException($@"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.");
             }
-            
+
             if (_config.UseHsts)
             {
                 httpContext.TryAddHeader(Constants.StrictTransportSecurityHeaderName,
@@ -57,7 +57,7 @@ namespace OwaspHeaders.Core
             {
                 httpContext.TryAddHeader(Constants.XContentTypeOptionsHeaderName, "nosniff");
             }
-            
+
             if (_config.UseContentSecurityPolicyReportOnly)
             {
                 if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))

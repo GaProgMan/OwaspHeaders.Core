@@ -64,7 +64,7 @@ namespace OwaspHeaders.Core.Extensions
                     directiveValues.Where(command => (command.CommandType == CspCommandType.Uri))
                         .Select(e => e.DirectiveOrUri)));
             }
-            
+
             stringBuilder.TrimEnd();
             stringBuilder.Append(";");
             return stringBuilder;

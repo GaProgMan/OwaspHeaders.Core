@@ -17,7 +17,7 @@ namespace OwaspHeaders.Core.Extensions
         /// </summary>
         /// <param name="sb"></param>
         /// <returns></returns>
-        private static StringBuilder TrimEnd(this StringBuilder sb)
+        public static StringBuilder TrimEnd(this StringBuilder sb)
         {
             if (sb == null || sb.Length == 0) return sb;
 
@@ -52,8 +52,8 @@ namespace OwaspHeaders.Core.Extensions
 
                 if (directives.Any())
                 {
-                    stringBuilder.Append(string.Join(EmptySpace, directives.Select(directive => $"'{directive.DirectiveOrUri}'")));
-                    stringBuilder.Append(EmptySpace);
+                    stringBuilder.Append(string.Join(EmptySpace,
+                        directives.Select(directive => $"'{directive.DirectiveOrUri}'")));
                 }
             }
 

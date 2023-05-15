@@ -1,4 +1,5 @@
-﻿using OwaspHeaders.Core.Extensions;
+﻿using example.Helpers;
+using OwaspHeaders.Core.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseSecureHeadersMiddleware(SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration());
+app.UseSecureHeadersMiddleware(RealisticContentSecurityPolicyGenerators.GenerateOwaspHomePageCsp());
 
 app.MapControllers();
 

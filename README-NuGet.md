@@ -53,3 +53,24 @@ The source code for this NuGet package can be found at: [https://github.com/GaPr
 ## Issues and Bugs
 
 Please raise any issues and bugs at the above mentioned source code repo.
+
+## Server Header: A Warning
+
+The default configuration for this middleware removes the `X-Powered-By` header, as this can help malicious users to use targeted attacks for specific server infrastructure. However, since the `Server` header is added by the reverse proxy used when hosting an ASP .NET Core application, removing this header is out of scope for this middleware.
+
+In order to remove this header, a `web.config` file is required, and the following should be added to it:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <system.webServer>
+        <security>
+            <requestFiltering removeServerHeader="true" />
+        </security>
+    </system.webServer>
+</configuration>
+```
+
+The above XML is taken from [this answer on ServerFault](https://serverfault.com/a/1020784).
+
+The `web.config` file will need to be copied to the server when the application is deployed.

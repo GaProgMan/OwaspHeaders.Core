@@ -8,6 +8,13 @@ A collection of ASP.NET Core middleware classes designed to increase web applica
 
 Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIONS**. This is because setting up secure HTTP headers in a WebAssembly context is a non-trivial task.
 
+## Tools Required to Build This Repo
+
+- .NET vLatest
+- an IDE (VS Code, Rider, or Visual Studio)
+
+That's it.
+
 ## Pull Requests
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)

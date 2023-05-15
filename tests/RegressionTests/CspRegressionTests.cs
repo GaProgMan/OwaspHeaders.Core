@@ -83,7 +83,7 @@ public class CspRegressionTests
         var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
             .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests:false)
             .SetCspUris(
-                // Bug PRODUCES: style-src 'self'  cdnjs.cloudflare.com;
+                // originally PRODUCES: style-src 'self'  cdnjs.cloudflare.com;
                 new List<ContentSecurityPolicyElement>
                 {
                     new() { CommandType = CspCommandType.Directive, DirectiveOrUri = "self" },
@@ -120,7 +120,7 @@ public class CspRegressionTests
         var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
             .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests:false)
             .SetCspUris(
-                // Bug PRODUCES: style-src 'self'  cdnjs.cloudflare.com;
+                // originally PRODUCES: style-src 'self' ;
                 new List<ContentSecurityPolicyElement>
                 {
                     new() { CommandType = CspCommandType.Directive, DirectiveOrUri = "self" }
@@ -156,7 +156,7 @@ public class CspRegressionTests
         var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
             .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests:false)
             .SetCspUris(
-                // Bug PRODUCES: style-src 'self'  cdnjs.cloudflare.com;
+                // originally PRODUCES: style-src  cdnjs.cloudflare.com;
                 new List<ContentSecurityPolicyElement>
                 {
                     new() { CommandType = CspCommandType.Uri, DirectiveOrUri = "cdnjs.cloudflare.com" }

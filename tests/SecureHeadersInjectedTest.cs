@@ -475,4 +475,35 @@ public class SecureHeadersInjectedTest
         Assert.False(headerNotPresentConfig.UseCacheControl);
         Assert.False(_context.Response.Headers.ContainsKey(Constants.CacheControlHeaderName));
     }
+
+    [Fact]
+    public async Task Invoke_CrossOriginResourcePolicyHeaderName_HeaderIsPresent()
+    {
+        // arrange
+        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseCrossOriginResourcePolicy().Build();
+        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+        // act
+        await secureHeadersMiddleware.InvokeAsync(_context);
+
+        // assert
+        Assert.True(headerPresentConfig.UseCrossOriginResourcePolicy);
+        Assert.True(_context.Response.Headers.ContainsKey(Constants.CrossOriginResourcePolicyHeaderName));
+        Assert.Equal(CrossOriginResourcePolicy.SameOriginValue, _context.Response.Headers[Constants.CrossOriginResourcePolicyHeaderName]);
+    }
+
+    [Fact]
+    public async Task Invoke_CrossOriginResourcePolicyHeaderName_HeaderIsNotPresent()
+    {
+        // arrange
+        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
+
+        // act
+        await secureHeadersMiddleware.InvokeAsync(_context);
+
+        // assert
+        Assert.False(headerNotPresentConfig.UseCrossOriginResourcePolicy);
+        Assert.False(_context.Response.Headers.ContainsKey(Constants.CrossOriginResourcePolicyHeaderName));
+    }
 }

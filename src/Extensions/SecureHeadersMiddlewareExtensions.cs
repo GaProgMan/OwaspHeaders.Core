@@ -33,6 +33,7 @@ namespace OwaspHeaders.Core.Extensions
                 .UseCacheControl()
                 .RemovePoweredByHeader()
                 .UseXssProtection()
+                .UseCrossOriginResourcePolicy()
                 .Build();
         }
 

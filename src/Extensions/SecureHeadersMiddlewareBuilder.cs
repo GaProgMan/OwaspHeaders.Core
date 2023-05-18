@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Helpers;
 using OwaspHeaders.Core.Models;
+using static OwaspHeaders.Core.Models.CrossOriginResourcePolicy;
 
 namespace OwaspHeaders.Core.Extensions
 {
@@ -319,7 +320,23 @@ namespace OwaspHeaders.Core.Extensions
             (this SecureHeadersMiddlewareConfiguration config)
         {
             config.RemoveXPoweredByHeader = true;
+            return config;
+        }
 
+        /// <summary>
+        /// The HTTP Cross-Origin-Resource-Policy response header conveys a desire that the browser 
+        /// blocks no-cors cross-origin/cross-site requests to the given resource.
+        /// </summary>
+        /// <param name="value">
+        /// The HTTP Cross-Origin-Resource-Policy response header value.
+        /// </param>
+        /// <remarks>
+        /// Defaults to "same-origin" (<see cref="CrossOriginResourceOptions.SameOrigin"/>) which means that "Only requests from the same Origin (i.e. scheme + host + port) can read the resource."
+        ///</remarks>
+        public static SecureHeadersMiddlewareConfiguration UseCrossOriginResourcePolicy(this SecureHeadersMiddlewareConfiguration config, CrossOriginResourceOptions value = CrossOriginResourceOptions.SameOrigin)
+        {
+            config.UseCrossOriginResourcePolicy = true;
+            config.CrossOriginResourcePolicy = new CrossOriginResourcePolicy(value);
             return config;
         }
 

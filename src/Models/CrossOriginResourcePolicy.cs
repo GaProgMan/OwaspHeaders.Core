@@ -20,7 +20,7 @@
         /// Requests from any Origin (both same-site and cross-site) can read the resource. 
         /// Browsers are using this policy when an CORP header is not specified.
         /// </summary>
-        public const string CrossOriginValue = "same-origin";
+        public const string CrossOriginValue = "cross-origin";
 
         public enum CrossOriginResourceOptions 
         {

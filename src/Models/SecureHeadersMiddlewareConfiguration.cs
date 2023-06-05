@@ -64,6 +64,11 @@
         public bool RemoveXPoweredByHeader { get; set; }
 
         /// <summary>
+        /// Indicates whether the response should use Cross-Origin-Resource-Policy
+        /// </summary>
+        public bool UseCrossOriginResourcePolicy { get; set; }
+
+        /// <summary>
         /// The HTTP Strict Transport Security configuration to use
         /// </summary>
         public HstsConfiguration HstsConfiguration { get; set; }
@@ -107,5 +112,7 @@
         /// The Expect-CT configuration to use
         /// </summary>
         public ExpectCt ExpectCt { get; set; }
+
+        public CrossOriginResourcePolicy CrossOriginResourcePolicy { get; set; }
     }
 }

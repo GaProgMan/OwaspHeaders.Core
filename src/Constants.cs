@@ -27,5 +27,7 @@
         public static readonly string PoweredByHeaderName = "X-Powered-By";
 
         public static readonly string ServerHeaderName = "Server";
+
+        public static readonly string CrossOriginResourcePolicyHeaderName = "Cross-Origin-Resource-Policy";
     }
 }

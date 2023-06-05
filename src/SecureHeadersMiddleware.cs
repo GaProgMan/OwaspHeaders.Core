@@ -113,6 +113,12 @@ namespace OwaspHeaders.Core
                 httpContext.TryRemoveHeader(Constants.ServerHeaderName);
             }
 
+           if(_config.UseCrossOriginResourcePolicy)
+            {
+                httpContext.TryAddHeader(Constants.CrossOriginResourcePolicyHeaderName,
+                    _config.CrossOriginResourcePolicy.BuildHeaderValue());
+            }
+
             // Call the next middleware in the chain
             await _next(httpContext);
         }

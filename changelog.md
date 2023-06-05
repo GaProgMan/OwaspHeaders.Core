@@ -12,6 +12,10 @@ This changelog represents all of the major (i.e. breaking) changes made to the O
 | 2 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0 |
 | 1 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4 |
 
+### Version 7
+
+This version adds the Cross-Origin-Resource-Policy header with the OWASP recommended value "same-origin" to the list of default headers in the `BuildDefaultConfiguration()` extension method. This was requested via [issue #76](https://github.com/GaProgMan/OwaspHeaders.Core/issues/76). 
+
 ### Version 6
 
 This version removes Expect-CT Header from the list of default headers in the `BuildDefaultConfiguration()` extension method. This is related to [issue #72](https://github.com/GaProgMan/OwaspHeaders.Core/issues/72).

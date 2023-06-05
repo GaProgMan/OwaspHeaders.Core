@@ -12,6 +12,7 @@ Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIO
 
 - .NET vLatest
 - an IDE (VS Code, Rider, or Visual Studio)
+- [dotnet-format](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format) global tool.
 
 That's it.
 
@@ -20,6 +21,8 @@ That's it.
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Pull requests are welcome, but please take a moment to read the Code of Conduct before submitting them or commenting on any work in this repo.
+
+Also please make sure to run `dotnet format OwaspHeaders.Core.sln` in the root of the repo _before_ submitting a PR. This repo uses an [editorconfig](.editorconfig) file to enforce certain formatting rules on this repo. Any PRs which don't adhere to these formatting rules will fail a PR action (for checking the code against the rules). So to save time, please run `dotnet format OwaspHeaders.Core.sln` ahead of submitting your PR.
 
 ## Getting Started
 
@@ -42,7 +45,7 @@ This will add a number of default HTTP headers to all responses from your server
 
 The following is an example of the response headers from version 6.0.2 (taken on May 15th, 2023)
 
-``` plaintext
+```plaintext
 cache-control: max-age=31536000, private
 strict-transport-security: max-age=63072000;includeSubDomains
 x-frame-options: DENY
@@ -67,29 +70,11 @@ This Middleware uses the builder pattern to set up the header information, which
 
 In your `Startup` class (or `Program.cs` for .NET 6 onwards):
 
-```csharp
-app.UseSecureHeadersMiddleware(SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration());
-```
+https://github.com/GaProgMan/OwaspHeaders.Core/blob/433cbb764956e86b80b598c5d0760bdfdef28161/example/Program.cs#L26
 
 This will use the default configuration for the OwaspHeaders.Core middleware. The method (found in `/src/Extensions/SecureHeadersMiddlewareExtensions.cs`) looks like this:
 
-``` csharp
-public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration()
-{
-    return SecureHeadersMiddlewareBuilder
-        .CreateBuilder()
-        .UseHsts()
-        .UseXFrameOptions()
-        .UseContentTypeOptions()
-        .UseContentDefaultSecurityPolicy()
-        .UsePermittedCrossDomainPolicies()
-        .UseReferrerPolicy()
-        .UseCacheControl()
-        .RemovePoweredByHeader()
-        .UseXssProtection()
-        .Build();
-}
-```
+https://github.com/GaProgMan/OwaspHeaders.Core/blob/433cbb764956e86b80b598c5d0760bdfdef28161/src/Extensions/SecureHeadersMiddlewareExtensions.cs#L23-L38
 
 ### Custom Configuration
 

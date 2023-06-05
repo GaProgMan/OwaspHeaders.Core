@@ -6,6 +6,8 @@ This changelog represents all of the major (i.e. breaking) changes made to the O
 
 | Major Version Number | Changes |
 |---|---|
+| 7 | Added Cross-Origin-Resource-Policy header to list of defaults |
+| 6 | Removes Expect-CT Header from the list of default headers |
 | 5 | XSS Protection is now hard-coded to return "0" if enabled |
 | 4 | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> uses .NET Standard 2.0 <br /> Removed XSS Protection header from defaults |
 | 3 | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0 |
@@ -14,7 +16,7 @@ This changelog represents all of the major (i.e. breaking) changes made to the O
 
 ### Version 7
 
-This version adds the Cross-Origin-Resource-Policy header with the OWASP recommended value "same-origin" to the list of default headers in the `BuildDefaultConfiguration()` extension method. This was requested via [issue #76](https://github.com/GaProgMan/OwaspHeaders.Core/issues/76). 
+This version adds the Cross-Origin-Resource-Policy header with the OWASP recommended value "same-origin" to the list of default headers in the `BuildDefaultConfiguration()` extension method. This was requested via [issue #76](https://github.com/GaProgMan/OwaspHeaders.Core/issues/76).
 
 ### Version 6
 

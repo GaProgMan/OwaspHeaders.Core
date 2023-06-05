@@ -22,7 +22,7 @@
         /// </summary>
         public const string CrossOriginValue = "cross-origin";
 
-        public enum CrossOriginResourceOptions 
+        public enum CrossOriginResourceOptions
         {
             /// <summary>
             /// <see cref="SameOriginValue"/>

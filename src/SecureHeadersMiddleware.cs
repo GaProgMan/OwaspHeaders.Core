@@ -113,7 +113,7 @@ namespace OwaspHeaders.Core
                 httpContext.TryRemoveHeader(Constants.ServerHeaderName);
             }
 
-           if(_config.UseCrossOriginResourcePolicy)
+            if (_config.UseCrossOriginResourcePolicy)
             {
                 httpContext.TryAddHeader(Constants.CrossOriginResourcePolicyHeaderName,
                     _config.CrossOriginResourcePolicy.BuildHeaderValue());

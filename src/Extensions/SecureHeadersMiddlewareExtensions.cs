@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using OwaspHeaders.Core.Models;
 
 namespace OwaspHeaders.Core.Extensions
@@ -42,12 +43,27 @@ namespace OwaspHeaders.Core.Extensions
         /// an instance of an <see cref="IApplicationBuilder" />.
         /// This works in the same way was the MVC, Static files, etc. middleware
         /// </summary>
-        /// <param name="builder">The instance of the <see cref="IApplicationBuilder" /> to use</param>
-        /// <param name="config">An instance of the <see cref="SecureHeadersMiddlewareConfiguration" /> containing all of the config for each request </param>
-        /// <returns>The <see cref="IApplicationBuilder"/> with the <see cref="SecureHeadersMiddleware" /> added</returns>
-        public static IApplicationBuilder UseSecureHeadersMiddleware(this IApplicationBuilder builder, SecureHeadersMiddlewareConfiguration config)
+        /// <param name="builder">
+        /// The instance of the <see cref="IApplicationBuilder" /> to use
+        /// </param>
+        /// <param name="config">
+        /// [OPTIONAL] An instance of the <see cref="SecureHeadersMiddlewareConfiguration" /> containing all of the config for each request
+        /// </param>
+        /// <returns>
+        /// The <see cref="IApplicationBuilder"/> with the <see cref="SecureHeadersMiddleware" /> added
+        /// </returns>
+        /// <remarks>
+        /// If an instance of <see cref="SecureHeadersMiddlewareConfiguration"/> is not provided, then the default value
+        /// from <see cref="BuildDefaultConfiguration"/> will be provided.
+        /// </remarks>
+        public static IApplicationBuilder UseSecureHeadersMiddleware(this IApplicationBuilder builder, SecureHeadersMiddlewareConfiguration config = null)
         {
-            return builder.UseMiddleware<SecureHeadersMiddleware>(config);
+            if (builder == null)
+            {
+                throw new ArgumentNullException(
+                    $"{nameof(builder)} cannot be null when setting up OWASP Secure Headers in OwaspHeaders.Core");
+            }
+            return builder.UseMiddleware<SecureHeadersMiddleware>(config ?? BuildDefaultConfiguration());
         }
     }
 }

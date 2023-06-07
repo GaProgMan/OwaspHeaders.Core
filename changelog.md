@@ -4,15 +4,32 @@ This changelog represents all of the major (i.e. breaking) changes made to the O
 
 ## TL;DR
 
-| Major Version Number | Changes |
-|---|---|
-| 7 | Added Cross-Origin-Resource-Policy header to list of defaults |
-| 6 | Removes Expect-CT Header from the list of default headers |
-| 5 | XSS Protection is now hard-coded to return "0" if enabled |
+| Major Version Number | Changes                                                                                                                                                                   |
+|---|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 7 | Added Cross-Origin-Resource-Policy header to list of defaults; simplfied the use of the middleware in Composite Root/Program.cs                                           |
+| 6 | Removes Expect-CT Header from the list of default headers                                                                                                                 |
+| 5 | XSS Protection is now hard-coded to return "0" if enabled                                                                                                                 |
 | 4 | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> uses .NET Standard 2.0 <br /> Removed XSS Protection header from defaults |
-| 3 | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0 |
-| 2 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0 |
-| 1 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4 |
+| 3 | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0                                               |
+| 2 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0             |
+| 1 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4         |
+
+### Version 7.5
+
+This version makes it simpler to get started with the NuGet package by simplifying the use of it in Program.cs/Composite Root. This, effectively, changes the composite root from:
+
+```csharp
+app.UseSecureHeadersMiddleware(
+    SecureHeadersMiddlewareExtensions
+        .BuildDefaultConfiguration()
+    );
+```
+
+to:
+
+```csharp
+app.UseSecureHeadersMiddleware();
+```
 
 ### Version 7
 

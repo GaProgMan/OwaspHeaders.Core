@@ -4,6 +4,15 @@ using OwaspHeaders.Core.Models;
 
 namespace example.Helpers;
 
+/// <summary>
+/// This class is useful for testing the Secure Headers middleware with a set of realistic
+/// settings. It is currently (as of June 7th, 2023) not being used but I would prefer that
+/// it sticks around as it would be very useful to use in the future.
+/// This flies against standard Software Engineering practises. But this particular csproj
+/// is only provided for developers to test the OwaspHeaders.Core project whilst they are
+/// developing it (i.e. without having to push to GitHub, wait for a build, wait for a PR,
+/// wait for a release, wait for NuGet to index, and wait for it to download).
+/// </summary>
 public static class RealisticContentSecurityPolicyGenerators
 {
     /// <summary>

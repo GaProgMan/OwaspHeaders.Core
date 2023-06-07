@@ -23,10 +23,7 @@ dotnet add package OwaspHeaders.Core
 3. Alter the Startup (pre .NET 6) or program (post .NET 6) class to include the following:
 
 ```csharp
-app.UseSecureHeadersMiddleware(
-    SecureHeadersMiddlewareExtensions
-        .BuildDefaultConfiguration()
-    );
+app.UseSecureHeadersMiddleware();
 ```
 
 This will add a number of default HTTP headers to all responses from your server component.

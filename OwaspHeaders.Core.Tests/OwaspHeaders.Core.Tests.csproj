@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>A Unit Test project (using xunit) for the OwaspHeaders.Core project</Description>
-    <VersionPrefix>3.2.0</VersionPrefix>
+    <VersionPrefix>8.0.0</VersionPrefix>
     <Authors>Jamie Taylor</Authors>
-    <AssemblyName>OwaspHeaders.Core.tests</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>OwaspHeaders.Core.Tests</AssemblyName>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -13,13 +13,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-*" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\src\OwaspHeaders.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <ProjectReference Include="..\src\OwaspHeaders.Core.csproj" />
+    <!-- ignores this csproj from code coveratge -->
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
   </ItemGroup>
 </Project>

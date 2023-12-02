@@ -10,11 +10,16 @@ Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIO
 
 ## Tools Required to Build This Repo
 
-- .NET vLatest
+- .NET SDKs vLatest
+  - 6.0
+  - 7.0
+  - 8.0&ast;
 - an IDE (VS Code, Rider, or Visual Studio)
 - [dotnet-format](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format) global tool.
 
 That's it.
+
+&ast; = at the time of pushing version 8 of the repo (Dec 2nd, 2023), the .NET 8 SDK binaries are not available for some Linux distributions (such as Fedora). If v8.0 of .NET is not available for your chosen distro, remove the `net8.0` TFM from all csproj files in order to build and run the code.
 
 ## Pull Requests
 
@@ -84,7 +89,8 @@ public static SecureHeadersMiddlewareConfiguration CustomConfiguration()
         .CreateBuilder()
         .UseHsts(1200, false)
         .UseContentDefaultSecurityPolicy()
-        .UsePermittedCrossDomainPolicies(XPermittedCrossDomainOptionValue.masterOnly)
+        .UsePermittedCrossDomainPolicy
+            (XPermittedCrossDomainOptionValue.masterOnly)
         .UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin)
         .Build();
 }
@@ -93,12 +99,14 @@ public static SecureHeadersMiddlewareConfiguration CustomConfiguration()
 Then consume it in the following manner:
 
 ```csharp
-app.UseSecureHeadersMiddleware(CustomSecureHeaderExtensions.CustomConfiguration());
+app.UseSecureHeadersMiddleware(
+    CustomSecureHeaderExtensions.CustomConfiguration()
+);
 ```
 
 #### Testing the Middleware
 
-An example ASP .NET Core application - with the middleware installed -  is provided as part of this repo (see the code in the `example` directory). As such, you can run this example application to see the middleware in use.
+An example ASP .NET Core application - with the middleware installed -  is provided as part of this repo (see the code in the `OwaspHeaders.Core.Example` directory). As such, you can run this example application to see the middleware in use via a provided OpenAPI endpoint - located at `/swagger`.
 
 Or you could add the middleware to an existing application and run through the following Run the application, request one of the pages that it serves and view the headers for the page.
 

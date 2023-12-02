@@ -12,7 +12,10 @@ namespace OwaspHeaders.Core.Extensions
 
         public static bool TryAddHeader(this HttpContext httpContext, string headerName, string headerValue)
         {
-            if (httpContext.ResponseContainsHeader(headerName)) return true;
+            if (httpContext.ResponseContainsHeader(headerName))
+            {
+                return true;
+            }
             try
             {
                 httpContext.Response.Headers.Add(headerName, headerValue);
@@ -33,7 +36,10 @@ namespace OwaspHeaders.Core.Extensions
         /// <returns></returns>
         public static bool TryRemoveHeader(this HttpContext httpContext, string headerName)
         {
-            if (!httpContext.ResponseContainsHeader(headerName)) return true;
+            if (!httpContext.ResponseContainsHeader(headerName))
+            {
+                return true;
+            }
             try
             {
                 httpContext.Response.Headers.Remove(headerName);

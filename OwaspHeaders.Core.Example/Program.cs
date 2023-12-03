@@ -1,4 +1,4 @@
-using OwaspHeaders.Core.Extensions;
+﻿using OwaspHeaders.Core.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

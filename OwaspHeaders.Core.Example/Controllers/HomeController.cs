@@ -1,22 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace OwaspHeaders.Core.Example.Controllers
+namespace OwaspHeaders.Core.Example.Controllers;
+
+[ApiController]
+[Route("/")]
+public class HomeController : ControllerBase
 {
-    [ApiController]
-    [Route("/")]
-    public class HomeController : ControllerBase
+    private readonly ILogger<HomeController> _logger;
+
+    public HomeController(ILogger<HomeController> logger)
     {
-        private readonly ILogger<HomeController> _logger;
+        _logger = logger;
+    }
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
-        [HttpGet(Name = "/")]
-        public IEnumerable<string> Get()
-        {
-            return HttpContext.Response.Headers.Select(h => h.ToString()).ToArray();
-        }
+    [HttpGet(Name = "/")]
+    public IEnumerable<string> Get()
+    {
+        return HttpContext.Response.Headers.Select(h => h.ToString()).ToArray();
     }
 }

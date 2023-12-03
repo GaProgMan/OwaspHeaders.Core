@@ -4,7 +4,7 @@
     <VersionPrefix>8.0.0</VersionPrefix>
     <Authors>Jamie Taylor</Authors>
     <AssemblyName>OwaspHeaders.Core</AssemblyName>
-    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <PackageId>OwaspHeaders.Core</PackageId>
     <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>

@@ -2,7 +2,7 @@
 using OwaspHeaders.Core.Extensions;
 using OwaspHeaders.Core.Models;
 
-namespace example.Helpers;
+namespace OwaspHeaders.Core.Example.Helpers;
 
 /// <summary>
 /// This class is useful for testing the Secure Headers middleware with a set of realistic

@@ -6,6 +6,7 @@ This changelog represents all of the major (i.e. breaking) changes made to the O
 
 | Major Version Number | Changes                                                                                                                                                                   |
 |---|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 8 | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes
 | 7 | Added Cross-Origin-Resource-Policy header to list of defaults; simplfied the use of the middleware in Composite Root/Program.cs                                           |
 | 6 | Removes Expect-CT Header from the list of default headers                                                                                                                 |
 | 5 | XSS Protection is now hard-coded to return "0" if enabled                                                                                                                 |

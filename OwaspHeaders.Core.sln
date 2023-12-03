@@ -4,9 +4,9 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwaspHeaders.Core", "src\OwaspHeaders.Core.csproj", "{02A107D0-EDC6-499A-BF33-9F1F3C588065}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{E5626AB0-703E-46F8-92DC-B525D4CEC4E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwaspHeaders.Core.Tests", "OwaspHeaders.Core.Tests\OwaspHeaders.Core.Tests.csproj", "{E5626AB0-703E-46F8-92DC-B525D4CEC4E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "example", "example\example.csproj", "{C70B4E0F-87B6-4681-8B49-7A4956AB86B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwaspHeaders.Core.Example", "OwaspHeaders.Core.Example\OwaspHeaders.Core.Example.csproj", "{C70B4E0F-87B6-4681-8B49-7A4956AB86B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

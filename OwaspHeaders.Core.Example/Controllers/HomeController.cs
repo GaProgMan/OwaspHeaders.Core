@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace example.Controllers;
+namespace OwaspHeaders.Core.Example.Controllers;
 
 [ApiController]
 [Route("/")]

@@ -18,7 +18,16 @@ namespace OwaspHeaders.Core.Extensions
             }
             try
             {
-                httpContext.Response.Headers.Add(headerName, headerValue);
+                // ASP0019 states that:
+                // "IDictionary.Add will throw an ArgumentException when attempting to add a duplicate key."
+                // However, we've already done a check to see whether the
+                // Response.Headers object
+                // already contains a header with this name (in the above if statement).
+                // So we'll disable the warning here then immediately restore it
+                // after we've done what we need to.
+                #pragma warning disable ASP0019
+                httpContext.Response.Headers.Append(headerName, headerValue);
+                #pragma warning restore ASP0019
                 return true;
             }
             catch (ArgumentException)

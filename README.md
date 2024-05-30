@@ -13,13 +13,11 @@ Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIO
 - .NET SDKs vLatest
   - 6.0
   - 7.0
-  - 8.0&ast;
+  - 8.0
 - an IDE (VS Code, Rider, or Visual Studio)
 - [dotnet-format](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format) global tool.
 
 That's it.
-
-&ast; = at the time of pushing version 8 of the repo (Dec 2nd, 2023), the .NET 8 SDK binaries are not available for some Linux distributions (such as Fedora). If v8.0 of .NET is not available for your chosen distro, remove the `net8.0` TFM from all csproj files in order to build and run the code.
 
 ## Pull Requests
 

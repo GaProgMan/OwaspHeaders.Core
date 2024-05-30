@@ -25,9 +25,9 @@ namespace OwaspHeaders.Core.Extensions
                 // already contains a header with this name (in the above if statement).
                 // So we'll disable the warning here then immediately restore it
                 // after we've done what we need to.
-                #pragma warning disable ASP0019
+#pragma warning disable ASP0019
                 httpContext.Response.Headers.Append(headerName, headerValue);
-                #pragma warning restore ASP0019
+#pragma warning restore ASP0019
                 return true;
             }
             catch (ArgumentException)

@@ -37,9 +37,9 @@ namespace OwaspHeaders.Core.Tests.HttpContextExtensionsTests
             // the setup stage of a test).
             // So we'll disable the warning here then immediately restore it
             // after we've done what we need to.
-            #pragma warning disable ASP0019
+#pragma warning disable ASP0019
             _context.Response.Headers.Add(headerName, headerBody);
-            #pragma warning restore ASP0019
+#pragma warning restore ASP0019
 
             // Act
             var response = _context.TryAddHeader(headerName, headerBody);

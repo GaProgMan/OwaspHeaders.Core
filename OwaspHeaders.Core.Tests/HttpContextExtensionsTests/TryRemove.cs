@@ -15,7 +15,7 @@ namespace OwaspHeaders.Core.Tests.HttpContextExtensionsTests
             // Arrange
             var headerName = Guid.NewGuid().ToString();
             var headerBody = Guid.NewGuid().ToString();
-            
+
             // ASP0019 states that:
             // "IDictionary.Add will throw an ArgumentException when attempting to add a duplicate key."
             // However, we've already done a check to see whether the
@@ -23,9 +23,9 @@ namespace OwaspHeaders.Core.Tests.HttpContextExtensionsTests
             // the setup stage of a test).
             // So we'll disable the warning here then immediately restore it
             // after we've done what we need to.
-            #pragma warning disable ASP0019
+#pragma warning disable ASP0019
             _context.Response.Headers.Add(headerName, headerBody);
-            #pragma warning restore ASP0019
+#pragma warning restore ASP0019
 
             // Act
             var response = _context.TryRemoveHeader(headerName);

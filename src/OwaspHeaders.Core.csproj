@@ -24,7 +24,7 @@
     <None Include="../README-NuGet.md" Pack="true" PackagePath="" />
     <None Include="../changelog.md" pack="true" PackagePath="" />
     <None Include="../icon.png" Pack="true" PackagePath="" />
-</ItemGroup>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="..\README.md">
       <Link>README.md</Link>

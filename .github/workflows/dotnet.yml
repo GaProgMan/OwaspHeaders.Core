@@ -13,12 +13,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 1
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
 
@@ -36,12 +36,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '6.0.x'
 
@@ -50,14 +50,14 @@ jobs:
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
+
     - name: Test
-
       run: dotnet test --no-restore --verbosity normal
-    - name: pack
 
+    - name: pack
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release --no-build --no-restore
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: ${{ success() }}
       with:
         name: OwaspHeaders.Core

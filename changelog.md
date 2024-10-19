@@ -6,7 +6,7 @@ This changelog represents all of the major (i.e. breaking) changes made to the O
 
 | Major Version Number | Changes                                                                                                                                                                   |
 |---|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 8 | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes
+| 8 | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes       |
 | 7 | Added Cross-Origin-Resource-Policy header to list of defaults; simplfied the use of the middleware in Composite Root/Program.cs                                           |
 | 6 | Removes Expect-CT Header from the list of default headers                                                                                                                 |
 | 5 | XSS Protection is now hard-coded to return "0" if enabled                                                                                                                 |
@@ -14,6 +14,21 @@ This changelog represents all of the major (i.e. breaking) changes made to the O
 | 3 | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0                                               |
 | 2 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0             |
 | 1 | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4         |
+
+### Version 8
+
+This version dropped support for support for ASP .NET Core on .NET Framework workflows. This means that, from version 8 onwards, this package will no longer with with .NET Framework workloads. This decision was made as Microsoft have dropped support for ASP .NET Core on .NET Framework workloads. This can be seen in the ASP .NET Core support documentation [here](https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core)
+
+> To help facilitate migrating applications to ASP.NET Core on .NET Core, the specified ASP.NET Core 2.1 packages (latest patched version only) will be supported on the .NET Framework and follow the support cycle for those .NET Framework versions. ASP.NET Core 2.1 is defined as "Tools" in the Microsoft Support Lifecycle Policy
+> Source: https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core, obtained Oct 19th, 2024.
+
+The Example and Tests csproj files (and directories) have been renamed to make the standard `OwaspHeaders.Core.{x}` where `{x}` is either `Example` (for the ASP .NET Core application which provides an example implementation) or `Tests` for the unit tests project.
+
+#### Community Contributions
+
+[swharden](https://github.com/swharden) created [PR #96](https://github.com/GaProgMan/OwaspHeaders.Core/pull/96) which greatly simplified and improved the NuGet package metadata and created a wonderful logo for the project.
+
+---
 
 ### Version 7.5
 
@@ -32,15 +47,21 @@ to:
 app.UseSecureHeadersMiddleware();
 ```
 
+---
+
 ### Version 7
 
 This version adds the Cross-Origin-Resource-Policy header with the OWASP recommended value "same-origin" to the list of default headers in the `BuildDefaultConfiguration()` extension method. This was requested via [issue #76](https://github.com/GaProgMan/OwaspHeaders.Core/issues/76).
+
+---
 
 ### Version 6
 
 This version removes Expect-CT Header from the list of default headers in the `BuildDefaultConfiguration()` extension method. This is related to [issue #72](https://github.com/GaProgMan/OwaspHeaders.Core/issues/72).
 
 All code which generates the header and it's value are still present, but it is removed from the defaults. Please see the above referenced issue for details.
+
+---
 
 ### Version 5
 
@@ -49,6 +70,8 @@ This version of the repo ensure that the XSS Protection header (which was remove
 This is related to [guidance by MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection) and by OWASP:
 
 > Warning: The X-XSS-Protection header has been deprecated by modern browsers and its use can introduce additional security issues on the client side. As such, it is recommended to set the header as X-XSS-Protection: 0 in order to disable the XSS Auditor, and not allow it to take the default behavior of the browser handling the response. Please use Content-Security-Policy instead.
+
+---
 
 ### Version 4
 

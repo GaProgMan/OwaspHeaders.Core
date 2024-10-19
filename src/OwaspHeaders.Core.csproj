@@ -7,7 +7,7 @@
     <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <PackageId>OwaspHeaders.Core</PackageId>
     <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README-NuGet.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
@@ -15,7 +15,6 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="../LICENSE.txt" Pack="true" PackagePath="" />
     <None Include="../README-NuGet.md" Pack="true" PackagePath="" />
     <None Include="../changelog.md" pack="true" PackagePath="" />
     <None Include="../icon.png" Pack="true" PackagePath="" />

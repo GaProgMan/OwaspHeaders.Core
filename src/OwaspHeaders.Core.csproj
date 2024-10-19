@@ -1,33 +1,48 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Description>An ASP.NET Core Middleware which adds the OWASP recommended HTTP headers for enhanced security.</Description>
-    <VersionPrefix>8.1.1</VersionPrefix>
+
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <AssemblyName>OwaspHeaders.Core</AssemblyName>
+    <RuntimeFrameworkVersion>6.0.0</RuntimeFrameworkVersion>
+
+    <!-- NuGet metadata -->
+    <PackageId>OwaspHeaders.Core</PackageId>
+    <Version>8.1.2</Version>
     <Authors>Jamie Taylor</Authors>
+    <Company>RJJ Software Ltd</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) Jamie Taylor / RJJ Software Ltd</Copyright>
+    <PackageTags>owasp http headers security</PackageTags>
+    <Description>An ASP.NET Core Middleware which adds the OWASP recommended HTTP headers for enhanced security.</Description>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README-NuGet.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/GaProgMan/OwaspHeaders.Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GaProgMan/OwaspHeaders.Core.git</RepositoryUrl>
-    <AssemblyName>OwaspHeaders.Core</AssemblyName>
-    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
-    <PackageId>OwaspHeaders.Core</PackageId>
-    <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReadmeFile>README-NuGet.md</PackageReadmeFile>
-    <PackageIcon>icon.png</PackageIcon>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- Source Link things -->
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+
   </PropertyGroup>
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+
   <ItemGroup>
     <None Include="../README-NuGet.md" Pack="true" PackagePath="" />
     <None Include="../changelog.md" pack="true" PackagePath="" />
     <None Include="../icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="..\README.md">
       <Link>README.md</Link>
     </Content>
   </ItemGroup>
+  
 </Project>

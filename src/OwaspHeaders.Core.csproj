@@ -3,7 +3,7 @@
     <Description>An ASP.NET Core Middleware which adds the OWASP recommended HTTP headers for enhanced security.</Description>
     <VersionPrefix>8.1.0</VersionPrefix>
     <Authors>Jamie Taylor</Authors>
-    <PackageProjectUrl>https://ScottPlot.NET</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/GaProgMan/OwaspHeaders.Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GaProgMan/OwaspHeaders.Core.git</RepositoryUrl>
     <AssemblyName>OwaspHeaders.Core</AssemblyName>
     <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>

@@ -23,9 +23,9 @@ For both versions 1.x and 2.x, a `secureHeaderSettings.json` file was used. Howe
 
 Please see the following sections for how to configure the OwaspHeaders.Core middlware.
 
-### Configuration in Version 3.x
+### Configuration since Version 3.x
 
-Version 3.x of OwaspHaders.Core no longer uses the `secureHeaderSettings.json` file as this is a runtime dependency. It now uses the builder pattern to set up the header information, which is a compile time dependency.
+Version 3.x and higher of OwaspHaders.Core no longer uses the `secureHeaderSettings.json` file as this is a runtime dependency. It now uses the builder pattern to set up the header information, which is a compile time dependency.
 
 In your `Startup` class, add a using statement for the OwaspHeaders.Core middleware
 

@@ -37,6 +37,7 @@
     <None Include="../README-NuGet.md" Pack="true" PackagePath="" />
     <None Include="../changelog.md" pack="true" PackagePath="" />
     <None Include="../icon.png" Pack="true" PackagePath="" />
+    <None Include="packages.lock.json" Pack="false" />
   </ItemGroup>
 
   <ItemGroup>

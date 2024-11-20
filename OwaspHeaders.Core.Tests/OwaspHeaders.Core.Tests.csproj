@@ -1,11 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
     <Description>A Unit Test project (using xunit) for the OwaspHeaders.Core project</Description>
     <VersionPrefix>9.0.0</VersionPrefix>
     <Authors>Jamie Taylor</Authors>
     <AssemblyName>OwaspHeaders.Core.Tests</AssemblyName>
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.9.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
@@ -17,8 +20,10 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <ProjectReference Include="..\src\OwaspHeaders.Core.csproj" />
   </ItemGroup>
+  
   <ItemGroup>
     <!-- ignores this csproj from code coverage -->
     <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
   </ItemGroup>
+  
 </Project>

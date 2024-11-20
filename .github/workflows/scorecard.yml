@@ -14,8 +14,10 @@ on:
   push:
     branches: [ "main" ]
 
-# Declare default permissions as read only.
-permissions: read-all
+# Get permissions for uploading the results to the OSSF API
+permissions:
+  security-events: write
+  id-token: write
 
 jobs:
   analysis:

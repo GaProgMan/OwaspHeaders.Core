@@ -11,9 +11,8 @@ Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIO
 ## Tools Required to Build This Repo
 
 - .NET SDKs vLatest
-  - 6.0
-  - 7.0
   - 8.0
+  - 9.0
 - an IDE (VS Code, Rider, or Visual Studio)
 - [dotnet-format](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format) global tool.
 
@@ -35,7 +34,7 @@ Assuming that you have an ASP .NET Core project, add the NuGet package:
 dotnet add package OwaspHeaders.Core
 ```
 
-Alter the Startup (pre .NET 6) or program (post .NET 6) class to include the following:
+Alter the program.cs file to include the following:
 
 ```csharp
 app.UseSecureHeadersMiddleware();
@@ -43,17 +42,18 @@ app.UseSecureHeadersMiddleware();
 
 This will add a number of default HTTP headers to all responses from your server component.
 
-The following is an example of the response headers from version 6.0.2 (taken on May 15th, 2023)
+The following is an example of the response headers from version 9.0.0 (taken on November 19th, 2024)
 
 ```plaintext
-cache-control: max-age=31536000, private
-strict-transport-security: max-age=63072000;includeSubDomains
-x-frame-options: DENY
-x-xss-protection: 0
-x-content-type-options: nosniff
-content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
-x-permitted-cross-domain-policies: none;
-referrer-policy: no-referrer
+ cache-control: max-age=31536000,private 
+ content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests; 
+ cross-origin-resource-policy: same-origin 
+ referrer-policy: no-referrer 
+ strict-transport-security: max-age=63072000;includeSubDomains 
+ x-content-type-options: nosniff 
+ x-frame-options: DENY 
+ x-permitted-cross-domain-policies: none; 
+ x-xss-protection: 0 
 ```
 
 Please note: The above example contains only the headers added by the Middleware.
@@ -68,7 +68,7 @@ Listing and commenting on the default values that this middleware provides is ou
 
 This Middleware uses the builder pattern to set up the header information, which is a compile time dependency.
 
-In your `Startup` class (or `Program.cs` for .NET 6 onwards):
+In your `Program.cs` file:
 
 https://github.com/GaProgMan/OwaspHeaders.Core/blob/433cbb764956e86b80b598c5d0760bdfdef28161/example/Program.cs#L26
 

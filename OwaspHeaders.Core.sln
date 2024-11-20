@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwaspHeaders.Core", "src\Ow
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwaspHeaders.Core.Tests", "OwaspHeaders.Core.Tests\OwaspHeaders.Core.Tests.csproj", "{E5626AB0-703E-46F8-92DC-B525D4CEC4E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwaspHeaders.Core.Example", "OwaspHeaders.Core.Example\OwaspHeaders.Core.Example.csproj", "{C70B4E0F-87B6-4681-8B49-7A4956AB86B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwaspHeaders.Core.Example", "OwaspHeaders.Core.Example\OwaspHeaders.Core.Example.csproj", "{8D3C719A-74EE-40D9-B78A-DCD189E88D5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,9 +25,9 @@ Global
 		{E5626AB0-703E-46F8-92DC-B525D4CEC4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5626AB0-703E-46F8-92DC-B525D4CEC4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5626AB0-703E-46F8-92DC-B525D4CEC4E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C70B4E0F-87B6-4681-8B49-7A4956AB86B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C70B4E0F-87B6-4681-8B49-7A4956AB86B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C70B4E0F-87B6-4681-8B49-7A4956AB86B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C70B4E0F-87B6-4681-8B49-7A4956AB86B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D3C719A-74EE-40D9-B78A-DCD189E88D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D3C719A-74EE-40D9-B78A-DCD189E88D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D3C719A-74EE-40D9-B78A-DCD189E88D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D3C719A-74EE-40D9-B78A-DCD189E88D5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

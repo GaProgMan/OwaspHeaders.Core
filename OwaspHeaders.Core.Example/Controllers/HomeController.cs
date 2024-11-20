@@ -4,14 +4,9 @@ namespace OwaspHeaders.Core.Example.Controllers;
 
 [ApiController]
 [Route("/")]
-public class HomeController : ControllerBase
+public class HomeController(ILogger<HomeController> logger) : ControllerBase
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<HomeController> _logger = logger;
 
     [HttpGet(Name = "/")]
     public IEnumerable<string> Get()

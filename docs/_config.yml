@@ -1,17 +1,27 @@
+# Some of the content for this config file was taken from the bare-minimum template
+# (https://github.com/just-the-docs/just-the-docs-template/blob/main/README.md) and
+# some of it was taken from the _config file in the main repo for the template repo
+# (https://github.com/just-the-docs/just-the-docs/blob/main/_config.yml)
+
 title: OwaspHeaders.Core
 description: The documentation site for the OwaspHeaders.Core NuGet library
 theme: just-the-docs
+
+permalink: pretty
 
 # URL for the built GitHub pages root; ensures that all generated absolute URLs are correct
 url: https://gaprogman.github.io/OwaspHeaders.Core
 
 # Aux links for the upper right navigation
-
 aux_links:
   Repository: https://github.com/gaprogman/OwaspHeaders.Core
   NuGet: https://www.nuget.org/packages/OwaspHeaders.Core/
+
 # Makes Aux links open in a new tab. Default is false
 aux_links_new_tab: true
+
+# For copy button on code
+enable_copy_code_button: true
 
 logo: "/assets/images/icon.png"
 favicon_ico: "/assets/images/icon.svg"
@@ -27,3 +37,70 @@ gh_edit_repository: "https://github.com/GaProgMan/OwaspHeaders.Core" # the githu
 gh_edit_branch: "main" # the branch that your docs is served from
 # gh_edit_source: docs # the source that your files originate from
 gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
+
+# Enable or disable the side/mobile menu globally
+# Nav menu can also be selectively enabled or disabled using page variables or the minimal layout
+nav_enabled: true
+
+# Sort order for navigation links
+# nav_sort: case_insensitive # default, equivalent to nil
+nav_sort: case_sensitive # Capital letters sorted before lowercase
+
+# External navigation links
+nav_external_links:
+  - title: Just the Docs on GitHub
+    url: https://github.com/just-the-docs/just-the-docs
+
+# Show navigation error report
+nav_error_report: true # default is false/nil.
+
+liquid:
+  error_mode: strict
+  strict_filters: true
+
+# Back to top link
+back_to_top: true
+back_to_top_text: "Back to top"
+
+# Color scheme currently only supports "dark", "light"/nil (default), or a custom scheme that you define
+color_scheme: nil
+
+callouts_level: quiet # or loud
+callouts:
+  highlight:
+    color: yellow
+  important:
+    title: Important
+    color: blue
+  new:
+    title: New
+    color: green
+  note:
+    title: Note
+    color: purple
+  warning:
+    title: Warning
+    color: red
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-github-metadata
+  - jekyll-include-cache
+  - jekyll-sitemap
+
+kramdown:
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  startings: []
+  blanklines: false
+  profile: false
+  # ignore:
+  #   envs: all
+
+

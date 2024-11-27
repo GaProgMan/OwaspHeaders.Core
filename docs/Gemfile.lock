@@ -84,6 +84,11 @@ GEM
     jekyll-watch (2.2.1)
       listen (~> 3.0)
     json (2.7.2)
+    just-the-docs (0.10.0)
+      jekyll (>= 3.8.5)
+      jekyll-include-cache
+      jekyll-seo-tag (>= 2.0)
+      rake (>= 12.3.1)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -146,12 +151,12 @@ PLATFORMS
   x86_64-linux-gnu
 
 DEPENDENCIES
-  bundler (>= 2.3.5)
   html-proofer (~> 5.0)
+  jekyll (~> 4.3.4)
   jekyll-github-metadata (>= 2.15)
   jekyll-include-cache
   jekyll-sitemap
-  just-the-docs!
+  just-the-docs (= 0.10.0)
 
 BUNDLED WITH
    2.5.9

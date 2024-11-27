@@ -2,7 +2,7 @@ title: OwaspHeaders.Core
 description: The documentation site for the OwaspHeaders.Core NuGet library
 theme: just-the-docs
 
-url: https://just-the-docs.github.io # might need to change this once built
+url: https://gaprogman.github.io/owaspheaders.core # might need to change this once built
 
 aux_links:
   Template Repository: https://github.com/just-the-docs/just-the-docs-template

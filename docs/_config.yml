@@ -34,10 +34,6 @@ gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into t
 # Nav menu can also be selectively enabled or disabled using page variables or the minimal layout
 nav_enabled: true
 
-# Sort order for navigation links
-# nav_sort: case_insensitive # default, equivalent to nil
-nav_sort: case_sensitive # Capital letters sorted before lowercase
-
 # External navigation links
 nav_external_links:
   - title: Source code repository

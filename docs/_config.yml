@@ -12,14 +12,6 @@ permalink: pretty
 # URL for the built GitHub pages root; ensures that all generated absolute URLs are correct
 url: https://gaprogman.github.io/OwaspHeaders.Core
 
-# Aux links for the upper right navigation
-aux_links:
-  Repository: https://github.com/gaprogman/OwaspHeaders.Core
-  NuGet: https://www.nuget.org/packages/OwaspHeaders.Core/
-
-# Makes Aux links open in a new tab. Default is false
-aux_links_new_tab: true
-
 # For copy button on code
 enable_copy_code_button: true
 
@@ -48,8 +40,10 @@ nav_sort: case_sensitive # Capital letters sorted before lowercase
 
 # External navigation links
 nav_external_links:
-  - title: Just the Docs on GitHub
-    url: https://github.com/just-the-docs/just-the-docs
+  - title: Source code repository
+    url: https://github.com/gaprogman/OwaspHeaders.Core
+  - title: NuGet
+    url: https://www.nuget.org/packages/OwaspHeaders.Core/
 
 # Show navigation error report
 nav_error_report: true # default is false/nil.

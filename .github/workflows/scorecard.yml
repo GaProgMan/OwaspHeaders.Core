@@ -13,7 +13,11 @@ on:
     - cron: '34 13 * * 3'
   push:
     branches:
-    - main
+      - main
+    paths-ignore:
+      - '.github/**'
+      - '*.md'
+      - 'docs/**'
 
 permissions: read-all
 

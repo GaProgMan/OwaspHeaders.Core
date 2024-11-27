@@ -13,8 +13,8 @@ aux_links:
 # Makes Aux links open in a new tab. Default is false
 aux_links_new_tab: true
 
-logo: "../icon.png"
-favicon_ico: "../icon.svg"
+logo: "/assets/images/icon.png"
+favicon_ico: "/assets/images/icon.svg"
 
 # Footer last edited timestamp
 last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter

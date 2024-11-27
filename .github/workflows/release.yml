@@ -7,6 +7,8 @@ on:
       - main
     paths-ignore:
       - '.github/**'
+      - '*.md'
+      - 'docs/**'
 
 jobs:
 

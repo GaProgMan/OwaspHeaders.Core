@@ -1,6 +1,6 @@
 # OwaspHeaders.Core
 
-A collection of ASP.NET Core middleware classes designed to increase web application security by adopting the recommended [OWASP](https://www.owasp.org/index.php/Main_Page) settings.
+An ASP.NET Core middleware designed to increase web application security by adopting the recommended [OWASP](https://www.owasp.org/index.php/Main_Page) settings.
 
 | Build Status | Release Status | License used | Changelog | Code of Conduct |
 | -------------|----------------|-----------|--------------|-----------------|

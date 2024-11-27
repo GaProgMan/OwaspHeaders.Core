@@ -2,7 +2,28 @@ title: OwaspHeaders.Core
 description: The documentation site for the OwaspHeaders.Core NuGet library
 theme: just-the-docs
 
-url: https://gaprogman.github.io/OwaspHeaders.Core # might need to change this once built
+# URL for the built GitHub pages root; ensures that all generated absolute URLs are correct
+url: https://gaprogman.github.io/OwaspHeaders.Core
+
+# Aux links for the upper right navigation
 
 aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+  Repository: https://github.com/gaprogman/OwaspHeaders.Core
+  NuGet: https://www.nuget.org/packages/OwaspHeaders.Core/
+# Makes Aux links open in a new tab. Default is false
+aux_links_new_tab: true
+
+logo: "icon.png"
+favicon_ico: "icon.svg"
+
+# Footer last edited timestamp
+last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
+last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https://ruby-doc.org/stdlib-2.7.0/libdoc/time/rdoc/Time.html
+
+# Footer "Edit this page on GitHub" link text
+gh_edit_link: true # show or hide edit this page link
+gh_edit_link_text: "Edit this page on GitHub."
+gh_edit_repository: "https://github.com/GaProgMan/OwaspHeaders.Core" # the github URL for your repo
+gh_edit_branch: "main" # the branch that your docs is served from
+# gh_edit_source: docs # the source that your files originate from
+gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately

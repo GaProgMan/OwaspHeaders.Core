@@ -71,6 +71,9 @@ callouts:
   warning:
     title: Warning
     color: red
+  quote:
+    titles: Quote
+    color: yellow
 
 plugins:
   - jekyll-seo-tag

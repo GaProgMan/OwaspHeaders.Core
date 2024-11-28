@@ -22,6 +22,10 @@ This version dropped support for .NET 6 and .NET 7, as they are no longer suppor
 
 All projects in the [GitHub repo](https://github.com/GaProgMan/OwaspHeaders.Core) now build and run with either .NET 8 or .NET 9, whichever is present (deferring to the highest version number if both are present). As of November 19th, 2024 there are no new features in Version 9, so if you still need to use the NuGet package with .NET 6 or 7 please use Version 8 of the package.
 
+#### Version 9.1
+
+The `max-age` value for the Strict-Transport-Security (HSTS) header was updated to the OWASP recommended value of 31536000 (365 days).
+
 ### Version 8
 
 This version dropped support for support for ASP .NET Core on .NET Framework workflows. This means that, from version 8 onwards, this package will no longer with with .NET Framework workloads. This decision was made as Microsoft have dropped support for ASP .NET Core on .NET Framework workloads. This can be seen in the ASP .NET Core support documentation [here](https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core)

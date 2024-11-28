@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using OwaspHeaders.Core;
 using OwaspHeaders.Core.Extensions;
 using Xunit;
 

@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using OwaspHeaders.Core;
 using OwaspHeaders.Core.Extensions;
 using Xunit;
 
@@ -21,7 +20,7 @@ namespace OwaspHeaders.Core.Tests.CustomHeaders
             // assert
             Assert.True(headerPresentConfig.UseHsts);
             Assert.True(_context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
-            Assert.Equal("max-age=63072000;includeSubDomains",
+            Assert.Equal("max-age=31536000;includeSubDomains",
                 _context.Response.Headers[Constants.StrictTransportSecurityHeaderName]);
         }
 

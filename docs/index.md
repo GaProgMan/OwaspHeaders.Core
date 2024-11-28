@@ -35,7 +35,7 @@ The following is an example of the response headers from version 9.0.0 (taken on
 
 ```plaintext
 Cache-Control: max-age=31536000;private
-Strict-Transport-Security: max-age=63072000;includeSubDomains
+Strict-Transport-Security: max-age=31536000;includeSubDomains
 X-Frame-Options: DENY
 X-XSS-Protection: 0
 X-Content-Type-Options: nosniff

@@ -35,7 +35,7 @@ The following is an example of the response headers from version 9.0.0 (taken on
  content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests; 
  cross-origin-resource-policy: same-origin 
  referrer-policy: no-referrer 
- strict-transport-security: max-age=63072000;includeSubDomains 
+ strict-transport-security: max-age=31536000;includeSubDomains 
  x-content-type-options: nosniff 
  x-frame-options: DENY 
  x-permitted-cross-domain-policies: none; 

@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using OwaspHeaders.Core;
 using OwaspHeaders.Core.Enums;
 using OwaspHeaders.Core.Extensions;
 using Xunit;

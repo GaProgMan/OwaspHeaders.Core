@@ -45,7 +45,7 @@ namespace OwaspHeaders.Core.Extensions
         /// </remarks>
         public static SecureHeadersMiddlewareConfiguration UseHsts
             (this SecureHeadersMiddlewareConfiguration config,
-                int maxAge = 63072000, bool includeSubDomains = true)
+                int maxAge = 31536000, bool includeSubDomains = true)
         {
             config.UseHsts = true;
             config.HstsConfiguration = new HstsConfiguration(maxAge, includeSubDomains);

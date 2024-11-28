@@ -14,7 +14,7 @@ Adding the default configuration by adding the following to your `Program.cs` so
 app.UseSecureHeadersMiddleware();
 ```
 
-This will use the default configuration for the OwaspHeaders.Core middleware. The method (found in `/src/Extensions/SecureHeadersMiddlewareExtensions.cs`) looks like this:
+This will use the default configuration for the OwaspHeaders.Core middleware. The method looks like this:
 
 ```csharp
 public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration() 

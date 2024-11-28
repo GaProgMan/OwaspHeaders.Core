@@ -1,6 +1,7 @@
 ---
 title: X-Content-Type-Options
 nav_order: 4
+layout: page
 ---
 
 The Mozilla Developer Network describes the X-Content-Type-Options header like this:

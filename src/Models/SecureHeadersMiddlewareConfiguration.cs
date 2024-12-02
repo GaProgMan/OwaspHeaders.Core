@@ -28,16 +28,17 @@
         public bool UseContentSecurityPolicy { get; set; }
 
         /// <summary>
-        /// <para>Indicates whether the response should use a Report-Only version of the
-        /// Content-Security-Policy</para>
-        /// <para>This can be useful when in development mode, as the browser will not block
-        /// content which violates the CSP rule set - it will report to the supplied ReportUri</para>
-        /// This can be
+        /// <para>Indicates whether the response should use a Report-Only version
+        /// of the Content-Security-Policy</para>
+        /// <para>This can be useful when in development mode, as the browser will
+        /// not block content which violates the CSP rule set - it will report to
+        /// the supplied ReportUri</para>
         /// </summary>
         public bool UseContentSecurityPolicyReportOnly { get; set; }
 
         /// <summary>
-        /// Indicates whether the response should use X-Content-Security-Policy for Internet Explorer compatibility
+        /// Indicates whether the response should use X-Content-Security-Policy for
+        /// Internet Explorer compatibility
         /// </summary>
         public bool UseXContentSecurityPolicy { get; set; }
 
@@ -60,8 +61,6 @@
         /// Indicates whether the response should use Cache-Control
         /// </summary>
         public bool UseCacheControl { get; set; }
-
-        public bool RemoveXPoweredByHeader { get; set; }
 
         /// <summary>
         /// Indicates whether the response should use Cross-Origin-Resource-Policy

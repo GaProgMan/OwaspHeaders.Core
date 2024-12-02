@@ -1,9 +1,4 @@
-﻿using System.Threading.Tasks;
-using OwaspHeaders.Core.Enums;
-using OwaspHeaders.Core.Extensions;
-using Xunit;
-
-namespace OwaspHeaders.Core.Tests.CustomHeaders
+﻿namespace OwaspHeaders.Core.Tests.CustomHeaders
 {
     public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
     {

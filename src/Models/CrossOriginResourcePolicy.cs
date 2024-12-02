@@ -2,11 +2,16 @@
 {
     /// <summary>
     /// Cross-Origin-Resource-Policy
-    /// This response header(also named CORP) allows to define a policy that lets web sites and applications opt in to protection 
-    /// against certain requests from other origins(such as those issued with elements like<script> and <img>), to mitigate speculative 
-    /// side-channel attacks, like Spectre, as well as Cross-Site Script Inclusion(XSSI) attacks(source Mozilla MDN).
+    /// This response header(also named CORP) allows to define a policy that let
+    /// websites and applications opt in to protection against certain requests
+    /// from other origins(such as those issued with elements like the script and
+    /// img tags), to mitigate speculative side-channel attacks, like Spectre, as
+    /// well as Cross-Site Script Inclusion(XSSI) attacks(source Mozilla MDN).
     /// </summary>
-    public class CrossOriginResourcePolicy : IConfigurationBase
+    public class CrossOriginResourcePolicy(
+        CrossOriginResourcePolicy.CrossOriginResourceOptions value =
+            CrossOriginResourcePolicy.CrossOriginResourceOptions.SameOrigin)
+        : IConfigurationBase
     {
         /// <summary>
         /// Only requests from the same Origin (i.e. scheme + host + port) can read the resource.
@@ -38,12 +43,7 @@
             CrossOrigin
         };
 
-        public CrossOriginResourceOptions OptionValue { get; set; }
-
-        public CrossOriginResourcePolicy(CrossOriginResourceOptions value = CrossOriginResourceOptions.SameOrigin)
-        {
-            OptionValue = value;
-        }
+        private CrossOriginResourceOptions OptionValue { get; } = value;
 
         /// <summary>
         /// Builds the HTTP header value

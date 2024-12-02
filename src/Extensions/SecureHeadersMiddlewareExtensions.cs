@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
-using OwaspHeaders.Core.Models;
+﻿using Microsoft.AspNetCore.Builder;
 
 namespace OwaspHeaders.Core.Extensions
 {
@@ -16,7 +14,7 @@ namespace OwaspHeaders.Core.Extensions
         /// current default values that they supply.
         /// </summary>
         /// <remarks>
-        /// This method sets up all of the headers which are recommended by OWASP, using
+        /// This method sets up all the headers which are recommended by OWASP, using
         /// default values that they recommend in their best practises. Please see the following
         /// url for the current best practises:
         /// https://www.owasp.org/index.php/OWASP_Secure_Headers_Project#tab=Best_Practices
@@ -32,7 +30,6 @@ namespace OwaspHeaders.Core.Extensions
                 .UsePermittedCrossDomainPolicies()
                 .UseReferrerPolicy()
                 .UseCacheControl()
-                .RemovePoweredByHeader()
                 .UseXssProtection()
                 .UseCrossOriginResourcePolicy()
                 .Build();
@@ -47,22 +44,21 @@ namespace OwaspHeaders.Core.Extensions
         /// The instance of the <see cref="IApplicationBuilder" /> to use
         /// </param>
         /// <param name="config">
-        /// [OPTIONAL] An instance of the <see cref="SecureHeadersMiddlewareConfiguration" /> containing all of the config for each request
+        /// [OPTIONAL] An instance of the <see cref="SecureHeadersMiddlewareConfiguration" />
+        /// containing all the config for each request
         /// </param>
         /// <returns>
         /// The <see cref="IApplicationBuilder"/> with the <see cref="SecureHeadersMiddleware" /> added
         /// </returns>
         /// <remarks>
-        /// If an instance of <see cref="SecureHeadersMiddlewareConfiguration"/> is not provided, then the default value
-        /// from <see cref="BuildDefaultConfiguration"/> will be provided.
+        /// If an instance of <see cref="SecureHeadersMiddlewareConfiguration"/> is not provided,
+        /// then the default value from <see cref="BuildDefaultConfiguration"/> will be provided.
         /// </remarks>
-        public static IApplicationBuilder UseSecureHeadersMiddleware(this IApplicationBuilder builder, SecureHeadersMiddlewareConfiguration config = null)
+        public static IApplicationBuilder UseSecureHeadersMiddleware(this IApplicationBuilder builder,
+            SecureHeadersMiddlewareConfiguration config = null)
         {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(
-                    $"{nameof(builder)} cannot be null when setting up OWASP Secure Headers in OwaspHeaders.Core");
-            }
+            ObjectGuardClauses.ObjectCannotBeNull(builder, nameof(builder),
+                "cannot be null when setting up OWASP Secure Headers in OwaspHeaders.Core");
             return builder.UseMiddleware<SecureHeadersMiddleware>(config ?? BuildDefaultConfiguration());
         }
     }

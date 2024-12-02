@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using OwaspHeaders.Core.Extensions;
-using OwaspHeaders.Core.Models;
+﻿using System.Threading.Tasks;
 
 namespace OwaspHeaders.Core
 {
@@ -10,17 +6,9 @@ namespace OwaspHeaders.Core
     /// A middleware for injecting OWASP recommended headers into a
     /// HTTP Request
     /// </summary>
-    public class SecureHeadersMiddleware
+    public class SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config)
     {
-        private readonly RequestDelegate _next;
-        private readonly SecureHeadersMiddlewareConfiguration _config;
         private string _calculatedContentSecurityPolicy;
-
-        public SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config)
-        {
-            _next = next;
-            _config = config;
-        }
 
         /// <summary>
         /// The main task of the middleware. This will be invoked whenever
@@ -30,97 +18,91 @@ namespace OwaspHeaders.Core
         /// <returns></returns>
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            if (_config == null)
+            if (config == null)
             {
-                throw new ArgumentException($@"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.");
+                throw new ArgumentException($"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.");
             }
 
-            if (_config.UseHsts)
+            if (config.UseHsts)
             {
                 httpContext.TryAddHeader(Constants.StrictTransportSecurityHeaderName,
-                    _config.HstsConfiguration.BuildHeaderValue());
+                    config.HstsConfiguration.BuildHeaderValue());
             }
 
-            if (_config.UseXFrameOptions)
+            if (config.UseXFrameOptions)
             {
                 httpContext.TryAddHeader(Constants.XFrameOptionsHeaderName,
-                    _config.XFrameOptionsConfiguration.BuildHeaderValue());
+                    config.XFrameOptionsConfiguration.BuildHeaderValue());
             }
 
-            if (_config.UseXssProtection)
+            if (config.UseXssProtection)
             {
                 httpContext.TryAddHeader(Constants.XssProtectionHeaderName,
-                    _config.XssConfiguration.BuildHeaderValue());
+                    config.XssConfiguration.BuildHeaderValue());
             }
 
-            if (_config.UseXContentTypeOptions)
+            if (config.UseXContentTypeOptions)
             {
                 httpContext.TryAddHeader(Constants.XContentTypeOptionsHeaderName, "nosniff");
             }
 
-            if (_config.UseContentSecurityPolicyReportOnly)
+            if (config.UseContentSecurityPolicyReportOnly)
             {
                 if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
                 {
-                    _calculatedContentSecurityPolicy = _config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue();
+                    _calculatedContentSecurityPolicy = config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue();
                 }
                 httpContext.TryAddHeader(Constants.ContentSecurityPolicyReportOnlyHeaderName,
                     _calculatedContentSecurityPolicy);
             }
-            else if (_config.UseContentSecurityPolicy)
+            else if (config.UseContentSecurityPolicy)
             {
                 if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
                 {
-                    _calculatedContentSecurityPolicy = _config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
+                    _calculatedContentSecurityPolicy = config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
                 }
                 httpContext.TryAddHeader(Constants.ContentSecurityPolicyHeaderName,
                     _calculatedContentSecurityPolicy);
             }
 
-            if (_config.UseXContentSecurityPolicy)
+            if (config.UseXContentSecurityPolicy)
             {
                 httpContext.TryAddHeader(Constants.XContentSecurityPolicyHeaderName,
-                    _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
+                    config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
             }
 
-            if (_config.UsePermittedCrossDomainPolicy)
+            if (config.UsePermittedCrossDomainPolicy)
             {
                 httpContext.TryAddHeader(Constants.PermittedCrossDomainPoliciesHeaderName,
-                    _config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
+                    config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
             }
 
-            if (_config.UseReferrerPolicy)
+            if (config.UseReferrerPolicy)
             {
                 httpContext.TryAddHeader(Constants.ReferrerPolicyHeaderName,
-                    _config.ReferrerPolicy.BuildHeaderValue());
+                    config.ReferrerPolicy.BuildHeaderValue());
             }
 
-            if (_config.UseExpectCt)
+            if (config.UseExpectCt)
             {
                 httpContext.TryAddHeader(Constants.ExpectCtHeaderName,
-                    _config.ExpectCt.BuildHeaderValue());
+                    config.ExpectCt.BuildHeaderValue());
             }
 
-            if (_config.UseCacheControl)
+            if (config.UseCacheControl)
             {
                 httpContext.TryAddHeader(Constants.CacheControlHeaderName,
-                    _config.CacheControl.BuildHeaderValue());
+                    config.CacheControl.BuildHeaderValue());
             }
 
-            if (_config.RemoveXPoweredByHeader)
-            {
-                httpContext.TryRemoveHeader(Constants.PoweredByHeaderName);
-                httpContext.TryRemoveHeader(Constants.ServerHeaderName);
-            }
-
-            if (_config.UseCrossOriginResourcePolicy)
+            if (config.UseCrossOriginResourcePolicy)
             {
                 httpContext.TryAddHeader(Constants.CrossOriginResourcePolicyHeaderName,
-                    _config.CrossOriginResourcePolicy.BuildHeaderValue());
+                    config.CrossOriginResourcePolicy.BuildHeaderValue());
             }
 
             // Call the next middleware in the chain
-            await _next(httpContext);
+            await next(httpContext);
         }
     }
 }

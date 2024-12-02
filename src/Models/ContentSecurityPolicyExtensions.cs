@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using OwaspHeaders.Core.Enums;
-using OwaspHeaders.Core.Helpers;
-
-namespace OwaspHeaders.Core.Models
+﻿namespace OwaspHeaders.Core.Models
 {
     public static class ContentSecurityPolicyExtensions
     {

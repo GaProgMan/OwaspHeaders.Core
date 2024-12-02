@@ -7,7 +7,12 @@
         /// </summary>
         public static void RaiseException(string argumentName)
         {
-            throw new System.ArgumentException($"No value for {argumentName} was supplied");
+            throw new ArgumentException($"No value for {argumentName} was supplied");
+        }
+
+        public static void RaiseArgumentNullException(string argumentName, string message)
+        {
+            throw new ArgumentNullException(argumentName, message);
         }
     }
 }

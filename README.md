@@ -18,6 +18,10 @@ Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIO
 
 That's it.
 
+## Documentation
+
+The latest documentation for OwaspHeaders.Core can be found at [https://gaprogman.github.io/OwaspHeaders.Core/](https://gaprogman.github.io/OwaspHeaders.Core/).
+
 ## Pull Requests
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)

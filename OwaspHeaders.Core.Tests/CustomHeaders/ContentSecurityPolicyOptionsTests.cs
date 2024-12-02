@@ -7,7 +7,7 @@
         {
             // arrange
             var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
-                .UseContentDefaultSecurityPolicy().Build();
+                .UseDefaultContentSecurityPolicy().Build();
             var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
             // act

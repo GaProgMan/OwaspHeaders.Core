@@ -123,7 +123,7 @@ namespace OwaspHeaders.Core.Extensions
         ///  - a ScriptSrc of "self"
         ///  - an ObjectSrc of "self"
         /// </remarks>
-        public static SecureHeadersMiddlewareConfiguration UseContentDefaultSecurityPolicy
+        public static SecureHeadersMiddlewareConfiguration UseDefaultContentSecurityPolicy
         (this SecureHeadersMiddlewareConfiguration config)
         {
             config.UseContentSecurityPolicy = true;
@@ -132,11 +132,11 @@ namespace OwaspHeaders.Core.Extensions
                 (null, true, true, null, null);
 
             config.SetCspUris(
-                new List<ContentSecurityPolicyElement> { ContentSecurityPolicyHelpers.CreateSelfDirective() },
+                [ContentSecurityPolicyHelpers.CreateSelfDirective()],
                 CspUriType.Script);
 
             config.SetCspUris(
-                new List<ContentSecurityPolicyElement> { ContentSecurityPolicyHelpers.CreateSelfDirective() },
+                [ContentSecurityPolicyHelpers.CreateSelfDirective()],
                 CspUriType.Object);
 
             return config;
@@ -306,9 +306,12 @@ namespace OwaspHeaders.Core.Extensions
         /// The HTTP Cross-Origin-Resource-Policy response header value.
         /// </param>
         /// <remarks>
-        /// Defaults to "same-origin" (<see cref="CrossOriginResourceOptions.SameOrigin"/>) which means that "Only requests from the same Origin (i.e. scheme + host + port) can read the resource."
+        /// Defaults to "same-origin" (<see cref="CrossOriginResourceOptions.SameOrigin"/>) which means
+        /// that "Only requests from the same Origin (i.e. scheme + host + port) can read the resource."
         ///</remarks>
-        public static SecureHeadersMiddlewareConfiguration UseCrossOriginResourcePolicy(this SecureHeadersMiddlewareConfiguration config, CrossOriginResourceOptions value = CrossOriginResourceOptions.SameOrigin)
+        public static SecureHeadersMiddlewareConfiguration UseCrossOriginResourcePolicy(
+            this SecureHeadersMiddlewareConfiguration config,
+            CrossOriginResourceOptions value = CrossOriginResourceOptions.SameOrigin)
         {
             config.UseCrossOriginResourcePolicy = true;
             config.CrossOriginResourcePolicy = new CrossOriginResourcePolicy(value);

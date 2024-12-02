@@ -26,7 +26,7 @@ namespace OwaspHeaders.Core.Extensions
                 .UseHsts()
                 .UseXFrameOptions()
                 .UseContentTypeOptions()
-                .UseContentDefaultSecurityPolicy()
+                .UseDefaultContentSecurityPolicy()
                 .UsePermittedCrossDomainPolicies()
                 .UseReferrerPolicy()
                 .UseCacheControl()

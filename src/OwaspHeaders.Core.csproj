@@ -8,7 +8,7 @@
 
     <!-- NuGet metadata -->
     <PackageId>OwaspHeaders.Core</PackageId>
-    <Version>9.2.0</Version>
+    <Version>9.2.1</Version>
     <Authors>Jamie Taylor</Authors>
     <Company>RJJ Software Ltd</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -17,7 +17,7 @@
     <Description>An ASP.NET Core Middleware which adds the OWASP recommended HTTP headers for enhanced security.</Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README-NuGet.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/GaProgMan/OwaspHeaders.Core</PackageProjectUrl>
+    <PackageProjectUrl>https://gaprogman.github.io/OwaspHeaders.Core/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GaProgMan/OwaspHeaders.Core.git</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>

@@ -66,7 +66,7 @@ representative at an online or offline event.
 
 Instances of abusive, harassing, or otherwise unacceptable behaviour may be
 reported to the community leaders responsible for enforcement at
-[RJJ Software](mailto:info@rjj-software.co.uk?subject=OwaspHeaders.Core%20Code%20of%20Conduct%20Violation&body=I%2would%20like%20to%20report%20a%20code%20ofconmduct%20violation).
+[RJJ Software](mailto:info@rjj-software.co.uk?subject=OwaspHeaders.Core%20Code%20of%20Conduct%20Violation&body=I%20would%20like%20to%20report%20a%20code%20ofconduct%20violation).
 All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the

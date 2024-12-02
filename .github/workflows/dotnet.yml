@@ -86,7 +86,7 @@ jobs:
       run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
 
   package:
-   needs: [build, tests]
+   needs: [build, test]
 
    runs-on: ubuntu-latest
 

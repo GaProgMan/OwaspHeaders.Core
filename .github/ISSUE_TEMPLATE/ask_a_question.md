@@ -18,7 +18,7 @@ assignees: ''
 
 ## Minimal Code Sample
 
-The following is a minimal code sample which helps to highlight my question.
+The following is a [minimal code sample](https://gaprogman.github.io/OwaspHeaders.Core/Minimal-Code-Sample/) which helps to highlight my question.
 
 ```cs
 // in Program.cs

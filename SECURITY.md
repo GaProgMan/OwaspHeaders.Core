@@ -20,6 +20,6 @@ The following table contains the list of versions of OwaspHeaders.Core that are 
 
 ## Reporting a Vulnerability
 
-Please report vulnerabilities using GitHub's [Issues](https://github.com/GaProgMan/OwaspHeaders.Core/issues) functionality and picking the "Report a vulnerability" type.
+Please report vulnerabilities using GitHub's [Issues](https://github.com/GaProgMan/OwaspHeaders.Core/issues) functionality.
 
 We will aim to fix any vulnerabilities within 48-72 hours of them being reported.

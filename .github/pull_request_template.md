@@ -13,7 +13,7 @@ The following is a [minimal code sample](https://gaprogman.github.io/OwaspHeader
 app.UseSecureHeadersMiddleware();
 ```
 
-## PR Checklist
+### PR Checklist
 
 Feel free to either check the following items (by place an `x` inside of the square brackets) or by replacing the square brackets with a relevant emoji from the following list:
 
@@ -21,7 +21,7 @@ Feel free to either check the following items (by place an `x` inside of the squ
 - :negative_squared_cross_mark: to indicate that you haven't checked something off
 - :question: to indicate that something might not be relevant (writing tests for documentation changes, for instance)
 
-### Essential
+#### Essential
 
 These items are essential and must be completed for each commit. If they are not completed, the PR may not be accepted.
 
@@ -30,11 +30,11 @@ These items are essential and must be completed for each commit. If they are not
 - [ ] I have ensured that the code coverage has not dropped below 65%
 - [ ] I have increased the version number in OwaspHeaders.Core.csproj (only relevant for code changes)
 
-### Optional
+#### Optional
 
 - [ ] I have documented the new feature in the docs directory
 - [ ] I have provided a code sample, showing how someone could use the new code
 
-## Any Other Information
+### Any Other Information
 
 This section is optional, but it might be useful to list any other information you think is relevant.

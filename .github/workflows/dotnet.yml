@@ -44,7 +44,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup .NET Core
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.x'
@@ -64,8 +64,15 @@ jobs:
 
     steps:
       
-    - name: show all files
-      run: ls -lha .
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+      
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
     
     - name: Run all tests
       run: dotnet test OwaspHeaders.Core.sln --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
@@ -95,6 +102,16 @@ jobs:
    name: Create the NuGet package for PR-level user testing
 
    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+      
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
     - name: Build NuGet Package
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
 

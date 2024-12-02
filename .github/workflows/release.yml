@@ -5,10 +5,11 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '.github/**'
-      - '*.md'
-      - 'docs/**'
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'example/**'
+      - '.github/workflows/**'
 
 jobs:
 
@@ -50,7 +51,7 @@ jobs:
         dotnet-version: '9.0.x'
 
     - name: Run all tests
-      run: dotnet test OwaspHeaders.Core.Tests/OwaspHeaders.Core.Tests.csproj --verbosity minimal
+      run: dotnet test OwaspHeaders.Core.sln --verbosity minimal
 
 
   package:

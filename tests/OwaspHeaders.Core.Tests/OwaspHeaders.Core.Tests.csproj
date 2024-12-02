@@ -23,7 +23,7 @@
     </PackageReference>
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-*" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <ProjectReference Include="..\src\OwaspHeaders.Core.csproj" />
+    <ProjectReference Include="..\..\src\OwaspHeaders.Core.csproj" />
   </ItemGroup>
   
   <ItemGroup>

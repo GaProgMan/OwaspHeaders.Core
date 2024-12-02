@@ -14,10 +14,10 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '.github/**'
-      - '*.md'
-      - 'docs/**'
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'example/**'
 
 permissions: read-all
 

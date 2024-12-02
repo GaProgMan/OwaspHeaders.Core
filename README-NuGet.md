@@ -48,6 +48,10 @@ Please note: The above example contains only the headers added by the Middleware
 
 The source code for this NuGet package can be found at: [https://github.com/GaProgMan/OwaspHeaders.Core](https://github.com/GaProgMan/OwaspHeaders.Core).
 
+## Documentation
+
+The documentation for this NuGet package can be found at: [https://gaprogman.github.io/OwaspHeaders.Core/](https://gaprogman.github.io/OwaspHeaders.Core/).
+
 ## Issues and Bugs
 
 Please raise any issues and bugs at the above mentioned source code repo.

@@ -2,6 +2,7 @@
 title: X-Frame-Options (XFO)
 nav_order: 2
 layout: page
+has_toc: false
 ---
 
 The Mozilla Developer Network describes the X-Frame-Options header like this:

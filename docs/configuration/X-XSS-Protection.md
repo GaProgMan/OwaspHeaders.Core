@@ -2,6 +2,7 @@
 title: X-XSS-Protection
 nav_order: 3
 layout: page
+has_toc: false
 ---
 
 The Mozilla Developer Network describes the X-XSS-Protection header like this:

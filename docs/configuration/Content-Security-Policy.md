@@ -1,7 +1,6 @@
 ---
 title: Content-Security-Policy
 nav_order: 5
-layout: page
 has_toc: false
 ---
 

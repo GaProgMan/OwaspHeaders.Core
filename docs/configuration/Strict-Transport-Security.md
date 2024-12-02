@@ -1,7 +1,6 @@
 ---
 title: Strict-Transport-Security (HSTS)
 nav_order: 1
-layout: page
 has_toc: false
 ---
 

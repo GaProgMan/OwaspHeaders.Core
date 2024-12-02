@@ -1,7 +1,6 @@
 ---
 title: X-Content-Type-Options
 nav_order: 4
-layout: page
 has_toc: false
 ---
 

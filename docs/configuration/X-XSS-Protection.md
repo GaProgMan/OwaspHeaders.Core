@@ -1,7 +1,6 @@
 ---
 title: X-XSS-Protection
 nav_order: 3
-layout: page
 has_toc: false
 ---
 

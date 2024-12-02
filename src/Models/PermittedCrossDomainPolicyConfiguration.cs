@@ -1,24 +1,26 @@
-﻿using OwaspHeaders.Core.Enums;
-using OwaspHeaders.Core.Helpers;
-
-namespace OwaspHeaders.Core.Models
+﻿namespace OwaspHeaders.Core.Models
 {
     public class PermittedCrossDomainPolicyConfiguration : IConfigurationBase
     {
 
-        public XPermittedCrossDomainOptionValue xPermittedCrossDomainOptionValue { get; set; }
+        public XPermittedCrossDomainOptionValue XPermittedCrossDomainOptionValue { get; init; }
 
+        /// <summary>
+        /// Protected constructor, we can no longer create instances of this class without
+        /// using the public constructor
+        /// </summary>
+        [ExcludeFromCodeCoverage]
         protected PermittedCrossDomainPolicyConfiguration() { }
 
         public PermittedCrossDomainPolicyConfiguration(
             XPermittedCrossDomainOptionValue permittedCrossDomainOptionValue)
         {
-            xPermittedCrossDomainOptionValue = permittedCrossDomainOptionValue;
+            XPermittedCrossDomainOptionValue = permittedCrossDomainOptionValue;
         }
 
         public string BuildHeaderValue()
         {
-            switch (xPermittedCrossDomainOptionValue)
+            switch (XPermittedCrossDomainOptionValue)
             {
                 case XPermittedCrossDomainOptionValue.none:
                     return "none;";
@@ -31,9 +33,11 @@ namespace OwaspHeaders.Core.Models
                 case XPermittedCrossDomainOptionValue.all:
                     return "all;";
                 default:
-                    ArgumentExceptionHelper.RaiseException(nameof(xPermittedCrossDomainOptionValue));
+                    ArgumentExceptionHelper.RaiseException(nameof(XPermittedCrossDomainOptionValue));
                     break;
             }
+            // We should never hit this return statement. It is included here
+            // as the method NEEDs to return something.
             return ";";
         }
     }

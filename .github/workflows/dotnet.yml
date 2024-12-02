@@ -24,7 +24,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: '9.0.x'
 
     - name: Install dotnet-format tool
       run: dotnet tool install -g dotnet-format
@@ -35,8 +35,8 @@ jobs:
   build:
 
     needs: [check-code-formatting]
-
     runs-on: ubuntu-latest
+    name: Build code base, checking for compilation errors
 
     steps:
     - name: Checkout code
@@ -44,7 +44,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup .NET Core
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.x'
@@ -54,12 +54,66 @@ jobs:
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
+  
+  test:
+    # This job is adapted from https://josh-ops.com/posts/github-code-coverage/
+    # It adds a code coverage report to all PR builds
+    needs: [build]
+    runs-on: ubuntu-latest
+    name: Run all tests and generate PR-level code coverage report
 
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    steps:
+      
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+      
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+    
+    - name: Run all tests
+      run: dotnet test OwaspHeaders.Core.sln --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+      working-directory: ${{env.working-directory}}
 
-    - name: pack
-      run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release --no-build --no-restore
+    - name: Code Coverage Summary Report
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: 'coverage/*/coverage.cobertura.xml'
+        badge: true
+        format: 'markdown'
+        output: 'both'
+
+    - name: Add Coverage PR Comment
+      uses: marocchino/sticky-pull-request-comment@v2.9.0
+      if: github.event_name == 'pull_request'
+      with:
+        recreate: true
+        path: code-coverage-results.md
+
+    - name: Write to Job Summary
+      run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
+
+  package:
+   needs: [build, test]
+   runs-on: ubuntu-latest
+   name: Create the NuGet package for PR-level user testing
+
+   steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+      
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Build NuGet Package
+      run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
 
     - uses: actions/upload-artifact@v4
       if: ${{ success() }}

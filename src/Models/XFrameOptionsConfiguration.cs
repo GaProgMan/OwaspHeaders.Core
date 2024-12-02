@@ -1,14 +1,15 @@
-﻿using System.Text;
-using OwaspHeaders.Core.Enums;
-using OwaspHeaders.Core.Helpers;
-
-namespace OwaspHeaders.Core.Models
+﻿namespace OwaspHeaders.Core.Models
 {
     public class XFrameOptionsConfiguration : IConfigurationBase
     {
-        public XFrameOptions OptionValue { get; set; }
-        public string AllowFromDomain { get; set; }
+        private XFrameOptions OptionValue { get; }
+        public string AllowFromDomain { get; init; }
 
+        /// <summary>
+        /// Protected constructor, we can no longer create instances of this class without
+        /// using the public constructor
+        /// </summary>
+        [ExcludeFromCodeCoverage]
         protected XFrameOptionsConfiguration() { }
 
         public XFrameOptionsConfiguration(XFrameOptions xFrameOption, string allowFromDomain)
@@ -23,28 +24,21 @@ namespace OwaspHeaders.Core.Models
         /// <returns>A string representing the HTTP header value</returns>
         public string BuildHeaderValue()
         {
-            var stringBuilder = new StringBuilder();
             switch (OptionValue)
             {
                 case XFrameOptions.Deny:
-                    stringBuilder.Append("DENY");
-                    break;
+                    return "DENY";
                 case XFrameOptions.Sameorigin:
-                    stringBuilder.Append("SAMEORIGIN");
-                    break;
+                    return "SAMEORIGIN";
                 case XFrameOptions.Allowfrom:
-                    if (string.IsNullOrWhiteSpace(AllowFromDomain))
-                    {
-                        ArgumentExceptionHelper.RaiseException(nameof(AllowFromDomain));
-                    }
-                    stringBuilder.Append($"ALLOW-FROM({AllowFromDomain})");
-                    break;
+                    HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(AllowFromDomain, nameof(AllowFromDomain));
+                    return $"ALLOW-FROM({AllowFromDomain})";
                 case XFrameOptions.AllowAll:
-                    stringBuilder.Append("ALLOWALL");
-                    break;
+                    return "ALLOWALL";
             }
-
-            return stringBuilder.ToString();
+            // We should never hit this return statement. It is included here
+            // as the method NEEDs to return something.
+            return ";";
         }
     }
 }

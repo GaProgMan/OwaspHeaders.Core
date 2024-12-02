@@ -1,11 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using OwaspHeaders.Core.Models;
-using Xunit;
-
-namespace OwaspHeaders.Core.Tests.CustomHeaders
+﻿namespace OwaspHeaders.Core.Tests.CustomHeaders
 {
     public abstract class SecureHeadersTests
     {

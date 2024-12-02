@@ -2,66 +2,66 @@
 {
     /// <summary>
     /// Cross-Origin-Resource-Policy
-    /// This response header(also named CORP) allows to define a policy that lets web sites and applications opt in to protection 
-    /// against certain requests from other origins(such as those issued with elements like<script> and <img>), to mitigate speculative 
-    /// side-channel attacks, like Spectre, as well as Cross-Site Script Inclusion(XSSI) attacks(source Mozilla MDN).
+    /// This response header(also named CORP) allows to define a policy that let
+    /// websites and applications opt in to protection against certain requests
+    /// from other origins(such as those issued with elements like the script and
+    /// img tags), to mitigate speculative side-channel attacks, like Spectre, as
+    /// well as Cross-Site Script Inclusion(XSSI) attacks(source Mozilla MDN).
     /// </summary>
-    public class CrossOriginResourcePolicy : IConfigurationBase
+    public class CrossOriginResourcePolicy(
+        CrossOriginResourcePolicy.CrossOriginResourceOptions value =
+            CrossOriginResourcePolicy.CrossOriginResourceOptions.SameOrigin)
+        : IConfigurationBase
     {
         /// <summary>
         /// Only requests from the same Origin (i.e. scheme + host + port) can read the resource.
         /// </summary>
         public const string SameOriginValue = "same-origin";
+    /// <summary>
+    /// Only requests from the same Site can read the resource.
+    /// </summary>
+    public const string SameSiteValue = "same-site";
+    /// <summary>
+    /// Requests from any Origin (both same-site and cross-site) can read the resource. 
+    /// Browsers are using this policy when an CORP header is not specified.
+    /// </summary>
+    public const string CrossOriginValue = "cross-origin";
+
+    public enum CrossOriginResourceOptions
+    {
         /// <summary>
-        /// Only requests from the same Site can read the resource.
+        /// <see cref="SameOriginValue"/>
         /// </summary>
-        public const string SameSiteValue = "same-site";
+        SameOrigin,
         /// <summary>
-        /// Requests from any Origin (both same-site and cross-site) can read the resource. 
-        /// Browsers are using this policy when an CORP header is not specified.
+        /// <see cref="SameSiteValue"/>
         /// </summary>
-        public const string CrossOriginValue = "cross-origin";
+        SameSite,
+        /// <summary>
+        /// <see cref="CrossOriginValue"/>
+        /// </summary>
+        CrossOrigin
+    };
 
-        public enum CrossOriginResourceOptions
+    private CrossOriginResourceOptions OptionValue { get; } = value;
+
+    /// <summary>
+    /// Builds the HTTP header value
+    /// </summary>
+    /// <returns>A string representing the HTTP header value</returns>
+    public string BuildHeaderValue()
+    {
+        switch (OptionValue)
         {
-            /// <summary>
-            /// <see cref="SameOriginValue"/>
-            /// </summary>
-            SameOrigin,
-            /// <summary>
-            /// <see cref="SameSiteValue"/>
-            /// </summary>
-            SameSite,
-            /// <summary>
-            /// <see cref="CrossOriginValue"/>
-            /// </summary>
-            CrossOrigin
-        };
-
-        public CrossOriginResourceOptions OptionValue { get; set; }
-
-        public CrossOriginResourcePolicy(CrossOriginResourceOptions value = CrossOriginResourceOptions.SameOrigin)
-        {
-            OptionValue = value;
+            case CrossOriginResourceOptions.CrossOrigin:
+                return CrossOriginValue;
+            case CrossOriginResourceOptions.SameSite:
+                return SameSiteValue;
+            case CrossOriginResourceOptions.SameOrigin:
+            default:
+                return SameOriginValue;
         }
-
-        /// <summary>
-        /// Builds the HTTP header value
-        /// </summary>
-        /// <returns>A string representing the HTTP header value</returns>
-        public string BuildHeaderValue()
-        {
-            switch (OptionValue)
-            {
-                case CrossOriginResourceOptions.CrossOrigin:
-                    return CrossOriginValue;
-                case CrossOriginResourceOptions.SameSite:
-                    return SameSiteValue;
-                case CrossOriginResourceOptions.SameOrigin:
-                default:
-                    return SameOriginValue;
-            }
-        }
-
     }
+
+}
 }

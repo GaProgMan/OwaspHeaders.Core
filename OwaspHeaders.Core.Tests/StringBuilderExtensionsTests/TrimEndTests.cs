@@ -1,6 +1,4 @@
 ﻿using System.Text;
-using OwaspHeaders.Core.Extensions;
-using Xunit;
 
 namespace OwaspHeaders.Core.Tests.StringBuilderExtensionsTests
 {

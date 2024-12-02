@@ -1,9 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
-using OwaspHeaders.Core.Extensions;
-using Xunit;
-
-namespace OwaspHeaders.Core.Tests.HttpContextExtensionsTests
+﻿namespace OwaspHeaders.Core.Tests.HttpContextExtensionsTests
 {
     public class TryRemove
     {

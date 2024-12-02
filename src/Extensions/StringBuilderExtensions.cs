@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OwaspHeaders.Core.Enums;
-using OwaspHeaders.Core.Models;
+﻿using System.Linq;
 
 namespace OwaspHeaders.Core.Extensions
 {
     public static class StringBuilderExtensions
     {
-        private static string EmptySpace = " ";
+        private const char EmptySpace = ' ';
 
         /// <summary>
         /// This method is adapted from the following Stack Overflow answer:
@@ -19,15 +15,24 @@ namespace OwaspHeaders.Core.Extensions
         /// <returns></returns>
         public static StringBuilder TrimEnd(this StringBuilder sb)
         {
-            if (sb == null || sb.Length == 0) return sb;
+            if (sb == null || sb.Length == 0)
+            {
+                return sb;
+            }
 
             int i = sb.Length - 1;
             for (; i >= 0; i--)
+            {
                 if (!char.IsWhiteSpace(sb[i]))
+                {
                     break;
+                }
+            }
 
             if (i < sb.Length - 1)
+            {
                 sb.Length = i + 1;
+            }
 
             return sb;
         }
@@ -42,18 +47,23 @@ namespace OwaspHeaders.Core.Extensions
         public static StringBuilder BuildValuesForDirective(this StringBuilder stringBuilder,
             string directiveName, List<ContentSecurityPolicyElement> directiveValues)
         {
-            if (!directiveValues.Any()) return stringBuilder;
+            if (directiveValues.Count == 0)
+            {
+                return stringBuilder;
+            }
 
             stringBuilder.Append(directiveName);
             if (directiveValues.Any(d => d.CommandType == CspCommandType.Directive))
             {
-                var directives = directiveValues.Where(command => command.CommandType == CspCommandType.Directive);
+                var directives = directiveValues.
+                    Where(command => command.CommandType == CspCommandType.Directive);
                 stringBuilder.Append(EmptySpace);
 
-                if (directives.Any())
+                var contentSecurityPolicyElements = directives.ToList();
+                if (contentSecurityPolicyElements.Count != 0)
                 {
                     stringBuilder.Append(string.Join(EmptySpace,
-                        directives.Select(directive => $"'{directive.DirectiveOrUri}'")));
+                        contentSecurityPolicyElements.Select(directive => $"'{directive.DirectiveOrUri}'")));
                 }
             }
 
@@ -66,7 +76,7 @@ namespace OwaspHeaders.Core.Extensions
             }
 
             stringBuilder.TrimEnd();
-            stringBuilder.Append(";");
+            stringBuilder.Append(';');
             return stringBuilder;
         }
     }

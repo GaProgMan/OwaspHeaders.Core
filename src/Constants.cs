@@ -2,32 +2,28 @@
 {
     public static class Constants
     {
-        public static readonly string StrictTransportSecurityHeaderName = "Strict-Transport-Security";
+        public const string StrictTransportSecurityHeaderName = "Strict-Transport-Security";
 
-        public static readonly string XFrameOptionsHeaderName = "X-Frame-Options";
+        public const string XFrameOptionsHeaderName = "X-Frame-Options";
 
-        public static readonly string XssProtectionHeaderName = "X-XSS-Protection";
+        public const string XssProtectionHeaderName = "X-XSS-Protection";
 
-        public static readonly string XContentTypeOptionsHeaderName = "X-Content-Type-Options";
+        public const string XContentTypeOptionsHeaderName = "X-Content-Type-Options";
 
-        public static readonly string ContentSecurityPolicyHeaderName = "Content-Security-Policy";
+        public const string ContentSecurityPolicyHeaderName = "Content-Security-Policy";
 
-        public static readonly string ContentSecurityPolicyReportOnlyHeaderName = "Content-Security-Policy-Report-Only";
+        public const string ContentSecurityPolicyReportOnlyHeaderName = "Content-Security-Policy-Report-Only";
 
-        public static readonly string XContentSecurityPolicyHeaderName = "X-Content-Security-Policy";
+        public const string XContentSecurityPolicyHeaderName = "X-Content-Security-Policy";
 
-        public static readonly string PermittedCrossDomainPoliciesHeaderName = "X-Permitted-Cross-Domain-Policies";
+        public const string PermittedCrossDomainPoliciesHeaderName = "X-Permitted-Cross-Domain-Policies";
 
-        public static readonly string ReferrerPolicyHeaderName = "Referrer-Policy";
+        public const string ReferrerPolicyHeaderName = "Referrer-Policy";
 
-        public static readonly string CacheControlHeaderName = "Cache-Control";
+        public const string CacheControlHeaderName = "Cache-Control";
 
-        public static readonly string ExpectCtHeaderName = "Expect-CT";
+        public const string ExpectCtHeaderName = "Expect-CT";
 
-        public static readonly string PoweredByHeaderName = "X-Powered-By";
-
-        public static readonly string ServerHeaderName = "Server";
-
-        public static readonly string CrossOriginResourcePolicyHeaderName = "Cross-Origin-Resource-Policy";
+        public const string CrossOriginResourcePolicyHeaderName = "Cross-Origin-Resource-Policy";
     }
 }

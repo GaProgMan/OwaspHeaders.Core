@@ -75,7 +75,7 @@ jobs:
         dotnet-version: '9.0.x'
     
     - name: Run all tests
-      run: dotnet test OwaspHeaders.Core.sln --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+      run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
       working-directory: ${{env.working-directory}}
 
     - name: Code Coverage Summary Report

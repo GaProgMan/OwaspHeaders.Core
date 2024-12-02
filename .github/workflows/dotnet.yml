@@ -63,9 +63,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      
+    - name: show all files
+      run: ls -lha .
     
     - name: Run all tests
-      run: dotnet test --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+      run: dotnet test OwaspHeaders.Core.sln --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
 
     - name: Code Coverage Summary Report
       uses: irongut/CodeCoverageSummary@v1.3.0

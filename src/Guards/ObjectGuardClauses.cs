@@ -9,5 +9,5 @@ public static class ObjectGuardClauses
             ArgumentExceptionHelper.RaiseArgumentNullException(parameterName, message);
         }
     }
-    
+
 }

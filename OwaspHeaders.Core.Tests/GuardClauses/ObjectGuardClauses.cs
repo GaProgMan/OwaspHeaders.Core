@@ -12,13 +12,13 @@ public class ObjectGuardClauses
         // Act
         var exception = Record.Exception(() => Guards.ObjectGuardClauses.ObjectCannotBeNull(inputObject,
             nameof(inputObject), expectedOutputMessage));
-        
+
         // Assert
         Assert.IsType<ArgumentNullException>(exception);
         Assert.Contains(expectedOutputMessage, exception.Message);
         Assert.Contains(nameof(inputObject), exception.Message);
     }
-    
+
     [Fact]
     public void NotNullObject_DoesNotThrow_NullArgumentException()
     {
@@ -28,7 +28,7 @@ public class ObjectGuardClauses
 
         // Act
         Guards.ObjectGuardClauses.ObjectCannotBeNull(inputObject, nameof(inputObject), expectedOutputMessage);
-        
+
         // Assert
         // Nothing to assert as it returns void if the Object is valid
     }

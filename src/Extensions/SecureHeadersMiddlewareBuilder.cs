@@ -297,7 +297,7 @@ namespace OwaspHeaders.Core.Extensions
             config.ExpectCt = new ExpectCt(reportUri, maxAge, enforce);
             return config;
         }
-        
+
         /// <summary>
         /// The HTTP Cross-Origin-Resource-Policy response header conveys a desire that the browser 
         /// blocks no-cors cross-origin/cross-site requests to the given resource.

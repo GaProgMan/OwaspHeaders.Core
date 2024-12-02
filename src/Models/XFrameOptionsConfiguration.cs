@@ -4,7 +4,7 @@
     {
         private XFrameOptions OptionValue { get; }
         public string AllowFromDomain { get; init; }
-        
+
         /// <summary>
         /// Protected constructor, we can no longer create instances of this class without
         /// using the public constructor

@@ -36,7 +36,7 @@
         {
             var stringBuilder = new StringBuilder("max-age=");
             stringBuilder.Append(MaxAge);
-            
+
             if (IncludeSubDomains)
             {
                 stringBuilder.Append(";includeSubDomains");

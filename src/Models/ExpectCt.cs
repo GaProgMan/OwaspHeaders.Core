@@ -51,12 +51,12 @@ namespace OwaspHeaders.Core.Models
         {
             var stringBuilder = new StringBuilder("max-age=");
             stringBuilder.Append(MaxAge);
-            
+
             if (Enforce)
             {
                 stringBuilder.Append(", enforce");
             }
-            
+
             if (!string.IsNullOrWhiteSpace(ReportUri))
             {
                 stringBuilder.Append(", report-uri=");

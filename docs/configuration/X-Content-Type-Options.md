@@ -1,8 +1,7 @@
 ---
 title: X-Content-Type-Options
 nav_order: 4
-layout: page
-has_toc: false
+parent: Configuration
 ---
 
 The Mozilla Developer Network describes the X-Content-Type-Options header like this:

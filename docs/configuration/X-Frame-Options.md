@@ -2,6 +2,7 @@
 title: X-Frame-Options (XFO)
 nav_order: 2
 parent: Configuration
+layout: page
 ---
 
 The Mozilla Developer Network describes the X-Frame-Options header like this:

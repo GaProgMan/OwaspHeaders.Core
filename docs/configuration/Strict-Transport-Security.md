@@ -2,6 +2,7 @@
 title: Strict-Transport-Security (HSTS)
 nav_order: 1
 parent: Configuration
+layout: page
 ---
 
 The Mozilla Developer Network describes the Strict-Transport-Security header like this:

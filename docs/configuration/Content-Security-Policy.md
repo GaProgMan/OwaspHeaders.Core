@@ -2,6 +2,7 @@
 title: Content-Security-Policy
 nav_order: 5
 parent: Configuration
+layout: page
 ---
 
 The Mozilla Developer Network describes the X-XSS-Protection header like this:

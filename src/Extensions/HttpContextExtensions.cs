@@ -1,16 +1,15 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
-
-namespace OwaspHeaders.Core.Extensions
+﻿namespace OwaspHeaders.Core.Extensions
 {
     public static class HttpContextExtensions
     {
-        public static bool ResponseContainsHeader(this HttpContext httpContext, string header)
+        private static bool ResponseContainsHeader(this HttpContext httpContext,
+            string header)
         {
             return httpContext.Response.Headers.ContainsKey(header);
         }
 
-        public static bool TryAddHeader(this HttpContext httpContext, string headerName, string headerValue)
+        public static bool TryAddHeader(this HttpContext httpContext,
+            string headerName, string headerValue)
         {
             if (httpContext.ResponseContainsHeader(headerName))
             {
@@ -19,12 +18,13 @@ namespace OwaspHeaders.Core.Extensions
             try
             {
                 // ASP0019 states that:
-                // "IDictionary.Add will throw an ArgumentException when attempting to add a duplicate key."
+                // "IDictionary.Add will throw an ArgumentException when attempting
+                // to add a duplicate key."
                 // However, we've already done a check to see whether the
-                // Response.Headers object
-                // already contains a header with this name (in the above if statement).
-                // So we'll disable the warning here then immediately restore it
-                // after we've done what we need to.
+                // Response.Headers object contains a header with this name (in the
+                // above if statement).
+                // So we'll disable the warning here then immediately restore it after
+                // we've done what we need to.
 #pragma warning disable ASP0019
                 httpContext.Response.Headers.Append(headerName, headerValue);
 #pragma warning restore ASP0019

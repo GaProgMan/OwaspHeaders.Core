@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using OwaspHeaders.Core.Enums;
-using OwaspHeaders.Core.Extensions;
-using OwaspHeaders.Core.Models;
-using Xunit;
-
-namespace OwaspHeaders.Core.Tests.RegressionTests
+﻿namespace OwaspHeaders.Core.Tests.RegressionTests
 {
     /// <summary>
     /// This class contains a number of regression tests against bugs which were reported

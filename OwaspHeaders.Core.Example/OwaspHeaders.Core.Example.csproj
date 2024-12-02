@@ -17,4 +17,12 @@
       <ProjectReference Include="..\src\OwaspHeaders.Core.csproj" />
     </ItemGroup>
 
+  <ItemGroup>
+    <!-- ignores this csproj from code coverage. This project is simply an example
+         ASP .NET Core WebAPI which shows off how to use the middleware. As such, 
+         it should not be included in code coverage stats for the middleware.
+     -->
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>
+
 </Project>

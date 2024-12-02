@@ -1,9 +1,4 @@
-﻿using System.Threading.Tasks;
-using OwaspHeaders.Core.Enums;
-using OwaspHeaders.Core.Extensions;
-using Xunit;
-
-namespace OwaspHeaders.Core.Tests.CustomHeaders
+﻿namespace OwaspHeaders.Core.Tests.CustomHeaders
 {
     public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
     {
@@ -12,7 +7,7 @@ namespace OwaspHeaders.Core.Tests.CustomHeaders
         {
             // arrange
             var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
-                .UseContentDefaultSecurityPolicy().Build();
+                .UseDefaultContentSecurityPolicy().Build();
             var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
             // act

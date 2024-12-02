@@ -7,11 +7,6 @@
 //        at the following url:
 //          https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
 
-using System;
-using System.Collections.Generic;
-using OwaspHeaders.Core.Enums;
-using OwaspHeaders.Core.Helpers;
-using OwaspHeaders.Core.Models;
 using static OwaspHeaders.Core.Models.CrossOriginResourcePolicy;
 
 namespace OwaspHeaders.Core.Extensions
@@ -128,7 +123,7 @@ namespace OwaspHeaders.Core.Extensions
         ///  - a ScriptSrc of "self"
         ///  - an ObjectSrc of "self"
         /// </remarks>
-        public static SecureHeadersMiddlewareConfiguration UseContentDefaultSecurityPolicy
+        public static SecureHeadersMiddlewareConfiguration UseDefaultContentSecurityPolicy
         (this SecureHeadersMiddlewareConfiguration config)
         {
             config.UseContentSecurityPolicy = true;
@@ -137,11 +132,11 @@ namespace OwaspHeaders.Core.Extensions
                 (null, true, true, null, null);
 
             config.SetCspUris(
-                new List<ContentSecurityPolicyElement> { ContentSecurityPolicyHelpers.CreateSelfDirective() },
+                [ContentSecurityPolicyHelpers.CreateSelfDirective()],
                 CspUriType.Script);
 
             config.SetCspUris(
-                new List<ContentSecurityPolicyElement> { ContentSecurityPolicyHelpers.CreateSelfDirective() },
+                [ContentSecurityPolicyHelpers.CreateSelfDirective()],
                 CspUriType.Object);
 
             return config;
@@ -192,10 +187,7 @@ namespace OwaspHeaders.Core.Extensions
             bool upgradeInsecureRequests = true, string referrer = null, bool useXContentSecurityPolicy = false)
         {
             // Check whether the URI is valid before continuing
-            if (!reportUri.IsValidHttpsUri())
-            {
-                ArgumentExceptionHelper.RaiseException(nameof(reportUri));
-            }
+            HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(reportUri, nameof(reportUri));
 
             config.UseContentSecurityPolicyReportOnly = true;
             config.UseXContentSecurityPolicy = useXContentSecurityPolicy;
@@ -307,23 +299,6 @@ namespace OwaspHeaders.Core.Extensions
         }
 
         /// <summary>
-        /// Thanks to Stack Overflow userrawb for this description:
-        /// This is a common non-standard HTTP response header. It's often included by default in responses constructed via a particular scripting technology.
-        /// Source: https://stackoverflow.com/a/33580769/1143474
-        /// </summary>
-        /// <remarks>
-        /// A lot of web security experts recommend removing this header as it exposes the version
-        /// of the server software. Malicious actors can target your application with attacks relevant
-        /// to the version of the server software you are using. 
-        /// </remarks>
-        public static SecureHeadersMiddlewareConfiguration RemovePoweredByHeader
-            (this SecureHeadersMiddlewareConfiguration config)
-        {
-            config.RemoveXPoweredByHeader = true;
-            return config;
-        }
-
-        /// <summary>
         /// The HTTP Cross-Origin-Resource-Policy response header conveys a desire that the browser 
         /// blocks no-cors cross-origin/cross-site requests to the given resource.
         /// </summary>
@@ -331,9 +306,12 @@ namespace OwaspHeaders.Core.Extensions
         /// The HTTP Cross-Origin-Resource-Policy response header value.
         /// </param>
         /// <remarks>
-        /// Defaults to "same-origin" (<see cref="CrossOriginResourceOptions.SameOrigin"/>) which means that "Only requests from the same Origin (i.e. scheme + host + port) can read the resource."
+        /// Defaults to "same-origin" (<see cref="CrossOriginResourceOptions.SameOrigin"/>) which means
+        /// that "Only requests from the same Origin (i.e. scheme + host + port) can read the resource."
         ///</remarks>
-        public static SecureHeadersMiddlewareConfiguration UseCrossOriginResourcePolicy(this SecureHeadersMiddlewareConfiguration config, CrossOriginResourceOptions value = CrossOriginResourceOptions.SameOrigin)
+        public static SecureHeadersMiddlewareConfiguration UseCrossOriginResourcePolicy(
+            this SecureHeadersMiddlewareConfiguration config,
+            CrossOriginResourceOptions value = CrossOriginResourceOptions.SameOrigin)
         {
             config.UseCrossOriginResourcePolicy = true;
             config.CrossOriginResourcePolicy = new CrossOriginResourcePolicy(value);

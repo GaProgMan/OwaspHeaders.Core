@@ -1,11 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using OwaspHeaders.Core.Extensions;
-using Xunit;
-
-namespace OwaspHeaders.Core.Tests.CustomHeaders
+﻿namespace OwaspHeaders.Core.Tests.CustomHeaders
 {
     public class CacheControlHeaderOptionsTests
     {

@@ -1,12 +1,14 @@
-﻿using OwaspHeaders.Core.Enums;
-using OwaspHeaders.Core.Helpers;
-
-namespace OwaspHeaders.Core.Models
+﻿namespace OwaspHeaders.Core.Models
 {
     public class ReferrerPolicy : IConfigurationBase
     {
-        public ReferrerPolicyOptions ReferrerPolicyOption { get; set; }
+        public ReferrerPolicyOptions ReferrerPolicyOption { get; init; }
 
+        /// <summary>
+        /// Protected constructor, we can no longer create instances of this class without
+        /// using the public constructor
+        /// </summary>
+        [ExcludeFromCodeCoverage]
         protected ReferrerPolicy() { }
 
         public ReferrerPolicy(ReferrerPolicyOptions referrerPolicyOption)
@@ -38,6 +40,8 @@ namespace OwaspHeaders.Core.Models
                     ArgumentExceptionHelper.RaiseException(nameof(ReferrerPolicyOption));
                     break;
             }
+            // We should never hit this return statement. It is included here
+            // as the method NEEDs to return something.
             return ";";
         }
     }

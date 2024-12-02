@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OwaspHeaders.Core.Extensions;
-
-namespace OwaspHeaders.Core.Models
+﻿namespace OwaspHeaders.Core.Models
 {
     public class ContentSecurityPolicyConfiguration : IConfigurationBase
     {
@@ -18,12 +13,13 @@ namespace OwaspHeaders.Core.Models
         public List<ContentSecurityPolicyElement> DefaultSrc { get; set; }
 
         /// <summary>
-        /// The script-src values to use (valid sources for sources for JavaScript)
+        /// The script-src values to use (valid sources for JavaScript)
         /// </summary>
         public List<ContentSecurityPolicyElement> ScriptSrc { get; set; }
 
         /// <summary>
-        /// The object-src values to use (valid sources for the object, embed, and applet elements)
+        /// The object-src values to use (valid sources for the object, embed, and applet
+        /// elements)
         /// </summary>
         public List<ContentSecurityPolicyElement> ObjectSrc { get; set; }
 
@@ -38,22 +34,26 @@ namespace OwaspHeaders.Core.Models
         public List<ContentSecurityPolicyElement> ImgSrc { get; set; }
 
         /// <summary>
-        /// The media-src values to use (valid sources for loading media using the audio and video elements)
+        /// The media-src values to use (valid sources for loading media using the audio
+        /// and video elements)
         /// </summary>
         public List<ContentSecurityPolicyElement> MediaSrc { get; set; }
 
         /// <summary>
-        /// The frame-src values to use (valid sources for nested browsing contexts loading using elements such as frame and iframe)
+        /// The frame-src values to use (valid sources for nested browsing contexts loading
+        /// using elements such as frame and iframe)
         /// </summary>
         public List<ContentSecurityPolicyElement> FrameSrc { get; set; }
 
         /// <summary>
-        /// The child-src values to use (valid sources for web workers and nested browsing contexts loaded using elements such as frame and iframe)
+        /// The child-src values to use (valid sources for web workers and nested browsing
+        /// contexts loaded using elements such as frame and iframe)
         /// </summary>
         public List<ContentSecurityPolicyElement> ChildSrc { get; set; }
 
         /// <summary>
-        /// The frame-ancestors values to use (valid parents that may embed a page using frame, iframe, object, embed, or applet)
+        /// The frame-ancestors values to use (valid parents that may embed a page using frame,
+        /// iframe, object, embed, or applet)
         /// </summary>
         public List<ContentSecurityPolicyElement> FrameAncestors { get; set; }
 
@@ -63,7 +63,8 @@ namespace OwaspHeaders.Core.Models
         public List<ContentSecurityPolicyElement> FontSrc { get; set; }
 
         /// <summary>
-        /// The connect-src values to use (restricts the URLs which can be loaded using script interfaces)
+        /// The connect-src values to use (restricts the URLs which can be loaded using script
+        /// interfaces)
         /// </summary>
         public List<ContentSecurityPolicyElement> ConnectSrc { get; set; }
 
@@ -73,7 +74,8 @@ namespace OwaspHeaders.Core.Models
         public List<ContentSecurityPolicyElement> ManifestSrc { get; set; }
 
         /// <summary>
-        /// The form-action values to use (restricts the URLs which can be used as the target of a form submissions from a given context)
+        /// The form-action values to use (restricts the URLs which can be used as the target of
+        /// a form submissions from a given context)
         /// </summary>
         public List<ContentSecurityPolicyElement> FormAction { get; set; }
 
@@ -83,49 +85,58 @@ namespace OwaspHeaders.Core.Models
         public ContentSecurityPolicySandBox Sandbox { get; set; }
 
         /// <summary>
-        /// Define the set of plugins that can be invoked by the protected resource by limiting the types of resources that can be embedded
+        /// Define the set of plugins that can be invoked by the protected resource by limiting
+        /// the types of resources that can be embedded
         /// </summary>
-        public string PluginTypes { get; set; }
+        private string PluginTypes { get; }
 
         /// <summary>
-        /// Whether to include the block-all-mixed-content directive (prevents loading any assets using HTTP when the page is loaded using HTTPS)
+        /// Whether to include the block-all-mixed-content directive (prevents loading any assets
+        /// using HTTP when the page is loaded using HTTPS)
         /// </summary>
-        public bool BlockAllMixedContent { get; set; }
+        private bool BlockAllMixedContent { get; }
 
         /// <summary>
-        /// Whether to include the upgrade-insecure-requests directive (instructs user agents to treat all of a site's insecure URLs as though they have been replaced with secure URLs)
+        /// Whether to include the upgrade-insecure-requests directive (instructs user agents to
+        /// treat all of a site's insecure URLs as though they have been replaced with secure URLs)
         /// </summary>
-        public bool UpgradeInsecureRequests { get; set; }
+        private bool UpgradeInsecureRequests { get; }
 
         /// <summary>
         /// Define information user agent must send in Referer header
         /// </summary>
-        public string Referrer { get; set; }
+        private string Referrer { get; }
 
         /// <summary>
-        /// Whether to instruct the user agent to report attempts to violate the Content Security Policy
+        /// Whether to instruct the user agent to report attempts to violate the Content-Security
+        /// Policy
         /// </summary>
-        public string ReportUri { get; set; }
+        public string ReportUri { get; init; }
 
+        /// <summary>
+        /// Protected constructor, we can no longer create instances of this class without
+        /// using the public constructor
+        /// </summary>
+        [ExcludeFromCodeCoverage]
         protected ContentSecurityPolicyConfiguration() { }
 
         public ContentSecurityPolicyConfiguration(string pluginTypes, bool blockAllMixedContent,
             bool upgradeInsecureRequests, string referrer, string reportUri)
         {
-            BaseUri = new List<ContentSecurityPolicyElement>();
-            DefaultSrc = new List<ContentSecurityPolicyElement>();
-            ScriptSrc = new List<ContentSecurityPolicyElement>();
-            ObjectSrc = new List<ContentSecurityPolicyElement>();
-            StyleSrc = new List<ContentSecurityPolicyElement>();
-            ImgSrc = new List<ContentSecurityPolicyElement>();
-            MediaSrc = new List<ContentSecurityPolicyElement>();
-            FrameSrc = new List<ContentSecurityPolicyElement>();
-            ChildSrc = new List<ContentSecurityPolicyElement>();
-            FrameAncestors = new List<ContentSecurityPolicyElement>();
-            FontSrc = new List<ContentSecurityPolicyElement>();
-            ConnectSrc = new List<ContentSecurityPolicyElement>();
-            ManifestSrc = new List<ContentSecurityPolicyElement>();
-            FormAction = new List<ContentSecurityPolicyElement>();
+            BaseUri = [];
+            DefaultSrc = [];
+            ScriptSrc = [];
+            ObjectSrc = [];
+            StyleSrc = [];
+            ImgSrc = [];
+            MediaSrc = [];
+            FrameSrc = [];
+            ChildSrc = [];
+            FrameAncestors = [];
+            FontSrc = [];
+            ConnectSrc = [];
+            ManifestSrc = [];
+            FormAction = [];
 
             PluginTypes = pluginTypes;
             BlockAllMixedContent = blockAllMixedContent;
@@ -195,10 +206,13 @@ namespace OwaspHeaders.Core.Models
 
         private bool AnyValues()
         {
-            return BaseUri.Any() || DefaultSrc.Any() || ScriptSrc.Any() || ObjectSrc.Any()
-                || StyleSrc.Any() || ImgSrc.Any() || MediaSrc.Any() || FrameSrc.Any()
-                || ChildSrc.Any() || FrameAncestors.Any() || FontSrc.Any() || ConnectSrc.Any()
-                || ManifestSrc.Any() || FormAction.Any();
+            return BaseUri.Count != 0 || DefaultSrc.Count != 0 ||
+                   ScriptSrc.Count != 0 || ObjectSrc.Count != 0 ||
+                   StyleSrc.Count != 0 || ImgSrc.Count != 0 ||
+                   MediaSrc.Count != 0 || FrameSrc.Count != 0 ||
+                   ChildSrc.Count != 0 || FrameAncestors.Count != 0 ||
+                   FontSrc.Count != 0 || ConnectSrc.Count != 0 ||
+                   ManifestSrc.Count != 0 || FormAction.Count != 0;
         }
     }
 }

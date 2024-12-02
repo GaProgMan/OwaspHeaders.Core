@@ -2,9 +2,9 @@
 
 An ASP.NET Core middleware designed to increase web application security by adopting the recommended [OWASP](https://www.owasp.org/index.php/Main_Page) settings.
 
-| Build Status | Release Status | License used | Changelog | Code of Conduct | Documentation |
-| -------------|----------------|-----------|--------------|-----------------|---------------|
-| [![Build status](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml) | [![Release](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/release.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/release.yml) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) | [changelog](changelog.md) | [Code of Conduct.md](Code-of-Conduct.md) | [![Deploy Jekyll site to Pages](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/pages.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/pages.yml) |
+| Build Status | Release Status | License used | Changelog | Code of Conduct | Documentation | OpenSSF |
+| -------------|----------------|-----------|--------------|-----------------|---------------|---------|
+| [![Build status](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/dotnet.yml) | [![Release](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/release.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/release.yml) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) | [changelog](changelog.md) | [Code of Conduct.md](Code-of-Conduct.md) | [![Deploy Jekyll site to Pages](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/pages.yml/badge.svg)](https://github.com/GaProgMan/OwaspHeaders.Core/actions/workflows/pages.yml) | [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/9723/badge)](https://www.bestpractices.dev/projects/9723) |
 
 Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIONS**. This is because setting up secure HTTP headers in a WebAssembly context is a non-trivial task.
 

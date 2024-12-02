@@ -24,7 +24,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: '9.0.x'
 
     - name: Install dotnet-format tool
       run: dotnet tool install -g dotnet-format
@@ -35,8 +35,8 @@ jobs:
   build:
 
     needs: [check-code-formatting]
-
     runs-on: ubuntu-latest
+    name: Build code base, checking for compilation errors
 
     steps:
     - name: Checkout code
@@ -59,8 +59,8 @@ jobs:
     # This job is adapted from https://josh-ops.com/posts/github-code-coverage/
     # It adds a code coverage report to all PR builds
     needs: [build]
-
     runs-on: ubuntu-latest
+    name: Run all tests and generate PR-level code coverage report
 
     steps:
       
@@ -69,6 +69,7 @@ jobs:
     
     - name: Run all tests
       run: dotnet test OwaspHeaders.Core.sln --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+      working-directory: ${{env.working-directory}}
 
     - name: Code Coverage Summary Report
       uses: irongut/CodeCoverageSummary@v1.3.0
@@ -90,8 +91,8 @@ jobs:
 
   package:
    needs: [build, test]
-
    runs-on: ubuntu-latest
+   name: Create the NuGet package for PR-level user testing
 
    steps:
     - name: Build NuGet Package

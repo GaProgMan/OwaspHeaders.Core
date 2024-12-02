@@ -62,7 +62,7 @@ The above example contains only the headers added by the Middleware.
 
 ### Custom Configuration
 
-In most cases (except for the [Content-Security Policy](./Content-Security-Policy.md)), the default configuration will
+In most cases (except for the [Content-Security Policy](./Content-Security-Policy)), the default configuration will
 be suitable. This is because it adds the OWASP recommended headers and values. Content-Security Policy is a non-trivial
 header, and is an allowlist for sources of content for the rendered page.
 

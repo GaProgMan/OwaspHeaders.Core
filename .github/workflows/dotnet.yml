@@ -65,7 +65,7 @@ jobs:
     steps:
     
     - name: Run all tests
-      run: dotnet test OwaspHeaders.Core.Tests/OwaspHeaders.Core.Tests.csproj --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+      run: dotnet test --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
 
     - name: Code Coverage Summary Report
       uses: irongut/CodeCoverageSummary@v1.3.0

@@ -33,7 +33,7 @@ app.UseSecureHeadersMiddleware();
 
 This will add a number of default HTTP headers to all responses from your server component.
 
-The following is an example of the response headers from version 9.0.0 (taken on November 19th, 2024)
+The following is an example of the response headers from version 9.1.0 (taken on November 19th, 2024)
 
 ```plaintext
 Cache-Control: max-age=31536000;private
@@ -50,7 +50,7 @@ Cross-Origin-Resource-Policy: same-origin
 {: .note }
 The above example contains only the headers added by the Middleware.
 
-For a more detailed explanation of how to use the middleware, including how to configure it, see [Using the Middleware]().
+For a more detailed explanation of how to use the middleware, including how to configure it, see [Configuration](./configuration).
 
 ## Server Header: A Warning
 

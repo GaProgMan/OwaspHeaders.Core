@@ -68,6 +68,9 @@ callouts:
   note:
     title: Note
     color: purple
+  suggestion:
+    title: Suggestion
+    color: green
   warning:
     title: Warning
     color: red

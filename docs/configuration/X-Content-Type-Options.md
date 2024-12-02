@@ -2,6 +2,7 @@
 title: X-Content-Type-Options
 nav_order: 4
 parent: Configuration
+layout: page
 ---
 
 The Mozilla Developer Network describes the X-Content-Type-Options header like this:

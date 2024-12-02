@@ -1,7 +1,6 @@
 ---
 title: Configuration
 nav_order: 2
-layout: page
 ---
 
 This Middleware uses the builder pattern to set up the header information, which is a compile time dependency. If you need to change the configuration, you will need to rebuild your application.

@@ -56,7 +56,7 @@ For instance, if you were to create a branch to implement a new HTTP header call
 > This PR adds the `X-Example-Header` HTTP header, which you can read about on the [OWASP Secure Headers Project](). 
 > This PR closes #999
 >
-> ## PR Checklist
+> ### PR Checklist
 >
 > Feel free to either check the following items (by place an `x` inside of the square brackets) or by replacing the square brackets with a relevant emoji from the following list:
 > 
@@ -64,7 +64,7 @@ For instance, if you were to create a branch to implement a new HTTP header call
 > - :negative_squared_cross_mark: to indicate that you haven't checked something off
 > - :question: to indicate that something might not be relevant (writing tests for documentation changes, for instance)
 > 
-> ### Essential
+> #### Essential
 > 
 > These items are essential and must be completed for each commit. If they are not completed, the PR may not be accepted.
 > 
@@ -72,11 +72,11 @@ For instance, if you were to create a branch to implement a new HTTP header call
 > - [x] I have run the `dotnet-format` command and fixed any .editorconfig issues
 > - [x] I have ensured that the code coverage has not dropped below 65%
 > - [x] I have increased the version number in OwaspHeaders.Core.csproj (only relevant for code changes)
-> ### Optional
+> #### Optional
 > 
 > - :negative_squared_cross_mark: I have documented the new feature in the docs directory
 > 
-> ## Any Other Information
+> ### Any Other Information
 > 
 > No other information
 

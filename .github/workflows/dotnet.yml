@@ -54,12 +54,45 @@ jobs:
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
+  
+  test:
+    # This job is adapted from https://josh-ops.com/posts/github-code-coverage/
+    # It adds a code coverage report to all PR builds
+    needs: [build]
 
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    runs-on: ubuntu-latest
 
-    - name: pack
-      run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release --no-build --no-restore
+    steps:
+    
+    - name: Run all tests
+      run: dotnet test OwaspHeaders.Core.Tests/OwaspHeaders.Core.Tests.csproj --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+
+    - name: Code Coverage Summary Report
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: 'coverage/*/coverage.cobertura.xml'
+        badge: true
+        format: 'markdown'
+        output: 'both'
+
+    - name: Add Coverage PR Comment
+      uses: marocchino/sticky-pull-request-comment@v2.9.0
+      if: github.event_name == 'pull_request'
+      with:
+        recreate: true
+        path: code-coverage-results.md
+
+    - name: Write to Job Summary
+      run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
+
+  package:
+   needs: [build, tests]
+
+   runs-on: ubuntu-latest
+
+   steps:
+    - name: Build NuGet Package
+      run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
 
     - uses: actions/upload-artifact@v4
       if: ${{ success() }}

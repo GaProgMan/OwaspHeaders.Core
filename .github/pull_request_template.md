@@ -6,7 +6,7 @@ If the PR contains a code change, especially if it is either fixing a bug or add
 
 This PR closes # <- place the issue number directly after the `#` character.
 
-The following is a minimal code sample for the new feature
+The following is a [minimal code sample](https://gaprogman.github.io/OwaspHeaders.Core/Minimal-Code-Sample/) for the new feature:
 
 ```csharp
 // in Program.cs

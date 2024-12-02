@@ -22,7 +22,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup .NET Core
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.x'
@@ -32,12 +32,45 @@ jobs:
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
+  
+  test:
+    needs: [build]
+    runs-on: ubuntu-latest
+    name: Run all tests
 
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+      
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
 
-    - name: pack
-      run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release --no-build --no-restore
+    - name: Run all tests
+      run: dotnet test OwaspHeaders.Core.Tests/OwaspHeaders.Core.Tests.csproj
+
+
+  package:
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    name: Create and upload NuGet package
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+      
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Build NuGet package
+      run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
     
     - name: Push NuGet package
       run: dotnet nuget  push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{secrets.NUGET_API_KEY}}

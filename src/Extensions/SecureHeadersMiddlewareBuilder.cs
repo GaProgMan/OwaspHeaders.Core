@@ -256,7 +256,7 @@ namespace OwaspHeaders.Core.Extensions
         /// </exception>
         public static SecureHeadersMiddlewareConfiguration UseCacheControl
         (this SecureHeadersMiddlewareConfiguration config,
-            bool @private = true, int maxAge = 31536000, bool noCache = false, bool noStore = false,
+            bool @private = false, int maxAge = 0, bool noCache = false, bool noStore = true,
             bool mustRevalidate = false)
         {
             config.UseCacheControl = true;

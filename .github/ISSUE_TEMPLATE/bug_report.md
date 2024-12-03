@@ -1,7 +1,7 @@
 ---
 name: Report a bug
 about: Please report any bugs with the code or documentation here.
-title: 'Bug report:'
+title: 'Bug report: '
 labels: ['bug', 'branch required']
 assignees: 
 - 'GaProgMan'

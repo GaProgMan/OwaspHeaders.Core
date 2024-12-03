@@ -1,6 +1,6 @@
 ---
 title: X-Content-Type-Options
-nav_order: 4
+nav_order: 3
 parent: Configuration
 layout: page
 ---

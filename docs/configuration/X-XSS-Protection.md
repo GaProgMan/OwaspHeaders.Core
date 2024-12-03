@@ -25,12 +25,12 @@ The above adds the X-XSS-Protection header with a "0" value.
 Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
 
 ```csharp
-var customHstsConfig = SecureHeadersMiddlewareBuilder
+var customConfig = SecureHeadersMiddlewareBuilder
     .CreateBuilder()
     .UseXssProtection()
     .Build();
 
-app.UseSecureHeadersMiddleware(customHstsConfig);
+app.UseSecureHeadersMiddleware(customConfig);
 ```
 
 The above adds the X-XSS-Protection header with a "0" value.

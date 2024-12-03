@@ -28,12 +28,12 @@ The above adds the X-Permitted-Cross-Domain-Policies header with a `none` value.
 Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
 
 ```csharp
-var customHstsConfig = SecureHeadersMiddlewareBuilder
+var customConfig = SecureHeadersMiddlewareBuilder
     .CreateBuilder()
     .UsePermittedCrossDomainPolicies()
     .Build();
 
-app.UseSecureHeadersMiddleware(customHstsConfig);
+app.UseSecureHeadersMiddleware(customConfig);
 ```
 
 The above adds the X-Permitted-Cross-Domain-Policies header with a `none` value.

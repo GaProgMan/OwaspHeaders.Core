@@ -23,12 +23,12 @@ The above adds the X-Content-Type-Options header with a `nosniff` value.
 Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
 
 ```csharp
-var customHstsConfig = SecureHeadersMiddlewareBuilder
+var customConfig = SecureHeadersMiddlewareBuilder
     .CreateBuilder()
     .UseContentTypeOptions()
     .Build();
 
-app.UseSecureHeadersMiddleware(customHstsConfig);
+app.UseSecureHeadersMiddleware(customConfig);
 ```
 
 The above adds the X-Content-Type-Options header with a `nosniff` value.

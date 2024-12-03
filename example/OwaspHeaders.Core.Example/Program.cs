@@ -20,7 +20,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseSecureHeadersMiddleware();
+var listOfUrlsToIgnore = new List<string> { "/skipthis" };
+app.UseSecureHeadersMiddleware(urlIgnoreList: listOfUrlsToIgnore);
 
 app.MapControllers();
 

@@ -319,6 +319,25 @@ namespace OwaspHeaders.Core.Extensions
         }
 
         /// <summary>
+        /// Used to set a list of URLs that the we want the middleware to NOT operate on
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="urlsToIgnore">
+        /// A list of URLs that we the middleware to not operate on
+        /// </param>
+        /// <returns></returns>
+        public static SecureHeadersMiddlewareConfiguration SetUrlsToIgnore(
+            this SecureHeadersMiddlewareConfiguration config,
+            List<string> urlsToIgnore = null)
+        {
+            if (urlsToIgnore != null)
+            {
+                config.UrlsToIgnore = urlsToIgnore;
+            }
+            return config;
+        }
+
+        /// <summary>
         /// Return the completed <see cref="SecureHeadersMiddlewareConfiguration"/> ready for consumption by the
         /// <see cref="SecureHeadersMiddleware"/> class
         /// </summary>

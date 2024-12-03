@@ -19,7 +19,8 @@ namespace OwaspHeaders.Core.Extensions
         /// url for the current best practises:
         /// https://www.owasp.org/index.php/OWASP_Secure_Headers_Project#tab=Best_Practices
         /// </remarks>
-        public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration()
+        public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration(
+            List<string> urlIgnoreList = null)
         {
             return SecureHeadersMiddlewareBuilder
                 .CreateBuilder()
@@ -32,6 +33,7 @@ namespace OwaspHeaders.Core.Extensions
                 .UseCacheControl()
                 .UseXssProtection()
                 .UseCrossOriginResourcePolicy()
+                .SetUrlsToIgnore(urlIgnoreList)
                 .Build();
         }
 
@@ -47,6 +49,11 @@ namespace OwaspHeaders.Core.Extensions
         /// [OPTIONAL] An instance of the <see cref="SecureHeadersMiddlewareConfiguration" />
         /// containing all the config for each request
         /// </param>
+        /// <param name="urlIgnoreList">
+        /// A list of URLs to ignore when processes requests. For example, to disable the entire
+        /// middleware when the user accesses "/path-to-ignore", add this to the list and the
+        /// middleware will be disabled for that URL.
+        /// </param>
         /// <returns>
         /// The <see cref="IApplicationBuilder"/> with the <see cref="SecureHeadersMiddleware" /> added
         /// </returns>
@@ -55,11 +62,11 @@ namespace OwaspHeaders.Core.Extensions
         /// then the default value from <see cref="BuildDefaultConfiguration"/> will be provided.
         /// </remarks>
         public static IApplicationBuilder UseSecureHeadersMiddleware(this IApplicationBuilder builder,
-            SecureHeadersMiddlewareConfiguration config = null)
+            SecureHeadersMiddlewareConfiguration config = null, List<string> urlIgnoreList = null)
         {
             ObjectGuardClauses.ObjectCannotBeNull(builder, nameof(builder),
                 "cannot be null when setting up OWASP Secure Headers in OwaspHeaders.Core");
-            return builder.UseMiddleware<SecureHeadersMiddleware>(config ?? BuildDefaultConfiguration());
+            return builder.UseMiddleware<SecureHeadersMiddleware>(config ?? BuildDefaultConfiguration(urlIgnoreList));
         }
     }
 }

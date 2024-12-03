@@ -113,5 +113,11 @@
         public ExpectCt ExpectCt { get; set; }
 
         public CrossOriginResourcePolicy CrossOriginResourcePolicy { get; set; }
+
+        /// <summary>
+        /// A list of URLs that, when requested, should be ignored completely by
+        /// the middleware
+        /// </summary>
+        public List<string> UrlsToIgnore { get; set; } = [];
     }
 }

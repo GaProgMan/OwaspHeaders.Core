@@ -1,9 +1,10 @@
 ---
 name: Ask a Question
 about: Please feel free to ask a question about OWaspHeaders.Core here.
-title: ''
-labels: ''
-assignees: ''
+title: 'Question: '
+labels: ['question']
+assignees: 
+- 'GaProgMan'
 ---
 
 ## My Question

@@ -85,7 +85,7 @@ namespace OwaspHeaders.Core.Tests.CustomHeaders
             Assert.NotNull(context.Response);
             Assert.NotNull(context.Response.Headers);
 
-            // Checking none of the default headers are present
+            // Checking all of the default headers are present
             Assert.Contains(context.Response.Headers, h => h.Key == Constants.StrictTransportSecurityHeaderName);
             Assert.Contains(context.Response.Headers, h => h.Key == Constants.XFrameOptionsHeaderName);
             Assert.Contains(context.Response.Headers, h => h.Key == Constants.XssProtectionHeaderName);

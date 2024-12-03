@@ -86,20 +86,20 @@
                 stringBuilder.Append("no-cache");
                 return stringBuilder.ToString();
             }
-            
+
             if (Private)
             {
                 stringBuilder.Append("private");
                 return stringBuilder.ToString();
             }
-            
+
             if (MustRevalidate)
             {
                 stringBuilder.Append("must-revalidate");
                 return stringBuilder.ToString();
             }
 
-            stringBuilder.Append($"max-age={MaxAge},"); 
+            stringBuilder.Append($"max-age={MaxAge},");
             if (NoStore)
             {
                 stringBuilder.Append("no-store");

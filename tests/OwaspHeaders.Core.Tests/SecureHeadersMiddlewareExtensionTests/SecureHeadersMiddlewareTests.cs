@@ -79,7 +79,7 @@ public class SecureHeadersMiddlewareTests
 
         // Cache-Control
         Assert.True(response.UseCacheControl);
-        Assert.Equal("max-age=31536000, private", response.CacheControl.BuildHeaderValue());
+        Assert.Equal("max-age=0,no-store", response.CacheControl.BuildHeaderValue());
 
         // X-XSS-Protection
         Assert.True(response.UseXssProtection);

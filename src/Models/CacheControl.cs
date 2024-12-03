@@ -11,6 +11,7 @@
         /// Whether all or part of the HTTP response message is intended for a
         /// single user and must not be cached by a shared cache.
         /// </summary>
+        /// <remarks>
         /// The following is taken from the MDN article for cache-control
         ///    If you forget to add private to a response with personalized content,
         ///    then that response can be stored in a shared cache and end up being
@@ -63,8 +64,8 @@
         [ExcludeFromCodeCoverage]
         protected CacheControl() { }
 
-        public CacheControl(bool @private, int maxAge = 86400, bool noCache = false,
-            bool noStore = false, bool mustRevalidate = false)
+        public CacheControl(bool @private, int maxAge = 0, bool noCache = false,
+            bool noStore = true, bool mustRevalidate = false)
         {
             Private = @private;
             MaxAge = maxAge;
@@ -86,22 +87,23 @@
                 return stringBuilder.ToString();
             }
 
+            if (Private)
+            {
+                stringBuilder.Append("private");
+                return stringBuilder.ToString();
+            }
+
+            if (MustRevalidate)
+            {
+                stringBuilder.Append("must-revalidate");
+                return stringBuilder.ToString();
+            }
+
+            stringBuilder.Append($"max-age={MaxAge},");
             if (NoStore)
             {
                 stringBuilder.Append("no-store");
                 return stringBuilder.ToString();
-            }
-
-            stringBuilder.Append("max-age=");
-            stringBuilder.Append(MaxAge);
-            if (MustRevalidate)
-            {
-                stringBuilder.Append(", must-revalidate");
-            }
-
-            if (Private)
-            {
-                stringBuilder.Append(", private");
             }
 
             return stringBuilder.ToString();

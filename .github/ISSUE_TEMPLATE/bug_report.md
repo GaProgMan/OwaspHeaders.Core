@@ -1,12 +1,13 @@
 ---
 name: Report a bug
 about: Please report any bugs with the code or documentation here.
-title: ''
-labels: ''
-assignees: ''
+title: 'Bug report: '
+labels: ['bug', 'branch required']
+assignees: 
+- 'GaProgMan'
 ---
 
-## The Issue
+## The Bug
 
 Please describe the issue in as much detail as you can here.
 

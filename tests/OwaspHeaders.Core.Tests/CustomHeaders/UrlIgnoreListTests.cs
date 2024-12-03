@@ -37,7 +37,7 @@ namespace OwaspHeaders.Core.Tests.CustomHeaders
                         });
                 })
                 .Start();
-        
+
             TestServer = host.GetTestServer();
             TestServer.BaseAddress = new Uri("https://example.com/");
         }
@@ -46,18 +46,18 @@ namespace OwaspHeaders.Core.Tests.CustomHeaders
         public async Task Invoke_IgnoreList_Contains_TargetUrl_NoHeadersAdded()
         {
             // arrange
-        
+
             // Act
             var context = await TestServer.SendAsync(c =>
             {
                 c.Request.Path = UrlToIgnore;
                 c.Request.Method = HttpMethods.Get;
             });
-            
+
             // Assert
             Assert.NotNull(context.Response);
             Assert.NotNull(context.Response.Headers);
-            
+
             // Checking none of the default headers are present
             Assert.DoesNotContain(context.Response.Headers, h => h.Key == Constants.StrictTransportSecurityHeaderName);
             Assert.DoesNotContain(context.Response.Headers, h => h.Key == Constants.XFrameOptionsHeaderName);
@@ -68,23 +68,23 @@ namespace OwaspHeaders.Core.Tests.CustomHeaders
             Assert.DoesNotContain(context.Response.Headers, h => h.Key == Constants.ReferrerPolicyHeaderName);
             Assert.DoesNotContain(context.Response.Headers, h => h.Key == Constants.CacheControlHeaderName);
         }
-        
+
         [Fact]
         public async Task Invoke_IgnoreList_DoesntContain_TargetUrl_NoHeadersAdded()
         {
             // arrange
-        
+
             // Act
             var context = await TestServer.SendAsync(c =>
             {
                 c.Request.Path = UrlWontIgnore;
                 c.Request.Method = HttpMethods.Get;
             });
-            
+
             // Assert
             Assert.NotNull(context.Response);
             Assert.NotNull(context.Response.Headers);
-            
+
             // Checking none of the default headers are present
             Assert.Contains(context.Response.Headers, h => h.Key == Constants.StrictTransportSecurityHeaderName);
             Assert.Contains(context.Response.Headers, h => h.Key == Constants.XFrameOptionsHeaderName);

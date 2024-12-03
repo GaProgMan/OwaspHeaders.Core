@@ -111,7 +111,7 @@ namespace OwaspHeaders.Core
             // Call the next middleware in the chain
             await next(httpContext);
         }
-        
+
         private bool RequestShouldBeIgnored(PathString requestedPath)
         {
             if (config.UrlsToIgnore.Count == 0)

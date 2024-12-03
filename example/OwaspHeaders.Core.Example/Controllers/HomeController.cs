@@ -13,7 +13,7 @@ public class HomeController(ILogger<HomeController> logger) : ControllerBase
     {
         return GetHeaders;
     }
-    
+
     [HttpGet("skipthis", Name = "SkipThis")]
     public IEnumerable<string> SkipThis()
     {

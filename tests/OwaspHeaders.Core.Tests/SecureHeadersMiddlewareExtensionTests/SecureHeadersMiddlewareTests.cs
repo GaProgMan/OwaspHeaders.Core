@@ -139,7 +139,7 @@ public class SecureHeadersMiddlewareTests
         // Cross-Origin Resource Policy
         Assert.True(response.UseCrossOriginResourcePolicy);
         Assert.Equal("same-origin", response.CrossOriginResourcePolicy.BuildHeaderValue());
-        
+
         // Ignore List
         Assert.NotNull(response.UrlsToIgnore);
         Assert.NotEmpty(response.UrlsToIgnore);

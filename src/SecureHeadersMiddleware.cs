@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace OwaspHeaders.Core
 {
@@ -23,86 +24,102 @@ namespace OwaspHeaders.Core
             throw new ArgumentException($"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.");
         }
 
-        if (config.UseHsts)
+        if (!RequestShouldBeIgnored(httpContext.Request.Path))
         {
-            httpContext.TryAddHeader(Constants.StrictTransportSecurityHeaderName,
-                config.HstsConfiguration.BuildHeaderValue());
-        }
-
-        if (config.UseXFrameOptions)
-        {
-            httpContext.TryAddHeader(Constants.XFrameOptionsHeaderName,
-                config.XFrameOptionsConfiguration.BuildHeaderValue());
-        }
-
-        if (config.UseXssProtection)
-        {
-            httpContext.TryAddHeader(Constants.XssProtectionHeaderName,
-                config.XssConfiguration.BuildHeaderValue());
-        }
-
-        if (config.UseXContentTypeOptions)
-        {
-            httpContext.TryAddHeader(Constants.XContentTypeOptionsHeaderName, "nosniff");
-        }
-
-        if (config.UseContentSecurityPolicyReportOnly)
-        {
-            if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
+            if (config.UseHsts)
             {
-                _calculatedContentSecurityPolicy = config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue();
+                httpContext.TryAddHeader(Constants.StrictTransportSecurityHeaderName,
+                    config.HstsConfiguration.BuildHeaderValue());
             }
-            httpContext.TryAddHeader(Constants.ContentSecurityPolicyReportOnlyHeaderName,
-                _calculatedContentSecurityPolicy);
-        }
-        else if (config.UseContentSecurityPolicy)
-        {
-            if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
+
+            if (config.UseXFrameOptions)
             {
-                _calculatedContentSecurityPolicy = config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
+                httpContext.TryAddHeader(Constants.XFrameOptionsHeaderName,
+                    config.XFrameOptionsConfiguration.BuildHeaderValue());
             }
-            httpContext.TryAddHeader(Constants.ContentSecurityPolicyHeaderName,
-                _calculatedContentSecurityPolicy);
-        }
 
-        if (config.UseXContentSecurityPolicy)
-        {
-            httpContext.TryAddHeader(Constants.XContentSecurityPolicyHeaderName,
-                config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
-        }
+            if (config.UseXssProtection)
+            {
+                httpContext.TryAddHeader(Constants.XssProtectionHeaderName,
+                    config.XssConfiguration.BuildHeaderValue());
+            }
 
-        if (config.UsePermittedCrossDomainPolicy)
-        {
-            httpContext.TryAddHeader(Constants.PermittedCrossDomainPoliciesHeaderName,
-                config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
-        }
+            if (config.UseXContentTypeOptions)
+            {
+                httpContext.TryAddHeader(Constants.XContentTypeOptionsHeaderName, "nosniff");
+            }
 
-        if (config.UseReferrerPolicy)
-        {
-            httpContext.TryAddHeader(Constants.ReferrerPolicyHeaderName,
-                config.ReferrerPolicy.BuildHeaderValue());
-        }
+            if (config.UseContentSecurityPolicyReportOnly)
+            {
+                if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
+                {
+                    _calculatedContentSecurityPolicy =
+                        config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue();
+                }
 
-        if (config.UseExpectCt)
-        {
-            httpContext.TryAddHeader(Constants.ExpectCtHeaderName,
-                config.ExpectCt.BuildHeaderValue());
-        }
+                httpContext.TryAddHeader(Constants.ContentSecurityPolicyReportOnlyHeaderName,
+                    _calculatedContentSecurityPolicy);
+            }
+            else if (config.UseContentSecurityPolicy)
+            {
+                if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
+                {
+                    _calculatedContentSecurityPolicy = config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
+                }
 
-        if (config.UseCacheControl)
-        {
-            httpContext.TryAddHeader(Constants.CacheControlHeaderName,
-                config.CacheControl.BuildHeaderValue());
-        }
+                httpContext.TryAddHeader(Constants.ContentSecurityPolicyHeaderName,
+                    _calculatedContentSecurityPolicy);
+            }
 
-        if (config.UseCrossOriginResourcePolicy)
-        {
-            httpContext.TryAddHeader(Constants.CrossOriginResourcePolicyHeaderName,
-                config.CrossOriginResourcePolicy.BuildHeaderValue());
+            if (config.UseXContentSecurityPolicy)
+            {
+                httpContext.TryAddHeader(Constants.XContentSecurityPolicyHeaderName,
+                    config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
+            }
+
+            if (config.UsePermittedCrossDomainPolicy)
+            {
+                httpContext.TryAddHeader(Constants.PermittedCrossDomainPoliciesHeaderName,
+                    config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
+            }
+
+            if (config.UseReferrerPolicy)
+            {
+                httpContext.TryAddHeader(Constants.ReferrerPolicyHeaderName,
+                    config.ReferrerPolicy.BuildHeaderValue());
+            }
+
+            if (config.UseExpectCt)
+            {
+                httpContext.TryAddHeader(Constants.ExpectCtHeaderName,
+                    config.ExpectCt.BuildHeaderValue());
+            }
+
+            if (config.UseCacheControl)
+            {
+                httpContext.TryAddHeader(Constants.CacheControlHeaderName,
+                    config.CacheControl.BuildHeaderValue());
+            }
+
+            if (config.UseCrossOriginResourcePolicy)
+            {
+                httpContext.TryAddHeader(Constants.CrossOriginResourcePolicyHeaderName,
+                    config.CrossOriginResourcePolicy.BuildHeaderValue());
+            }
         }
 
         // Call the next middleware in the chain
         await next(httpContext);
+    }
+
+    private bool RequestShouldBeIgnored(PathString requestedPath)
+    {
+        if (config.UrlsToIgnore.Count == 0)
+        {
+            return false;
+        }
+
+        return requestedPath.HasValue && config.UrlsToIgnore.Any(url => url.Equals(requestedPath.Value!, StringComparison.InvariantCulture));
     }
 }
 }

@@ -11,6 +11,14 @@ public class HomeController(ILogger<HomeController> logger) : ControllerBase
 [HttpGet(Name = "/")]
 public IEnumerable<string> Get()
 {
-    return HttpContext.Response.Headers.Select(h => h.ToString()).ToArray();
+    return GetHeaders;
 }
+
+[HttpGet("skipthis", Name = "SkipThis")]
+public IEnumerable<string> SkipThis()
+{
+    return GetHeaders;
+}
+
+private IEnumerable<string> GetHeaders => HttpContext.Response.Headers.Select(h => h.ToString()).ToArray();
 }

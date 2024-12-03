@@ -40,7 +40,7 @@ This allows any <frame>, <iframe>, <embed> or <object> elements to be included o
 
 ## Full Options
 
-The X-Frame-Options header object (known internally as `UseXFrameOptions`) has the following options:
+The X-Frame-Options header object (known internally as `XFrameOptionsConfiguration`) has the following options:
 
 - enum: `XFrameOptions`
 
@@ -50,4 +50,3 @@ The values available for the `XFrameOptions` enum are:
 - `Sameorigin`
 
 These values can be set when creating a new instance of the `HstsConfiguration` object, or by calling the `UseHsts` extension method on the `SecureHeadersMiddlewareConfiguration` class.
-

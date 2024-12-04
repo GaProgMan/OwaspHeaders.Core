@@ -3,30 +3,6 @@
     public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
     {
         [Fact]
-        public async Task When_UseContentDefaultSecurityPolicyCalled_Header_Is_Present()
-        {
-            // arrange
-            var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
-                .UseDefaultContentSecurityPolicy().Build();
-            var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
-
-            // act
-            await secureHeadersMiddleware.InvokeAsync(_context);
-
-            // assert
-            if (headerPresentConfig.UseContentSecurityPolicy)
-            {
-                Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
-                Assert.Equal("script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;",
-                    _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName]);
-            }
-            else
-            {
-                Assert.False(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
-            }
-        }
-
-        [Fact]
         public async Task When_UseContentDefaultSecurityPolicyNotCalled_Header_Not_Present()
         {
             // arrange

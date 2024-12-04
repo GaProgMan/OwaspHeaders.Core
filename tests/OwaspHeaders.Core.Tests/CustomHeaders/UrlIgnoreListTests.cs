@@ -1,52 +1,18 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
-namespace OwaspHeaders.Core.Tests.CustomHeaders
+﻿namespace OwaspHeaders.Core.Tests.CustomHeaders
 {
-    public class UrlIgnoreListTests
+    public class UrlIgnoreListTests : SecureHeadersTests
     {
         private readonly string UrlToIgnore = "/ignore-me";
         private readonly string UrlWontIgnore = "/do-not-ignore-me";
-        private readonly TestServer TestServer;
-
-        public UrlIgnoreListTests()
-        {
-            var host = new HostBuilder()
-                .ConfigureWebHost(webBuilder =>
-                {
-                    webBuilder
-                        .UseTestServer()
-                        .ConfigureServices(services =>
-                        {
-                            services.AddRouting();
-                        })
-                        .Configure(app =>
-                        {
-                            app.UseRouting();
-                            app.UseSecureHeadersMiddleware(urlIgnoreList: [UrlToIgnore]);
-                            app.UseEndpoints(endpoints =>
-                            {
-                                endpoints.MapGet(UrlToIgnore, () =>
-                                    TypedResults.Text("Hello Tests"));
-                                endpoints.MapGet(UrlWontIgnore, () =>
-                                    TypedResults.Text("Hello Tests"));
-                            });
-                        });
-                })
-                .Start();
-
-            TestServer = host.GetTestServer();
-            TestServer.BaseAddress = new Uri("https://example.com/");
-        }
 
         [Fact]
-        public async Task Invoke_IgnoreList_Contains_TargetUrl_NoHeadersAdded()
+        public async Task IgnoreList_Contains_TargetUrl_NoHeadersAdded()
         {
             // arrange
-
+            var urlsToIgnore = new List<string> { UrlToIgnore };
+            var config = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration(urlsToIgnore);
+            TestServer = CreateTestServer(UrlWontIgnore, config);
+            
             // Act
             var context = await TestServer.SendAsync(c =>
             {
@@ -70,10 +36,13 @@ namespace OwaspHeaders.Core.Tests.CustomHeaders
         }
 
         [Fact]
-        public async Task Invoke_IgnoreList_DoesntContain_TargetUrl_NoHeadersAdded()
+        public async Task IgnoreList_DoesntContain_TargetUrl_NoHeadersAdded()
         {
-            // arrange
-
+            // Arrange
+            var urlsToIgnore = new List<string> { UrlToIgnore };
+            var config = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration(urlsToIgnore);
+            TestServer = CreateTestServer(UrlWontIgnore, config);
+            
             // Act
             var context = await TestServer.SendAsync(c =>
             {

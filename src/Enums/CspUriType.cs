@@ -1,20 +1,19 @@
-﻿namespace OwaspHeaders.Core.Enums
+﻿namespace OwaspHeaders.Core.Enums;
+
+public enum CspUriType
 {
-    public enum CspUriType
-    {
-        Base,
-        DefaultUri,
-        Script,
-        Object,
-        Style,
-        Img,
-        Media,
-        Frame,
-        Child,
-        FrameAncestors,
-        Font,
-        Connect,
-        Manifest,
-        Form
-    }
+    Base,
+    DefaultUri,
+    Script,
+    Object,
+    Style,
+    Img,
+    Media,
+    Frame,
+    Child,
+    FrameAncestors,
+    Font,
+    Connect,
+    Manifest,
+    Form
 }

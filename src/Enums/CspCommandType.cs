@@ -1,8 +1,7 @@
-﻿namespace OwaspHeaders.Core.Enums
+﻿namespace OwaspHeaders.Core.Enums;
+
+public enum CspCommandType
 {
-    public enum CspCommandType
-    {
-        Directive,
-        Uri
-    }
+    Directive,
+    Uri
 }

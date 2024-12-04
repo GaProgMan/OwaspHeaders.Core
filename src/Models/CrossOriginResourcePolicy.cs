@@ -17,50 +17,50 @@ public class CrossOriginResourcePolicy(
     /// Only requests from the same Origin (i.e. scheme + host + port) can read the resource.
     /// </summary>
     public const string SameOriginValue = "same-origin";
-    /// <summary>
-    /// Only requests from the same Site can read the resource.
-    /// </summary>
-    public const string SameSiteValue = "same-site";
-    /// <summary>
-    /// Requests from any Origin (both same-site and cross-site) can read the resource. 
-    /// Browsers are using this policy when an CORP header is not specified.
-    /// </summary>
-    public const string CrossOriginValue = "cross-origin";
+/// <summary>
+/// Only requests from the same Site can read the resource.
+/// </summary>
+public const string SameSiteValue = "same-site";
+/// <summary>
+/// Requests from any Origin (both same-site and cross-site) can read the resource. 
+/// Browsers are using this policy when an CORP header is not specified.
+/// </summary>
+public const string CrossOriginValue = "cross-origin";
 
-    public enum CrossOriginResourceOptions
+public enum CrossOriginResourceOptions
+{
+    /// <summary>
+    /// <see cref="SameOriginValue"/>
+    /// </summary>
+    SameOrigin,
+    /// <summary>
+    /// <see cref="SameSiteValue"/>
+    /// </summary>
+    SameSite,
+    /// <summary>
+    /// <see cref="CrossOriginValue"/>
+    /// </summary>
+    CrossOrigin
+};
+
+private CrossOriginResourceOptions OptionValue { get; } = value;
+
+/// <summary>
+/// Builds the HTTP header value
+/// </summary>
+/// <returns>A string representing the HTTP header value</returns>
+public string BuildHeaderValue()
+{
+    switch (OptionValue)
     {
-        /// <summary>
-        /// <see cref="SameOriginValue"/>
-        /// </summary>
-        SameOrigin,
-        /// <summary>
-        /// <see cref="SameSiteValue"/>
-        /// </summary>
-        SameSite,
-        /// <summary>
-        /// <see cref="CrossOriginValue"/>
-        /// </summary>
-        CrossOrigin
-    };
-
-    private CrossOriginResourceOptions OptionValue { get; } = value;
-
-    /// <summary>
-    /// Builds the HTTP header value
-    /// </summary>
-    /// <returns>A string representing the HTTP header value</returns>
-    public string BuildHeaderValue()
-    {
-        switch (OptionValue)
-        {
-            case CrossOriginResourceOptions.CrossOrigin:
-                return CrossOriginValue;
-            case CrossOriginResourceOptions.SameSite:
-                return SameSiteValue;
-            case CrossOriginResourceOptions.SameOrigin:
-            default:
-                return SameOriginValue;
-        }
+        case CrossOriginResourceOptions.CrossOrigin:
+            return CrossOriginValue;
+        case CrossOriginResourceOptions.SameSite:
+            return SameSiteValue;
+        case CrossOriginResourceOptions.SameOrigin:
+        default:
+            return SameOriginValue;
     }
+}
 
 }

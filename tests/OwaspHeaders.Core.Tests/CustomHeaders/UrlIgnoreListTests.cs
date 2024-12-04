@@ -12,7 +12,7 @@ public class UrlIgnoreListTests : SecureHeadersTests
         var urlsToIgnore = new List<string> { UrlToIgnore };
         var config = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration(urlsToIgnore);
         TestServer = CreateTestServer(UrlWontIgnore, config);
-            
+
         // Act
         var context = await TestServer.SendAsync(c =>
         {
@@ -42,7 +42,7 @@ public class UrlIgnoreListTests : SecureHeadersTests
         var urlsToIgnore = new List<string> { UrlToIgnore };
         var config = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration(urlsToIgnore);
         TestServer = CreateTestServer(UrlWontIgnore, config);
-            
+
         // Act
         var context = await TestServer.SendAsync(c =>
         {

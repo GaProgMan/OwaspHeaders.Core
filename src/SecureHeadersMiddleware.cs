@@ -1,15 +1,15 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-namespace OwaspHeaders.Core
+namespace OwaspHeaders.Core;
+
+/// <summary>
+/// A middleware for injecting OWASP recommended headers into a
+/// HTTP Request
+/// </summary>
+public class SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config)
 {
-    /// <summary>
-    /// A middleware for injecting OWASP recommended headers into a
-    /// HTTP Request
-    /// </summary>
-    public class SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config)
-    {
-        private string _calculatedContentSecurityPolicy;
+    private string _calculatedContentSecurityPolicy;
 
     /// <summary>
     /// The main task of the middleware. This will be invoked whenever
@@ -121,5 +121,4 @@ namespace OwaspHeaders.Core
 
         return requestedPath.HasValue && config.UrlsToIgnore.Any(url => url.Equals(requestedPath.Value!, StringComparison.InvariantCulture));
     }
-}
 }

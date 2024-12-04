@@ -1,22 +1,22 @@
-﻿namespace OwaspHeaders.Core.Models
+﻿namespace OwaspHeaders.Core.Models;
+
+/// <summary>
+/// Cross-Origin-Resource-Policy
+/// This response header(also named CORP) allows to define a policy that let
+/// websites and applications opt in to protection against certain requests
+/// from other origins(such as those issued with elements like the script and
+/// img tags), to mitigate speculative side-channel attacks, like Spectre, as
+/// well as Cross-Site Script Inclusion(XSSI) attacks(source Mozilla MDN).
+/// </summary>
+public class CrossOriginResourcePolicy(
+    CrossOriginResourcePolicy.CrossOriginResourceOptions value =
+        CrossOriginResourcePolicy.CrossOriginResourceOptions.SameOrigin)
+    : IConfigurationBase
 {
     /// <summary>
-    /// Cross-Origin-Resource-Policy
-    /// This response header(also named CORP) allows to define a policy that let
-    /// websites and applications opt in to protection against certain requests
-    /// from other origins(such as those issued with elements like the script and
-    /// img tags), to mitigate speculative side-channel attacks, like Spectre, as
-    /// well as Cross-Site Script Inclusion(XSSI) attacks(source Mozilla MDN).
+    /// Only requests from the same Origin (i.e. scheme + host + port) can read the resource.
     /// </summary>
-    public class CrossOriginResourcePolicy(
-        CrossOriginResourcePolicy.CrossOriginResourceOptions value =
-            CrossOriginResourcePolicy.CrossOriginResourceOptions.SameOrigin)
-        : IConfigurationBase
-    {
-        /// <summary>
-        /// Only requests from the same Origin (i.e. scheme + host + port) can read the resource.
-        /// </summary>
-        public const string SameOriginValue = "same-origin";
+    public const string SameOriginValue = "same-origin";
     /// <summary>
     /// Only requests from the same Site can read the resource.
     /// </summary>
@@ -63,5 +63,4 @@
         }
     }
 
-}
 }

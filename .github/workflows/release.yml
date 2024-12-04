@@ -9,7 +9,7 @@ on:
       - 'src/**'
       - 'tests/**'
       - 'example/**'
-      - '.github/workflows/**'
+      - '.github/workflows/release.yml'
       - 'README-NuGet.md'
 
 permissions:

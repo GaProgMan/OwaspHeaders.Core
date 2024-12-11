@@ -85,14 +85,27 @@ jobs:
     # to build your code.
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-    - if: matrix.build-mode == 'manual'
 
+    - if: matrix.build-mode == 'manual'
+    # The following steps are based on the content from the following URLs:
+    # https://resources.github.com/learn/pathways/security/intermediate/codeql-advanced-setup/
+    # https://learn.microsoft.com/en-us/dotnet/devops/dotnet-secure-github-action
+
+    # The NuGet package we're building supports both .NET 8 and .NET 9, so we need
+    # to install both so that we can build the project.
+      name: Setup .NET SDK 8.0
+      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
+      with:
+        dotnet-version: '8.0.x'
+
+    - if: matrix.build-mode == 'manual'
       # The following steps are based on the content from the following URLs:
       # https://resources.github.com/learn/pathways/security/intermediate/codeql-advanced-setup/
       # https://learn.microsoft.com/en-us/dotnet/devops/dotnet-secure-github-action
+
       # We currently (as of December 4th, 2024) need to build manually, because the Ubunutu images
       # don't have .NET 9 installed on them.
-      name: Setup .NET
+      name: Setup .NET SDK 9.0
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '9.0.x'

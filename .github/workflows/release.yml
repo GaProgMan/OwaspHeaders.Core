@@ -49,7 +49,14 @@ jobs:
       with:
         fetch-depth: 0
       
-    - name: Setup .NET SDK
+    # The NuGet package we're building supports both .NET 8 and .NET 9, so we need
+    # to install both so that we can build the project.
+    - name: Setup .NET 8.0
+      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Setup .NET SDK 9.0
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '9.0.x'

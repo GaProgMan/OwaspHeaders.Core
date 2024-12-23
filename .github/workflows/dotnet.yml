@@ -163,7 +163,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    uses: GaProgMan/OwaspHeaders.Core/.github/workflows/sign-artifact.yml@main
+    uses: GaProgMan/OwaspHeaders.Core/.github/workflows/sign-artifact.yml@b135a834b5baf7af18597c1427d1a130cabd8490
     with:
         subject-path: ${{ github.workspace }}/**/*.nupkg
         subject-name: "OwaspHeaders.Core"

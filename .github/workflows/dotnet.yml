@@ -12,6 +12,8 @@ on:
 
 permissions:
   contents: read
+  id-token: write
+  attestations: write
 
 jobs:
 
@@ -148,6 +150,11 @@ jobs:
 
     - name: Build NuGet Package
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
+
+    - name: Generate Attestations
+      uses: actions/attest-build-provenance@v2
+      with:
+        subject-path: ${{ github.workspace }}/**/*.nupkg
 
     - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
       if: ${{ success() }}

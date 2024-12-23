@@ -151,10 +151,11 @@ jobs:
     - name: Build NuGet Package
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
 
-    - name: Generate Attestations
-      uses: actions/attest-build-provenance@963f8a02f24ac90336362e63ca6730cf69ad102e # v2.1.0
+    - name: Sign Artifact
+      uses: GaProgMan/OwaspHeaders.Core/.github/workflows/sign-artifact.yml@main
       with:
         subject-path: ${{ github.workspace }}/**/*.nupkg
+        subject-name: "OwaspHeaders.Core"
 
     - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
       if: ${{ success() }}

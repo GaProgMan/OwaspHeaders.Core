@@ -22,11 +22,15 @@ This version dropped support for .NET 6 and .NET 7, as they are no longer suppor
 
 All projects in the [GitHub repo](https://github.com/GaProgMan/OwaspHeaders.Core) now build and run with either .NET 8 or .NET 9, whichever is present (deferring to the highest version number if both are present). As of November 19th, 2024 there are no new features in Version 9, so if you still need to use the NuGet package with .NET 6 or 7 please use Version 8 of the package.
 
+#### Version 9.5.x
+
+This version saw the addition of attestation generation on both a per PR-build and Release basis. See the [Attestations](https://gaprogman.github.io/OwaspHeaders.Core/attestations) page of the documentation to read about how you can verify the attestations per build or release.
+
 #### Version 9.2.x
 
 A number of small optimisations for generating HTTP header values have been made. There are also new Guard clauses in place to protect from a number of null or null/whitespace issues. All using statements have been cleaned up, with a large number placed in relevant global usings files.
 
-**BREAKING CHANGE**: Removal of the X-Powered-By header has been completely removed in this version. The reason for this is that the X-Powered-By header is included by the reverse proxy, which ASP .NET Core has no control over. See the section in the Readme labelled "Server Header: A Warning" for details on how to remove this header.   
+**BREAKING CHANGE**: Removal of the X-Powered-By header has been completely removed in this version. The reason for this is that the X-Powered-By header is included by the reverse proxy, which ASP .NET Core has no control over. See the section in the Readme labelled "Server Header: A Warning" for details on how to remove this header.
 
 #### Version 9.1.x
 

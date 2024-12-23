@@ -1,7 +1,7 @@
 ---
 title: Minimal Code Sample
 layout: page
-nav_order: 5
+nav_order: 10
 ---
 
 # Tips For Creating A Minimal Code Sample

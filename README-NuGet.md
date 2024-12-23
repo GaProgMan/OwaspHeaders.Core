@@ -52,6 +52,12 @@ The source code for this NuGet package can be found at: [https://github.com/GaPr
 
 The documentation for this NuGet package can be found at: [https://gaprogman.github.io/OwaspHeaders.Core/](https://gaprogman.github.io/OwaspHeaders.Core/).
 
+### Attestations
+
+As of [PR 148](https://github.com/GaProgMan/OwaspHeaders.Core/pull/148), OwaspHeaders.Core uses the GitHub provided process for creating attestations per build. This document talks through how to verify those attestations using the [gh CLI](https://cli.github.com/).
+
+See the [Attestations](https://gaprogman.github.io/OwaspHeaders.Core/attestations) page of the documentation to read about how you can verify the attestations for builds from 9.5.0 onward.
+
 ## Issues and Bugs
 
 Please raise any issues and bugs at the above mentioned source code repo.

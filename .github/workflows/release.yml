@@ -14,6 +14,8 @@ on:
 
 permissions:
   contents: read
+  id-token: write
+  attestations: write
 
 jobs:
 
@@ -97,6 +99,11 @@ jobs:
 
     - name: Build NuGet package
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
+    
+    - name: Generate Attestations
+      uses: actions/attest-build-provenance@963f8a02f24ac90336362e63ca6730cf69ad102e # v2.1.0
+      with:
+        subject-path: ${{ github.workspace }}/**/*.nupkg
     
     - name: Push NuGet package
       run: dotnet nuget  push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{secrets.NUGET_API_KEY}}

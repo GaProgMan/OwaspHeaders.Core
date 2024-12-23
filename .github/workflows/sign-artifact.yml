@@ -1,0 +1,22 @@
+name: Sign Artifact
+
+on:
+  workflow_call:
+    inputs:
+      artifact-path:
+            required: true
+            type: string
+
+jobs:
+  sign-artifact:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
+
+    steps:
+    - name: Attest Build Provenance
+      uses: actions/attest-build-provenance@963f8a02f24ac90336362e63ca6730cf69ad102e # v2.1.0
+      with:
+        subject-name: ${{ inputs.subject-name }}

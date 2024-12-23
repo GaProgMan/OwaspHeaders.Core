@@ -152,7 +152,7 @@ jobs:
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
 
     - name: Generate Attestations
-      uses: actions/attest-build-provenance@v2
+      uses: actions/attest-build-provenance@963f8a02f24ac90336362e63ca6730cf69ad102e # v2.1.0
       with:
         subject-path: ${{ github.workspace }}/**/*.nupkg
 

@@ -6,11 +6,13 @@ layout: page
 
 As of [PR 148](https://github.com/GaProgMan/OwaspHeaders.Core/pull/148), OwaspHeaders.Core uses the GitHub provided process for creating attestations per build. This document talks through how to verify those attestations using the [gh CLI](https://cli.github.com/).
 
+The information presented on this page is split between PR Builds and NuGet Releases. Each section attempts to explain the difference between the two builds.
+
 ## PR Build
 
 All PRs are built using the [dotnet.yml](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/.github/workflows/dotnet.yml) file found in the .github/Workflows directory in the GitHub repo. Attestations for these builds are created in the step labelled "Generate Attestations":
 
-```yml
+```yaml
 # The following yml is correct as of Dec 23rd, 2024
 # For the latest version, please see:
 # https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/.github/workflows/dotnet.yml
@@ -26,7 +28,7 @@ This step will provide an attestation for the commit which caused the PR build t
 
 When the build workflow completes, there will be a section in the job summary called "Create the NuGet package for PR-level user testing summary" (see: [this link](https://github.com/GaProgMan/OwaspHeaders.Core/actions/runs/12473647282#summary-34814538093) or the following screenshot for an example)
 
-![](./assets/images/attestations/created.jpg)
+![](./assets/images/attestations/pr-created.jpg)
 
 Clicking the link under "Attestation created" will take you to the attestation for the particular build of OwaspHeaders.Core.
 
@@ -73,7 +75,33 @@ GaProgMan/OwaspHeaders.Core  https://slsa.dev/provenance/v1  .github/workflows/d
 > [!NOTE] NOTE
 > The above output is specific to the version of OwaspHeaders.Core built using the first workflow run for [PR 148](https://github.com/GaProgMan/OwaspHeaders.Core/pull/148). The output you receive will differ slightly.
 
-## Releases
+## NuGet Releases
+
+All NuGet releases are built using the [release.yml](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/.github/workflows/release.yml) file found in the .github/Workflows directory in the GitHub repo. Attestations for these builds are created in the step labelled "Generate Attestations":
+
+```yaml
+# The following yml is correct as of Dec 23rd, 2024
+# For the latest version, please see:
+# https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/.github/release/dotnet.yml
+- name: Generate Attestations
+    uses: actions/attest-build-provenance@963f8a02f24ac90336362e63ca6730cf69ad102e # v2.1.0
+    with:
+    subject-path: ${{ github.workspace }}/**/*.nupkg
+```
+
+This step will provide an attestation for the commit which caused the NuGet release to be created
+
+### Slightly Less Manual Verification
+
+When the build workflow completes, there will be a section in the job summary called "Create the NuGet package for PR-level user testing summary" (see: [this link](https://github.com/GaProgMan/OwaspHeaders.Core/actions/runs/12474053355) or the following screenshot for an example)
+
+![](./assets/images/attestations/release-created.jpg)
+
+Clicking the link under "Attestation created" will take you to the attestation for the particular build of OwaspHeaders.Core.
+
+In the above screenshot, the Attestation link is [https://github.com/GaProgMan/OwaspHeaders.Core/attestations/4097417](https://github.com/GaProgMan/OwaspHeaders.Core/attestations/4097417).
+
+### Manual Verification
 
 TBC
 

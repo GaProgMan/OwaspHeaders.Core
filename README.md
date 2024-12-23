@@ -22,6 +22,12 @@ That's it.
 
 The latest documentation for OwaspHeaders.Core can be found at [https://gaprogman.github.io/OwaspHeaders.Core/](https://gaprogman.github.io/OwaspHeaders.Core/).
 
+### Attestations
+
+As of [PR 148](https://github.com/GaProgMan/OwaspHeaders.Core/pull/148), OwaspHeaders.Core uses the GitHub provided process for creating attestations per build. This document talks through how to verify those attestations using the [gh CLI](https://cli.github.com/).
+
+See the [Attestations](https://gaprogman.github.io/OwaspHeaders.Core/attestations) page of the documentation to read about how you can verify the attestations for builds from 9.5.0 onward.
+
 ## Pull Requests
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/GaProgMan/OwaspHeaders.Core/pulls)

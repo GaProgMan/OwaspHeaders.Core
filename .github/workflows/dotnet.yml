@@ -163,3 +163,14 @@ jobs:
         name: OwaspHeaders.Core
         path: ${{ github.workspace }}/**/*.nupkg
         retention-days: 5
+
+  sign:
+    needs: [package]
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: GaProgMan/OwaspHeaders.Core/.github/workflows/sign-artifact.yml@main
+    with:
+        subject-path: ${{ github.workspace }}/**/*.nupkg
+        subject-name: "OwaspHeaders.Core"
+

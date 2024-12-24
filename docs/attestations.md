@@ -28,7 +28,7 @@ This step will provide an attestation for the commit which caused the PR build t
 
 When the build workflow completes, there will be a section in the job summary called "Create the NuGet package for PR-level user testing summary" (see: [this link](https://github.com/GaProgMan/OwaspHeaders.Core/actions/runs/12473647282#summary-34814538093) or the following screenshot for an example)
 
-![](./assets/images/attestations/pr-created.jpg)
+![](../assets/images/attestations/pr-created.jpg)
 
 Clicking the link under "Attestation created" will take you to the attestation for the particular build of OwaspHeaders.Core.
 
@@ -44,7 +44,7 @@ In order to manually verify the nupkg file, you will need to download the genera
   - The file will be called "OwaspHeaders.Core"
   - See the following screenshot:
 
-![](./assets/images/attestations/artifacts.jpg)
+![](../assets/images/attestations/artifacts.jpg)
 
 - Extract the zip file
   - You can using your favourite unarchiver
@@ -95,7 +95,7 @@ This step will provide an attestation for the commit which caused the NuGet rele
 
 When the build workflow completes, there will be a section in the job summary called "Create the NuGet package for PR-level user testing summary" (see: [this link](https://github.com/GaProgMan/OwaspHeaders.Core/actions/runs/12474053355) or the following screenshot for an example)
 
-![](./assets/images/attestations/release-created.jpg)
+![](../assets/images/attestations/release-created.jpg)
 
 Clicking the link under "Attestation created" will take you to the attestation for the particular build of OwaspHeaders.Core.
 

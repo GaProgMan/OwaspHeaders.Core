@@ -7,10 +7,19 @@ namespace OwaspHeaders.Core;
 /// A middleware for injecting OWASP recommended headers into a
 /// HTTP Request
 /// </summary>
-public class SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config)
+public class SecureHeadersMiddleware
 {
     private string _calculatedContentSecurityPolicy;
-    private readonly Dictionary<string, string> _headers = new();
+    private readonly Dictionary<string, string> _headers;
+    private readonly RequestDelegate _next;
+    private readonly SecureHeadersMiddlewareConfiguration _config;
+
+    public SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config)
+    {
+        _config = config;
+        _next = next;
+        _headers = new Dictionary<string, string>();
+    }
 
     /// <summary>
     /// The main task of the middleware. This will be invoked whenever
@@ -20,7 +29,7 @@ public class SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewa
     /// <returns></returns>
     public async Task InvokeAsync(HttpContext httpContext)
     {
-        if (config == null)
+        if (_config == null)
         {
             throw new ArgumentException(
                 $"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.");
@@ -40,101 +49,101 @@ public class SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewa
         }
 
         // Call the next middleware in the chain
-        await next(httpContext);
+        await _next(httpContext);
     }
 
     private void GenerateRelevantHeaders()
     {
-        if (config.UseHsts)
+        if (_config.UseHsts)
         {
             _headers.TryAdd(Constants.StrictTransportSecurityHeaderName,
-                config.HstsConfiguration.BuildHeaderValue());
+                _config.HstsConfiguration.BuildHeaderValue());
         }
 
-        if (config.UseXFrameOptions)
+        if (_config.UseXFrameOptions)
         {
             _headers.TryAdd(Constants.XFrameOptionsHeaderName,
-                config.XFrameOptionsConfiguration.BuildHeaderValue());
+                _config.XFrameOptionsConfiguration.BuildHeaderValue());
         }
 
-        if (config.UseXssProtection)
+        if (_config.UseXssProtection)
         {
             _headers.TryAdd(Constants.XssProtectionHeaderName,
-                config.XssConfiguration.BuildHeaderValue());
+                _config.XssConfiguration.BuildHeaderValue());
         }
 
-        if (config.UseXContentTypeOptions)
+        if (_config.UseXContentTypeOptions)
         {
             _headers.TryAdd(Constants.XContentTypeOptionsHeaderName, Constants.XContentTypeOptionsValue);
         }
 
-        if (config.UseContentSecurityPolicyReportOnly)
+        if (_config.UseContentSecurityPolicyReportOnly)
         {
             if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
             {
                 _calculatedContentSecurityPolicy =
-                    config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue();
+                    _config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue();
             }
 
             _headers.TryAdd(Constants.ContentSecurityPolicyReportOnlyHeaderName,
                 _calculatedContentSecurityPolicy);
         }
-        else if (config.UseContentSecurityPolicy)
+        else if (_config.UseContentSecurityPolicy)
         {
             if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
             {
-                _calculatedContentSecurityPolicy = config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
+                _calculatedContentSecurityPolicy = _config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
             }
 
             _headers.TryAdd(Constants.ContentSecurityPolicyHeaderName,
                 _calculatedContentSecurityPolicy);
         }
 
-        if (config.UseXContentSecurityPolicy)
+        if (_config.UseXContentSecurityPolicy)
         {
             _headers.TryAdd(Constants.XContentSecurityPolicyHeaderName,
-                config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
+                _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
         }
 
-        if (config.UsePermittedCrossDomainPolicy)
+        if (_config.UsePermittedCrossDomainPolicy)
         {
             _headers.TryAdd(Constants.PermittedCrossDomainPoliciesHeaderName,
-                config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
+                _config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
         }
 
-        if (config.UseReferrerPolicy)
+        if (_config.UseReferrerPolicy)
         {
             _headers.TryAdd(Constants.ReferrerPolicyHeaderName,
-                config.ReferrerPolicy.BuildHeaderValue());
+                _config.ReferrerPolicy.BuildHeaderValue());
         }
 
-        if (config.UseExpectCt)
+        if (_config.UseExpectCt)
         {
             _headers.TryAdd(Constants.ExpectCtHeaderName,
-                config.ExpectCt.BuildHeaderValue());
+                _config.ExpectCt.BuildHeaderValue());
         }
 
-        if (config.UseCacheControl)
+        if (_config.UseCacheControl)
         {
             _headers.TryAdd(Constants.CacheControlHeaderName,
-                config.CacheControl.BuildHeaderValue());
+                _config.CacheControl.BuildHeaderValue());
         }
 
-        if (config.UseCrossOriginResourcePolicy)
+        if (_config.UseCrossOriginResourcePolicy)
         {
             _headers.TryAdd(Constants.CrossOriginResourcePolicyHeaderName,
-                config.CrossOriginResourcePolicy.BuildHeaderValue());
+                _config.CrossOriginResourcePolicy.BuildHeaderValue());
         }
     }
 
     private bool RequestShouldBeIgnored(PathString requestedPath)
     {
-        if (config.UrlsToIgnore.Count == 0)
+        if (_config.UrlsToIgnore.Count == 0)
         {
             return false;
         }
 
         return requestedPath.HasValue &&
-               config.UrlsToIgnore.Any(url => url.Equals(requestedPath.Value!, StringComparison.InvariantCulture));
+               _config.UrlsToIgnore.Any(url => url.Equals(requestedPath.Value!, StringComparison.InvariantCulture));
     }
 }

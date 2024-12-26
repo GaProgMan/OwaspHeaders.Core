@@ -1,6 +1,6 @@
 # Changelog
 
-This changelog represents all of the major (i.e. breaking) changes made to the OwaspHeaders.Core project since it's inception. Early in the repo's development, GitHub's "releases" where used to release builds of the code repo. However shortly after it's inception, builds and releases where moved to [AppVeyor](https://ci.appveyor.com/project/GaProgMan/owaspheaders-core). Because of this, the releases on the GitHub repo became stale.
+This changelog represents all the major (i.e. breaking) changes made to the OwaspHeaders.Core project since it's inception. Early in the repo's development, GitHub's "releases" where used to release builds of the code repo. However shortly after it's inception, builds and releases where moved to [AppVeyor](https://ci.appveyor.com/project/GaProgMan/owaspheaders-core). Because of this, the releases on the GitHub repo became stale.
 
 ## TL;DR
 
@@ -21,6 +21,10 @@ This changelog represents all of the major (i.e. breaking) changes made to the O
 This version dropped support for .NET 6 and .NET 7, as they are no longer supported by Microsoft. It also added support for .NET 9.
 
 All projects in the [GitHub repo](https://github.com/GaProgMan/OwaspHeaders.Core) now build and run with either .NET 8 or .NET 9, whichever is present (deferring to the highest version number if both are present). As of November 19th, 2024 there are no new features in Version 9, so if you still need to use the NuGet package with .NET 6 or 7 please use Version 8 of the package.
+
+#### Version 9.6.x
+
+This version saw the addition of a number of _very_ small changes to the middleware's `Invoke` method which aimed to increase efficiency, reduce working memory usage, and increase execution speed. 
 
 #### Version 9.5.x
 

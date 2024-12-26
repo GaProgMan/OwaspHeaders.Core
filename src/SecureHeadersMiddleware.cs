@@ -7,118 +7,143 @@ namespace OwaspHeaders.Core;
 /// A middleware for injecting OWASP recommended headers into a
 /// HTTP Request
 /// </summary>
-public class SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config)
+public class SecureHeadersMiddleware()
 {
     private string _calculatedContentSecurityPolicy;
-
-/// <summary>
-/// The main task of the middleware. This will be invoked whenever
-/// the middleware fires
-/// </summary>
-/// <param name="httpContext">The <see cref="HttpContext" /> for the current request or response</param>
-/// <returns></returns>
-public async Task InvokeAsync(HttpContext httpContext)
-{
-    if (config == null)
+    private readonly Dictionary<string, string> _headers;
+    private readonly RequestDelegate _next;
+    private readonly SecureHeadersMiddlewareConfiguration _config;
+    
+    public SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config) : this()
     {
-        throw new ArgumentException($"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.");
+        _config = config;
+        _next = next;
+        _headers = new Dictionary<string, string>();
     }
 
-    if (!RequestShouldBeIgnored(httpContext.Request.Path))
+    /// <summary>
+    /// The main task of the middleware. This will be invoked whenever
+    /// the middleware fires
+    /// </summary>
+    /// <param name="httpContext">The <see cref="HttpContext" /> for the current request or response</param>
+    /// <returns></returns>
+    public async Task InvokeAsync(HttpContext httpContext)
     {
-        if (config.UseHsts)
+        if (_config == null)
         {
-            httpContext.TryAddHeader(Constants.StrictTransportSecurityHeaderName,
-                config.HstsConfiguration.BuildHeaderValue());
+            throw new ArgumentException(
+                $"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.");
         }
 
-        if (config.UseXFrameOptions)
+        if (!RequestShouldBeIgnored(httpContext.Request.Path))
         {
-            httpContext.TryAddHeader(Constants.XFrameOptionsHeaderName,
-                config.XFrameOptionsConfiguration.BuildHeaderValue());
+            if (_headers.Count == 0)
+            {
+                GenerateRelevantHeaders();
+            }
+            
+            foreach (var (key, value) in _headers)
+            {
+                httpContext.TryAddHeader(key, value);
+            }
         }
 
-        if (config.UseXssProtection)
+        // Call the next middleware in the chain
+        await _next(httpContext);
+    }
+
+    private void GenerateRelevantHeaders()
+    {
+        if (_config.UseHsts)
         {
-            httpContext.TryAddHeader(Constants.XssProtectionHeaderName,
-                config.XssConfiguration.BuildHeaderValue());
+            _headers.TryAdd(Constants.StrictTransportSecurityHeaderName,
+                _config.HstsConfiguration.BuildHeaderValue());
         }
 
-        if (config.UseXContentTypeOptions)
+        if (_config.UseXFrameOptions)
         {
-            httpContext.TryAddHeader(Constants.XContentTypeOptionsHeaderName, "nosniff");
+            _headers.TryAdd(Constants.XFrameOptionsHeaderName,
+                _config.XFrameOptionsConfiguration.BuildHeaderValue());
         }
 
-        if (config.UseContentSecurityPolicyReportOnly)
+        if (_config.UseXssProtection)
+        {
+            _headers.TryAdd(Constants.XssProtectionHeaderName,
+                _config.XssConfiguration.BuildHeaderValue());
+        }
+
+        if (_config.UseXContentTypeOptions)
+        {
+            _headers.TryAdd(Constants.XContentTypeOptionsHeaderName, Constants.XContentTypeOptionsValue);
+        }
+
+        if (_config.UseContentSecurityPolicyReportOnly)
         {
             if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
             {
                 _calculatedContentSecurityPolicy =
-                    config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue();
+                    _config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue();
             }
 
-            httpContext.TryAddHeader(Constants.ContentSecurityPolicyReportOnlyHeaderName,
+            _headers.TryAdd(Constants.ContentSecurityPolicyReportOnlyHeaderName,
                 _calculatedContentSecurityPolicy);
         }
-        else if (config.UseContentSecurityPolicy)
+        else if (_config.UseContentSecurityPolicy)
         {
             if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
             {
-                _calculatedContentSecurityPolicy = config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
+                _calculatedContentSecurityPolicy = _config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
             }
 
-            httpContext.TryAddHeader(Constants.ContentSecurityPolicyHeaderName,
+            _headers.TryAdd(Constants.ContentSecurityPolicyHeaderName,
                 _calculatedContentSecurityPolicy);
         }
 
-        if (config.UseXContentSecurityPolicy)
+        if (_config.UseXContentSecurityPolicy)
         {
-            httpContext.TryAddHeader(Constants.XContentSecurityPolicyHeaderName,
-                config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
+            _headers.TryAdd(Constants.XContentSecurityPolicyHeaderName,
+                _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
         }
 
-        if (config.UsePermittedCrossDomainPolicy)
+        if (_config.UsePermittedCrossDomainPolicy)
         {
-            httpContext.TryAddHeader(Constants.PermittedCrossDomainPoliciesHeaderName,
-                config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
+            _headers.TryAdd(Constants.PermittedCrossDomainPoliciesHeaderName,
+                _config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
         }
 
-        if (config.UseReferrerPolicy)
+        if (_config.UseReferrerPolicy)
         {
-            httpContext.TryAddHeader(Constants.ReferrerPolicyHeaderName,
-                config.ReferrerPolicy.BuildHeaderValue());
+            _headers.TryAdd(Constants.ReferrerPolicyHeaderName,
+                _config.ReferrerPolicy.BuildHeaderValue());
         }
 
-        if (config.UseExpectCt)
+        if (_config.UseExpectCt)
         {
-            httpContext.TryAddHeader(Constants.ExpectCtHeaderName,
-                config.ExpectCt.BuildHeaderValue());
+            _headers.TryAdd(Constants.ExpectCtHeaderName,
+                _config.ExpectCt.BuildHeaderValue());
         }
 
-        if (config.UseCacheControl)
+        if (_config.UseCacheControl)
         {
-            httpContext.TryAddHeader(Constants.CacheControlHeaderName,
-                config.CacheControl.BuildHeaderValue());
+            _headers.TryAdd(Constants.CacheControlHeaderName,
+                _config.CacheControl.BuildHeaderValue());
         }
 
-        if (config.UseCrossOriginResourcePolicy)
+        if (_config.UseCrossOriginResourcePolicy)
         {
-            httpContext.TryAddHeader(Constants.CrossOriginResourcePolicyHeaderName,
-                config.CrossOriginResourcePolicy.BuildHeaderValue());
+            _headers.TryAdd(Constants.CrossOriginResourcePolicyHeaderName,
+                _config.CrossOriginResourcePolicy.BuildHeaderValue());
         }
     }
 
-    // Call the next middleware in the chain
-    await next(httpContext);
-}
-
-private bool RequestShouldBeIgnored(PathString requestedPath)
-{
-    if (config.UrlsToIgnore.Count == 0)
+    private bool RequestShouldBeIgnored(PathString requestedPath)
     {
-        return false;
-    }
+        if (_config.UrlsToIgnore.Count == 0)
+        {
+            return false;
+        }
 
-    return requestedPath.HasValue && config.UrlsToIgnore.Any(url => url.Equals(requestedPath.Value!, StringComparison.InvariantCulture));
-}
+        return requestedPath.HasValue &&
+               _config.UrlsToIgnore.Any(url => url.Equals(requestedPath.Value!, StringComparison.InvariantCulture));
+    }
 }

@@ -9,6 +9,7 @@ public static class Constants
     public const string XssProtectionHeaderName = "X-XSS-Protection";
 
     public const string XContentTypeOptionsHeaderName = "X-Content-Type-Options";
+    public const string XContentTypeOptionsValue = "nosniff";
 
     public const string ContentSecurityPolicyHeaderName = "Content-Security-Policy";
 

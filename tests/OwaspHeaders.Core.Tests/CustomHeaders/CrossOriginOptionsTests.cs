@@ -20,7 +20,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         Assert.Equal(CrossOriginResourcePolicy.SameOriginValue,
             _context.Response.Headers[Constants.CrossOriginResourcePolicyHeaderName]);
     }
-    
+
     [Fact]
     public async Task When_UseCrossOriginOpenerPolicyCalled_Header_Is_Present()
     {
@@ -55,7 +55,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         Assert.False(headerNotPresentConfig.UseCrossOriginResourcePolicy);
         Assert.False(_context.Response.Headers.ContainsKey(Constants.CrossOriginResourcePolicyHeaderName));
     }
-    
+
     [Fact]
     public async Task When_UseCrossOriginOpenerPolicyNotCalled_Header_Not_Present()
     {

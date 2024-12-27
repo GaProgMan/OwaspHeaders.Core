@@ -82,7 +82,7 @@ public class CrossOriginOpenerPolicy : IConfigurationBase
                 return UnsafeNoneValue;
             case CrossOriginOpenerOptions.SameOrigin:
             default:
-                return SameOriginValue;       
+                return SameOriginValue;
         }
     }
 }

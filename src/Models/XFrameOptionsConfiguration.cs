@@ -27,14 +27,14 @@ public class XFrameOptionsConfiguration : IConfigurationBase
         switch (OptionValue)
         {
             case XFrameOptions.Deny:
-                return "DENY";
+                return "deny";
             case XFrameOptions.Sameorigin:
-                return "SAMEORIGIN";
+                return "sameorigin";
             case XFrameOptions.Allowfrom:
                 HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(AllowFromDomain, nameof(AllowFromDomain));
-                return $"ALLOW-FROM({AllowFromDomain})";
+                return $"allow-from: ({AllowFromDomain})";
             case XFrameOptions.AllowAll:
-                return "ALLOWALL";
+                return "allowall";
         }
         // We should never hit this return statement. It is included here
         // as the method NEEDs to return something.

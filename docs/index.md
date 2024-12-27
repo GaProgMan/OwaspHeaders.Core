@@ -78,23 +78,23 @@ This project is a work-in-progress, and headers will be added inline with Owasp 
 
 The following list displays the status of all the current (as of Dec 27th, 2024) recommended headers:
 
-- [ :white_check_mark: ] Strict-Transport-Security 
-- [ :white_check_mark: ] X-Frame-Options
-- [ :white_check_mark: ] X-Content-Type-Options
-- [ :white_check_mark: ] Content-Security-Policy
-- [ :white_check_mark: ] X-Permitted-Cross-Domain-Policies 
-- [ :white_check_mark: ] Referrer-Policy
-- [ :white_check_mark: ] Cross-Origin-Resource-Policy 
-- [ :white_check_mark: ] Cache-Control
-- [ :negative_squared_cross: ] Clear-Site-Data
-- [ :negative_squared_cross: ] Cross-Origin-Opener-Policy
-- [ :negative_squared_cross: ] Cross-Origin-Embedder-Policy
-- [ :negative_squared_cross: ] Permissions-Policy
+- [ ✅ ] Strict-Transport-Security 
+- [ ✅ ] X-Frame-Options
+- [ ✅ ] X-Content-Type-Options
+- [ ✅ ] Content-Security-Policy
+- [ ✅ ] X-Permitted-Cross-Domain-Policies 
+- [ ✅ ] Referrer-Policy
+- [ ✅ ] Cross-Origin-Resource-Policy 
+- [ ✅ ] Cache-Control
+- [ ❌ ] Clear-Site-Data
+- [ ❌ ] Cross-Origin-Opener-Policy
+- [ ❌ ] Cross-Origin-Embedder-Policy
+- [ ❌ ] Permissions-Policy
 
 Key:
 
- - :white_check_mark: means that the header, recommended value, and all of it's options are implemented
- - :negative_squared_cross: means the header is not implemented at all.
+ - ✅ means that the header, recommended value, and all of it's options are implemented
+ - ❌ means the header is not implemented at all.
 
 See the [OWASP Secure Headers List] for the most up-to-date list of recommended headers.
 

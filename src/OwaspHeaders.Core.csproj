@@ -14,7 +14,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) Jamie Taylor / RJJ Software Ltd</Copyright>
     <PackageTags>owasp http headers security</PackageTags>
-    <Description>An ASP.NET Core Middleware which adds the OWASP recommended HTTP headers for enhanced security.</Description>
+    <Description>An ASP.NET Core Middleware which adds the OWASP recommended HTTP headers, with a single line of code, for enhanced security.</Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README-NuGet.md</PackageReadmeFile>
     <PackageProjectUrl>https://gaprogman.github.io/OwaspHeaders.Core/</PackageProjectUrl>

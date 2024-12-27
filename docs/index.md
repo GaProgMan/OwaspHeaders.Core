@@ -84,10 +84,10 @@ The following list displays the status of all the current (as of Dec 27th, 2024)
 - [ ✅ ] Content-Security-Policy
 - [ ✅ ] [X-Permitted-Cross-Domain-Policies] 
 - [ ✅ ] [Referrer-Policy]
-- [ ✅ ] Cross-Origin-Resource-Policy 
+- [ ✅ ] [Cross-Origin-Resource-Policy]
 - [ ✅ ] [Cache-Control]
 - [ ❌ ] Clear-Site-Data
-- [ ✅ ] Cross-Origin-Opener-Policy
+- [ ✅ ] [Cross-Origin-Opener-Policy]
 - [ ❌ ] Cross-Origin-Embedder-Policy
 - [ ❌ ] Permissions-Policy
 
@@ -131,4 +131,6 @@ The `web.config` file will need to be copied to the server when the application 
 [X-Content-Type-Options]: ./configuration/X-Content-Type-Options/
 [X-Permitted-Cross-Domain-Policies]: ./configuration/X-Permitted-Cross-Domain-Policies/
 [Referrer-Policy]: ./configuration/Referrer-Policy/
+[Cross-Origin-Resource-Policy]: ./configuration/Cross-Origin-Resource-Policy/
 [Cache-Control]: ./configuration/Cache-Control/
+[Cross-Origin-Opener-Policy]: ./configuration/Cross-Origin-Opener-Policy/

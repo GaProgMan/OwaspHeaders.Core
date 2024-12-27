@@ -33,6 +33,7 @@ public static class SecureHeadersMiddlewareExtensions
             .UseCacheControl()
             .UseXssProtection()
             .UseCrossOriginResourcePolicy()
+            .UseCrossOriginOpenerPolicy()
             .SetUrlsToIgnore(urlIgnoreList)
             .Build();
     }

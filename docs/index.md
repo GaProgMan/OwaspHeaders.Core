@@ -87,7 +87,7 @@ The following list displays the status of all the current (as of Dec 27th, 2024)
 - [ ✅ ] Cross-Origin-Resource-Policy 
 - [ ✅ ] Cache-Control
 - [ ❌ ] Clear-Site-Data
-- [ ❌ ] Cross-Origin-Opener-Policy
+- [ ✅ ] Cross-Origin-Opener-Policy
 - [ ❌ ] Cross-Origin-Embedder-Policy
 - [ ❌ ] Permissions-Policy
 

@@ -133,5 +133,9 @@ public class SecureHeadersMiddlewareTests
         // Cross-Origin Resource Policy
         Assert.True(middlewareConfiguration.UseCrossOriginResourcePolicy);
         Assert.Equal("same-origin", middlewareConfiguration.CrossOriginResourcePolicy.BuildHeaderValue());
+
+        // Cross-Origin Opener Policy
+        Assert.True(middlewareConfiguration.UseCrossOriginOpenerPolicy);
+        Assert.Equal("same-origin", middlewareConfiguration.CrossOriginOpenerPolicy.BuildHeaderValue());
     }
 }

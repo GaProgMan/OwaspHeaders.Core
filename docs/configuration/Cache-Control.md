@@ -1,6 +1,6 @@
 ---
 title: Cache-Control
-nav_order: 7
+nav_order: 8
 parent: Configuration
 layout: page
 ---

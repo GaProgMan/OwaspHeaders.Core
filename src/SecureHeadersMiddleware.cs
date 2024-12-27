@@ -126,6 +126,12 @@ public class SecureHeadersMiddleware
                 _config.CrossOriginResourcePolicy.BuildHeaderValue());
         }
 
+        if (_config.UseCrossOriginOpenerPolicy)
+        {
+            temporaryDictionary.Add(Constants.CrossOriginOpenerPolicyHeaderName,
+                _config.CrossOriginOpenerPolicy.BuildHeaderValue());
+        }
+
         return temporaryDictionary.ToFrozenDictionary();
     }
 

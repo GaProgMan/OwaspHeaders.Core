@@ -126,11 +126,11 @@ The `web.config` file will need to be copied to the server when the application 
 [Configuration]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/
 [this answer on ServerFault]: https://serverfault.com/a/1020784
 [OWASP Secure Headers List]: https://owasp.org/www-project-secure-headers/#div-headers
-[Strict-Transport-Security]: ./configuration/Strict-Transport-Security/
-[X-Frame-Options]: ./configuration/X-Frame-Options/
-[X-Content-Type-Options]: ./configuration/X-Content-Type-Options/
-[X-Permitted-Cross-Domain-Policies]: ./configuration/X-Permitted-Cross-Domain-Policies/
-[Referrer-Policy]: ./configuration/Referrer-Policy/
-[Cross-Origin-Resource-Policy]: ./configuration/Cross-Origin-Resource-Policy/
-[Cache-Control]: ./configuration/Cache-Control/
-[Cross-Origin-Opener-Policy]: ./configuration/Cross-Origin-Opener-Policy/
+[Strict-Transport-Security]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Strict-Transport-Security/
+[X-Frame-Options]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Frame-Options/
+[X-Content-Type-Options]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Content-Type-Options/
+[X-Permitted-Cross-Domain-Policies]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Permitted-Cross-Domain-Policies/
+[Referrer-Policy]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Referrer-Policy/
+[Cross-Origin-Resource-Policy]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Resource-Policy/
+[Cache-Control]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/
+[Cross-Origin-Opener-Policy]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/

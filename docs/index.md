@@ -72,6 +72,32 @@ The above example contains only the headers added by the Middleware.
 
 For a more detailed explanation of how to use the middleware, including how to configure it, see [Configuration](./configuration).
 
+## Included Headers
+
+This project is a work-in-progress, and headers will be added inline with Owasp recommendations. PRs are welcome, and you can read about how to contribute [here](./Contributing).
+
+The following list displays the status of all the current (as of Dec 27th, 2024) recommended headers:
+
+- [ ✅ ] Strict-Transport-Security 
+- [ ✅ ] X-Frame-Options
+- [ ✅ ] X-Content-Type-Options
+- [ ✅ ] Content-Security-Policy
+- [ ✅ ] X-Permitted-Cross-Domain-Policies 
+- [ ✅ ] Referrer-Policy
+- [ ✅ ] Cross-Origin-Resource-Policy 
+- [ ✅ ] Cache-Control
+- [ ❌ ] Clear-Site-Data
+- [ ❌ ] Cross-Origin-Opener-Policy
+- [ ❌ ] Cross-Origin-Embedder-Policy
+- [ ❌ ] Permissions-Policy
+
+Key:
+
+ - ✅ means that the header, recommended value, and all of it's options are implemented
+ - ❌ means the header is not implemented at all.
+
+See the [OWASP Secure Headers List] for the most up-to-date list of recommended headers.
+
 ## Server Header: A Warning
 
 The default configuration for this middleware removes the `X-Powered-By` header, as this can help malicious users to use targeted attacks for specific server infrastructure. However, since the `Server` header is added by the reverse proxy used when hosting an ASP .NET Core application, removing this header is out of scope for this middleware.
@@ -99,3 +125,4 @@ The `web.config` file will need to be copied to the server when the application 
 [OWASP Secure Headers]: https://www.owasp.org/index.php/OWASP_Secure_Headers_Project
 [Configuration]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/
 [this answer on ServerFault]: https://serverfault.com/a/1020784
+[OWASP Secure Headers List]: https://owasp.org/www-project-secure-headers/#div-headers

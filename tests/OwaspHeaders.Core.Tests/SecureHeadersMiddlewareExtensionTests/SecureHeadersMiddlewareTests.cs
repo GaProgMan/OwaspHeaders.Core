@@ -103,7 +103,7 @@ public class SecureHeadersMiddlewareTests
 
         // X-Frame-Options
         Assert.True(middlewareConfiguration.UseXFrameOptions);
-        Assert.Equal("DENY", middlewareConfiguration.XFrameOptionsConfiguration.BuildHeaderValue());
+        Assert.Equal("deny", middlewareConfiguration.XFrameOptionsConfiguration.BuildHeaderValue());
 
         // X-Content-Type-Options
         Assert.True(middlewareConfiguration.UseXContentTypeOptions);
@@ -116,7 +116,7 @@ public class SecureHeadersMiddlewareTests
 
         // X-Permitted-Cross-Domain-Policies
         Assert.True(middlewareConfiguration.UsePermittedCrossDomainPolicy);
-        Assert.Equal("none;", middlewareConfiguration.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
+        Assert.Equal("none", middlewareConfiguration.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
 
         // Referrer-Policy
         Assert.True(middlewareConfiguration.UseReferrerPolicy);

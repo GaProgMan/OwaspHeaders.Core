@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Frozen;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OwaspHeaders.Core;
@@ -9,8 +10,7 @@ namespace OwaspHeaders.Core;
 /// </summary>
 public class SecureHeadersMiddleware
 {
-    private string _calculatedContentSecurityPolicy;
-    private readonly Dictionary<string, string> _headers;
+    private FrozenDictionary<string, string> _headers;
     private readonly RequestDelegate _next;
     private readonly SecureHeadersMiddlewareConfiguration _config;
 
@@ -18,7 +18,7 @@ public class SecureHeadersMiddleware
     {
         _config = config;
         _next = next;
-        _headers = new Dictionary<string, string>();
+        _headers = FrozenDictionary<string, string>.Empty;
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class SecureHeadersMiddleware
         {
             if (_headers.Count == 0)
             {
-                GenerateRelevantHeaders();
+                _headers = GenerateRelevantHeaders();
             }
 
             foreach (var (key, value) in _headers)
@@ -52,88 +52,81 @@ public class SecureHeadersMiddleware
         await _next(httpContext);
     }
 
-    private void GenerateRelevantHeaders()
+    private FrozenDictionary<string, string> GenerateRelevantHeaders()
     {
+        var temporaryDictionary = new Dictionary<string, string>();
+
         if (_config.UseHsts)
         {
-            _headers.TryAdd(Constants.StrictTransportSecurityHeaderName,
+            temporaryDictionary.Add(Constants.StrictTransportSecurityHeaderName,
                 _config.HstsConfiguration.BuildHeaderValue());
         }
 
         if (_config.UseXFrameOptions)
         {
-            _headers.TryAdd(Constants.XFrameOptionsHeaderName,
+            temporaryDictionary.Add(Constants.XFrameOptionsHeaderName,
                 _config.XFrameOptionsConfiguration.BuildHeaderValue());
         }
 
         if (_config.UseXssProtection)
         {
-            _headers.TryAdd(Constants.XssProtectionHeaderName,
+            temporaryDictionary.Add(Constants.XssProtectionHeaderName,
                 _config.XssConfiguration.BuildHeaderValue());
         }
 
         if (_config.UseXContentTypeOptions)
         {
-            _headers.TryAdd(Constants.XContentTypeOptionsHeaderName, Constants.XContentTypeOptionsValue);
+            temporaryDictionary.Add(Constants.XContentTypeOptionsHeaderName, Constants.XContentTypeOptionsValue);
         }
 
         if (_config.UseContentSecurityPolicyReportOnly)
         {
-            if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
-            {
-                _calculatedContentSecurityPolicy =
-                    _config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue();
-            }
-
-            _headers.TryAdd(Constants.ContentSecurityPolicyReportOnlyHeaderName,
-                _calculatedContentSecurityPolicy);
+            temporaryDictionary.Add(Constants.ContentSecurityPolicyReportOnlyHeaderName,
+                _config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue());
         }
         else if (_config.UseContentSecurityPolicy)
         {
-            if (string.IsNullOrWhiteSpace(_calculatedContentSecurityPolicy))
-            {
-                _calculatedContentSecurityPolicy = _config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
-            }
-
-            _headers.TryAdd(Constants.ContentSecurityPolicyHeaderName,
-                _calculatedContentSecurityPolicy);
+            temporaryDictionary.Add(Constants.ContentSecurityPolicyHeaderName,
+                _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
         }
 
         if (_config.UseXContentSecurityPolicy)
         {
-            _headers.TryAdd(Constants.XContentSecurityPolicyHeaderName,
+            temporaryDictionary.Add(Constants.XContentSecurityPolicyHeaderName,
                 _config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
         }
 
         if (_config.UsePermittedCrossDomainPolicy)
         {
-            _headers.TryAdd(Constants.PermittedCrossDomainPoliciesHeaderName,
+            temporaryDictionary.Add(Constants.PermittedCrossDomainPoliciesHeaderName,
                 _config.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue());
         }
 
         if (_config.UseReferrerPolicy)
         {
-            _headers.TryAdd(Constants.ReferrerPolicyHeaderName,
+            temporaryDictionary.Add(Constants.ReferrerPolicyHeaderName,
                 _config.ReferrerPolicy.BuildHeaderValue());
         }
 
         if (_config.UseExpectCt)
         {
-            _headers.TryAdd(Constants.ExpectCtHeaderName,
+            temporaryDictionary.Add(Constants.ExpectCtHeaderName,
                 _config.ExpectCt.BuildHeaderValue());
         }
 
         if (_config.UseCacheControl)
         {
-            _headers.TryAdd(Constants.CacheControlHeaderName,
+            temporaryDictionary.Add(Constants.CacheControlHeaderName,
                 _config.CacheControl.BuildHeaderValue());
         }
 
         if (_config.UseCrossOriginResourcePolicy)
         {
-            _headers.TryAdd(Constants.CrossOriginResourcePolicyHeaderName,
+            temporaryDictionary.Add(Constants.CrossOriginResourcePolicyHeaderName,
                 _config.CrossOriginResourcePolicy.BuildHeaderValue());
         }
+
+        return temporaryDictionary.ToFrozenDictionary();
     }
 
     private bool RequestShouldBeIgnored(PathString requestedPath)

@@ -55,7 +55,7 @@ public class SecureHeadersMiddleware
     private FrozenDictionary<string, string> GenerateRelevantHeaders()
     {
         var temporaryDictionary = new Dictionary<string, string>();
-        
+
         if (_config.UseHsts)
         {
             temporaryDictionary.Add(Constants.StrictTransportSecurityHeaderName,

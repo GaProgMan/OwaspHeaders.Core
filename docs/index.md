@@ -78,14 +78,14 @@ This project is a work-in-progress, and headers will be added inline with Owasp 
 
 The following list displays the status of all the current (as of Dec 27th, 2024) recommended headers:
 
-- [ ✅ ] Strict-Transport-Security 
-- [ ✅ ] X-Frame-Options
-- [ ✅ ] X-Content-Type-Options
+- [ ✅ ] [Strict-Transport-Security] 
+- [ ✅ ] [X-Frame-Options]
+- [ ✅ ] [X-Content-Type-Options]
 - [ ✅ ] Content-Security-Policy
-- [ ✅ ] X-Permitted-Cross-Domain-Policies 
-- [ ✅ ] Referrer-Policy
+- [ ✅ ] [X-Permitted-Cross-Domain-Policies] 
+- [ ✅ ] [Referrer-Policy]
 - [ ✅ ] Cross-Origin-Resource-Policy 
-- [ ✅ ] Cache-Control
+- [ ✅ ] [Cache-Control]
 - [ ❌ ] Clear-Site-Data
 - [ ✅ ] Cross-Origin-Opener-Policy
 - [ ❌ ] Cross-Origin-Embedder-Policy
@@ -126,3 +126,9 @@ The `web.config` file will need to be copied to the server when the application 
 [Configuration]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/
 [this answer on ServerFault]: https://serverfault.com/a/1020784
 [OWASP Secure Headers List]: https://owasp.org/www-project-secure-headers/#div-headers
+[Strict-Transport-Security]: ./configuration/Strict-Transport-Security/
+[X-Frame-Options]: ./configuration/X-Frame-Options/
+[X-Content-Type-Options]: ./configuration/X-Content-Type-Options/
+[X-Permitted-Cross-Domain-Policies]: ./configuration/X-Permitted-Cross-Domain-Policies/
+[Referrer-Policy]: ./configuration/Referrer-Policy/
+[Cache-Control]: ./configuration/Cache-Control/

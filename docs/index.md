@@ -78,16 +78,16 @@ This project is a work-in-progress, and headers will be added inline with Owasp 
 
 The following list displays the status of all the current (as of Dec 27th, 2024) recommended headers:
 
-- [ ✅ ] [Strict-Transport-Security] 
-- [ ✅ ] [X-Frame-Options]
-- [ ✅ ] [X-Content-Type-Options]
+- [ ✅ ] [Strict-Transport-Security](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Strict-Transport-Security/)
+- [ ✅ ] [X-Frame-Options](https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Frame-Options/)
+- [ ✅ ] [X-Content-Type-Options](https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Content-Type-Options/)
 - [ ✅ ] Content-Security-Policy
-- [ ✅ ] [X-Permitted-Cross-Domain-Policies] 
-- [ ✅ ] [Referrer-Policy]
-- [ ✅ ] [Cross-Origin-Resource-Policy]
-- [ ✅ ] [Cache-Control]
+- [ ✅ ] [X-Permitted-Cross-Domain-Policies](https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Permitted-Cross-Domain-Policies/)
+- [ ✅ ] [Referrer-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Referrer-Policy/)
+- [ ✅ ] [Cross-Origin-Resource-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Resource-Policy/)
+- [ ✅ ] [Cache-Control](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/)
 - [ ❌ ] Clear-Site-Data
-- [ ✅ ] [Cross-Origin-Opener-Policy]
+- [ ✅ ] [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/)
 - [ ❌ ] Cross-Origin-Embedder-Policy
 - [ ❌ ] Permissions-Policy
 
@@ -126,11 +126,3 @@ The `web.config` file will need to be copied to the server when the application 
 [Configuration]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/
 [this answer on ServerFault]: https://serverfault.com/a/1020784
 [OWASP Secure Headers List]: https://owasp.org/www-project-secure-headers/#div-headers
-[Strict-Transport-Security]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Strict-Transport-Security/
-[X-Frame-Options]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Frame-Options/
-[X-Content-Type-Options]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Content-Type-Options/
-[X-Permitted-Cross-Domain-Policies]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Permitted-Cross-Domain-Policies/
-[Referrer-Policy]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Referrer-Policy/
-[Cross-Origin-Resource-Policy]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Resource-Policy/
-[Cache-Control]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/
-[Cross-Origin-Opener-Policy]: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/

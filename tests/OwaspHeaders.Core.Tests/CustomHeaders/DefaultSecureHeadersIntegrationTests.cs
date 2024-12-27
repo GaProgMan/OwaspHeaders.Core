@@ -27,7 +27,7 @@ public class DefaultSecureHeadersIntegrationTests : SecureHeadersTests
 
         Assert.True(headerPresentConfig.UseXFrameOptions);
         Assert.Contains(context.Response.Headers, h => h.Key == Constants.XFrameOptionsHeaderName);
-        Assert.Equal("DENY", context.Response.Headers[Constants.XFrameOptionsHeaderName]);
+        Assert.Equal("deny", context.Response.Headers[Constants.XFrameOptionsHeaderName]);
 
         Assert.True(headerPresentConfig.UseXssProtection);
         Assert.Contains(context.Response.Headers, h => h.Key == Constants.XssProtectionHeaderName);
@@ -44,7 +44,7 @@ public class DefaultSecureHeadersIntegrationTests : SecureHeadersTests
 
         Assert.True(headerPresentConfig.UsePermittedCrossDomainPolicy);
         Assert.Contains(context.Response.Headers, h => h.Key == Constants.PermittedCrossDomainPoliciesHeaderName);
-        Assert.Equal("none;", context.Response.Headers[Constants.PermittedCrossDomainPoliciesHeaderName]);
+        Assert.Equal("none", context.Response.Headers[Constants.PermittedCrossDomainPoliciesHeaderName]);
 
         Assert.True(headerPresentConfig.UseReferrerPolicy);
         Assert.Contains(context.Response.Headers, h => h.Key == Constants.ReferrerPolicyHeaderName);

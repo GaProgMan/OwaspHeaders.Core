@@ -318,6 +318,29 @@ public static class SecureHeadersMiddlewareBuilder
     }
 
     /// <summary>
+    /// The HTTP Cross-Origin-Opener-Policy (COOP) response header allows a website to control
+    /// whether a new top-level document, opened using Window.open() or by navigating to a new
+    /// page, is opened in the same browsing context group (BCG) or in a new browsing context group.
+    /// Source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+    /// </summary>
+    /// <param name="value">
+    /// The HTTP Cross-Origin-Opener-Policy response header value.
+    /// </param>
+    /// <remarks>
+    /// Defaults to "same-origin" (<see cref="CrossOriginOpenerPolicy.CrossOriginOpenerOptions.SameOrigin"/>)
+    /// which means that "Only requests from the same Origin (i.e. scheme + host + port) can read the resource."
+    ///</remarks>
+    public static SecureHeadersMiddlewareConfiguration UseCrossOriginOpenerPolicy(
+        this SecureHeadersMiddlewareConfiguration config,
+        CrossOriginOpenerPolicy.CrossOriginOpenerOptions value =
+            CrossOriginOpenerPolicy.CrossOriginOpenerOptions.SameOrigin)
+    {
+        config.UseCrossOriginOpenerPolicy = true;
+        config.CrossOriginOpenerPolicy = new CrossOriginOpenerPolicy(value);
+        return config;
+    }
+
+    /// <summary>
     /// Used to set a list of URLs that the we want the middleware to NOT operate on
     /// </summary>
     /// <param name="config"></param>

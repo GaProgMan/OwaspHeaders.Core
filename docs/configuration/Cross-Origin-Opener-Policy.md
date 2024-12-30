@@ -43,7 +43,7 @@ The COOP header object (known internally as `CrossOriginOpenerPolicy`) has the f
 
 The values available for the `CrossOriginOpenerOptions` enum are:
 
-- `CrossOrigin`
-- `SameSite`
+- `UnsafeNone`
+- `SameOriginAllowPopups`
 - `SameOrigin`
 

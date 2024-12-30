@@ -4,23 +4,27 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 
 ## TL;DR
 
-| Major Version Number | Changes                                                                 |
-|----------------------|-------------------------------------------------------------------------|
-| 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. |
-| 8                    | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes |
-| 7                    | Added Cross-Origin-Resource-Policy header to list of defaults; simplified the use of the middleware in Composite Root/Program.cs |
-| 6                    | Removes Expect-CT Header from the list of default headers |
-| 5                    | XSS Protection is now hard-coded to return "0" if enabled |
-| 4                    | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> uses .NET Standard 2.0 <br /> Removed XSS Protection header from defaults |
-| 3                    | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0 |
-| 2                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0 |
-| 1                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4 |
+| Major Version Number | Changes                                                                                                                                                                                                                                                                                                                             |
+|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. <br /> A number of small optimisation have been made to the middleware's `Invoke` method <br /> Added support for both Cross-Origin-Opener-Policy (CORP) and Cross-Origin-Embedder-Policy (COEP) headers |
+| 8                    | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes                                                                                                                                                                 |
+| 7                    | Added Cross-Origin-Resource-Policy header to list of defaults; simplified the use of the middleware in Composite Root/Program.cs                                                                                                                                                                                                    |
+| 6                    | Removes Expect-CT Header from the list of default headers                                                                                                                                                                                                                                                                           |
+| 5                    | XSS Protection is now hard-coded to return "0" if enabled                                                                                                                                                                                                                                                                           |
+| 4                    | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> uses .NET Standard 2.0 <br /> Removed XSS Protection header from defaults                                                                                                                                                           |
+| 3                    | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0                                                                                                                                                                                                         |
+| 2                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0                                                                                                                                                                       |
+| 1                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4                                                                                                                                                                   |
 
 ### Version 9
 
 This version dropped support for .NET 6 and .NET 7, as they are no longer supported by Microsoft. It also added support for .NET 9.
 
 All projects in the [GitHub repo](https://github.com/GaProgMan/OwaspHeaders.Core) now build and run with either .NET 8 or .NET 9, whichever is present (deferring to the highest version number if both are present). As of November 19th, 2024 there are no new features in Version 9, so if you still need to use the NuGet package with .NET 6 or 7 please use Version 8 of the package.
+
+#### Verison 9.7.x
+
+This version saw the addition of both the [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/) (COEP) and [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/) (COEP) headers; bringing the total number of supported headers to 83% complete (or 10 of the 12 recommended headers and values).
 
 #### Version 9.6.x
 

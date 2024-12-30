@@ -34,6 +34,7 @@ public static class SecureHeadersMiddlewareExtensions
             .UseXssProtection()
             .UseCrossOriginResourcePolicy()
             .UseCrossOriginOpenerPolicy()
+            .UseCrossOriginEmbedderPolicy()
             .SetUrlsToIgnore(urlIgnoreList)
             .Build();
     }

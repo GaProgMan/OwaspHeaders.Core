@@ -341,7 +341,29 @@ public static class SecureHeadersMiddlewareBuilder
     }
 
     /// <summary>
-    /// Used to set a list of URLs that the we want the middleware to NOT operate on
+    /// The HTTP Cross-Origin-Embedder-Policy (COEP) response header configures embedding
+    /// cross-origin resources into the document.
+    /// Source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
+    /// </summary>
+    /// <param name="value">
+    /// The HTTP Cross-Origin-Embedder-Policy response header value.
+    /// </param>
+    /// <remarks>
+    /// Defaults to "require-corp" (<see cref="CrossOriginEmbedderPolicy.CrossOriginEmbedderOptions.RequireCorp"/>)
+    /// which means that "Only requests from the same Origin (i.e. scheme + host + port) can read the resource."
+    ///</remarks>
+    public static SecureHeadersMiddlewareConfiguration UseCrossOriginEmbedderPolicy(
+        this SecureHeadersMiddlewareConfiguration config,
+        CrossOriginEmbedderPolicy.CrossOriginEmbedderOptions value =
+            CrossOriginEmbedderPolicy.CrossOriginEmbedderOptions.RequireCorp)
+    {
+        config.UseCrossOriginEmbedderPolicy = true;
+        config.CrossOriginEmbedderPolicy = new CrossOriginEmbedderPolicy(value);
+        return config;
+    }
+
+    /// <summary>
+    /// Used to set a list of URLs that we want the middleware to NOT operate on
     /// </summary>
     /// <param name="config"></param>
     /// <param name="urlsToIgnore">

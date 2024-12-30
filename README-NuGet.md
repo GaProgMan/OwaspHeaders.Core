@@ -31,15 +31,17 @@ This will add a number of default HTTP headers to all responses from your server
 The following is an example of the response headers from version 9.0.0 (taken on November 19th, 2024)
 
 ```http
-cache-control: max-age=31536000,private 
-content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests; 
-cross-origin-resource-policy: same-origin 
-referrer-policy: no-referrer 
-strict-transport-security: max-age=31536000;includeSubDomains 
-x-content-type-options: nosniff 
-x-frame-options: DENY 
-x-permitted-cross-domain-policies: none; 
-x-xss-protection: 0 
+strict-transport-security: max-age=31536000;includesubdomains
+x-frame-options: deny
+x-content-type-options: nosniff
+content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
+x-permitted-cross-domain-policies: none
+referrer-policy: no-referrer
+cross-origin-resource-policy: same-origin
+cache-control: max-age=0,no-store
+cross-origin-opener-policy: same-origin
+cross-origin-embedder-policy: same-require-corp
+x-xss-protection: 0
 ```
 
 Please note: The above example contains only the headers added by the Middleware.

@@ -71,6 +71,11 @@ public class SecureHeadersMiddlewareConfiguration
     /// Indicates whether the response should use Cross-Origin-Opener-Policy
     /// </summary>
     public bool UseCrossOriginOpenerPolicy { get; set; }
+    
+    /// <summary>
+    /// Indicates whether the response should use Cross-Origin-Embedder-Policy
+    /// </summary>
+    public bool UseCrossOriginEmbedderPolicy { get; set; }
 
     /// <summary>
     /// The HTTP Strict Transport Security configuration to use
@@ -120,6 +125,8 @@ public class SecureHeadersMiddlewareConfiguration
     public CrossOriginResourcePolicy CrossOriginResourcePolicy { get; set; }
 
     public CrossOriginOpenerPolicy CrossOriginOpenerPolicy { get; set; }
+    
+    public CrossOriginEmbedderPolicy CrossOriginEmbedderPolicy { get; set; }
 
     /// <summary>
     /// A list of URLs that, when requested, should be ignored completely by

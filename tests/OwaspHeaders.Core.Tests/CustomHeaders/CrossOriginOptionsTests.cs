@@ -39,6 +39,54 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         Assert.Equal(CrossOriginOpenerPolicy.SameOriginValue,
             _context.Response.Headers[Constants.CrossOriginOpenerPolicyHeaderName]);
     }
+    
+    [Fact]
+    public async Task When_UseCrossOriginEmbedderPolicyCalled_Header_Is_Present()
+    {
+        // arrange
+        var headerPresentConfig =
+            SecureHeadersMiddlewareBuilder.CreateBuilder()
+                .UseCrossOriginResourcePolicy()
+                .UseCrossOriginEmbedderPolicy().Build();
+        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+        // act
+        await secureHeadersMiddleware.InvokeAsync(_context);
+
+        // assert
+        Assert.True(headerPresentConfig.UseCrossOriginEmbedderPolicy);
+        Assert.True(headerPresentConfig.UseCrossOriginResourcePolicy);
+        
+        Assert.True(_context.Response.Headers.ContainsKey(Constants.CrossOriginResourcePolicyHeaderName));
+        Assert.Equal(CrossOriginResourcePolicy.SameOriginValue,
+            _context.Response.Headers[Constants.CrossOriginResourcePolicyHeaderName]);
+        
+        Assert.True(_context.Response.Headers.ContainsKey(Constants.CrossOriginEmbedderPolicyHeaderName));
+        Assert.Equal(CrossOriginEmbedderPolicy.RequireCorp,
+            _context.Response.Headers[Constants.CrossOriginEmbedderPolicyHeaderName]);
+    }
+    
+    [Fact]
+    public async Task When_UseCrossOriginEmbedderPolicyCalled_But_UseCrossOriginResourcePolicy_NotSupplied_Header_Is_Not_Present()
+    {
+        // arrange
+        var headerPresentConfig =
+            SecureHeadersMiddlewareBuilder.CreateBuilder()
+                .UseCrossOriginEmbedderPolicy().Build();
+        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+        // act
+        var exception = await Record.ExceptionAsync(() => secureHeadersMiddleware.InvokeAsync(_context));
+
+        // assert
+        Assert.NotNull(exception);
+        Assert.IsType<ArgumentException>(exception);
+        
+        Assert.True(headerPresentConfig.UseCrossOriginEmbedderPolicy);
+        Assert.False(headerPresentConfig.UseCrossOriginResourcePolicy);
+        
+        Assert.False(_context.Response.Headers.ContainsKey(Constants.CrossOriginEmbedderPolicyHeaderName));
+    }
 
     [Fact]
     public async Task When_UseCrossOriginResourcePolicyNotCalled_Header_Not_Present()
@@ -70,6 +118,22 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         // assert
         Assert.False(headerNotPresentConfig.UseCrossOriginOpenerPolicy);
         Assert.False(_context.Response.Headers.ContainsKey(Constants.CrossOriginOpenerPolicyHeaderName));
+    }
+    
+    [Fact]
+    public async Task When_UseCrossOriginEmbedderPolicyNotCalled_Header_Not_Present()
+    {
+        // arrange
+        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+            .Build();
+        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
+
+        // act
+        await secureHeadersMiddleware.InvokeAsync(_context);
+
+        // assert
+        Assert.False(headerNotPresentConfig.UseCrossOriginEmbedderPolicy);
+        Assert.False(_context.Response.Headers.ContainsKey(Constants.CrossOriginEmbedderPolicyHeaderName));
     }
 }
 

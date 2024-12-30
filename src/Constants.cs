@@ -26,5 +26,8 @@ public static class Constants
     public const string ExpectCtHeaderName = "Expect-CT";
 
     public const string CrossOriginResourcePolicyHeaderName = "Cross-Origin-Resource-Policy";
+    
     public const string CrossOriginOpenerPolicyHeaderName = "Cross-Origin-Opener-Policy";
+    
+    public const string CrossOriginEmbedderPolicyHeaderName = "Cross-Origin-Embedder-Policy";
 }

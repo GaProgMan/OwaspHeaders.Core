@@ -339,7 +339,7 @@ public static class SecureHeadersMiddlewareBuilder
         config.CrossOriginOpenerPolicy = new CrossOriginOpenerPolicy(value);
         return config;
     }
-    
+
     /// <summary>
     /// The HTTP Cross-Origin-Embedder-Policy (COEP) response header configures embedding
     /// cross-origin resources into the document.

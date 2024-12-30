@@ -131,7 +131,7 @@ public class SecureHeadersMiddleware
             temporaryDictionary.Add(Constants.CrossOriginOpenerPolicyHeaderName,
                 _config.CrossOriginOpenerPolicy.BuildHeaderValue());
         }
-        
+
         if (_config.UseCrossOriginEmbedderPolicy)
         {
             if (!_config.UseCrossOriginResourcePolicy)

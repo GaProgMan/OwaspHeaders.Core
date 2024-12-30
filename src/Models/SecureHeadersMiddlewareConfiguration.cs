@@ -71,7 +71,7 @@ public class SecureHeadersMiddlewareConfiguration
     /// Indicates whether the response should use Cross-Origin-Opener-Policy
     /// </summary>
     public bool UseCrossOriginOpenerPolicy { get; set; }
-    
+
     /// <summary>
     /// Indicates whether the response should use Cross-Origin-Embedder-Policy
     /// </summary>
@@ -125,7 +125,7 @@ public class SecureHeadersMiddlewareConfiguration
     public CrossOriginResourcePolicy CrossOriginResourcePolicy { get; set; }
 
     public CrossOriginOpenerPolicy CrossOriginOpenerPolicy { get; set; }
-    
+
     public CrossOriginEmbedderPolicy CrossOriginEmbedderPolicy { get; set; }
 
     /// <summary>

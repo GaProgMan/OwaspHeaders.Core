@@ -39,7 +39,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         Assert.Equal(CrossOriginOpenerPolicy.SameOriginValue,
             _context.Response.Headers[Constants.CrossOriginOpenerPolicyHeaderName]);
     }
-    
+
     [Fact]
     public async Task When_UseCrossOriginEmbedderPolicyCalled_Header_Is_Present()
     {
@@ -56,16 +56,16 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         // assert
         Assert.True(headerPresentConfig.UseCrossOriginEmbedderPolicy);
         Assert.True(headerPresentConfig.UseCrossOriginResourcePolicy);
-        
+
         Assert.True(_context.Response.Headers.ContainsKey(Constants.CrossOriginResourcePolicyHeaderName));
         Assert.Equal(CrossOriginResourcePolicy.SameOriginValue,
             _context.Response.Headers[Constants.CrossOriginResourcePolicyHeaderName]);
-        
+
         Assert.True(_context.Response.Headers.ContainsKey(Constants.CrossOriginEmbedderPolicyHeaderName));
         Assert.Equal(CrossOriginEmbedderPolicy.RequireCorp,
             _context.Response.Headers[Constants.CrossOriginEmbedderPolicyHeaderName]);
     }
-    
+
     [Fact]
     public async Task When_UseCrossOriginEmbedderPolicyCalled_But_UseCrossOriginResourcePolicy_NotSupplied_Header_Is_Not_Present()
     {
@@ -81,10 +81,10 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         // assert
         Assert.NotNull(exception);
         Assert.IsType<ArgumentException>(exception);
-        
+
         Assert.True(headerPresentConfig.UseCrossOriginEmbedderPolicy);
         Assert.False(headerPresentConfig.UseCrossOriginResourcePolicy);
-        
+
         Assert.False(_context.Response.Headers.ContainsKey(Constants.CrossOriginEmbedderPolicyHeaderName));
     }
 
@@ -119,7 +119,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         Assert.False(headerNotPresentConfig.UseCrossOriginOpenerPolicy);
         Assert.False(_context.Response.Headers.ContainsKey(Constants.CrossOriginOpenerPolicyHeaderName));
     }
-    
+
     [Fact]
     public async Task When_UseCrossOriginEmbedderPolicyNotCalled_Header_Not_Present()
     {

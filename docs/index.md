@@ -88,7 +88,7 @@ The following list displays the status of all the current (as of Dec 27th, 2024)
 - [ ✅ ] [Cache-Control](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/)
 - [ ❌ ] Clear-Site-Data
 - [ ✅ ] [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/)
-- [ ❌ ] Cross-Origin-Embedder-Policy
+- [ ✅ ] Cross-Origin-Embedder-Policy
 - [ ❌ ] Permissions-Policy
 
 Key:

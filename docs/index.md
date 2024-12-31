@@ -55,16 +55,18 @@ This will add a number of default HTTP headers to all responses from your server
 
 The following is an example of the response headers from version 9.1.0 (taken on November 19th, 2024)
 
-```plaintext
-Cache-Control: max-age=31536000;private
-Strict-Transport-Security: max-age=31536000;includeSubDomains
-X-Frame-Options: DENY
-X-XSS-Protection: 0
-X-Content-Type-Options: nosniff
-Content-Security-Policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
-X-Permitted-Cross-Domain-Policies: none;
-Referrer-Policy: no-referrer
-Cross-Origin-Resource-Policy: same-origin
+```http
+strict-transport-security: max-age=31536000;includesubdomains
+x-frame-options: deny
+x-content-type-options: nosniff
+content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
+x-permitted-cross-domain-policies: none
+referrer-policy: no-referrer
+cross-origin-resource-policy: same-origin
+cache-control: max-age=0,no-store
+cross-origin-opener-policy: same-origin
+cross-origin-embedder-policy: same-require-corp
+x-xss-protection: 0
 ```
 
 {: .note }
@@ -88,7 +90,7 @@ The following list displays the status of all the current (as of Dec 27th, 2024)
 - [ ✅ ] [Cache-Control](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/)
 - [ ❌ ] Clear-Site-Data
 - [ ✅ ] [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/)
-- [ ✅ ] Cross-Origin-Embedder-Policy
+- [ ✅ ] [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/)
 - [ ❌ ] Permissions-Policy
 
 Key:

@@ -24,18 +24,20 @@ like this:
 public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration() 
 { 
     return SecureHeadersMiddlewareBuilder 
-        .CreateBuilder() 
-        .UseHsts() 
-        .UseXFrameOptions() 
-        .UseContentTypeOptions() 
-        .UseContentDefaultSecurityPolicy() 
-        .UsePermittedCrossDomainPolicies() 
-        .UseReferrerPolicy() 
-        .UseCacheControl() 
-        .RemovePoweredByHeader() 
-        .UseXssProtection() 
-        .UseCrossOriginResourcePolicy() 
-        .Build(); 
+        .CreateBuilder()
+        .UseHsts()
+        .UseXFrameOptions()
+        .UseContentTypeOptions()
+        .UseDefaultContentSecurityPolicy()
+        .UsePermittedCrossDomainPolicies()
+        .UseReferrerPolicy()
+        .UseCacheControl()
+        .UseXssProtection()
+        .UseCrossOriginResourcePolicy()
+        .UseCrossOriginOpenerPolicy()
+        .UseCrossOriginEmbedderPolicy()
+        .SetUrlsToIgnore(urlIgnoreList)
+        .Build();
 } 
 ```
 
@@ -45,16 +47,18 @@ The default configuration is INCREDIBLY restrictive.
 The following is an example of the response headers from version 9.1.0 (taken on November 19th, 2024) when using the
 default configuration: 
 
-```plaintext
-Cache-Control: max-age=31536000;private
-Strict-Transport-Security: max-age=31536000;includeSubDomains
-X-Frame-Options: DENY
-X-XSS-Protection: 0
-X-Content-Type-Options: nosniff
-Content-Security-Policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
-X-Permitted-Cross-Domain-Policies: none;
-Referrer-Policy: no-referrer
-Cross-Origin-Resource-Policy: same-origin
+```http
+strict-transport-security: max-age=31536000;includesubdomains
+x-frame-options: deny
+x-content-type-options: nosniff
+content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
+x-permitted-cross-domain-policies: none
+referrer-policy: no-referrer
+cross-origin-resource-policy: same-origin
+cache-control: max-age=0,no-store
+cross-origin-opener-policy: same-origin
+cross-origin-embedder-policy: same-require-corp
+x-xss-protection: 0
 ```
 
 {: .note }
@@ -111,11 +115,11 @@ app.UseSecureHeadersMiddleware(
 
 This configuration will add the following headers to all server-generated responses:
 
-```plaintext
-Strict-Transport-Security: max-age=1200
-Content-Security-Policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
-X-Permitted-Cross-Domain-Policies: master-only;
-Referrer-Policy: same-origin
+```http
+strict-transport-security: max-age=1200
+content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
+x-permitted-cross-domain-policies: master-only;
+referrer-policy: same-origin
 ```
 
 {: .note }

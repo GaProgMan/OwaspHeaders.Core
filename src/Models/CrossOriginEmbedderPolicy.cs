@@ -38,7 +38,7 @@ public class CrossOriginEmbedderPolicy : IConfigurationBase
     /// A document can only load resources from the same origin, or resources explicitly
     /// marked as loadable from another origin.
     /// </summary>
-    public const string RequireCorp = "same-require-corp";
+    public const string RequireCorp = "require-corp";
 
     public enum CrossOriginEmbedderOptions
     {

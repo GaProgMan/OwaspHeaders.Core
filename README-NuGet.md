@@ -40,7 +40,7 @@ referrer-policy: no-referrer
 cross-origin-resource-policy: same-origin
 cache-control: max-age=0,no-store
 cross-origin-opener-policy: same-origin
-cross-origin-embedder-policy: same-require-corp
+cross-origin-embedder-policy: require-corp
 x-xss-protection: 0
 ```
 

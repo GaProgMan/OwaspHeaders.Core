@@ -38,7 +38,7 @@ public class CrossOriginEmbedderPolicy : IConfigurationBase
     /// A document can only load resources from the same origin, or resources explicitly
     /// marked as loadable from another origin.
     /// </summary>
-    public const string RequireCorp = "same-require-corp";
+    public const string RequireCorp = "require-corp";
 
     public enum CrossOriginEmbedderOptions
     {
@@ -69,5 +69,29 @@ public class CrossOriginEmbedderPolicy : IConfigurationBase
             default:
                 return RequireCorp;
         }
+    }
+
+    /// <summary>
+    /// Used to calculate whether the current header value is valid
+    /// </summary>
+    /// <param name="useCrossOriginResourcePolicy">
+    /// Whether the CORP header is included in the outer setup
+    /// </param>
+    /// <remarks>
+    /// The value for this header is only invalid if the CORP (Cross-Origin-Resource-Policy) header
+    /// is enabled and the current value for the COEP (Cross-Origin-Embedder-Policy) hedaer is set to
+    /// <see cref="RequireCorp"/>
+    /// </remarks>
+    public bool HeaderValueIsValid(bool useCrossOriginResourcePolicy)
+    {
+        if (OptionValue == CrossOriginEmbedderOptions.RequireCorp)
+        {
+            if (!useCrossOriginResourcePolicy)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

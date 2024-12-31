@@ -144,27 +144,27 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         // Arrange
         var header = new CrossOriginEmbedderPolicy(headerValue);
         const bool useCorp = true;
-        
+
         // Act
         var valid = header.HeaderValueIsValid(useCorp);
 
         // Assert
         Assert.True(valid);
     }
-    
+
     [Fact]
     public void CrossOriginEmbedderPolicy_HeaderValueIsValid_Returns_False_When_HeaderIsInvalid()
     {
         // Arrange
         var header = new CrossOriginEmbedderPolicy(CrossOriginEmbedderPolicy.CrossOriginEmbedderOptions.RequireCorp);
         var useCorp = false;
-        
+
         // Act
         var valid = header.HeaderValueIsValid(useCorp);
 
         // Assert
         Assert.False(valid);
     }
-    
+
 }
 

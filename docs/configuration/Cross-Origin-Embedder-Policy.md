@@ -1,5 +1,5 @@
 ---
-title: Cross-Origin-Opener-Policy
+title: Cross-Origin-Embedder-Policy
 nav_order: 10
 parent: Configuration
 layout: page

@@ -95,8 +95,8 @@ The following list displays the status of all the current (as of Dec 27th, 2024)
 
 Key:
 
- - ✅ means that the header, recommended value, and all of it's options are implemented
- - ❌ means the header is not implemented at all.
+ - ✅ means that the header, recommended value, and all of its options are implemented
+ - ❌ means the header has not yet been implemented.
 
 See the [OWASP Secure Headers List] for the most up-to-date list of recommended headers.
 

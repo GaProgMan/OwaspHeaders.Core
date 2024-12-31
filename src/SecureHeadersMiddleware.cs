@@ -134,7 +134,7 @@ public class SecureHeadersMiddleware
 
         if (_config.UseCrossOriginEmbedderPolicy)
         {
-            if (!_config.UseCrossOriginResourcePolicy)
+            if (!_config.CrossOriginEmbedderPolicy.HeaderValueIsValid(_config.UseCrossOriginResourcePolicy))
             {
                 BoolValueGuardClauses.MustBeTrue(_config.UseCrossOriginResourcePolicy, nameof(_config.UseCrossOriginResourcePolicy));
             }

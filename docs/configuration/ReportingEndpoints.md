@@ -25,7 +25,9 @@ A Reporting-Endpoints header can be added in one way, via an extension method on
 
 ```csharp
 var reportingEndpoints =
-    new Dictionary<string, Uri> { { "standard", new Uri("https://localhost:5000/reporting-endpoint") } };
+    new Dictionary<string, Uri> {
+        { "standard", new Uri("https://localhost:5000/reporting-endpoint") }
+    };
 var secureHeadersMiddlewareConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
     .UseReportingEndpointsPolicy(reportingEndpoints)
     .Build();

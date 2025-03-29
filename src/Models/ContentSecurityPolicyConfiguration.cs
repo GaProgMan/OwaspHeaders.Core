@@ -136,9 +136,9 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
     [ExcludeFromCodeCoverage]
     protected ContentSecurityPolicyConfiguration() { }
 
-// This is a _VERY_ temporary fix for marking the ReportUri property as deprecated
-// Because we're deprecating ReportUri but are using it throughout this class _AND_ we have warnings as errors, we need
-// to disable the CS0618 warning for the duration of this fix.
+    // This is a _VERY_ temporary fix for marking the ReportUri property as deprecated
+    // Because we're deprecating ReportUri but are using it throughout this class _AND_ we have warnings as errors, we need
+    // to disable the CS0618 warning for the duration of this fix.
 #pragma warning disable CS0618
     public ContentSecurityPolicyConfiguration(string pluginTypes, bool blockAllMixedContent,
         bool upgradeInsecureRequests, string referrer, string reportUri, string reportTo)

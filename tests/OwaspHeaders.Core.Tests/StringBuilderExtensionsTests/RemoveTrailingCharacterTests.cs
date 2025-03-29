@@ -16,7 +16,7 @@ public class RemoveTrailingCharacterTests
         // assert
         Assert.Null(builder);
     }
-    
+
     [Theory]
     [InlineData(',')]
     [InlineData('2')]
@@ -43,7 +43,7 @@ public class RemoveTrailingCharacterTests
         // arrange
         var input = $"{Guid.NewGuid().ToString()}{toRemove}";
         var builder = new StringBuilder(input);
-        
+
         // act
         builder = builder.RemoveTrailingCharacter(toRemove);
 

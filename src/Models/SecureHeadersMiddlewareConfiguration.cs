@@ -76,7 +76,7 @@ public class SecureHeadersMiddlewareConfiguration
     /// Indicates whether the response should use Cross-Origin-Embedder-Policy
     /// </summary>
     public bool UseCrossOriginEmbedderPolicy { get; set; }
-    
+
     /// <summary>
     /// Indicates whether the response should use the Reporting-Endpoints header
     /// </summary>
@@ -137,7 +137,7 @@ public class SecureHeadersMiddlewareConfiguration
     public CrossOriginOpenerPolicy CrossOriginOpenerPolicy { get; set; }
 
     public CrossOriginEmbedderPolicy CrossOriginEmbedderPolicy { get; set; }
-    
+
     public ReportingEndpointsPolicy ReportingEndpointsPolicy { get; set; }
 
     /// <summary>

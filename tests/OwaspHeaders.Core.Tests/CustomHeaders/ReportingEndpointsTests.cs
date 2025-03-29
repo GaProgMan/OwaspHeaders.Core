@@ -11,16 +11,16 @@ public class ReportingEndpointsTests : SecureHeadersTests
         var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
             .UseReportingEndpointsPolicy(reportingEndpoints).Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
-        
+
         // act
         await secureHeadersMiddleware.InvokeAsync(_context);
-        
+
         // act
         Assert.True(headerPresentConfig.UseReportingEndPoints);
         Assert.True(_context.Response.Headers.ContainsKey(Constants.ReportingEndpointsHeaderName));
         Assert.Equal($"Reporting-Endpoints: {reportingEndpoints.First().Key}=\"{reportingEndpoints.First().Value.ToString()}\"", _context.Response.Headers[Constants.ReportingEndpointsHeaderName]);
     }
-    
+
     [Fact]
     public async Task When_UseReportingEndpointsPolicyCalled_Header_Not_Present()
     {

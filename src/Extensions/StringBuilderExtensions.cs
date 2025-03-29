@@ -36,14 +36,14 @@ public static class StringBuilderExtensions
 
         return sb;
     }
-    
+
     public static StringBuilder RemoveTrailingCharacter(this StringBuilder input, char toRemove)
     {
         if (input == null || input.Length == 0)
         {
             return input;
         }
-        
+
         if (input.Length > 0 && input[input.Length - 1] == toRemove)
         {
             input.Length--;

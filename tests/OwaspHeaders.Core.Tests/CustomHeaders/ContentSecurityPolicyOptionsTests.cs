@@ -57,7 +57,7 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
         Assert.Equal($"block-all-mixed-content;upgrade-insecure-requests;report-uri {reportUri};",
             _context.Response.Headers[Constants.ContentSecurityPolicyReportOnlyHeaderName]);
     }
-    
+
     [Fact]
     public async Task Invoke_ContentSecurityPolicyReportToOnly_HeaderIsPresent_WithMultipleCspSandboxTypes()
     {

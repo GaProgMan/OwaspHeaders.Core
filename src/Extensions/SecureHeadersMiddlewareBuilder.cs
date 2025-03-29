@@ -126,7 +126,7 @@ public static class SecureHeadersMiddlewareBuilder
         (this SecureHeadersMiddlewareConfiguration config)
     {
         config.UseContentSecurityPolicy = true;
-        
+
         config.ContentSecurityPolicyConfiguration = new ContentSecurityPolicyConfiguration
             (null, true, true, null, null, null);
 

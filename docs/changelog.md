@@ -1,3 +1,9 @@
+---
+title: Changelog
+layout: page
+nav_order: 9
+---
+
 # Changelog
 
 This changelog represents all the major (i.e. breaking) changes made to the OwaspHeaders.Core project since it's inception. Early in the repo's development, GitHub's "releases" where used to release builds of the code repo. However shortly after it's inception, builds and releases where moved to [AppVeyor](https://ci.appveyor.com/project/GaProgMan/owaspheaders-core). Because of this, the releases on the GitHub repo became stale.

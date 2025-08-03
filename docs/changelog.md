@@ -22,6 +22,24 @@ This version dropped support for .NET 6 and .NET 7, as they are no longer suppor
 
 All projects in the [GitHub repo](https://github.com/GaProgMan/OwaspHeaders.Core) now build and run with either .NET 8 or .NET 9, whichever is present (deferring to the highest version number if both are present). As of November 19th, 2024 there are no new features in Version 9, so if you still need to use the NuGet package with .NET 6 or 7 please use Version 8 of the package.
 
+#### Version 9.8.x
+
+This version introduces comprehensive logging support via the `ILogger<SecureHeadersMiddleware>` interface, following Andrew Lock's high-performance logging best practices. The logging functionality provides visibility into middleware operations, helping developers troubleshoot configuration issues and monitor security header application.
+
+**New Features:**
+
+- Information-level logs for successful operations (middleware initialisation, headers added)
+- Warning logs for configuration issues and header operation failures  
+- Error logs for validation failures and middleware exceptions
+- Debug logs for detailed header addition information
+- Configurable Event IDs (1000-3999 range) to avoid conflicts with application logging
+- High-performance logging with log level checking to minimise performance impact
+- 100% backward compatibility - existing applications continue to work without changes
+
+The logging is automatically enabled when an `ILogger<SecureHeadersMiddleware>` is available in dependency injection. Developers can customise Event IDs using `WithLoggingEventIdBase()` or `WithLoggingEventIds()` methods to avoid conflicts with existing application Event ID schemes.
+
+See the [Logging documentation](https://gaprogman.github.io/OwaspHeaders.Core/logging) for detailed configuration options and examples.
+
 #### Verison 9.7.x
 
 This version saw the addition of both the [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/) (COOP) and [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/) (COEP) headers; bringing the total number of supported headers to 83% complete (or 10 of the 12 recommended headers and values).

@@ -1,3 +1,9 @@
+---
+title: Changelog
+layout: page
+nav_order: 9
+---
+
 # Changelog
 
 This changelog represents all the major (i.e. breaking) changes made to the OwaspHeaders.Core project since it's inception. Early in the repo's development, GitHub's "releases" where used to release builds of the code repo. However shortly after it's inception, builds and releases where moved to [AppVeyor](https://ci.appveyor.com/project/GaProgMan/owaspheaders-core). Because of this, the releases on the GitHub repo became stale.
@@ -21,6 +27,24 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 This version dropped support for .NET 6 and .NET 7, as they are no longer supported by Microsoft. It also added support for .NET 9.
 
 All projects in the [GitHub repo](https://github.com/GaProgMan/OwaspHeaders.Core) now build and run with either .NET 8 or .NET 9, whichever is present (deferring to the highest version number if both are present). As of November 19th, 2024 there are no new features in Version 9, so if you still need to use the NuGet package with .NET 6 or 7 please use Version 8 of the package.
+
+#### Version 9.8.x
+
+This version introduces comprehensive logging support via the `ILogger<SecureHeadersMiddleware>` interface, following Andrew Lock's high-performance logging best practices. The logging functionality provides visibility into middleware operations, helping developers troubleshoot configuration issues and monitor security header application.
+
+**New Features:**
+
+- Information-level logs for successful operations (middleware initialisation, headers added)
+- Warning logs for configuration issues and header operation failures  
+- Error logs for validation failures and middleware exceptions
+- Debug logs for detailed header addition information
+- Configurable Event IDs (1000-3999 range) to avoid conflicts with application logging
+- High-performance logging with log level checking to minimise performance impact
+- 100% backward compatibility - existing applications continue to work without changes
+
+The logging is automatically enabled when an `ILogger<SecureHeadersMiddleware>` is available in dependency injection. Developers can customise Event IDs using `WithLoggingEventIdBase()` or `WithLoggingEventIds()` methods to avoid conflicts with existing application Event ID schemes.
+
+See the [Logging documentation](https://gaprogman.github.io/OwaspHeaders.Core/logging) for detailed configuration options and examples.
 
 #### Verison 9.7.x
 

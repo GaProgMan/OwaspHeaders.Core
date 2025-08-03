@@ -22,7 +22,7 @@ This version dropped support for .NET 6 and .NET 7, as they are no longer suppor
 
 All projects in the [GitHub repo](https://github.com/GaProgMan/OwaspHeaders.Core) now build and run with either .NET 8 or .NET 9, whichever is present (deferring to the highest version number if both are present). As of November 19th, 2024 there are no new features in Version 9, so if you still need to use the NuGet package with .NET 6 or 7 please use Version 8 of the package.
 
-#### Verison 9.7.x
+#### Version 9.7.x
 
 This version saw the addition of both the [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/) (COEP) and [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/) (COEP) headers; bringing the total number of supported headers to 83% complete (or 10 of the 12 recommended headers and values).
 
@@ -46,7 +46,7 @@ The `max-age` value for the Strict-Transport-Security (HSTS) header was updated 
 
 ### Version 8
 
-This version dropped support for support for ASP .NET Core on .NET Framework workflows. This means that, from version 8 onwards, this package will no longer with with .NET Framework workloads. This decision was made as Microsoft have dropped support for ASP .NET Core on .NET Framework workloads. This can be seen in the ASP .NET Core support documentation [here](https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core)
+This version dropped support for support for ASP .NET Core on .NET Framework workflows. This means that, from version 8 onwards, this package will no longer work with .NET Framework workloads. This decision was made as Microsoft have dropped support for ASP .NET Core on .NET Framework workloads. This can be seen in the ASP .NET Core support documentation [here](https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core)
 
 > To help facilitate migrating applications to ASP.NET Core on .NET Core, the specified ASP.NET Core 2.1 packages (latest patched version only) will be supported on the .NET Framework and follow the support cycle for those .NET Framework versions. ASP.NET Core 2.1 is defined as "Tools" in the Microsoft Support Lifecycle Policy
 > Source: https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core, obtained Oct 19th, 2024.

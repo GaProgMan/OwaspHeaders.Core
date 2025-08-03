@@ -50,7 +50,8 @@ public class SecureHeadersMiddleware
 
             foreach (var (key, value) in _headers)
             {
-                if (httpContext.TryAddHeader(key, value, _logger, _config.LoggingConfiguration.HeaderAdditionFailed))
+                var headerFailedEventId = _config?.LoggingConfiguration?.HeaderAdditionFailed ?? SecureHeadersEventIds.HeaderAdditionFailed;
+                if (httpContext.TryAddHeader(key, value, _logger, headerFailedEventId))
                 {
                     LogHeaderAdded(key, value.Length);
                 }
@@ -73,8 +74,9 @@ public class SecureHeadersMiddleware
     {
         if (_logger != null && _logger.IsEnabled(LogLevel.Information))
         {
+            var eventId = _config?.LoggingConfiguration?.MiddlewareInitialized ?? SecureHeadersEventIds.MiddlewareInitialized;
             _logger.Log(LogLevel.Information,
-                _config.LoggingConfiguration.MiddlewareInitialized,
+                eventId,
                 "SecureHeaders middleware initialized with {HeaderCount} headers enabled",
                 headerCount);
         }
@@ -84,8 +86,9 @@ public class SecureHeadersMiddleware
     {
         if (_logger != null && _logger.IsEnabled(LogLevel.Information))
         {
+            var eventId = _config?.LoggingConfiguration?.HeadersAdded ?? SecureHeadersEventIds.HeadersAdded;
             _logger.Log(LogLevel.Information,
-                _config.LoggingConfiguration.HeadersAdded,
+                eventId,
                 "Added {HeaderCount} security headers to response for {RequestPath}",
                 headerCount, requestPath);
         }
@@ -95,8 +98,9 @@ public class SecureHeadersMiddleware
     {
         if (_logger != null && _logger.IsEnabled(LogLevel.Information))
         {
+            var eventId = _config?.LoggingConfiguration?.RequestIgnored ?? SecureHeadersEventIds.RequestIgnored;
             _logger.Log(LogLevel.Information,
-                _config.LoggingConfiguration.RequestIgnored,
+                eventId,
                 "Request ignored due to URL exclusion rule: {RequestPath}",
                 requestPath);
         }
@@ -106,8 +110,9 @@ public class SecureHeadersMiddleware
     {
         if (_logger != null && _logger.IsEnabled(LogLevel.Information))
         {
+            var eventId = _config?.LoggingConfiguration?.HeadersGenerated ?? SecureHeadersEventIds.HeadersGenerated;
             _logger.Log(LogLevel.Information,
-                _config.LoggingConfiguration.HeadersGenerated,
+                eventId,
                 "Generated {HeaderCount} security headers",
                 headerCount);
         }
@@ -117,8 +122,9 @@ public class SecureHeadersMiddleware
     {
         if (_logger != null && _logger.IsEnabled(LogLevel.Debug))
         {
+            var eventId = _config?.LoggingConfiguration?.HeaderAdded ?? SecureHeadersEventIds.HeaderAdded;
             _logger.Log(LogLevel.Debug,
-                _config.LoggingConfiguration.HeaderAdded,
+                eventId,
                 "Added header {HeaderName} with value length {ValueLength}",
                 headerName, valueLength);
         }
@@ -128,8 +134,9 @@ public class SecureHeadersMiddleware
     {
         if (_logger != null && _logger.IsEnabled(LogLevel.Error))
         {
+            var eventId = _config?.LoggingConfiguration?.ConfigurationError ?? SecureHeadersEventIds.ConfigurationError;
             _logger.Log(LogLevel.Error,
-                _config.LoggingConfiguration.ConfigurationError,
+                eventId,
                 "Configuration validation failed: {ValidationError}",
                 validationError);
         }
@@ -139,8 +146,9 @@ public class SecureHeadersMiddleware
     {
         if (_logger != null && _logger.IsEnabled(LogLevel.Warning))
         {
+            var eventId = _config?.LoggingConfiguration?.ConfigurationIssue ?? SecureHeadersEventIds.ConfigurationIssue;
             _logger.Log(LogLevel.Warning,
-                _config.LoggingConfiguration.ConfigurationIssue,
+                eventId,
                 "Configuration issue detected: {Issue}",
                 issue);
         }

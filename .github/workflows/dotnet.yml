@@ -80,7 +80,6 @@ jobs:
     # It adds a code coverage report to all PR builds
     permissions:
       contents: read  # for actions/checkout to fetch code
-      pull-requests: write  # for marocchino/sticky-pull-request-comment to create or update PR comment
     needs: [build]
     runs-on: ubuntu-latest
     name: Run all tests and generate PR-level code coverage report
@@ -129,6 +128,10 @@ jobs:
       run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
 
   package:
+   permissions:
+     contents: read
+     id-token: write
+     attestations: write
    needs: [build, test]
    runs-on: ubuntu-latest
    name: Create the NuGet package for PR-level user testing

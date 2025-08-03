@@ -1,0 +1,68 @@
+name: Sync Changelog to Docs
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'changelog.md'
+  workflow_dispatch:  # Allow manual triggering
+
+permissions:
+  contents: write
+
+jobs:
+  sync-changelog:
+    runs-on: ubuntu-latest
+    name: Sync root changelog to docs changelog
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Sync changelog files
+        run: |
+          # Check if root changelog exists
+          if [ ! -f "changelog.md" ]; then
+            echo "Root changelog.md not found, skipping sync"
+            exit 0
+          fi
+          
+          # Create docs directory if it doesn't exist
+          mkdir -p docs
+          
+          # Preserve Jekyll front matter and sync content
+          cat > docs/changelog.md << 'EOF'
+          ---
+          title: Changelog
+          layout: page
+          nav_order: 9
+          ---
+          
+          EOF
+          
+          # Append the content from root changelog (skip the first line which is the title)
+          tail -n +2 changelog.md >> docs/changelog.md
+          
+          echo "Changelog sync completed"
+
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain docs/changelog.md)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Docs changelog has changes to commit"
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected in docs changelog"
+          fi
+
+      - name: Commit changes
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/changelog.md
+          git commit -m "docs: sync changelog from root to docs directory [skip ci]" -m "Automatically synced changelog.md to docs/changelog.md to keep documentation site up-to-date."
+          git push

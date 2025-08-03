@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <Description>A Unit Test project (using xunit) for the OwaspHeaders.Core project</Description>
-    <VersionPrefix>9.0.0</VersionPrefix>
+    <VersionPrefix>9.8.0</VersionPrefix>
     <Authors>Jamie Taylor</Authors>
     <AssemblyName>OwaspHeaders.Core.Tests</AssemblyName>
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>

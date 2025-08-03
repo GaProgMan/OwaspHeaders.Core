@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace OwaspHeaders.Core.Tests.LoggingTests;
@@ -12,10 +12,10 @@ public class SecureHeadersMiddlewareLoggingTests
     public SecureHeadersMiddlewareLoggingTests()
     {
         _mockLogger = new Mock<ILogger<SecureHeadersMiddleware>>();
-        
+
         // Setup the logger to return true for all log levels by default
         _mockLogger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
-        
+
         _onNext = _ => Task.CompletedTask;
         _context = new DefaultHttpContext();
     }

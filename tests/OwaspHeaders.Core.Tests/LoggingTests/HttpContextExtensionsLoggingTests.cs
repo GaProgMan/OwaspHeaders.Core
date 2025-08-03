@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace OwaspHeaders.Core.Tests.LoggingTests;
@@ -57,7 +57,7 @@ public class HttpContextExtensionsLoggingTests
     {
         var eventId = new EventId(2001, "TestEvent");
 
-        var exception = Record.Exception(() => 
+        var exception = Record.Exception(() =>
             _context.TryAddHeader("Test-Header", "test-value", null, eventId));
 
         Assert.Null(exception);
@@ -146,7 +146,7 @@ public class HttpContextExtensionsLoggingTests
         _context.Response.Headers.Append("Test-Header", "test-value");
         var eventId = new EventId(2002, "TestEvent");
 
-        var exception = Record.Exception(() => 
+        var exception = Record.Exception(() =>
             _context.TryRemoveHeader("Test-Header", null, eventId));
 
         Assert.Null(exception);

@@ -13,11 +13,14 @@ public class SecureHeadersMiddleware
     private FrozenDictionary<string, string> _headers;
     private readonly RequestDelegate _next;
     private readonly SecureHeadersMiddlewareConfiguration _config;
+    private readonly ILogger<SecureHeadersMiddleware> _logger;
 
-    public SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config)
+    public SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config,
+        ILogger<SecureHeadersMiddleware> logger = null)
     {
         _config = config;
         _next = next;
+        _logger = logger;
         _headers = FrozenDictionary<string, string>.Empty;
     }
 
@@ -31,8 +34,9 @@ public class SecureHeadersMiddleware
     {
         if (_config == null)
         {
-            throw new ArgumentException(
-                $"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.");
+            var errorMessage = $"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.";
+            LogConfigurationError(errorMessage);
+            throw new ArgumentException(errorMessage);
         }
 
         if (!RequestShouldBeIgnored(httpContext.Request.Path))
@@ -40,17 +44,109 @@ public class SecureHeadersMiddleware
             if (_headers.Count == 0)
             {
                 _headers = GenerateRelevantHeaders();
+                LogMiddlewareInitialized(_headers.Count);
+                LogHeadersGenerated(_headers.Count);
             }
 
             foreach (var (key, value) in _headers)
             {
-                httpContext.TryAddHeader(key, value);
+                if (httpContext.TryAddHeader(key, value, _logger, _config.LoggingConfiguration.HeaderAdditionFailed))
+                {
+                    LogHeaderAdded(key, value.Length);
+                }
             }
+
+            LogHeadersAdded(_headers.Count, httpContext.Request.Path.Value ?? "");
+        }
+        else
+        {
+            LogRequestIgnored(httpContext.Request.Path.Value ?? "");
         }
 
         // Call the next middleware in the chain
         await _next(httpContext);
     }
+
+    #region Logging Methods
+
+    private void LogMiddlewareInitialized(int headerCount)
+    {
+        if (_logger != null && _logger.IsEnabled(LogLevel.Information))
+        {
+            _logger.Log(LogLevel.Information,
+                _config.LoggingConfiguration.MiddlewareInitialized,
+                "SecureHeaders middleware initialized with {HeaderCount} headers enabled",
+                headerCount);
+        }
+    }
+
+    private void LogHeadersAdded(int headerCount, string requestPath)
+    {
+        if (_logger != null && _logger.IsEnabled(LogLevel.Information))
+        {
+            _logger.Log(LogLevel.Information,
+                _config.LoggingConfiguration.HeadersAdded,
+                "Added {HeaderCount} security headers to response for {RequestPath}",
+                headerCount, requestPath);
+        }
+    }
+
+    private void LogRequestIgnored(string requestPath)
+    {
+        if (_logger != null && _logger.IsEnabled(LogLevel.Information))
+        {
+            _logger.Log(LogLevel.Information,
+                _config.LoggingConfiguration.RequestIgnored,
+                "Request ignored due to URL exclusion rule: {RequestPath}",
+                requestPath);
+        }
+    }
+
+    private void LogHeadersGenerated(int headerCount)
+    {
+        if (_logger != null && _logger.IsEnabled(LogLevel.Information))
+        {
+            _logger.Log(LogLevel.Information,
+                _config.LoggingConfiguration.HeadersGenerated,
+                "Generated {HeaderCount} security headers",
+                headerCount);
+        }
+    }
+
+    private void LogHeaderAdded(string headerName, int valueLength)
+    {
+        if (_logger != null && _logger.IsEnabled(LogLevel.Debug))
+        {
+            _logger.Log(LogLevel.Debug,
+                _config.LoggingConfiguration.HeaderAdded,
+                "Added header {HeaderName} with value length {ValueLength}",
+                headerName, valueLength);
+        }
+    }
+
+    private void LogConfigurationError(string validationError)
+    {
+        if (_logger != null && _logger.IsEnabled(LogLevel.Error))
+        {
+            _logger.Log(LogLevel.Error,
+                _config.LoggingConfiguration.ConfigurationError,
+                "Configuration validation failed: {ValidationError}",
+                validationError);
+        }
+    }
+
+    private void LogConfigurationIssue(string issue)
+    {
+        if (_logger != null && _logger.IsEnabled(LogLevel.Warning))
+        {
+            _logger.Log(LogLevel.Warning,
+                _config.LoggingConfiguration.ConfigurationIssue,
+                "Configuration issue detected: {Issue}",
+                issue);
+        }
+    }
+
+    #endregion
 
     private FrozenDictionary<string, string> GenerateRelevantHeaders()
     {
@@ -136,8 +232,12 @@ public class SecureHeadersMiddleware
         {
             if (!_config.CrossOriginEmbedderPolicy.HeaderValueIsValid(_config.UseCrossOriginResourcePolicy))
             {
-                BoolValueGuardClauses.MustBeTrue(_config.UseCrossOriginResourcePolicy, nameof(_config.UseCrossOriginResourcePolicy));
+                LogConfigurationIssue(
+                    "Cross-Origin-Embedder-Policy requires Cross-Origin-Resource-Policy to be enabled");
+                BoolValueGuardClauses.MustBeTrue(_config.UseCrossOriginResourcePolicy,
+                    nameof(_config.UseCrossOriginResourcePolicy));
             }
+
             temporaryDictionary.Add(Constants.CrossOriginEmbedderPolicyHeaderName,
                 _config.CrossOriginEmbedderPolicy.BuildHeaderValue());
         }

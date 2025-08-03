@@ -382,6 +382,47 @@ public static class SecureHeadersMiddlewareBuilder
     }
 
     /// <summary>
+    /// Configures custom event IDs for logging to avoid conflicts with application event IDs
+    /// </summary>
+    /// <param name="config">The configuration instance</param>
+    /// <param name="loggingConfig">Custom logging configuration with specific event IDs</param>
+    /// <returns>The configuration instance for method chaining</returns>
+    public static SecureHeadersMiddlewareConfiguration WithLoggingEventIds(
+        this SecureHeadersMiddlewareConfiguration config,
+        SecureHeadersLoggingConfiguration loggingConfig)
+    {
+        ObjectGuardClauses.ObjectCannotBeNull(loggingConfig, nameof(loggingConfig),
+            "cannot be null when configuring logging event IDs");
+
+        config.LoggingConfiguration = loggingConfig;
+        return config;
+    }
+
+    /// <summary>
+    /// Configures event IDs using a base offset to avoid conflicts with application event IDs.
+    /// This creates event IDs starting from the base (e.g., baseEventId=5000 creates 5001, 5002, etc.)
+    /// </summary>
+    /// <param name="config">The configuration instance</param>
+    /// <param name="baseEventId">Base event ID to offset from (recommended: use multiples of 1000)</param>
+    /// <returns>The configuration instance for method chaining</returns>
+    /// <example>
+    /// <code>
+    /// var config = SecureHeadersMiddlewareBuilder
+    ///     .CreateBuilder()
+    ///     .UseHsts()
+    ///     .WithLoggingEventIdBase(5000) // Creates event IDs 5001, 5002, etc.
+    ///     .Build();
+    /// </code>
+    /// </example>
+    public static SecureHeadersMiddlewareConfiguration WithLoggingEventIdBase(
+        this SecureHeadersMiddlewareConfiguration config,
+        int baseEventId)
+    {
+        config.LoggingConfiguration = SecureHeadersLoggingConfiguration.CreateWithBaseEventId(baseEventId);
+        return config;
+    }
+
+    /// <summary>
     /// Return the completed <see cref="SecureHeadersMiddlewareConfiguration"/> ready for consumption by the
     /// <see cref="SecureHeadersMiddleware"/> class
     /// </summary>

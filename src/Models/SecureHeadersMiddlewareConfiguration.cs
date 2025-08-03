@@ -133,4 +133,10 @@ public class SecureHeadersMiddlewareConfiguration
     /// the middleware
     /// </summary>
     public List<string> UrlsToIgnore { get; set; } = [];
+
+    /// <summary>
+    /// Configuration for logging event IDs. Allows customization to avoid conflicts 
+    /// with application event IDs. Defaults to standard SecureHeaders event ID ranges.
+    /// </summary>
+    public SecureHeadersLoggingConfiguration LoggingConfiguration { get; set; } = new();
 }

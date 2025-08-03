@@ -70,6 +70,23 @@ In most cases (except for the [Content-Security Policy](./Content-Security-Polic
 be suitable. This is because it adds the OWASP recommended headers and values. Content-Security Policy is a non-trivial
 header, and is an allowlist for sources of content for the rendered page.
 
+### Logging Configuration
+
+OwaspHeaders.Core includes built-in logging that can be configured independently of security headers:
+
+```csharp
+var config = SecureHeadersMiddlewareBuilder
+    .CreateBuilder()
+    .UseHsts()
+    .UseXFrameOptions()
+    .WithLoggingEventIdBase(5000)  // Avoid Event ID conflicts by seeding all logging events with 5000
+    .Build();
+
+app.UseSecureHeadersMiddleware(config);
+```
+
+For detailed logging configuration options, see the [Logging](../logging) documentation.
+
 In some cases, you may need to provide a custom configuration for the OwaspHeaders.Core middleware. In order to use a
 custom configuration, follow the same pattern.
 

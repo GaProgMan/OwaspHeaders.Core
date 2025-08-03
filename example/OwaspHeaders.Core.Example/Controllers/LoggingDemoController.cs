@@ -8,9 +8,14 @@ namespace OwaspHeaders.Core.Example.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class LoggingDemoController(ILogger<LoggingDemoController> logger) : ControllerBase
+public class LoggingDemoController : ControllerBase
 {
-    private readonly ILogger<LoggingDemoController> _logger = logger;
+    private readonly ILogger<LoggingDemoController> _logger;
+
+    public LoggingDemoController(ILogger<LoggingDemoController> logger)
+    {
+        _logger = logger;
+    }
 
     /// <summary>
     /// Shows what the default SecureHeaders configuration logs look like

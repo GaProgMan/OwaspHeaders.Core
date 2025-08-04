@@ -76,7 +76,7 @@ var config = SecureHeadersMiddlewareBuilder
 app.UseSecureHeadersMiddleware(config);
 ```
 
-The above configuration allows scripts from the same origin and a specific CDN, whilst reporting violations to a specified URI.
+The above configuration allows scripts from the same origin and a specific CDN, while reporting violations to a specified URI.
 
 ## Configuration Methods
 

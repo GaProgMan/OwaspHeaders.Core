@@ -30,6 +30,7 @@ These items are essential and must be completed for each commit. If they are not
 - [ ] I have ensured that the code coverage has not dropped below 65%
 - [ ] I have increased the version number in OwaspHeaders.Core.csproj (only relevant for code changes)
 - [ ] I have updated the changelog in the root of the repository
+- [ ] I have avoided using primary constructors in the example project (see README for details)
 
 > [!NOTE]
 > The changelog in the `docs/` directory will be updated automatically when PRs are merged into main.

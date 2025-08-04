@@ -22,6 +22,19 @@ The fastest way to create a minimal code sample would be:
 app.UseSecureHeadersMiddleware();
 ```
 
+**Optional**: To see logging output, configure logging. The following is an example, modify it to suit your needs:
+
+```csharp
+// in Program.cs (before building the app)
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Information);
+
+// Then use the middleware
+app.UseSecureHeadersMiddleware();
+```
+
+This will show SecureHeaders operations in the console output with Event IDs 1001-1005.
+
 **Step 4**: Progressively add smaller and smaller features until you hit on the bug, issue, or have added the new feature
 (dependent on what the code sample is for).
 

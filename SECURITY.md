@@ -2,7 +2,7 @@
 
 We minimise the security risk when developing code for, and supplying it to consumers of, OwaspHeaders.Core by making all source code available, using only official Microsoft-backed NuGet dependencies, carefully reviewing all code contributions, building and publishing packages in the cloud with GitHub Actions, and using deterministic builds and SourceLink for all packages deployed to NuGet.
 
-This security policy is based on the one found on the one found in the repository for [ScottPlot](https://github.com/ScottPlot/ScottPlot/blob/main/SECURITY.md)
+This security policy is based on the one found in the repository for [ScottPlot](https://github.com/ScottPlot/ScottPlot/blob/main/SECURITY.md)
 
 ## Supported Versions
 

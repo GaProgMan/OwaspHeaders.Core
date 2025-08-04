@@ -53,6 +53,9 @@ app.UseSecureHeadersMiddleware();
 
 This will add a number of default HTTP headers to all responses from your server component.
 
+{: .note }
+The middleware includes comprehensive logging functionality. To see logging output, ensure your application has logging configured. See the [Logging](./logging) section for detailed information.
+
 The following is an example of the response headers from version 9.1.0 (taken on November 19th, 2024)
 
 ```text

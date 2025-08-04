@@ -9,7 +9,7 @@ public static class HttpContextExtensions
     }
 
     public static bool TryAddHeader(this HttpContext httpContext,
-        string headerName, string headerValue)
+        string headerName, string headerValue, ILogger logger = null, EventId? eventId = null)
     {
         if (httpContext.ResponseContainsHeader(headerName))
         {
@@ -30,8 +30,14 @@ public static class HttpContextExtensions
 #pragma warning restore ASP0019
             return true;
         }
-        catch (ArgumentException)
+        catch (ArgumentException ex)
         {
+            if (logger != null && logger.IsEnabled(LogLevel.Warning) && eventId.HasValue)
+            {
+                logger.Log(LogLevel.Warning, eventId.Value,
+                    "Failed to add header {HeaderName}: {ErrorMessage}",
+                    headerName, ex.Message);
+            }
             return false;
         }
     }
@@ -43,7 +49,7 @@ public static class HttpContextExtensions
     /// <param name="httpContext">The current <see cref="HttpContext"/></param>
     /// <param name="headerName">The name of the HTTP header to remove</param>
     /// <returns></returns>
-    public static bool TryRemoveHeader(this HttpContext httpContext, string headerName)
+    public static bool TryRemoveHeader(this HttpContext httpContext, string headerName, ILogger logger = null, EventId? eventId = null)
     {
         if (!httpContext.ResponseContainsHeader(headerName))
         {
@@ -54,8 +60,14 @@ public static class HttpContextExtensions
             httpContext.Response.Headers.Remove(headerName);
             return true;
         }
-        catch (ArgumentException)
+        catch (ArgumentException ex)
         {
+            if (logger != null && logger.IsEnabled(LogLevel.Warning) && eventId.HasValue)
+            {
+                logger.Log(LogLevel.Warning, eventId.Value,
+                    "Failed to remove header {HeaderName}: {ErrorMessage}",
+                    headerName, ex.Message);
+            }
             return false;
         }
     }

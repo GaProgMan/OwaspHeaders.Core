@@ -5,7 +5,7 @@ parent: Configuration
 layout: page
 ---
 
-The Mozilla Developer Network describes the Content-Security-Policy header like this:
+The Mozilla Developer Network describes the Content-Security-Policy header as follows:
 
 {: .quote }
 > Content Security Policy (CSP) is an added layer of security that helps to prevent and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement to distribution of malware.

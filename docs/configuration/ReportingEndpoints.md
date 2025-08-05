@@ -34,7 +34,7 @@ var secureHeadersMiddlewareConfig = SecureHeadersMiddlewareBuilder.CreateBuilder
 app.UseSecureHeadersMiddleware(secureHeadersMiddlewareConfig);
 ```
 
-The above adds the Reporting-Endpoint header with a value which maps the string "standard" to the URL "[htts](https://localhost:5000/reporting-endpoint)".
+The above adds the Reporting-Endpoint header with a value which maps the string "standard" to the URL "https://localhost:5000/reporting-endpoint".
 
 {: .warning }
 > It is important to note that this header can be included without the [Content-Security-Policy] header. However if the Content-Security-Policy `Report-To` field is used _WITHOUT_ the Reporting-Endpoints header being present (or containing an entry for the value used in the `Report-To` header), the CSP-generated report will not be send.

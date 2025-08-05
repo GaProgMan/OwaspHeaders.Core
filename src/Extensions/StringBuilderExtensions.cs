@@ -44,7 +44,7 @@ public static class StringBuilderExtensions
             return input;
         }
 
-        if (input.Length > 0 && input[input.Length - 1] == toRemove)
+        if (input[input.Length - 1] == toRemove)
         {
             input.Length--;
         }

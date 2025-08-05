@@ -2,7 +2,7 @@
 
 public class ReportingEndpointsPolicy : IConfigurationBase
 {
-    public Dictionary<string, Uri> Endpoints = new();
+    private readonly Dictionary<string, Uri> _endpoints = new();
 
     /// <summary>
     /// Protected constructor, we can no longer create instances of this class without
@@ -13,23 +13,23 @@ public class ReportingEndpointsPolicy : IConfigurationBase
 
     public ReportingEndpointsPolicy(Dictionary<string, Uri> endpoints)
     {
-        Endpoints = endpoints;
+        _endpoints = endpoints;
     }
 
     public string BuildHeaderValue()
     {
-        if (Endpoints.Count != 0)
+        if (_endpoints.Count == 0)
         {
-            var stringBuilder = new StringBuilder();
-
-            foreach (var kvp in Endpoints)
-            {
-                stringBuilder.Append($"{kvp.Key}=\"{kvp.Value}\", ");
-            }
-
-            return $"Reporting-Endpoints: {stringBuilder.TrimEnd().RemoveTrailingCharacter(',')}";
+            return string.Empty;
         }
 
-        return string.Empty;
+        var stringBuilder = new StringBuilder();
+
+        foreach (var kvp in _endpoints)
+        {
+            stringBuilder.Append($"{kvp.Key}=\"{kvp.Value}\", ");
+        }
+
+        return $"Reporting-Endpoints: {stringBuilder.TrimEnd().RemoveTrailingCharacter(',')}";
     }
 }

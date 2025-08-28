@@ -182,9 +182,9 @@ This configuration:
 
 CSP directives are built using `ContentSecurityPolicyElement` objects with two types:
 
-### Directive Elements
+### Directive Elements (`CspCommandType.Directive`)
 
-Common CSP keywords that must be quoted in the final header:
+Use `CspCommandType.Directive` for CSP keywords and directives that are enclosed in single quotes in the final header:
 
 ```csharp
 new ContentSecurityPolicyElement
@@ -198,6 +198,12 @@ new ContentSecurityPolicyElement
     CommandType = CspCommandType.Directive,
     DirectiveOrUri = "unsafe-inline"  // Becomes 'unsafe-inline'
 }
+
+new ContentSecurityPolicyElement
+{
+    CommandType = CspCommandType.Directive,
+    DirectiveOrUri = "none"        // Becomes 'none'
+}
 ```
 
 **Common Directive Values:**
@@ -209,23 +215,54 @@ new ContentSecurityPolicyElement
 - `strict-dynamic` - Allow scripts loaded by trusted scripts
 - `unsafe-hashes` - Allow specific inline event handlers
 
-### URI Elements
+### URI Elements (`CspCommandType.Uri`)
 
-Specific domains, protocols, or paths:
+Use `CspCommandType.Uri` for URLs, domains, URI schemes, and URI patterns:
 
 ```csharp
+// HTTPS URLs
 new ContentSecurityPolicyElement
 {
     CommandType = CspCommandType.Uri,
     DirectiveOrUri = "https://example.com"
 }
 
+// Domain wildcards
 new ContentSecurityPolicyElement
 {
     CommandType = CspCommandType.Uri,
     DirectiveOrUri = "*.googleapis.com"
 }
+
+// URI schemes (including data: for inline content)
+new ContentSecurityPolicyElement
+{
+    CommandType = CspCommandType.Uri,
+    DirectiveOrUri = "data:"
+}
+
+new ContentSecurityPolicyElement
+{
+    CommandType = CspCommandType.Uri,
+    DirectiveOrUri = "blob:"
+}
+
+// Protocol-relative URLs
+new ContentSecurityPolicyElement
+{
+    CommandType = CspCommandType.Uri,
+    DirectiveOrUri = "//cdn.example.com"
+}
 ```
+
+**Common URI Patterns:**
+
+- `https://example.com` - Specific HTTPS domain
+- `*.example.com` - All subdomains of example.com
+- `data:` - Data URIs (for inline images, fonts, etc.)
+- `blob:` - Blob URIs (for dynamically created content)
+- `filesystem:` - FileSystem API URIs
+- `//cdn.example.com` - Protocol-relative URLs
 
 ### Helper Methods
 
@@ -306,6 +343,35 @@ var config = SecureHeadersMiddlewareBuilder
     ], CspUriType.Font)
     .Build();
 ```
+
+### Website With Inline SVG Images
+
+For websites that need to display inline SVG images using data URIs:
+
+```csharp
+var config = SecureHeadersMiddlewareBuilder
+    .CreateBuilder()
+    .UseContentSecurityPolicy()
+    .SetCspUris([
+        ContentSecurityPolicyHelpers.CreateSelfDirective()
+    ], CspUriType.DefaultUri)
+    .SetCspUris([
+        ContentSecurityPolicyHelpers.CreateSelfDirective(),
+        new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "data:" },
+        new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://cdn.example.com" }
+    ], CspUriType.Img)
+    .Build();
+```
+
+This configuration allows:
+- Images from the same origin (`'self'`)
+- Inline images using data URIs (`data:`) - useful for SVG icons and small images
+- Images from a trusted CDN
+
+Results in: `img-src 'self' data: https://cdn.example.com;`
+
+{: .note }
+**Common data: URI use cases:** SVG icons (`data:image/svg+xml;base64,...`), small images (`data:image/png;base64,...`), fonts (`data:font/woff2;base64,...`), and CSS (`data:text/css;base64,...`).
 
 ### Report-Only Testing Configuration
 

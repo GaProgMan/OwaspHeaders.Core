@@ -33,7 +33,6 @@ public class CspRegressionTests
             .SetCspUris(
             [
                 new ContentSecurityPolicyElement { CommandType = CspCommandType.Directive, DirectiveOrUri = "self" },
-
                 new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "cdnjs.cloudflare.com" }
             ], CspUriType.Style).Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);

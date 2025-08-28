@@ -4,7 +4,6 @@ layout: page
 nav_order: 9
 ---
 
-# Changelog
 
 This changelog represents all the major (i.e. breaking) changes made to the OwaspHeaders.Core project since it's inception. Early in the repo's development, GitHub's "releases" where used to release builds of the code repo. However shortly after it's inception, builds and releases where moved to [AppVeyor](https://ci.appveyor.com/project/GaProgMan/owaspheaders-core). Because of this, the releases on the GitHub repo became stale.
 
@@ -48,7 +47,7 @@ See the [Logging documentation](https://gaprogman.github.io/OwaspHeaders.Core/lo
 
 #### Version 9.7.x
 
-This version saw the addition of both the [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/) (COOP) and [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/) (COEP) headers; bringing the total number of supported headers to 83% complete (or 10 of the 12 recommended headers and values).
+This version saw the addition of both the [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/) (COEP) and [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/) (COEP) headers; bringing the total number of supported headers to 83% complete (or 10 of the 12 recommended headers and values).
 
 #### Version 9.6.x
 
@@ -70,7 +69,7 @@ The `max-age` value for the Strict-Transport-Security (HSTS) header was updated 
 
 ### Version 8
 
-This version dropped support for ASP .NET Core on .NET Framework workflows. This means that, from version 8 onwards, this package will no longer work with .NET Framework workloads. This decision was made as Microsoft have dropped support for ASP .NET Core on .NET Framework workloads. This can be seen in the ASP .NET Core support documentation [here](https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core)
+This version dropped support for support for ASP .NET Core on .NET Framework workflows. This means that, from version 8 onwards, this package will no longer work with .NET Framework workloads. This decision was made as Microsoft have dropped support for ASP .NET Core on .NET Framework workloads. This can be seen in the ASP .NET Core support documentation [here](https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core)
 
 > To help facilitate migrating applications to ASP.NET Core on .NET Core, the specified ASP.NET Core 2.1 packages (latest patched version only) will be supported on the .NET Framework and follow the support cycle for those .NET Framework versions. ASP.NET Core 2.1 is defined as "Tools" in the Microsoft Support Lifecycle Policy
 > Source: https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core, obtained Oct 19th, 2024.

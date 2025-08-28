@@ -11,7 +11,7 @@ public class ContentSecurityPolicyElement
     /// Use <see cref="CspCommandType.Uri"/> for URLs, domains, and URI schemes like 'https://example.com', 'data:', etc.
     /// </summary>
     public CspCommandType CommandType { get; init; }
-    
+
     /// <summary>
     /// The actual directive keyword or URI value.
     /// For directives: "self", "unsafe-inline", "unsafe-eval", "none", etc. (without quotes)

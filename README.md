@@ -18,6 +18,43 @@ Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIO
 
 That's it.
 
+## Example Project Coding Guidelines
+
+### Primary Constructors Restriction
+
+**Important**: When contributing to the **example project only** (`OwaspHeaders.Core.Example` directory), please avoid using primary constructors due to a known issue with `dotnet-format` that causes incorrect indentation.
+
+#### ❌ Don't use (in example project):
+
+```csharp
+public class HomeController(ILogger<HomeController> logger) : ControllerBase
+{
+    private readonly ILogger<HomeController> _logger = logger;
+    // dotnet-format will incorrectly indent methods here
+}
+```
+
+#### ✅ Use instead (in example project):
+
+```csharp
+public class HomeController : ControllerBase
+{
+    private readonly ILogger<HomeController> _logger;
+
+    public HomeController(ILogger<HomeController> logger)
+    {
+        _logger = logger;
+    }
+    // dotnet-format handles this correctly
+}
+```
+
+**Why**: This restriction exists because of a bug in `dotnet-format` when processing primary constructors (see [dotnet/format#2165](https://github.com/dotnet/format/issues/2165)). Since this project uses `.editorconfig` and `dotnet-format` for consistent code formatting, primary constructors cause formatting issues that break our CI/CD pipeline.
+
+**Scope**: This restriction applies **only to the example project**. The main OwaspHeaders.Core library does not use primary constructors and is not affected by this issue.
+
+**Future**: This guidance will be removed once the upstream `dotnet-format` bug is resolved.
+
 ## Documentation
 
 The latest documentation for OwaspHeaders.Core can be found at [https://gaprogman.github.io/OwaspHeaders.Core/](https://gaprogman.github.io/OwaspHeaders.Core/).

@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   sync-changelog:
@@ -58,11 +59,16 @@ jobs:
             echo "No changes detected in docs changelog"
           fi
 
-      - name: Commit changes
+      - name: Create Pull Request
         if: steps.verify-changed-files.outputs.changed == 'true'
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add docs/changelog.md
-          git commit -m "docs: sync changelog from root to docs directory [skip ci]" -m "Automatically synced changelog.md to docs/changelog.md to keep documentation site up-to-date."
-          git push
+        uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # v7.0.5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "docs: sync changelog from root to docs directory"
+          title: "docs: sync changelog to docs directory"
+          body: |
+            Automatically synced changelog.md to docs/changelog.md to keep documentation site up-to-date.
+            
+            This PR was created automatically when the root changelog.md was updated.
+          branch: sync-changelog-${{ github.run_number }}
+          delete-branch: true

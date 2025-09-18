@@ -58,7 +58,7 @@ The middleware includes comprehensive logging functionality. To see logging outp
 
 The following is an example of the response headers from version 9.1.0 (taken on November 19th, 2024)
 
-```plaintext
+```text
 strict-transport-security: max-age=31536000;includesubdomains
 x-frame-options: deny
 x-content-type-options: nosniff

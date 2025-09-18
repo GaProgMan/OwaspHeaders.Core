@@ -250,6 +250,12 @@ public class SecureHeadersMiddleware
                 _config.CrossOriginEmbedderPolicy.BuildHeaderValue());
         }
 
+        if (_config.UseReportingEndPoints)
+        {
+            temporaryDictionary.Add(Constants.ReportingEndpointsHeaderName,
+                _config.ReportingEndpointsPolicy.BuildHeaderValue());
+        }
+
         return temporaryDictionary.ToFrozenDictionary();
     }
 

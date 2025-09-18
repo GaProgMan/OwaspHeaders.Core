@@ -35,6 +35,8 @@ public static class SecureHeadersMiddlewareExtensions
             .UseCrossOriginResourcePolicy()
             .UseCrossOriginOpenerPolicy()
             .UseCrossOriginEmbedderPolicy()
+            // When the OWASP Secure Headers project recommends the use of the Reporting-Endpoints header, we will
+            // enable it here
             .SetUrlsToIgnore(urlIgnoreList)
             .Build();
     }

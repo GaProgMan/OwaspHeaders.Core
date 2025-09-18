@@ -78,6 +78,11 @@ public class SecureHeadersMiddlewareConfiguration
     public bool UseCrossOriginEmbedderPolicy { get; set; }
 
     /// <summary>
+    /// Indicates whether the response should use the Reporting-Endpoints header
+    /// </summary>
+    public bool UseReportingEndPoints { get; set; }
+
+    /// <summary>
     /// The HTTP Strict Transport Security configuration to use
     /// </summary>
     public HstsConfiguration HstsConfiguration { get; set; }
@@ -127,6 +132,8 @@ public class SecureHeadersMiddlewareConfiguration
     public CrossOriginOpenerPolicy CrossOriginOpenerPolicy { get; set; }
 
     public CrossOriginEmbedderPolicy CrossOriginEmbedderPolicy { get; set; }
+
+    public ReportingEndpointsPolicy ReportingEndpointsPolicy { get; set; }
 
     /// <summary>
     /// A list of URLs that, when requested, should be ignored completely by

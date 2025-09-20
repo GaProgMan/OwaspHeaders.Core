@@ -1,4 +1,9 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using OwaspHeaders.Core.Enums;
+// the above using statement is required for example 4, which is commented
+// out by default. As such, Rider (and linting tools) will likely complain
+// about the fact that it is unnecessary.
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -64,6 +69,24 @@ var fullyCustomConfig = SecureHeadersMiddlewareBuilder
     .Build();
 
 app.UseSecureHeadersMiddleware(fullyCustomConfig);
+*/
+
+// Example 4 (commented): Clear-Site-Data configuration for logout endpoints
+// This demonstrates path-specific Clear-Site-Data header configuration for enhanced logout security
+/*
+var clearSiteDataConfig = SecureHeadersMiddlewareBuilder
+    .CreateBuilder()
+    .UseHsts()
+    .UseXFrameOptions()
+    .UseContentTypeOptions()
+    .UseReferrerPolicy()
+    .AddClearSiteDataPath("/auth/logout", ClearSiteDataOptions.wildcard) // Clear all data on standard logout
+    .AddClearSiteDataPath("/auth/api/logout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies) // Selective clearing for API logout
+    .AddClearSiteDataPath("/auth/admin/logout", ClearSiteDataOptions.wildcard) // Maximum security for admin logout
+    .SetUrlsToIgnore(["/skipthis"])
+    .Build();
+
+app.UseSecureHeadersMiddleware(clearSiteDataConfig);
 */
 
 app.MapControllers();

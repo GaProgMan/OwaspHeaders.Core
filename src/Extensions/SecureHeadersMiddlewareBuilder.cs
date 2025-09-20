@@ -423,6 +423,124 @@ public static class SecureHeadersMiddlewareBuilder
     }
 
     /// <summary>
+    /// Enables the Clear-Site-Data header for all responses with OWASP recommended defaults
+    /// </summary>
+    /// <param name="config">The configuration instance</param>
+    /// <param name="directiveOptions">The directive options to include (defaults to cache, cookies, storage)</param>
+    /// <returns>The configuration instance for method chaining</returns>
+    /// <remarks>
+    /// This enables Clear-Site-Data for all responses. For path-specific configuration,
+    /// use <see cref="UseClearSiteDataForPaths"/> or <see cref="AddClearSiteDataPath"/> instead.
+    /// </remarks>
+    public static SecureHeadersMiddlewareConfiguration UseClearSiteData(
+        this SecureHeadersMiddlewareConfiguration config,
+        params ClearSiteDataOptions[] directiveOptions)
+    {
+        // Use OWASP recommended defaults if no options provided
+        if (directiveOptions.Length == 0)
+        {
+            directiveOptions = [ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies, ClearSiteDataOptions.storage];
+        }
+
+        config.UseClearSiteData = true;
+
+        var clearSiteDataConfig = new ClearSiteDataConfiguration(directiveOptions);
+        var pathConfig = new Dictionary<string, ClearSiteDataConfiguration>();
+
+        config.ClearSiteDataPathConfiguration = new ClearSiteDataPathConfiguration(
+            pathConfig, clearSiteDataConfig);
+
+        return config;
+    }
+
+    /// <summary>
+    /// Configures path-specific Clear-Site-Data header behavior
+    /// </summary>
+    /// <param name="config">The configuration instance</param>
+    /// <param name="pathConfigurations">Dictionary mapping paths to their Clear-Site-Data directive options</param>
+    /// <param name="defaultConfiguration">Default directives for non-matching paths (optional)</param>
+    /// <returns>The configuration instance for method chaining</returns>
+    /// <remarks>
+    /// Only the specified paths will receive Clear-Site-Data headers unless a default configuration is provided.
+    /// </remarks>
+    public static SecureHeadersMiddlewareConfiguration UseClearSiteDataForPaths(
+        this SecureHeadersMiddlewareConfiguration config,
+        Dictionary<string, ClearSiteDataOptions[]> pathConfigurations,
+        ClearSiteDataOptions[] defaultConfiguration = null)
+    {
+        ObjectGuardClauses.ObjectCannotBeNull(pathConfigurations, nameof(pathConfigurations),
+            $"{nameof(pathConfigurations)} cannot be null");
+
+        config.UseClearSiteData = true;
+
+        var configuredPaths = new Dictionary<string, ClearSiteDataConfiguration>();
+        foreach (var kvp in pathConfigurations)
+        {
+            configuredPaths[kvp.Key] = new ClearSiteDataConfiguration(kvp.Value);
+        }
+
+        ClearSiteDataConfiguration defaultConfig = null;
+        if (defaultConfiguration != null && defaultConfiguration.Length > 0)
+        {
+            defaultConfig = new ClearSiteDataConfiguration(defaultConfiguration);
+        }
+
+        config.ClearSiteDataPathConfiguration = new ClearSiteDataPathConfiguration(
+            configuredPaths, defaultConfig);
+
+        return config;
+    }
+
+    /// <summary>
+    /// Adds a path-specific Clear-Site-Data configuration
+    /// </summary>
+    /// <param name="config">The configuration instance</param>
+    /// <param name="path">The path to configure</param>
+    /// <param name="directiveOptions">The directive options for this path</param>
+    /// <returns>The configuration instance for method chaining</returns>
+    /// <remarks>
+    /// This method can be called multiple times to configure different paths.
+    /// Use this for fluent path-by-path configuration.
+    /// </remarks>
+    public static SecureHeadersMiddlewareConfiguration AddClearSiteDataPath(
+        this SecureHeadersMiddlewareConfiguration config,
+        string path,
+        params ClearSiteDataOptions[] directiveOptions)
+    {
+        HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(path, nameof(path));
+        ObjectGuardClauses.ObjectCannotBeNull(directiveOptions, nameof(directiveOptions),
+            $"{nameof(directiveOptions)} cannot be null");
+
+        if (directiveOptions.Length == 0)
+        {
+            ArgumentExceptionHelper.RaiseException(nameof(directiveOptions));
+        }
+
+        config.UseClearSiteData = true;
+
+        // Initialize if not already configured
+        if (config.ClearSiteDataPathConfiguration == null)
+        {
+            var initialPaths = new Dictionary<string, ClearSiteDataConfiguration>();
+            config.ClearSiteDataPathConfiguration = new ClearSiteDataPathConfiguration(initialPaths);
+        }
+
+        // Create new configuration with the additional path
+        var existingPaths = new Dictionary<string, ClearSiteDataConfiguration>();
+        foreach (var kvp in config.ClearSiteDataPathConfiguration.PathConfigurations)
+        {
+            existingPaths[kvp.Key] = kvp.Value;
+        }
+
+        existingPaths[path] = new ClearSiteDataConfiguration(directiveOptions);
+
+        config.ClearSiteDataPathConfiguration = new ClearSiteDataPathConfiguration(
+            existingPaths, config.ClearSiteDataPathConfiguration.DefaultConfiguration);
+
+        return config;
+    }
+
+    /// <summary>
     /// Return the completed <see cref="SecureHeadersMiddlewareConfiguration"/> ready for consumption by the
     /// <see cref="SecureHeadersMiddleware"/> class
     /// </summary>

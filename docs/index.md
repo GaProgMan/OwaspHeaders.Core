@@ -73,7 +73,7 @@ x-xss-protection: 0
 ```
 
 {: .note }
-The above example contains only the headers added by the Middleware.
+The above example contains only the headers added by the Middleware. The [Clear-Site-Data](./configuration/Clear-Site-Data) header is **not** included in the default configuration and must be explicitly configured.
 
 For a more detailed explanation of how to use the middleware, including how to configure it, see [Configuration](./configuration).
 
@@ -91,7 +91,7 @@ The following list displays the status of all the current (as of Dec 27th, 2024)
 - [ ✅ ] [Referrer-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Referrer-Policy/)
 - [ ✅ ] [Cross-Origin-Resource-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Resource-Policy/)
 - [ ✅ ] [Cache-Control](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/)
-- [ ❌ ] Clear-Site-Data
+- [ ✅ ] [Clear-Site-Data](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Clear-Site-Data/)
 - [ ✅ ] [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/)
 - [ ✅ ] [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/)
 - [ ❌ ] Permissions-Policy

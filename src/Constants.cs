@@ -30,4 +30,6 @@ public static class Constants
     public const string CrossOriginOpenerPolicyHeaderName = "Cross-Origin-Opener-Policy";
 
     public const string CrossOriginEmbedderPolicyHeaderName = "Cross-Origin-Embedder-Policy";
+
+    public const string ClearSiteDataHeaderName = "Clear-Site-Data";
 }

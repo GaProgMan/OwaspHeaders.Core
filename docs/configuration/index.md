@@ -44,6 +44,9 @@ public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration()
 {: .warning }
 The default configuration is INCREDIBLY restrictive.
 
+{: .note }
+The [Clear-Site-Data](./Clear-Site-Data) header is **not** included in the default configuration due to its potentially disruptive nature and must be explicitly configured for specific paths (typically logout endpoints).
+
 The following is an example of the response headers from version 9.1.0 (taken on November 19th, 2024) when using the
 default configuration: 
 

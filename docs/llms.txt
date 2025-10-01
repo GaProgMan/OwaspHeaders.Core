@@ -1,0 +1,49 @@
+# OwaspHeaders.Core
+
+> ASP.NET Core middleware for injecting OWASP-recommended HTTP security headers into all responses with a single line of code
+
+OwaspHeaders.Core is an open-source middleware library that enhances web application security by automatically adding the HTTP headers recommended by the OWASP Secure Headers Project. It supports .NET 8 and .NET 9, and is maintained by Jamie Taylor (GaProgMan) under the MIT License.
+
+**Key Features:**
+- One-line setup: `app.UseSecureHeadersMiddleware();`
+- 11 OWASP-recommended security headers included by default
+- Configurable header values using fluent builder pattern
+- Comprehensive logging support
+- OpenSSF Best Practices certified
+- Does not support Blazor/WebAssembly applications
+
+**Current Version:** 9.9.0
+
+**Installation:** `dotnet add package OwaspHeaders.Core`
+
+## Getting Started
+
+- [Home](https://gaprogman.github.io/OwaspHeaders.Core/): Project overview and quick start guide
+- [Configuration](https://gaprogman.github.io/OwaspHeaders.Core/configuration/): Detailed configuration instructions and examples
+- [Logging](https://gaprogman.github.io/OwaspHeaders.Core/logging): Logging configuration and best practices
+- [Troubleshooting](https://gaprogman.github.io/OwaspHeaders.Core/troubleshooting): Common issues and solutions
+
+## Header Configuration Documentation
+
+- [Strict-Transport-Security](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Strict-Transport-Security/)
+- [X-Frame-Options](https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Frame-Options/)
+- [X-Content-Type-Options](https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Content-Type-Options/)
+- [Content-Security-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Content-Security-Policy/)
+- [X-Permitted-Cross-Domain-Policies](https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-Permitted-Cross-Domain-Policies/)
+- [Referrer-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Referrer-Policy/)
+- [Cross-Origin-Resource-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Resource-Policy/)
+- [Cache-Control](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/)
+- [Clear-Site-Data](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Clear-Site-Data/)
+- [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/)
+- [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/)
+- [X-XSS-Protection](https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-XSS-Protection/)
+
+## Project Resources
+
+- [GitHub Repository](https://github.com/GaProgMan/OwaspHeaders.Core): Source code and issue tracking
+- [NuGet Package](https://www.nuget.org/packages/OwaspHeaders.Core/): Official package distribution
+- [Changelog](https://gaprogman.github.io/OwaspHeaders.Core/changelog): Version history and breaking changes
+- [Contributing Guide](https://gaprogman.github.io/OwaspHeaders.Core/Contributing): How to contribute to the project
+- [Code of Conduct](https://gaprogman.github.io/OwaspHeaders.Core/Code-of-Conduct): Community guidelines
+- [Security Policy](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md): Vulnerability reporting and supported versions
+- [Attestations](https://gaprogman.github.io/OwaspHeaders.Core/attestations): Build verification instructions

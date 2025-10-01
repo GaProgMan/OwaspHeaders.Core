@@ -11,7 +11,7 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 
 | Major Version Number | Changes                                                                                                                                                                                                                                                                                                                                                                                                                     |
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. <br /> A number of small optimisation have been made to the middleware's `Invoke` method <br /> Added support for both Cross-Origin-Opener-Policy (CORP) and Cross-Origin-Embedder-Policy (COEP) headers <br/> Increased documentation coverage for Content-Security-Policy directive generation |
+| 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. <br /> A number of small optimisation have been made to the middleware's `Invoke` method <br /> Added support for both Cross-Origin-Opener-Policy (CORP) and Cross-Origin-Embedder-Policy (COEP) headers <br /> Added support for Clear-Site-Data header with path-specific configuration for logout scenarios <br/> Increased documentation coverage for Content-Security-Policy directive generation |
 | 8                    | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes                                                                                                                                                                                                                                                         |
 | 7                    | Added Cross-Origin-Resource-Policy header to list of defaults; simplified the use of the middleware in Composite Root/Program.cs                                                                                                                                                                                                                                                                                            |
 | 6                    | Removes Expect-CT Header from the list of default headers                                                                                                                                                                                                                                                                                                                                                                   |
@@ -26,6 +26,23 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 This version dropped support for .NET 6 and .NET 7, as they are no longer supported by Microsoft. It also added support for .NET 9.
 
 All projects in the [GitHub repo](https://github.com/GaProgMan/OwaspHeaders.Core) now build and run with either .NET 8 or .NET 9, whichever is present (deferring to the highest version number if both are present). As of November 19th, 2024 there are no new features in Version 9, so if you still need to use the NuGet package with .NET 6 or 7 please use Version 8 of the package.
+
+#### Version 9.9.x
+
+This version adds support for the Clear-Site-Data HTTP header, addressing issue #32 and implementing the OWASP Secure Headers Project recommendation. The Clear-Site-Data header instructs browsers to clear client-side data (cache, cookies, storage) for specific paths, which is particularly important for logout endpoints to ensure complete session termination and prevent session hijacking.
+
+**New Features:**
+
+- Clear-Site-Data header support with path-specific configuration
+- OWASP recommended default values (`"cache","cookies","storage"`)
+- Support for all standard directives: "cache", "cookies", "storage", "executionContexts", and wildcard "*"
+- Enum-based type safety with `ClearSiteDataOptions`
+- Path-specific customization of which data types to clear
+- Integration with existing middleware builder pattern
+- Comprehensive documentation and examples for logout scenarios
+- Full backward compatibility with existing configurations
+
+See the [Clear-Site-Data documentation](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Clear-Site-Data/) for detailed configuration options and examples.
 
 #### Version 9.8.x
 

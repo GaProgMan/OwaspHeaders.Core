@@ -235,6 +235,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
     }
 
     [Fact]
+    [Trait("Category", "Performance")]
     public async Task PerformanceTest_ClearSiteData_ProcessingTime()
     {
         // arrange

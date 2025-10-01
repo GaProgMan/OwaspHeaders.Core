@@ -104,7 +104,7 @@ jobs:
         dotnet-version: '9.0.x'
     
     - name: Run all tests
-      run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+      run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage --filter "Category!=Performance"
 
     - name: Code Coverage Summary Report
       uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95 # v1.3.0

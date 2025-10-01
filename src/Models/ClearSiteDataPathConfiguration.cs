@@ -62,7 +62,7 @@ public class ClearSiteDataPathConfiguration
         // Find exact path match (longest-match precedence due to sorting)
         foreach (var kvp in PathConfigurations)
         {
-            if (string.Equals(requestPath, kvp.Key, StringComparison.InvariantCulture))
+            if (string.Equals(requestPath, kvp.Key, StringComparison.Ordinal))
             {
                 return kvp.Value;
             }

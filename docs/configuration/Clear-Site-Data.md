@@ -55,6 +55,9 @@ The above configuration will:
 
 Configure multiple paths at once:
 
+{: .note }
+The following example uses [C# 12's collection expressions](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/collection-expressions). The more established `[key] = value` style is also supported.
+
 ```csharp
 var pathConfig = new Dictionary<string, ClearSiteDataOptions[]>
 {

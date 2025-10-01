@@ -83,6 +83,11 @@ public class SecureHeadersMiddlewareConfiguration
     public bool UseReportingEndPoints { get; set; }
 
     /// <summary>
+    /// Indicates whether the response should use Clear-Site-Data
+    /// </summary>
+    public bool UseClearSiteData { get; set; }
+
+    /// <summary>
     /// The HTTP Strict Transport Security configuration to use
     /// </summary>
     public HstsConfiguration HstsConfiguration { get; set; }
@@ -134,6 +139,11 @@ public class SecureHeadersMiddlewareConfiguration
     public CrossOriginEmbedderPolicy CrossOriginEmbedderPolicy { get; set; }
 
     public ReportingEndpointsPolicy ReportingEndpointsPolicy { get; set; }
+
+    /// <summary>
+    /// The Clear-Site-Data path configuration to use
+    /// </summary>
+    public ClearSiteDataPathConfiguration ClearSiteDataPathConfiguration { get; set; }
 
     /// <summary>
     /// A list of URLs that, when requested, should be ignored completely by

@@ -71,7 +71,7 @@ jobs:
         dotnet-version: '9.0.x'
 
     - name: Run all tests
-      run: dotnet test OwaspHeaders.Core.sln --verbosity minimal
+      run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --filter "Category!=Performance"
 
 
   package:

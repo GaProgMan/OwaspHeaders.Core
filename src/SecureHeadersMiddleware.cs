@@ -48,16 +48,38 @@ public class SecureHeadersMiddleware
                 LogHeadersGenerated(_headers.Count);
             }
 
+            var totalHeadersAdded = 0;
+
             foreach (var (key, value) in _headers)
             {
                 var headerFailedEventId = _config?.LoggingConfiguration?.HeaderAdditionFailed ?? SecureHeadersEventIds.HeaderAdditionFailed;
                 if (httpContext.TryAddHeader(key, value, _logger, headerFailedEventId))
                 {
                     LogHeaderAdded(key, value.Length);
+                    totalHeadersAdded++;
                 }
             }
 
-            LogHeadersAdded(_headers.Count, httpContext.Request.Path.Value ?? "");
+            // Handle path-specific Clear-Site-Data header
+            if (_config.UseClearSiteData && _config.ClearSiteDataPathConfiguration != null)
+            {
+                var clearSiteDataConfig = _config.ClearSiteDataPathConfiguration
+                    .GetConfigurationForPath(httpContext.Request.Path.Value);
+
+                if (clearSiteDataConfig != null)
+                {
+                    var clearSiteDataValue = clearSiteDataConfig.BuildHeaderValue();
+                    var headerFailedEventId = _config?.LoggingConfiguration?.HeaderAdditionFailed ?? SecureHeadersEventIds.HeaderAdditionFailed;
+
+                    if (httpContext.TryAddHeader(Constants.ClearSiteDataHeaderName, clearSiteDataValue, _logger, headerFailedEventId))
+                    {
+                        LogHeaderAdded(Constants.ClearSiteDataHeaderName, clearSiteDataValue.Length);
+                        totalHeadersAdded++;
+                    }
+                }
+            }
+
+            LogHeadersAdded(totalHeadersAdded, httpContext.Request.Path.Value ?? "");
         }
         else
         {

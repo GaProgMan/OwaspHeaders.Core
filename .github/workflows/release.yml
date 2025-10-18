@@ -114,4 +114,7 @@ jobs:
       id: nuget-login
 
     - name: Push NuGet package
-      run: dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+      # use of --skip-duplicate here will stop NuGet from complaining
+      # if we try to publish the same version multiple times by making
+      # publish actions idempotent.
+      run: dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --skip-duplicate

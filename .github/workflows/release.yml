@@ -78,6 +78,10 @@ jobs:
     needs: [build, test]
     runs-on: ubuntu-latest
     name: Create and upload NuGet package
+    environment: production
+    permissions:
+      id-token: write
+      attestations: write
 
     steps:
     - name: Checkout code
@@ -99,13 +103,18 @@ jobs:
 
     - name: Build NuGet package
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
-    
+
     - name: Generate Attestations
       uses: actions/attest-build-provenance@963f8a02f24ac90336362e63ca6730cf69ad102e # v2.1.0
       with:
         subject-path: ${{ github.workspace }}/**/*.nupkg
-    
+
+    - name: NuGet login (OIDC → temp API key)
+      uses: NuGet/login@v1
+      id: nuget-login
+
     - name: Push NuGet package
-      run: dotnet nuget  push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{secrets.NUGET_API_KEY}}
-      env:
-        GITHUB_TOKEN: ${{ secrets.NUGET_API_KEY }}
+      # use of --skip-duplicate here will stop NuGet from complaining
+      # if we try to publish the same version multiple times by making
+      # publish actions idempotent.
+      run: dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --skip-duplicate

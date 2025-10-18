@@ -112,6 +112,8 @@ jobs:
     - name: NuGet login (OIDC → temp API key)
       uses: NuGet/login@v1
       id: nuget-login
+      with:
+        user: ${{ secrets.NUGET_USER }}
 
     - name: Push NuGet package
       # use of --skip-duplicate here will stop NuGet from complaining

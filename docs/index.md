@@ -25,6 +25,7 @@ OwaspHeaders.Core aims to keep in step with the official support lifecycle for .
 
 - .NET 8
 - .NET 9
+- .NET 10
 
 However, a number of previous releases can be found in the GitHub repository. Specifically:
 

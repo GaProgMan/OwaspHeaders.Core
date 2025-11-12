@@ -2,7 +2,7 @@
 
 > ASP.NET Core middleware for injecting OWASP-recommended HTTP security headers into all responses with a single line of code
 
-OwaspHeaders.Core is an open-source middleware library that enhances web application security by automatically adding the HTTP headers recommended by the OWASP Secure Headers Project. It supports .NET 8 and .NET 9, and is maintained by Jamie Taylor (GaProgMan) under the MIT License.
+OwaspHeaders.Core is an open-source middleware library that enhances web application security by automatically adding the HTTP headers recommended by the OWASP Secure Headers Project. It supports .NET 8, .NET 9, and .NET 10, and is maintained by Jamie Taylor (GaProgMan) under the MIT License.
 
 **Key Features:**
 - One-line setup: `app.UseSecureHeadersMiddleware();`

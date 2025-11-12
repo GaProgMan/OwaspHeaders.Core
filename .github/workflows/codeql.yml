@@ -53,6 +53,10 @@ jobs:
       matrix:
         include:
         - language: csharp
+          # Using build-mode: none because CodeQL's build tracer doesn't support .NET 10 yet.
+          # With 'none' mode, CodeQL analyzes source code and compiled artifacts without tracing the build process.
+          # Once CodeQL adds .NET 10 support, consider switching to 'autobuild' or 'manual' mode.
+          # See: https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
           build-mode: none
         # CodeQL supports the following values keywords for 'language': 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
@@ -79,14 +83,12 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-    # If the analyze step fails for one of the languages you are analyzing with
-    # "We were unable to automatically build your code", modify the matrix above
-    # to set the build mode to "manual" for that language. Then modify this step
-    # to build your code.
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-
-    # The following steps are based on the content from the following URLs:
+    # Build steps for build-mode: none
+    # When using 'none' mode, we manually build the project and CodeQL analyzes the results
+    # without attempting to trace the build process. This is necessary because CodeQL's
+    # build tracer doesn't support .NET 10 yet (as of November 2025).
+    #
+    # The following steps are based on the content from:
     # https://resources.github.com/learn/pathways/security/intermediate/codeql-advanced-setup/
     # https://learn.microsoft.com/en-us/dotnet/devops/dotnet-secure-github-action
 

@@ -1,20 +1,36 @@
-# Changelog
+---
+title: Changelog
+layout: page
+nav_order: 9
+---
+
 
 This changelog represents all the major (i.e. breaking) changes made to the OwaspHeaders.Core project since it's inception. Early in the repo's development, GitHub's "releases" where used to release builds of the code repo. However shortly after it's inception, builds and releases where moved to [AppVeyor](https://ci.appveyor.com/project/GaProgMan/owaspheaders-core). Because of this, the releases on the GitHub repo became stale.
 
 ## TL;DR
 
-| Major Version Number | Changes                                                                                                                                                                                                                                                                                                                             |
-|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. <br /> A number of small optimisation have been made to the middleware's `Invoke` method <br /> Added support for both Cross-Origin-Opener-Policy (CORP) and Cross-Origin-Embedder-Policy (COEP) headers <br /> Added support for the EXPERIMENTAL Report-Endpoints header. This is listed as EXPERIMENTAL (as of March 29th, 2025) on the [relevant MDN docs page](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints), it is also not listed as a recommended header. As such, it is not added when the default builder is used |
-| 8                    | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes                                                                                                                                                                 |
-| 7                    | Added Cross-Origin-Resource-Policy header to list of defaults; simplified the use of the middleware in Composite Root/Program.cs                                                                                                                                                                                                    |
-| 6                    | Removes Expect-CT Header from the list of default headers                                                                                                                                                                                                                                                                           |
-| 5                    | XSS Protection is now hard-coded to return "0" if enabled                                                                                                                                                                                                                                                                           |
-| 4                    | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> uses .NET Standard 2.0 <br /> Removed XSS Protection header from defaults                                                                                                                                                           |
-| 3                    | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0                                                                                                                                                                                                         |
-| 2                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0                                                                                                                                                                       |
-| 1                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4                                                                                                                                                                   |
+| Major Version Number | Changes                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 10                    | (as of Nov 12th, 2025) no API changes made yet. Library now supports ASP .NET Core (by updating the TFM to include `net10.0`) |
+| 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. <br /> A number of small optimisation have been made to the middleware's `Invoke` method <br /> Added support for both Cross-Origin-Opener-Policy (CORP) and Cross-Origin-Embedder-Policy (COEP) headers <br /> Added support for Clear-Site-Data header with path-specific configuration for logout scenarios <br/> Increased documentation coverage for Content-Security-Policy directive generation |
+| 8                    | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes                                                                                                                                                                                                                                                         |
+| 7                    | Added Cross-Origin-Resource-Policy header to list of defaults; simplified the use of the middleware in Composite Root/Program.cs                                                                                                                                                                                                                                                                                            |
+| 6                    | Removes Expect-CT Header from the list of default headers                                                                                                                                                                                                                                                                                                                                                                   |
+| 5                    | XSS Protection is now hard-coded to return "0" if enabled                                                                                                                                                                                                                                                                                                                                                                   |
+| 4                    | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> uses .NET Standard 2.0 <br /> Removed XSS Protection header from defaults                                                                                                                                                                                                                                                   |
+| 3                    | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0                                                                                                                                                                                                                                                                                                 |
+| 2                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0                                                                                                                                                                                                                                                               |
+| 1                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4                                                                                                                                                                                                                                                           |
+
+### Version 10
+
+As of November 12th, 2025, no API changes have been added. This is a major version bump to maintain parity with the latest version of ASP .NET Core available. This version of the library still supports the following versions of ASP .NET Core:
+
+- 8
+- 9
+- 10
+
+As these are still in support by Microsoft.
 
 ### Version 9
 
@@ -22,13 +38,49 @@ This version dropped support for .NET 6 and .NET 7, as they are no longer suppor
 
 All projects in the [GitHub repo](https://github.com/GaProgMan/OwaspHeaders.Core) now build and run with either .NET 8 or .NET 9, whichever is present (deferring to the highest version number if both are present). As of November 19th, 2024 there are no new features in Version 9, so if you still need to use the NuGet package with .NET 6 or 7 please use Version 8 of the package.
 
-#### Verison 9.7.x
+#### Version 9.9.x
+
+This version adds support for the Clear-Site-Data HTTP header, addressing issue #32 and implementing the OWASP Secure Headers Project recommendation. The Clear-Site-Data header instructs browsers to clear client-side data (cache, cookies, storage) for specific paths, which is particularly important for logout endpoints to ensure complete session termination and prevent session hijacking.
+
+**New Features:**
+
+- Clear-Site-Data header support with path-specific configuration
+- OWASP recommended default values (`"cache","cookies","storage"`)
+- Support for all standard directives: "cache", "cookies", "storage", "executionContexts", and wildcard "*"
+- Enum-based type safety with `ClearSiteDataOptions`
+- Path-specific customization of which data types to clear
+- Integration with existing middleware builder pattern
+- Comprehensive documentation and examples for logout scenarios
+- Full backward compatibility with existing configurations
+
+See the [Clear-Site-Data documentation](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Clear-Site-Data/) for detailed configuration options and examples.
+
+#### Version 9.8.x
+
+This version introduces comprehensive logging support via the `ILogger<SecureHeadersMiddleware>` interface, following Andrew Lock's high-performance logging best practices. The logging functionality provides visibility into middleware operations, helping developers troubleshoot configuration issues and monitor security header application.
+
+**New Features:**
+
+- Information-level logs for successful operations (middleware initialisation, headers added)
+- Warning logs for configuration issues and header operation failures  
+- Error logs for validation failures and middleware exceptions
+- Debug logs for detailed header addition information
+- Configurable Event IDs (1000-3999 range) to avoid conflicts with application logging
+- High-performance logging with log level checking to minimise performance impact
+- 100% backward compatibility - existing applications continue to work without changes
+
+The logging is automatically enabled when an `ILogger<SecureHeadersMiddleware>` is available in dependency injection. Developers can customise Event IDs using `WithLoggingEventIdBase()` or `WithLoggingEventIds()` methods to avoid conflicts with existing application Event ID schemes.
+
+See the [Logging documentation](https://gaprogman.github.io/OwaspHeaders.Core/logging) for detailed configuration options and examples.
+
+#### Version 9.7.x
 
 This version saw the addition of both the [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/) (COEP) and [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/) (COEP) headers; bringing the total number of supported headers to 83% complete (or 10 of the 12 recommended headers and values).
 
 #### Version 9.6.x
 
-This version saw the addition of a number of _very_ small changes to the middleware's `Invoke` method which aimed to increase efficiency, reduce working memory usage, and increase execution speed.
+This version saw the addition of a number of _very_ small changes to the middleware's `Invoke` method which aimed to increase efficiency, reduce working memory usage, and increase execution speed. 
+
 #### Version 9.5.x
 
 This version saw the addition of attestation generation on both a per PR-build and Release basis. See the [Attestations](https://gaprogman.github.io/OwaspHeaders.Core/attestations) page of the documentation to read about how you can verify the attestations per build or release.
@@ -45,11 +97,9 @@ The `max-age` value for the Strict-Transport-Security (HSTS) header was updated 
 
 ### Version 8
 
-This version dropped support for support for ASP .NET Core on .NET Framework workflows. This means that, from version 8 onwards, this package will no longer with with .NET Framework workloads. This decision was made as Microsoft have dropped support for ASP .NET Core on .NET Framework workloads. This can be seen in the ASP .NET Core support documentation [here](https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core)
+This version dropped support for support for ASP .NET Core on .NET Framework workflows. This means that, from version 8 onwards, this package will no longer work with .NET Framework workloads. This decision was made as Microsoft have dropped support for ASP .NET Core on .NET Framework workloads. This can be seen in the ASP .NET Core support documentation [here](https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core)
 
-{: .note }
 > To help facilitate migrating applications to ASP.NET Core on .NET Core, the specified ASP.NET Core 2.1 packages (latest patched version only) will be supported on the .NET Framework and follow the support cycle for those .NET Framework versions. ASP.NET Core 2.1 is defined as "Tools" in the Microsoft Support Lifecycle Policy
-> 
 > Source: https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet#dotnet-core, obtained Oct 19th, 2024.
 
 The Example and Tests csproj files (and directories) have been renamed to make the standard `OwaspHeaders.Core.{x}` where `{x}` is either `Example` (for the ASP .NET Core application which provides an example implementation) or `Tests` for the unit tests project.

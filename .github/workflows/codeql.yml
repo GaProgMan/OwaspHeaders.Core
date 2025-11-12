@@ -92,38 +92,38 @@ jobs:
 
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10,
     # so we need to install all three so that we can build the project.
-    - if: matrix.build-mode == 'manual'
-      name: Setup .NET SDK 8.0
+    - name: Setup .NET SDK 8.0
+      if: matrix.build-mode == 'manual'
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '8.0.x'
 
     # We currently (as of December 4th, 2024) need to build manually, because the Ubuntu images
     # don't have .NET 9 installed on them.
-    - if: matrix.build-mode == 'manual'
-      name: Setup .NET SDK 9.0
+    - name: Setup .NET SDK 9.0
+      if: matrix.build-mode == 'manual'
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '9.0.x'
 
     # We currently (as of November 12th, 2025) need to build manually, because the Ubuntu images
     # don't have .NET 10 installed on them.
-    - if: matrix.build-mode == 'manual'
-      name: Setup .NET SDK 10
+    - name: Setup .NET SDK 10
+      if: matrix.build-mode == 'manual'
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '10.0.x'
 
-    - if: matrix.build-mode == 'manual'
-      name: Install dependencies
+    - name: Install dependencies
+      if: matrix.build-mode == 'manual'
       run: dotnet restore --locked-mode
 
-    - if: matrix.build-mode == 'manual'
-      name: Build project
+    - name: Build project
+      if: matrix.build-mode == 'manual'
       run: dotnet build --configuration Release --no-restore
 
-    - if: matrix.build-mode == 'manual'
-      name: Run all tests
+    - name: Run all tests
+      if: matrix.build-mode == 'manual'
       run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --filter "Category!=Performance"
 
     - name: Perform CodeQL Analysis

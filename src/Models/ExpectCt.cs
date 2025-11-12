@@ -28,7 +28,7 @@ public class ExpectCt : IConfigurationBase
     /// if it does not receive valid CT information. This is specified as an
     /// absolute URI
     /// </summary>
-    private string ReportUri { get; }
+    public string ReportUri { get; }
 
     /// <summary>
     /// Protected constructor, we can no longer create instances of this

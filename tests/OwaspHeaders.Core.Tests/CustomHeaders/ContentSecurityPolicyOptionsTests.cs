@@ -44,7 +44,7 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
         const string reportUri = "https://localhost:5001/report-uri";
         // arrange
         var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseContentSecurityPolicyReportOnly(reportUri).Build();
+            .UseContentSecurityPolicyReportUriOnly(reportUri).Build();
         headerPresentConfig.SetCspSandBox(CspSandboxType.allowForms, CspSandboxType.allowScripts,
             CspSandboxType.allowSameOrigin);
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
@@ -56,6 +56,24 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
         Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyReportOnlyHeaderName));
         Assert.Equal($"block-all-mixed-content;upgrade-insecure-requests;report-uri {reportUri};",
             _context.Response.Headers[Constants.ContentSecurityPolicyReportOnlyHeaderName]);
+    }
+
+    [Fact]
+    public async Task Invoke_ContentSecurityPolicyReportToOnly_HeaderIsPresent_WithMultipleCspSandboxTypes()
+    {
+        const string reportTo = "report-endpoint";
+        // arrange
+        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+            .UseContentSecurityPolicy(reportTo: reportTo).Build();
+        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
+
+        // act
+        await secureHeadersMiddleware.InvokeAsync(_context);
+
+        // assert
+        Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
+        var result = _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName].ToString();
+        Assert.Contains($"report-to {reportTo}", result);
     }
 
     [Fact]

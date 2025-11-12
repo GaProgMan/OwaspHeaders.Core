@@ -10,6 +10,7 @@ The following table contains the list of versions of OwaspHeaders.Core that are 
 
 | Version | Supported          |
 | ------- | ------------------ |
+| 10.x.x   | :white_check_mark: |
 | 9.x.x   | :white_check_mark: |
 | 8.x.x   | :white_check_mark: |
 | 6.x.x   | 💵 &ast;           |

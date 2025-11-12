@@ -29,17 +29,12 @@ jobs:
       with:
         fetch-depth: 0
 
-    # The NuGet package we're building supports both .NET 8 and .NET 9, so we need
-    # to install both so that we can build the project.
-    - name: Setup .NET 8.0
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
+    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
+    - name: Setup .NET SDK 10
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
-        dotnet-version: '8.0.x'
-
-    - name: Setup .NET SDK 9.0
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '10.0.x'
 
     - name: Install dependencies
       run: dotnet restore --locked-mode
@@ -58,17 +53,12 @@ jobs:
       with:
         fetch-depth: 0
       
-    # The NuGet package we're building supports both .NET 8 and .NET 9, so we need
-    # to install both so that we can test the project.
-    - name: Setup .NET 8.0
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
+    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
+    - name: Setup .NET SDK 10
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
-        dotnet-version: '8.0.x'
-
-    - name: Setup .NET SDK 9.0
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '10.0.x'
 
     - name: Run all tests
       run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --filter "Category!=Performance"
@@ -89,17 +79,12 @@ jobs:
       with:
         fetch-depth: 0
       
-    # The NuGet package we're building supports both .NET 8 and .NET 9, so we need
-    # to install both so that we can create the NuGet package.
-    - name: Setup .NET 8.0
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
+    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
+    - name: Setup .NET SDK 10
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
-        dotnet-version: '8.0.x'
-
-    - name: Setup .NET SDK 9.0
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '10.0.x'
 
     - name: Build NuGet package
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release

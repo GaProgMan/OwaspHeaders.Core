@@ -53,7 +53,11 @@ jobs:
       matrix:
         include:
         - language: csharp
-          build-mode: manual
+          # Using build-mode: none because CodeQL's build tracer doesn't support .NET 10 yet.
+          # With 'none' mode, CodeQL analyzes source code and compiled artifacts without tracing the build process.
+          # Once CodeQL adds .NET 10 support, consider switching to 'autobuild' or 'manual' mode.
+          # See: https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
+          build-mode: none
         # CodeQL supports the following values keywords for 'language': 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
         # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
@@ -79,46 +83,37 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-    # If the analyze step fails for one of the languages you are analyzing with
-    # "We were unable to automatically build your code", modify the matrix above
-    # to set the build mode to "manual" for that language. Then modify this step
-    # to build your code.
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-
-    - if: matrix.build-mode == 'manual'
-    # The following steps are based on the content from the following URLs:
+    # Build steps for build-mode: none
+    # When using 'none' mode, we manually build the project and CodeQL analyzes the results
+    # without attempting to trace the build process. This is necessary because CodeQL's
+    # build tracer doesn't support .NET 10 yet (as of November 2025).
+    #
+    # The following steps are based on the content from:
     # https://resources.github.com/learn/pathways/security/intermediate/codeql-advanced-setup/
     # https://learn.microsoft.com/en-us/dotnet/devops/dotnet-secure-github-action
 
-    # The NuGet package we're building supports both .NET 8 and .NET 9, so we need
-    # to install both so that we can build the project.
-      name: Setup .NET SDK 8.0
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
+    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
+    - name: Setup .NET SDK 10
+      if: matrix.build-mode == 'none'
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: '10.0.x'
 
-    - if: matrix.build-mode == 'manual'
-      # The following steps are based on the content from the following URLs:
-      # https://resources.github.com/learn/pathways/security/intermediate/codeql-advanced-setup/
-      # https://learn.microsoft.com/en-us/dotnet/devops/dotnet-secure-github-action
+    - name: Install dependencies
+      if: matrix.build-mode == 'none'
+      run: dotnet restore OwaspHeaders.Core.sln --locked-mode
 
-      # We currently (as of December 4th, 2024) need to build manually, because the Ubunutu images
-      # don't have .NET 9 installed on them.
-      name: Setup .NET SDK 9.0
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '9.0.x'
-    
-    - if: matrix.build-mode == 'manual'
-      name: Install dependencies
-      run: dotnet restore --locked-mode
-    
-    - if: matrix.build-mode == 'manual'
-      run: dotnet build --configuration Release --no-restore
-    
-    - if: matrix.build-mode == 'manual'
-      name: Run all tests
+    - name: Clean project
+      if: matrix.build-mode == 'none'
+      run: dotnet clean OwaspHeaders.Core.sln --configuration Release
+
+    - name: Build project
+      if: matrix.build-mode == 'none'
+      run: dotnet build OwaspHeaders.Core.sln --configuration Release
+
+    - name: Run all tests
+      if: matrix.build-mode == 'none'
       run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --filter "Category!=Performance"
 
     - name: Perform CodeQL Analysis

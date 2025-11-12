@@ -53,7 +53,7 @@ jobs:
       matrix:
         include:
         - language: csharp
-          build-mode: manual
+          build-mode: none
         # CodeQL supports the following values keywords for 'language': 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
         # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
@@ -93,7 +93,7 @@ jobs:
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10,
     # so we need to install all three so that we can build the project.
     - name: Setup .NET SDK 8.0
-      if: matrix.build-mode == 'manual'
+      if: matrix.build-mode == 'none'
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '8.0.x'
@@ -101,7 +101,7 @@ jobs:
     # We currently (as of December 4th, 2024) need to build manually, because the Ubuntu images
     # don't have .NET 9 installed on them.
     - name: Setup .NET SDK 9.0
-      if: matrix.build-mode == 'manual'
+      if: matrix.build-mode == 'none'
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '9.0.x'
@@ -109,25 +109,25 @@ jobs:
     # We currently (as of November 12th, 2025) need to build manually, because the Ubuntu images
     # don't have .NET 10 installed on them.
     - name: Setup .NET SDK 10
-      if: matrix.build-mode == 'manual'
+      if: matrix.build-mode == 'none'
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '10.0.x'
 
     - name: Install dependencies
-      if: matrix.build-mode == 'manual'
+      if: matrix.build-mode == 'none'
       run: dotnet restore OwaspHeaders.Core.sln --locked-mode
 
     - name: Clean project
-      if: matrix.build-mode == 'manual'
+      if: matrix.build-mode == 'none'
       run: dotnet clean OwaspHeaders.Core.sln --configuration Release
 
     - name: Build project
-      if: matrix.build-mode == 'manual'
+      if: matrix.build-mode == 'none'
       run: dotnet build OwaspHeaders.Core.sln --configuration Release
 
     - name: Run all tests
-      if: matrix.build-mode == 'manual'
+      if: matrix.build-mode == 'none'
       run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --filter "Category!=Performance"
 
     - name: Perform CodeQL Analysis

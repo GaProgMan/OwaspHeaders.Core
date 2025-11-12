@@ -116,11 +116,15 @@ jobs:
 
     - name: Install dependencies
       if: matrix.build-mode == 'manual'
-      run: dotnet restore --locked-mode
+      run: dotnet restore OwaspHeaders.Core.sln --locked-mode
+
+    - name: Clean project
+      if: matrix.build-mode == 'manual'
+      run: dotnet clean OwaspHeaders.Core.sln --configuration Release
 
     - name: Build project
       if: matrix.build-mode == 'manual'
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build OwaspHeaders.Core.sln --configuration Release
 
     - name: Run all tests
       if: matrix.build-mode == 'manual'

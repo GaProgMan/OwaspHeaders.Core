@@ -27,8 +27,8 @@ jobs:
       with:
         fetch-depth: 1
 
-    # The NuGet package we're building supports both .NET 8 and .NET 9, so we need
-    # to install both so that we can work with the project.
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10
+    # so we need to install all three so that we can work with the project.
     - name: Setup .NET 8.0
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
@@ -38,6 +38,11 @@ jobs:
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '9.0.x'
+
+    - name: Setup .NET SDK 10
+      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
+      with:
+        dotnet-version: '10.0.x'
 
     - name: Install dotnet-format tool
       run: dotnet tool install -g dotnet-format
@@ -57,8 +62,8 @@ jobs:
       with:
         fetch-depth: 0
 
-    # The NuGet package we're building supports both .NET 8 and .NET 9, so we need
-    # to install both so that we can build the project.
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10
+    # so we need to install all three so that we can work with the project.
     - name: Setup .NET 8.0
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
@@ -68,6 +73,11 @@ jobs:
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '9.0.x'
+
+    - name: Setup .NET SDK 10
+      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
+      with:
+        dotnet-version: '10.0.x'
 
     - name: Install dependencies
       run: dotnet restore --locked-mode
@@ -91,8 +101,8 @@ jobs:
       with:
         fetch-depth: 0
       
-    # The NuGet package we're building supports both .NET 8 and .NET 9, so we need
-    # to install both so that we can run the tests.
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10
+    # so we need to install all three so that we can work with the project.
     - name: Setup .NET 8.0
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
@@ -102,6 +112,11 @@ jobs:
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '9.0.x'
+
+    - name: Setup .NET SDK 10
+      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
+      with:
+        dotnet-version: '10.0.x'
     
     - name: Run all tests
       run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage --filter "Category!=Performance"
@@ -140,8 +155,8 @@ jobs:
       with:
         fetch-depth: 0
       
-    # The NuGet package we're building supports both .NET 8 and .NET 9, so we need
-    # to install both so that we can create the NuGet package.
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10
+    # so we need to install all three so that we can work with the project.
     - name: Setup .NET 8.0
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
@@ -151,6 +166,11 @@ jobs:
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
         dotnet-version: '9.0.x'
+
+    - name: Setup .NET SDK 10
+      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
+      with:
+        dotnet-version: '10.0.x'
 
     - name: Build NuGet Package
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release

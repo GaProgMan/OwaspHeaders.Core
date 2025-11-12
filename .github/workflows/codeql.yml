@@ -92,24 +92,8 @@ jobs:
     # https://resources.github.com/learn/pathways/security/intermediate/codeql-advanced-setup/
     # https://learn.microsoft.com/en-us/dotnet/devops/dotnet-secure-github-action
 
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10,
-    # so we need to install all three so that we can build the project.
-    - name: Setup .NET SDK 8.0
-      if: matrix.build-mode == 'none'
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '8.0.x'
-
-    # We currently (as of December 4th, 2024) need to build manually, because the Ubuntu images
-    # don't have .NET 9 installed on them.
-    - name: Setup .NET SDK 9.0
-      if: matrix.build-mode == 'none'
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '9.0.x'
-
-    # We currently (as of November 12th, 2025) need to build manually, because the Ubuntu images
-    # don't have .NET 10 installed on them.
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
+    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
     - name: Setup .NET SDK 10
       if: matrix.build-mode == 'none'
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0

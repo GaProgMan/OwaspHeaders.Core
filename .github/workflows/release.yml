@@ -29,18 +29,8 @@ jobs:
       with:
         fetch-depth: 0
 
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10
-    # so we need to install all three so that we can work with the project.
-    - name: Setup .NET 8.0
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Setup .NET SDK 9.0
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '9.0.x'
-
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
+    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
     - name: Setup .NET SDK 10
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
@@ -63,18 +53,8 @@ jobs:
       with:
         fetch-depth: 0
       
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10
-    # so we need to install all three so that we can work with the project.
-    - name: Setup .NET 8.0
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Setup .NET SDK 9.0
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '9.0.x'
-
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
+    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
     - name: Setup .NET SDK 10
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:
@@ -99,18 +79,8 @@ jobs:
       with:
         fetch-depth: 0
       
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10
-    # so we need to install all three so that we can work with the project.
-    - name: Setup .NET 8.0
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Setup .NET SDK 9.0
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
-      with:
-        dotnet-version: '9.0.x'
-
+    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
+    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
     - name: Setup .NET SDK 10
       uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
       with:

@@ -11,7 +11,7 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 
 | Major Version Number | Changes                                                                                                                                                                                                                                                                                                                                                                                                                     |
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 10                    | (as of Nov 12th, 2025) no API changes made yet. Library now supports ASP .NET Core (by updating the TFM to include `net10.0`) <br /> Added support for the EXPERIMENTAL Report-Endpoints header. This is listed nas EXPERIMENTAL (as of January 7th, 2025) on the [relevant MDN docs page](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints), it is also not listed as a recommended header. As such, it is not added when the default builder is used |
+| 10                    | (as of Nov 12th, 2025) no API changes made yet. Library now supports ASP .NET Core (by updating the TFM to include `net10.0`) <br /> Added support for the EXPERIMENTAL Report-Endpoints header. This is listed nas EXPERIMENTAL (as of January 7th, 2025) on the [relevant MDN docs page](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints), it is also not listed as a recommended header. As such, it is not added when the default builder is used <br /> Fixed model properties in OwaspHeaders.Core.Models namespace that were incorrectly set to private - they are now public for serialization and external consumption |
 | 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. <br /> A number of small optimisation have been made to the middleware's `Invoke` method <br /> Added support for both Cross-Origin-Opener-Policy (CORP) and Cross-Origin-Embedder-Policy (COEP) headers <br /> Added support for Clear-Site-Data header with path-specific configuration for logout scenarios <br/> Increased documentation coverage for Content-Security-Policy directive generation |
 | 8                    | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes                                                                                                                                                                                                                                                         |
 | 7                    | Added Cross-Origin-Resource-Policy header to list of defaults; simplified the use of the middleware in Composite Root/Program.cs                                                                                                                                                                                                                                                                                            |
@@ -58,6 +58,31 @@ app.UseSecureHeadersMiddleware(config);
 ```
 
 Note: The legacy `report-uri` directive continues to be supported but is marked as obsolete in favor of the modern `report-to` directive.
+
+#### Version 10.2.x
+
+This version corrects an issue where properties in model classes within the `OwaspHeaders.Core.Models` namespace were incorrectly marked as `private` following ReSharper recommendations in an earlier build. These properties need to be `public` for proper serialization support and external consumption of the library.
+
+**Changes:**
+
+- Corrected accessibility of properties in the following model classes:
+  - `CacheControl` - 5 properties (Private, MaxAge, NoCache, MustRevalidate, NoStore)
+  - `ContentSecurityPolicySandBox` - 1 property (SandboxTypes)
+  - `HstsConfiguration` - 2 properties (IncludeSubDomains, MaxAge)
+  - `CrossOriginOpenerPolicy` - 1 property (OptionValue)
+  - `CrossOriginResourcePolicy` - 1 property (OptionValue)
+  - `CrossOriginEmbedderPolicy` - 1 property (OptionValue)
+  - `XFrameOptionsConfiguration` - 1 property (OptionValue)
+  - `ExpectCt` - 3 properties (Enforce, MaxAge, ReportUri)
+  - `ContentSecurityPolicyConfiguration` - 4 properties (PluginTypes, BlockAllMixedContent, UpgradeInsecureRequests, Referrer)
+- Added `.editorconfig` rules to suppress ReSharper "Member can be private" warnings for the Models namespace globally
+- This ensures forward compatibility - any new model classes added to `src/Models/` will automatically have this warning suppressed
+
+**Impact:**
+
+- All affected properties are now properly accessible for serialization scenarios
+- No breaking changes to existing functionality
+- Improved maintainability with centralized ReSharper configuration
 
 ### Version 9
 

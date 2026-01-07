@@ -8,12 +8,12 @@ public class HstsConfiguration : IConfigurationBase
     /// <summary>
     /// (OPTIONAL) Whether this rule applies to all the site's subdomains as well
     /// </summary>
-    private bool IncludeSubDomains { get; }
+    public bool IncludeSubDomains { get; }
 
     /// <summary>
     /// The time, in seconds, that the browser should remember that this site is only to be accessed using HTTPS
     /// </summary>
-    private int MaxAge { get; }
+    public int MaxAge { get; }
 
     /// <summary>
     /// Protected constructor, we can no longer create instances of this

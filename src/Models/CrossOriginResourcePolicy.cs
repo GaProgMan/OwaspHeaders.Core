@@ -27,7 +27,7 @@ public class CrossOriginResourcePolicy : IConfigurationBase
     /// <summary>
     /// Only requests from the same Origin (i.e. scheme + host + port) can read the resource.
     /// </summary>
-    public const string SameOriginValue = "same-origin";
+    private const string SameOriginValue = "same-origin";
 
     /// <summary>
     /// Only requests from the same Site can read the resource.
@@ -58,7 +58,7 @@ public class CrossOriginResourcePolicy : IConfigurationBase
         CrossOrigin
     };
 
-    private CrossOriginResourceOptions OptionValue { get; }
+    public CrossOriginResourceOptions OptionValue { get; }
 
     /// <summary>
     /// Builds the HTTP header value

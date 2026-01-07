@@ -46,7 +46,7 @@ public class CrossOriginOpenerPolicy : IConfigurationBase
     /// don’t set COOP or which opt out of isolation by setting a COOP
     /// of unsafe-none
     /// </summary>
-    public const string SameOriginValue = "same-origin";
+    private const string SameOriginValue = "same-origin";
 
     public enum CrossOriginOpenerOptions
     {
@@ -66,7 +66,7 @@ public class CrossOriginOpenerPolicy : IConfigurationBase
         SameOrigin
     };
 
-    private CrossOriginOpenerOptions OptionValue { get; }
+    public CrossOriginOpenerOptions OptionValue { get; }
 
     /// <summary>
     /// Builds the HTTP header value

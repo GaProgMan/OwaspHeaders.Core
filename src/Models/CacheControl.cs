@@ -19,13 +19,13 @@ public class CacheControl : IConfigurationBase
     ///    leak.
     /// Source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#private
     /// </remarks>
-    private bool Private { get; }
+    public bool Private { get; }
 
     /// <summary>
     /// The maximum age, specified in seconds, that the HTTP client is willing
     /// to accept a response.
     /// </summary>
-    private int MaxAge { get; }
+    public int MaxAge { get; }
 
     /// <summary>
     /// Represents whether the response can be cached. If the response cannot be
@@ -40,7 +40,7 @@ public class CacheControl : IConfigurationBase
     ///   then no-store is the directive to use.
     /// Source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#no-cache
     /// </remarks>
-    private bool NoCache { get; }
+    public bool NoCache { get; }
 
     /// <summary>
     /// Represents whether the response can be stored in caches and used whilst still
@@ -49,13 +49,13 @@ public class CacheControl : IConfigurationBase
     /// <remarks>
     /// This is used alongside the MaxAge directive
     /// </remarks>
-    private bool MustRevalidate { get; }
+    public bool MustRevalidate { get; }
 
     /// <summary>
     /// Represents whether the response can be stored anywhere (i.e. either public
     /// or private caches)
     /// </summary>
-    private bool NoStore { get; }
+    public bool NoStore { get; }
 
     /// <summary>
     /// Protected constructor, we can no longer create instances of this class without

@@ -17,8 +17,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         // assert
         Assert.True(headerPresentConfig.UseCrossOriginResourcePolicy);
         Assert.True(_context.Response.Headers.ContainsKey(Constants.CrossOriginResourcePolicyHeaderName));
-        Assert.Equal(CrossOriginResourcePolicy.SameOriginValue,
-            _context.Response.Headers[Constants.CrossOriginResourcePolicyHeaderName]);
+        Assert.Equal("same-origin", _context.Response.Headers[Constants.CrossOriginResourcePolicyHeaderName]);
     }
 
     [Fact]
@@ -36,8 +35,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         // assert
         Assert.True(headerPresentConfig.UseCrossOriginOpenerPolicy);
         Assert.True(_context.Response.Headers.ContainsKey(Constants.CrossOriginOpenerPolicyHeaderName));
-        Assert.Equal(CrossOriginOpenerPolicy.SameOriginValue,
-            _context.Response.Headers[Constants.CrossOriginOpenerPolicyHeaderName]);
+        Assert.Equal("same-origin", _context.Response.Headers[Constants.CrossOriginOpenerPolicyHeaderName]);
     }
 
     [Fact]
@@ -58,12 +56,10 @@ public class CrossOriginOptionsTests : SecureHeadersTests
         Assert.True(headerPresentConfig.UseCrossOriginResourcePolicy);
 
         Assert.True(_context.Response.Headers.ContainsKey(Constants.CrossOriginResourcePolicyHeaderName));
-        Assert.Equal(CrossOriginResourcePolicy.SameOriginValue,
-            _context.Response.Headers[Constants.CrossOriginResourcePolicyHeaderName]);
+        Assert.Equal("same-origin", _context.Response.Headers[Constants.CrossOriginResourcePolicyHeaderName]);
 
         Assert.True(_context.Response.Headers.ContainsKey(Constants.CrossOriginEmbedderPolicyHeaderName));
-        Assert.Equal(CrossOriginEmbedderPolicy.RequireCorp,
-            _context.Response.Headers[Constants.CrossOriginEmbedderPolicyHeaderName]);
+        Assert.Equal("require-corp", _context.Response.Headers[Constants.CrossOriginEmbedderPolicyHeaderName]);
     }
 
     [Fact]

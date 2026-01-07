@@ -2,7 +2,7 @@
 
 public class XFrameOptionsConfiguration : IConfigurationBase
 {
-    private XFrameOptions OptionValue { get; }
+    public XFrameOptions OptionValue { get; }
     public string AllowFromDomain { get; init; }
 
     /// <summary>

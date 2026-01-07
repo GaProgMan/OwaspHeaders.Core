@@ -88,24 +88,24 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
     /// Define the set of plugins that can be invoked by the protected resource by limiting
     /// the types of resources that can be embedded
     /// </summary>
-    private string PluginTypes { get; }
+    public string PluginTypes { get; }
 
     /// <summary>
     /// Whether to include the block-all-mixed-content directive (prevents loading any assets
     /// using HTTP when the page is loaded using HTTPS)
     /// </summary>
-    private bool BlockAllMixedContent { get; }
+    public bool BlockAllMixedContent { get; }
 
     /// <summary>
     /// Whether to include the upgrade-insecure-requests directive (instructs user agents to
     /// treat all of a site's insecure URLs as though they have been replaced with secure URLs)
     /// </summary>
-    private bool UpgradeInsecureRequests { get; }
+    public bool UpgradeInsecureRequests { get; }
 
     /// <summary>
     /// Define information user agent must send in Referer header
     /// </summary>
-    private string Referrer { get; }
+    public string Referrer { get; }
 
     /// <summary>
     /// Whether to instruct the user agent to report attempts to violate the Content-Security

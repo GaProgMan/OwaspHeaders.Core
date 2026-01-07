@@ -14,21 +14,21 @@ public class ExpectCt : IConfigurationBase
     /// you simply include it or not depending on whether you want the browser
     /// to enforce the policy or just report on it.
     /// </summary>
-    private bool Enforce { get; }
+    public bool Enforce { get; }
 
     /// <summary>
     /// The max-age directive specifies the number of seconds that the browser
     /// should cache and apply the received policy for, whether enforced or
     /// report-only
     /// </summary>
-    private int MaxAge { get; }
+    public int MaxAge { get; }
 
     /// <summary>
     /// The report-uri directive specifies where the browser should send reports
     /// if it does not receive valid CT information. This is specified as an
     /// absolute URI
     /// </summary>
-    private string ReportUri { get; }
+    public string ReportUri { get; }
 
     /// <summary>
     /// Protected constructor, we can no longer create instances of this

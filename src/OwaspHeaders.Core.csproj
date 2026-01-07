@@ -8,7 +8,7 @@
 
     <!-- NuGet metadata -->
     <PackageId>OwaspHeaders.Core</PackageId>
-    <Version>10.1.0</Version>
+    <Version>10.2.0</Version>
     <Authors>Jamie Taylor</Authors>
     <Company>RJJ Software Ltd</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

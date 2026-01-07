@@ -32,13 +32,13 @@ public class CrossOriginEmbedderPolicy : IConfigurationBase
     /// Allows the document to fetch cross-origin resources without giving explicit permission
     /// through the CORS protocol or the Cross-Origin-Resource-Policy header (it is the default value).
     /// </summary>
-    public const string UnsafeNoneValue = "unsafe-none";
+    private const string UnsafeNoneValue = "unsafe-none";
 
     /// <summary>
     /// A document can only load resources from the same origin, or resources explicitly
     /// marked as loadable from another origin.
     /// </summary>
-    public const string RequireCorp = "require-corp";
+    private const string RequireCorp = "require-corp";
 
     public enum CrossOriginEmbedderOptions
     {
@@ -53,7 +53,7 @@ public class CrossOriginEmbedderPolicy : IConfigurationBase
         RequireCorp
     };
 
-    private CrossOriginEmbedderOptions OptionValue { get; }
+    public CrossOriginEmbedderOptions OptionValue { get; }
 
     /// <summary>
     /// Builds the HTTP header value

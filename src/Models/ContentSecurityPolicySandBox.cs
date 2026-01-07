@@ -9,7 +9,7 @@ public class ContentSecurityPolicySandBox : IConfigurationBase
     [ExcludeFromCodeCoverage]
     protected ContentSecurityPolicySandBox() { }
 
-    private IList<CspSandboxType> SandboxTypes { get; }
+    public IList<CspSandboxType> SandboxTypes { get; }
 
     public ContentSecurityPolicySandBox(params CspSandboxType[] sandboxType)
     {

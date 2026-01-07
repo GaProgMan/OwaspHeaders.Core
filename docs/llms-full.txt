@@ -10,7 +10,7 @@ OwaspHeaders.Core is an open-source ASP.NET Core middleware library designed to 
 - **Maintainer:** Jamie Taylor
 - **Company:** RJJ Software Ltd
 - **License:** MIT
-- **Current Version:** 9.9.0
+- **Current Version:** 10.2.0
 - **Repository:** https://github.com/GaProgMan/OwaspHeaders.Core
 - **Documentation:** https://gaprogman.github.io/OwaspHeaders.Core/
 - **NuGet Package:** https://www.nuget.org/packages/OwaspHeaders.Core/
@@ -90,13 +90,16 @@ Controls browser and proxy caching behavior. Default: `max-age=0,no-store` (no c
 ### 9. Clear-Site-Data
 Instructs browsers to clear client-side data (cache, cookies, storage) for specific paths. Not included in default configuration; must be explicitly configured for logout endpoints.
 
-### 10. Cross-Origin-Opener-Policy (COOP)
+### 10. Reporting-Endpoints (Experimental)
+Allows website administrators to specify endpoints where browsers can send violation reports from security policies like Content Security Policy (CSP). Not included in default configuration; marked as EXPERIMENTAL on MDN and must be explicitly configured.
+
+### 11. Cross-Origin-Opener-Policy (COOP)
 Isolates browsing context from other windows. Default: `same-origin`.
 
-### 11. Cross-Origin-Embedder-Policy (COEP)
+### 12. Cross-Origin-Embedder-Policy (COEP)
 Prevents documents from loading cross-origin resources that don't explicitly grant permission. Default: `same-require-corp`.
 
-### 12. X-XSS-Protection
+### 13. X-XSS-Protection
 Legacy header for older browsers. Default: `0` (disabled, as modern CSP is more effective).
 
 **Note:** Permissions-Policy header is not yet implemented.
@@ -154,6 +157,20 @@ var config = SecureHeadersMiddlewareBuilder
 app.UseSecureHeadersMiddleware(config);
 ```
 
+### Reporting-Endpoints Configuration
+
+The Reporting-Endpoints header is experimental and allows specifying endpoints for browser violation reports:
+
+```csharp
+var reportingEndpoints = new Dictionary<string, Uri> {
+    { "standard", new Uri("https://localhost:5000/reporting-endpoint") }
+};
+var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+    .UseReportingEndpointsPolicy(reportingEndpoints)
+    .Build();
+app.UseSecureHeadersMiddleware(config);
+```
+
 ## Logging
 
 OwaspHeaders.Core includes comprehensive logging functionality via `ILogger<SecureHeadersMiddleware>`, following Andrew Lock's high-performance logging best practices. To see logging output, ensure your application has logging configured in `appsettings.json`:
@@ -189,7 +206,16 @@ The middleware removes the `X-Powered-By` header, but the `Server` header is add
 
 ## Version History Highlights
 
-### Version 9 (Current)
+### Version 10 (Current)
+- Library now supports .NET 10 (by updating the TFM to include `net10.0`)
+- Added support for the EXPERIMENTAL Reporting-Endpoints header (version 10.1.x)
+- Fixed model properties in OwaspHeaders.Core.Models namespace that were incorrectly set to private (version 10.2.x)
+- New ReportingEndpointsPolicy model for configuring endpoint name-to-URI mappings
+- UseReportingEndpointsPolicy builder method for middleware configuration
+- Support for the modern `report-to` directive in Content Security Policy
+- All model properties now properly accessible for serialization scenarios
+
+### Version 9
 - Removed support for .NET 6 and .NET 7 (no longer supported by Microsoft)
 - Added support for .NET 9
 - Added Clear-Site-Data header support with path-specific configuration
@@ -296,6 +322,7 @@ To verify headers in production applications:
 - Cross-Origin-Resource-Policy: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Resource-Policy/
 - Cache-Control: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/
 - Clear-Site-Data: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Clear-Site-Data/
+- Reporting-Endpoints: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Reporting-Endpoints/
 - Cross-Origin-Opener-Policy: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/
 - Cross-Origin-Embedder-Policy: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/
 - X-XSS-Protection: https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-XSS-Protection/

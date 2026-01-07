@@ -379,7 +379,7 @@ public static class SecureHeadersMiddlewareBuilder
     /// <see cref="ContentSecurityPolicyConfiguration.ReportTo"/> property.
     /// If the value of the <see cref="ContentSecurityPolicyConfiguration.ReportTo"/> property isn't set to one of the
     /// endpoints listed in this header, then the browser will fail to send the CCP violation report.
-    /// Note: As of March 29th, 2025: this header is marked as experimental and is not recommended by the OWASP Secure
+    /// Note: As of January 7th, 2025: this header is marked as experimental and is not recommended by the OWASP Secure
     /// Headers project.
     /// </remarks>
     public static SecureHeadersMiddlewareConfiguration UseReportingEndpointsPolicy(

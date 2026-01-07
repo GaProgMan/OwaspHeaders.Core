@@ -6,8 +6,8 @@ layout: page
 ---
 
 {: .warning }
-> As of March 29th, 2025 this header is listed as EXPERIMENTAL in the relevant Mozilla Developer Network link (see below). Also, this header is not currently recommended by the OWASP Secure Headers Project.
-> As such, support for this header (as understood on March 29th, 2025) has been added in version 9.8.x, but it currently requires developer configuration.
+> As of January 7th, 2025 this header is listed as EXPERIMENTAL in the relevant Mozilla Developer Network link (see below). Also, this header is not currently recommended by the OWASP Secure Headers Project.
+> As such, support for this header (as understood on January 7th, 2025) has been added in version 9.8.x, but it currently requires developer configuration.
 > The functionality provided in the current version (9.8.x) does not guarantee that it will remain standards compliant, as the standard is still evolving. The header will become fully standards compliant once the standard has been ratified.
 
 The Mozilla Developer Network describes the Reporting-Endpoints (COEP) header like this:
@@ -19,7 +19,7 @@ The Mozilla Developer Network describes the Reporting-Endpoints (COEP) header li
 >
 > When used for reporting Content Security Policy (CSP) errors, the header is used in combination with the Content-Security-Policy header report-to directive. For more details on setting up CSP reporting, see the Content Security Policy (CSP) documentation.
 >
-> source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+> source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints
 
 A Reporting-Endpoints header can be added in one way, via an extension method on the `SecureHeadersMiddlewareBuilder` class called `UseReportingEndpointsPolicy`:
 

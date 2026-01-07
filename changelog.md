@@ -6,7 +6,7 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 
 | Major Version Number | Changes                                                                                                                                                                                                                                                                                                                                                                                                                     |
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 10                    | (as of Nov 12th, 2025) no API changes made yet. Library now supports ASP .NET Core (by updating the TFM to include `net10.0`) |
+| 10                    | (as of Nov 12th, 2025) no API changes made yet. Library now supports ASP .NET Core (by updating the TFM to include `net10.0`) <br /> Added support for the EXPERIMENTAL Report-Endpoints header. This is listed nas EXPERIMENTAL (as of January 7th, 2025) on the [relevant MDN docs page](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints), it is also not listed as a recommended header. As such, it is not added when the default builder is used |
 | 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. <br /> A number of small optimisation have been made to the middleware's `Invoke` method <br /> Added support for both Cross-Origin-Opener-Policy (CORP) and Cross-Origin-Embedder-Policy (COEP) headers <br /> Added support for Clear-Site-Data header with path-specific configuration for logout scenarios <br/> Increased documentation coverage for Content-Security-Policy directive generation |
 | 8                    | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes                                                                                                                                                                                                                                                         |
 | 7                    | Added Cross-Origin-Resource-Policy header to list of defaults; simplified the use of the middleware in Composite Root/Program.cs                                                                                                                                                                                                                                                                                            |
@@ -26,6 +26,33 @@ As of November 12th, 2025, no API changes have been added. This is a major versi
 - 10
 
 As these are still in support by Microsoft.
+
+#### Version 10.1.x
+
+This version adds support for the experimental Reporting-Endpoints HTTP header, addressing issue #170. The Reporting-Endpoints header allows website administrators to specify endpoints where browsers can send violation reports from security policies like Content Security Policy (CSP). This header is marked as EXPERIMENTAL on MDN and is not included when using the default builder configuration.
+
+**New Features:**
+
+- New `ReportingEndpointsPolicy` model for configuring endpoint name-to-URI mappings
+- `UseReportingEndpointsPolicy` builder method for middleware configuration
+- Support for the modern `report-to` directive in Content Security Policy
+- `RemoveTrailingCharacter` extension method for StringBuilder utility operations
+- Comprehensive test coverage maintaining 65%+ code coverage requirement
+- Full documentation and code examples for implementation
+
+**Example Usage:**
+
+```csharp
+var reportingEndpoints = new Dictionary<string, Uri> {
+    { "standard", new Uri("https://localhost:5000/reporting-endpoint") }
+};
+var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+    .UseReportingEndpointsPolicy(reportingEndpoints)
+    .Build();
+app.UseSecureHeadersMiddleware(config);
+```
+
+Note: The legacy `report-uri` directive continues to be supported but is marked as obsolete in favor of the modern `report-to` directive.
 
 ### Version 9
 

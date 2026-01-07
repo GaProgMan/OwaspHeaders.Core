@@ -89,6 +89,18 @@ var clearSiteDataConfig = SecureHeadersMiddlewareBuilder
 app.UseSecureHeadersMiddleware(clearSiteDataConfig);
 */
 
+// Example 5 (commented): Bare minimum required to use the new, experimental ReportingEndpointsPolicy header
+/*
+var reportingEndpoints =
+    new Dictionary<string, Uri> {
+        { "standard", new Uri("https://localhost:5000/reporting-endpoint") }
+    };
+var secureHeadersMiddlewareConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+    .UseReportingEndpointsPolicy(reportingEndpoints)
+    .Build();
+app.UseSecureHeadersMiddleware(secureHeadersMiddlewareConfig);
+*/
+
 app.MapControllers();
 
 app.Run();

@@ -37,6 +37,20 @@ public static class StringBuilderExtensions
         return sb;
     }
 
+    public static StringBuilder RemoveTrailingCharacter(this StringBuilder input, char toRemove)
+    {
+        if (input == null || input.Length == 0)
+        {
+            return input;
+        }
+
+        if (input[input.Length - 1] == toRemove)
+        {
+            input.Length--;
+        }
+        return input;
+    }
+
     /// <summary>
     /// Used to build the concatenated string value for the given values
     /// </summary>

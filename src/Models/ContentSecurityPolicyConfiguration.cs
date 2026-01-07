@@ -111,7 +111,23 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
     /// Whether to instruct the user agent to report attempts to violate the Content-Security
     /// Policy
     /// </summary>
+    /// <remarks>
+    /// This property has been marked as Obsolete as the MDN documentation shows it as being deprecated. Whilst report-uri
+    /// will continue to work in browsers, it will likely be disabled at some point in the future.
+    /// For details see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/report-uri 
+    /// </remarks>
+    [Obsolete("report-uri is deprecated; use report-to instead. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/report-uri", false)]
     public string ReportUri { get; init; }
+
+    /// <summary>
+    /// The name of the endpoint to use when reporting any Content-Security-Policy violations. Note: this is not the
+    /// actual endpoint address, but it's name as set up in the <see cref="ReportingEndpointsPolicy"/> header.
+    /// </summary>
+    /// <remarks>
+    /// See the following link for the MDN documentation on this directive:
+    /// https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints
+    /// </remarks>
+    public string ReportTo { get; init; }
 
     /// <summary>
     /// Protected constructor, we can no longer create instances of this class without
@@ -120,8 +136,12 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
     [ExcludeFromCodeCoverage]
     protected ContentSecurityPolicyConfiguration() { }
 
+    // This is a _VERY_ temporary fix for marking the ReportUri property as deprecated
+    // Because we're deprecating ReportUri but are using it throughout this class _AND_ we have warnings as errors, we need
+    // to disable the CS0618 warning for the duration of this fix.
+#pragma warning disable CS0618
     public ContentSecurityPolicyConfiguration(string pluginTypes, bool blockAllMixedContent,
-        bool upgradeInsecureRequests, string referrer, string reportUri)
+        bool upgradeInsecureRequests, string referrer, string reportUri, string reportTo)
     {
         BaseUri = [];
         DefaultSrc = [];
@@ -143,6 +163,7 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
         UpgradeInsecureRequests = upgradeInsecureRequests;
         Referrer = referrer;
         ReportUri = reportUri;
+        ReportTo = reportTo;
     }
 
     /// <summary>
@@ -201,6 +222,11 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
             stringBuilder.Append($"report-uri {ReportUri};");
         }
 
+        if (!string.IsNullOrWhiteSpace(ReportTo))
+        {
+            stringBuilder.Append($"report-to {ReportTo}");
+        }
+
         return stringBuilder.ToString().TrimEnd();
     }
 
@@ -214,4 +240,5 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
                FontSrc.Count != 0 || ConnectSrc.Count != 0 ||
                ManifestSrc.Count != 0 || FormAction.Count != 0;
     }
+#pragma warning restore CS0618
 }

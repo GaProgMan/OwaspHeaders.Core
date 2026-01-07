@@ -7,11 +7,15 @@
 public class ContentSecurityPolicyReportOnlyConfiguration : ContentSecurityPolicyConfiguration
 {
     public ContentSecurityPolicyReportOnlyConfiguration(string pluginTypes, bool blockAllMixedContent,
-        bool upgradeInsecureRequests, string referrer, string reportUri)
-        : base(pluginTypes, blockAllMixedContent, upgradeInsecureRequests, referrer, reportUri)
+        bool upgradeInsecureRequests, string referrer, string reportUri, string reportTo)
+        : base(pluginTypes, blockAllMixedContent, upgradeInsecureRequests, referrer, reportUri, reportTo)
     {
     }
 
+    // This is a _VERY_ temporary fix for marking the ReportUri property as deprecated
+    // Because we're deprecating ReportUri but are using it throughout this class _AND_ we have warnings as errors, we need
+    // to disable the CS0618 warning for the duration of this fix.
+#pragma warning disable CS0618
     public new string BuildHeaderValue()
     {
         // We cannot have an empty ReportUri in a Report-Uri only CSP
@@ -25,4 +29,5 @@ public class ContentSecurityPolicyReportOnlyConfiguration : ContentSecurityPolic
         HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(ReportUri, nameof(ReportUri));
         return base.BuildHeaderValue();
     }
+#pragma warning restore CS0618
 }

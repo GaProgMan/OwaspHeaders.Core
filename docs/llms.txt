@@ -12,7 +12,7 @@ OwaspHeaders.Core is an open-source middleware library that enhances web applica
 - OpenSSF Best Practices certified
 - Does not support Blazor/WebAssembly applications
 
-**Current Version:** 9.9.0
+**Current Version:** 10.2.0
 
 **Installation:** `dotnet add package OwaspHeaders.Core`
 
@@ -34,6 +34,7 @@ OwaspHeaders.Core is an open-source middleware library that enhances web applica
 - [Cross-Origin-Resource-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Resource-Policy/)
 - [Cache-Control](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/)
 - [Clear-Site-Data](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Clear-Site-Data/)
+- [Reporting-Endpoints](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Reporting-Endpoints/) (experimental, not included in defaults)
 - [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/)
 - [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/)
 - [X-XSS-Protection](https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-XSS-Protection/)

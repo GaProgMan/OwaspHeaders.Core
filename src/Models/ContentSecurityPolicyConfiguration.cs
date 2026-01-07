@@ -120,8 +120,8 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
     public string ReportUri { get; init; }
 
     /// <summary>
-    /// The name of the endpoint to use when reporting any Content-Security-Policy violations. Note: this is note the
-    /// actual endpoint address, but it's name as set up in the <see cref="ReportingEndpointsPolicy"/> header. 
+    /// The name of the endpoint to use when reporting any Content-Security-Policy violations. Note: this is not the
+    /// actual endpoint address, but it's name as set up in the <see cref="ReportingEndpointsPolicy"/> header.
     /// </summary>
     /// <remarks>
     /// See the following link for the MDN documentation on this directive:

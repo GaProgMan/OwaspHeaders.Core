@@ -7,8 +7,8 @@ layout: page
 
 {: .warning }
 > As of January 7th, 2025 this header is listed as EXPERIMENTAL in the relevant Mozilla Developer Network link (see below). Also, this header is not currently recommended by the OWASP Secure Headers Project.
-> As such, support for this header (as understood on January 7th, 2025) has been added in version 9.8.x, but it currently requires developer configuration.
-> The functionality provided in the current version (9.8.x) does not guarantee that it will remain standards compliant, as the standard is still evolving. The header will become fully standards compliant once the standard has been ratified.
+> As such, support for this header (as understood on January 7th, 2025) has been added in version 10.1.x, but it currently requires developer configuration.
+> The functionality provided in the current version (10.1.x) does not guarantee that it will remain standards compliant, as the standard is still evolving. The header will become fully standards compliant once the standard has been ratified.
 
 The Mozilla Developer Network describes the Reporting-Endpoints (COEP) header like this:
 

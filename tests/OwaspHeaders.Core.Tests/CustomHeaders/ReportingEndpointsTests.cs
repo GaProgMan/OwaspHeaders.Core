@@ -18,7 +18,7 @@ public class ReportingEndpointsTests : SecureHeadersTests
         // act
         Assert.True(headerPresentConfig.UseReportingEndPoints);
         Assert.True(_context.Response.Headers.ContainsKey(Constants.ReportingEndpointsHeaderName));
-        Assert.Equal($"Reporting-Endpoints: {reportingEndpoints.First().Key}=\"{reportingEndpoints.First().Value.ToString()}\"", _context.Response.Headers[Constants.ReportingEndpointsHeaderName]);
+        Assert.Equal($"{reportingEndpoints.First().Key}=\"{reportingEndpoints.First().Value.ToString()}\"", _context.Response.Headers[Constants.ReportingEndpointsHeaderName]);
     }
 
     [Fact]

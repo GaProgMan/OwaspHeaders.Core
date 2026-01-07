@@ -30,6 +30,6 @@ public class ReportingEndpointsPolicy : IConfigurationBase
             stringBuilder.Append($"{kvp.Key}=\"{kvp.Value}\", ");
         }
 
-        return $"Reporting-Endpoints: {stringBuilder.TrimEnd().RemoveTrailingCharacter(',')}";
+        return stringBuilder.TrimEnd().RemoveTrailingCharacter(',').ToString();
     }
 }

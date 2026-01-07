@@ -197,6 +197,23 @@ public static class SecureHeadersMiddlewareBuilder
     }
 
     /// <summary>
+    /// Configures Content Security Policy Report Only mode.
+    /// </summary>
+    /// <remarks>
+    /// This method has been renamed to UseContentSecurityPolicyReportUriOnly for clarity.
+    /// Please update your code to use the new method name.
+    /// </remarks>
+    [Obsolete("UseContentSecurityPolicyReportOnly has been renamed to UseContentSecurityPolicyReportUriOnly. Please use the new method name.", false)]
+    public static SecureHeadersMiddlewareConfiguration UseContentSecurityPolicyReportOnly
+    (this SecureHeadersMiddlewareConfiguration config, string reportUri,
+        string pluginTypes = null, bool blockAllMixedContent = true,
+        bool upgradeInsecureRequests = true, string referrer = null, bool useXContentSecurityPolicy = false, string reportTo = null)
+    {
+        return config.UseContentSecurityPolicyReportUriOnly(reportUri, pluginTypes, blockAllMixedContent,
+            upgradeInsecureRequests, referrer, useXContentSecurityPolicy, reportTo);
+    }
+
+    /// <summary>
     /// A cross-domain policy grants a web client permission to handle data across domains
     /// </summary>
     /// <remarks>

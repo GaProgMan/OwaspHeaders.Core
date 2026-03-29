@@ -23,14 +23,14 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 1
 
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
     - name: Setup .NET SDK 10
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
+      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
         dotnet-version: '10.0.x'
 
@@ -48,14 +48,14 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
 
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
     - name: Setup .NET SDK 10
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
+      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
         dotnet-version: '10.0.x'
 
@@ -77,14 +77,14 @@ jobs:
     steps:
       
     - name: Checkout code
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
       
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
     - name: Setup .NET SDK 10
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
+      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
         dotnet-version: '10.0.x'
     
@@ -100,7 +100,7 @@ jobs:
         output: 'both'
 
     - name: Upload Coverage Results for PR Comment
-      uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       if: github.event_name == 'pull_request'
       with:
         name: coverage-results
@@ -121,21 +121,21 @@ jobs:
 
    steps:
     - name: Checkout code
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
       
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
     - name: Setup .NET SDK 10
-      uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25 # v4.1.0
+      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
         dotnet-version: '10.0.x'
 
     - name: Build NuGet Package
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
 
-    - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+    - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       if: ${{ success() }}
       with:
         name: OwaspHeaders.Core

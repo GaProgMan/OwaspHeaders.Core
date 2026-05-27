@@ -7,6 +7,17 @@ title: OwaspHeaders.Core
 description: The documentation site for the OwaspHeaders.Core NuGet library
 theme: just-the-docs
 
+# Suppress Sass deprecation warnings emitted from the just-the-docs gem's own stylesheets
+# (@import, darken(), map-get). These originate inside the theme, not this repo, and will
+# only be fixed when just-the-docs migrates to modern Sass (@use, color.scale, map.get).
+# - quiet_deps silences warnings from gem-loaded files (darken, map-get, nested @imports).
+# - silence_deprecations: [import] silences @import warnings from the theme's root
+#   stylesheets (just-the-docs-{default,dark,light}.scss), which quiet_deps can't reach.
+# Remove this block once the upstream theme adopts the Dart Sass 3.0 idioms.
+sass:
+  quiet_deps: true
+  silence_deprecations: [import]
+
 permalink: pretty
 
 # URL for the built GitHub pages root; ensures that all generated absolute URLs are correct

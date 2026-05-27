@@ -1,4 +1,4 @@
-namespace OwaspHeaders.Core.Tests.RegressionTests;
+﻿namespace OwaspHeaders.Core.Tests.RegressionTests;
 
 /// <summary>
 /// Regression tests for https://github.com/GaProgMan/OwaspHeaders.Core/issues/220

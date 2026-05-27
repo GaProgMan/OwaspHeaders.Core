@@ -81,17 +81,18 @@ This version corrects an issue where properties in model classes within the `Owa
 
 #### Version 10.3.x
 
-This version marks the `UseExpectCt` builder extension as `[Obsolete]`, addressing issue #198. The Expect-CT header has been deprecated by OWASP (see the [OWASP Secure Headers Project page on Expect-CT](https://owasp.org/www-project-secure-headers/#expect-ct)). It was already absent from `BuildDefaultConfiguration` as of Version 6; the opt-in builder method is retained so existing usages continue to compile, but it is no longer recommended and will be removed in a future major version.
+This version marks the Expect-CT opt-in as `[Obsolete]`, addressing issue #198. The Expect-CT header has been deprecated by OWASP (see the [OWASP Secure Headers Project page on Expect-CT](https://owasp.org/www-project-secure-headers/#expect-ct)). It was already absent from `BuildDefaultConfiguration` as of Version 6; the opt-in surface is retained so existing usages continue to compile, but it is no longer recommended and will be removed in a future major version.
 
 **Changes:**
 
 - Added `[Obsolete]` attribute to `SecureHeadersMiddlewareBuilder.UseExpectCt` with a message pointing callers at the OWASP deprecation notice.
+- Added `[Obsolete]` to the *setters* of `SecureHeadersMiddlewareConfiguration.UseExpectCt` and `SecureHeadersMiddlewareConfiguration.ExpectCt` so that callers who bypass the builder extension and assign these properties directly (for example from `Program.cs`) also see the deprecation warning. The getters remain non-obsolete so that the middleware can read the flag and configuration at request time without producing warnings.
 - Added a test asserting that `BuildDefaultConfiguration()` leaves `UseExpectCt = false` and `ExpectCt = null`, guarding against future regressions that would re-add Expect-CT to the default header chain.
 - Added a reflection-based test asserting that `UseExpectCt` carries the `[Obsolete]` attribute, so the deprecation marker cannot be removed silently.
 
 **Impact:**
 
-- Callers of `UseExpectCt` will see a compiler warning (`CS0618`) prompting them to remove or suppress the opt-in.
+- Callers of `UseExpectCt`, or of `config.UseExpectCt = ...` / `config.ExpectCt = ...`, will see a compiler warning (`CS0618`) prompting them to remove or suppress the opt-in.
 - No runtime behaviour change: Expect-CT remains opt-in and absent from the default header chain.
 
 ### Version 9

@@ -315,8 +315,13 @@ public static class SecureHeadersMiddlewareBuilder
     (this SecureHeadersMiddlewareConfiguration config,
         string reportUri, int maxAge = 86400, bool enforce = false)
     {
+        // The UseExpectCt/ExpectCt setters are also marked [Obsolete] to deter
+        // callers from bypassing this (already obsolete) extension. Suppress the
+        // resulting warning here, since this extension is the legitimate writer.
+#pragma warning disable CS0618
         config.UseExpectCt = true;
         config.ExpectCt = new ExpectCt(reportUri, maxAge, enforce);
+#pragma warning restore CS0618
         return config;
     }
 

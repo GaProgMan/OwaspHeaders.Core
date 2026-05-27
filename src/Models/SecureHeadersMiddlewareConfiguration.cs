@@ -55,7 +55,18 @@ public class SecureHeadersMiddlewareConfiguration
     /// <summary>
     /// Indicates whether the response should use Expect-CT
     /// </summary>
-    public bool UseExpectCt { get; set; }
+    /// <remarks>
+    /// The Expect-CT header has been deprecated by OWASP. The setter is marked
+    /// <see cref="ObsoleteAttribute"/> so that callers who bypass the (also obsolete)
+    /// <c>UseExpectCt</c> builder extension still see a deprecation warning. The getter
+    /// remains non-obsolete so the middleware can read the flag without warnings.
+    /// </remarks>
+    public bool UseExpectCt
+    {
+        get;
+        [Obsolete("Expect-CT has been deprecated by OWASP and will be removed in a future major version. See https://owasp.org/www-project-secure-headers/#expect-ct for details.", false)]
+        set;
+    }
 
     /// <summary>
     /// Indicates whether the response should use Cache-Control
@@ -130,7 +141,18 @@ public class SecureHeadersMiddlewareConfiguration
     /// <summary>
     /// The Expect-CT configuration to use
     /// </summary>
-    public ExpectCt ExpectCt { get; set; }
+    /// <remarks>
+    /// The Expect-CT header has been deprecated by OWASP. The setter is marked
+    /// <see cref="ObsoleteAttribute"/> so that callers who assign this directly still see
+    /// a deprecation warning. The getter remains non-obsolete so the middleware can read
+    /// the value without warnings.
+    /// </remarks>
+    public ExpectCt ExpectCt
+    {
+        get;
+        [Obsolete("Expect-CT has been deprecated by OWASP and will be removed in a future major version. See https://owasp.org/www-project-secure-headers/#expect-ct for details.", false)]
+        set;
+    }
 
     public CrossOriginResourcePolicy CrossOriginResourcePolicy { get; set; }
 

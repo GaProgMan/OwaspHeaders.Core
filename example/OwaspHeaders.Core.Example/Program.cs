@@ -1,15 +1,14 @@
 ﻿using OwaspHeaders.Core.Enums;
-// the above using statement is required for example 4, which is commented
-// out by default. As such, Rider (and linting tools) will likely complain
-// about the fact that it is unnecessary.
+using Scalar.AspNetCore;
+// the OwaspHeaders.Core.Enums using statement is required for example 4,
+// which is commented out by default. As such, Rider (and linting tools)
+// will likely complain about the fact that it is unnecessary.
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
 
 // Configure logging - this shows how to see SecureHeaders logs in console output
 builder.Logging.ClearProviders();
@@ -21,15 +20,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
 // Example 1: Basic SecureHeaders with default logging (uses default Event IDs 1000-3999)
-var listOfUrlsToIgnore = new List<string> { "/skipthis" };
+var listOfUrlsToIgnore = new List<string> { "/skipthis", "/scalar/v1" };
 app.UseSecureHeadersMiddleware(urlIgnoreList: listOfUrlsToIgnore);
 
 // Example 2 (commented): Custom configuration with custom Event IDs

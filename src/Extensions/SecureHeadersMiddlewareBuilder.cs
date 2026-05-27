@@ -302,8 +302,15 @@ public static class SecureHeadersMiddlewareBuilder
     /// Transparency policy.
     /// </param>
     /// <exception cref="ArgumentException">
-    /// An ArgumentException is thrown when no Report URI is supplied 
+    /// An ArgumentException is thrown when no Report URI is supplied
     /// </exception>
+    /// <remarks>
+    /// The Expect-CT header has been deprecated by OWASP. See
+    /// https://owasp.org/www-project-secure-headers/#expect-ct for details. This method
+    /// is retained so that existing opt-in usages continue to compile, but it is no
+    /// longer recommended and will be removed in a future major version.
+    /// </remarks>
+    [Obsolete("The Expect-CT header has been deprecated by OWASP and will be removed in a future major version. See https://owasp.org/www-project-secure-headers/#expect-ct for details.", false)]
     public static SecureHeadersMiddlewareConfiguration UseExpectCt
     (this SecureHeadersMiddlewareConfiguration config,
         string reportUri, int maxAge = 86400, bool enforce = false)

@@ -1,21 +1,17 @@
-﻿using Microsoft.Extensions.Logging;
-using Moq;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Testing;
 
 namespace OwaspHeaders.Core.Tests.LoggingTests;
 
 public class SecureHeadersMiddlewareLoggingTests
 {
-    private readonly Mock<ILogger<SecureHeadersMiddleware>> _mockLogger;
+    private readonly FakeLogger<SecureHeadersMiddleware> _logger;
     private readonly RequestDelegate _onNext;
     private readonly DefaultHttpContext _context;
 
     public SecureHeadersMiddlewareLoggingTests()
     {
-        _mockLogger = new Mock<ILogger<SecureHeadersMiddleware>>();
-
-        // Setup the logger to return true for all log levels by default
-        _mockLogger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
-
+        _logger = new FakeLogger<SecureHeadersMiddleware>();
         _onNext = _ => Task.CompletedTask;
         _context = new DefaultHttpContext();
     }
@@ -23,12 +19,12 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public async Task InvokeAsync_WithNullConfig_LogsConfigurationError()
     {
-        var middleware = new SecureHeadersMiddleware(_onNext, null, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, null, _logger);
 
         var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
 
         Assert.NotNull(exception);
-        VerifyLogCalled(LogLevel.Error, 3001, "Configuration validation failed:");
+        AssertLogged(LogLevel.Error, 3001, "Configuration validation failed:");
     }
 
     [Fact]
@@ -40,12 +36,12 @@ public class SecureHeadersMiddlewareLoggingTests
             .UseXFrameOptions()
             .Build();
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
 
         await middleware.InvokeAsync(_context);
 
-        VerifyLogCalled(LogLevel.Information, 1001, "SecureHeaders middleware initialized with");
-        VerifyLogCalled(LogLevel.Information, 1004, "Generated");
+        AssertLogged(LogLevel.Information, 1001, "SecureHeaders middleware initialized with");
+        AssertLogged(LogLevel.Information, 1004, "Generated");
     }
 
     [Fact]
@@ -56,12 +52,12 @@ public class SecureHeadersMiddlewareLoggingTests
             .UseHsts()
             .Build();
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
 
         await middleware.InvokeAsync(_context);
 
-        VerifyLogCalled(LogLevel.Information, 1002, "Added");
-        VerifyLogCalled(LogLevel.Information, 1002, "security headers to response");
+        AssertLogged(LogLevel.Information, 1002, "Added");
+        AssertLogged(LogLevel.Information, 1002, "security headers to response");
     }
 
     [Fact]
@@ -74,11 +70,11 @@ public class SecureHeadersMiddlewareLoggingTests
             .Build();
 
         _context.Request.Path = "/ignore";
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
 
         await middleware.InvokeAsync(_context);
 
-        VerifyLogCalled(LogLevel.Information, 1003, "Request ignored due to URL exclusion rule:");
+        AssertLogged(LogLevel.Information, 1003, "Request ignored due to URL exclusion rule:");
     }
 
     [Fact]
@@ -90,11 +86,11 @@ public class SecureHeadersMiddlewareLoggingTests
             .UseXFrameOptions()
             .Build();
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
 
         await middleware.InvokeAsync(_context);
 
-        VerifyLogCalled(LogLevel.Debug, 1005, "Added header");
+        AssertLogged(LogLevel.Debug, 1005, "Added header");
     }
 
     [Fact]
@@ -105,12 +101,12 @@ public class SecureHeadersMiddlewareLoggingTests
             .UseCrossOriginEmbedderPolicy()
             .Build();
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
 
         var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
 
         Assert.NotNull(exception);
-        VerifyLogCalled(LogLevel.Warning, 2003, "Cross-Origin-Embedder-Policy requires Cross-Origin-Resource-Policy to be enabled");
+        AssertLogged(LogLevel.Warning, 2003, "Cross-Origin-Embedder-Policy requires Cross-Origin-Resource-Policy to be enabled");
     }
 
     [Fact]
@@ -128,12 +124,12 @@ public class SecureHeadersMiddlewareLoggingTests
             .WithLoggingEventIds(customConfig)
             .Build();
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
 
         await middleware.InvokeAsync(_context);
 
-        VerifyLogCalled(LogLevel.Information, 9001, "SecureHeaders middleware initialized");
-        VerifyLogCalled(LogLevel.Information, 9002, "Added");
+        AssertLogged(LogLevel.Information, 9001, "SecureHeaders middleware initialized");
+        AssertLogged(LogLevel.Information, 9002, "Added");
     }
 
     [Fact]
@@ -145,13 +141,13 @@ public class SecureHeadersMiddlewareLoggingTests
             .WithLoggingEventIdBase(5000)
             .Build();
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
 
         await middleware.InvokeAsync(_context);
 
-        VerifyLogCalled(LogLevel.Information, 5001, "SecureHeaders middleware initialized");
-        VerifyLogCalled(LogLevel.Information, 5002, "Added");
-        VerifyLogCalled(LogLevel.Information, 5004, "Generated");
+        AssertLogged(LogLevel.Information, 5001, "SecureHeaders middleware initialized");
+        AssertLogged(LogLevel.Information, 5002, "Added");
+        AssertLogged(LogLevel.Information, 5004, "Generated");
     }
 
     [Fact]
@@ -173,25 +169,21 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public async Task InvokeAsync_WithLoggerDisabled_DoesNotLog()
     {
-        _mockLogger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(false);
+        foreach (var level in AllLogLevels)
+        {
+            _logger.ControlLevel(level, false);
+        }
 
         var config = SecureHeadersMiddlewareBuilder
             .CreateBuilder()
             .UseHsts()
             .Build();
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
 
         await middleware.InvokeAsync(_context);
 
-        _mockLogger.Verify(
-            x => x.Log(
-                It.IsAny<LogLevel>(),
-                It.IsAny<EventId>(),
-                It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Never);
+        Assert.Empty(_logger.Collector.GetSnapshot());
     }
 
     [Theory]
@@ -199,37 +191,23 @@ public class SecureHeadersMiddlewareLoggingTests
     [InlineData(LogLevel.Debug)]
     public async Task InvokeAsync_RespectsLogLevel(LogLevel enabledLevel)
     {
-        _mockLogger.Setup(x => x.IsEnabled(enabledLevel)).Returns(true);
-        _mockLogger.Setup(x => x.IsEnabled(It.Is<LogLevel>(l => l != enabledLevel))).Returns(false);
+        foreach (var level in AllLogLevels)
+        {
+            _logger.ControlLevel(level, level == enabledLevel);
+        }
 
         var config = SecureHeadersMiddlewareBuilder
             .CreateBuilder()
             .UseHsts()
             .Build();
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
 
         await middleware.InvokeAsync(_context);
 
-        _mockLogger.Verify(x => x.IsEnabled(enabledLevel), Times.AtLeastOnce);
-    }
-
-    [Fact]
-    public async Task InvokeAsync_WithCOEPConfigurationIssue_ChecksWarningLogLevel()
-    {
-        _mockLogger.Setup(x => x.IsEnabled(LogLevel.Warning)).Returns(true);
-
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
-            .UseCrossOriginEmbedderPolicy()
-            .Build();
-
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
-
-        var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
-
-        Assert.NotNull(exception);
-        _mockLogger.Verify(x => x.IsEnabled(LogLevel.Warning), Times.AtLeastOnce);
+        var snapshot = _logger.Collector.GetSnapshot();
+        Assert.NotEmpty(snapshot);
+        Assert.All(snapshot, r => Assert.Equal(enabledLevel, r.Level));
     }
 
     [Fact]
@@ -243,38 +221,24 @@ public class SecureHeadersMiddlewareLoggingTests
         config.UseCacheControl = true;
         config.UseHsts = true;
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
 
         var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
 
         Assert.NotNull(exception);
-        VerifyLogCalled(LogLevel.Error, 3001, nameof(SecureHeadersMiddlewareConfiguration.UseCacheControl));
-        VerifyLogCalled(LogLevel.Error, 3001, nameof(SecureHeadersMiddlewareConfiguration.UseHsts));
+        AssertLogged(LogLevel.Error, 3001, nameof(SecureHeadersMiddlewareConfiguration.UseCacheControl));
+        AssertLogged(LogLevel.Error, 3001, nameof(SecureHeadersMiddlewareConfiguration.UseHsts));
     }
 
-    [Fact]
-    public async Task InvokeAsync_WithNullConfig_ChecksErrorLogLevel()
+    private static readonly LogLevel[] AllLogLevels =
+    [
+        LogLevel.Trace, LogLevel.Debug, LogLevel.Information,
+        LogLevel.Warning, LogLevel.Error, LogLevel.Critical
+    ];
+
+    private void AssertLogged(LogLevel level, int eventId, string messageContains)
     {
-        _mockLogger.Setup(x => x.IsEnabled(LogLevel.Error)).Returns(true);
-
-        var middleware = new SecureHeadersMiddleware(_onNext, null, _mockLogger.Object);
-
-        var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
-
-        Assert.NotNull(exception);
-        _mockLogger.Verify(x => x.IsEnabled(LogLevel.Error), Times.AtLeastOnce);
-    }
-
-    private void VerifyLogCalled(LogLevel logLevel, int eventId, string messageContains)
-    {
-        _mockLogger.Verify(
-            x => x.Log(
-                logLevel,
-                It.Is<EventId>(e => e.Id == eventId),
-                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(messageContains)),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.AtLeastOnce,
-            $"Expected log call with level {logLevel}, event ID {eventId}, and message containing '{messageContains}'");
+        Assert.Contains(_logger.Collector.GetSnapshot(),
+            r => r.Level == level && r.Id.Id == eventId && r.Message.Contains(messageContains));
     }
 }

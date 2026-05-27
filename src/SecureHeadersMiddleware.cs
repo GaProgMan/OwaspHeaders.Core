@@ -11,6 +11,7 @@ namespace OwaspHeaders.Core;
 public class SecureHeadersMiddleware
 {
     private FrozenDictionary<string, string> _headers;
+    private bool _configurationValidated;
     private readonly RequestDelegate _next;
     private readonly SecureHeadersMiddlewareConfiguration _config;
     private readonly ILogger<SecureHeadersMiddleware> _logger;
@@ -38,6 +39,8 @@ public class SecureHeadersMiddleware
             LogConfigurationError(errorMessage);
             throw new ArgumentException(errorMessage);
         }
+
+        ValidateConfigurationOrThrow();
 
         if (!RequestShouldBeIgnored(httpContext.Request.Path))
         {
@@ -279,6 +282,26 @@ public class SecureHeadersMiddleware
         }
 
         return temporaryDictionary.ToFrozenDictionary();
+    }
+
+    private void ValidateConfigurationOrThrow()
+    {
+        if (_configurationValidated)
+        {
+            return;
+        }
+
+        var issues = _config.Validate();
+        if (issues.Count > 0)
+        {
+            var errorMessage =
+                $"SecureHeaders configuration is invalid. {issues.Count} header flag(s) are enabled without a matching configuration object: "
+                + string.Join(" ", issues);
+            LogConfigurationError(errorMessage);
+            throw new ArgumentException(errorMessage);
+        }
+
+        _configurationValidated = true;
     }
 
     private bool RequestShouldBeIgnored(PathString requestedPath)

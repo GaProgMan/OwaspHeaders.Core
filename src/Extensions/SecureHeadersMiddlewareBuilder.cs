@@ -2,11 +2,6 @@
 //        parameters for each header) are taken from the OWASP Secure Headers
 //        page. The original comments can be found at:
 //                https://www.owasp.org/index.php/OWASP_Secure_Headers_Project
-// Note:  the description of the Expect-CT header (used above the UseExpectCt
-//        method) is taken from the MDN page for the header, which can be found
-//        at the following url:
-//          https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT
-
 using static OwaspHeaders.Core.Models.CrossOriginResourcePolicy;
 
 namespace OwaspHeaders.Core.Extensions;
@@ -276,47 +271,6 @@ public static class SecureHeadersMiddlewareBuilder
     {
         config.UseCacheControl = true;
         config.CacheControl = new CacheControl(@private, maxAge, noCache, noStore, mustRevalidate);
-        return config;
-    }
-
-    /// <summary>
-    /// Governs whether the site can opt-into reporting or enforcement of certificate
-    /// transparency requirements, which prevents the use of mis-issued certificates
-    /// for that site from going unnoticed
-    /// </summary>
-    /// <param name="reportUri">
-    /// [REQUIRED]
-    /// Specifies the URI to which the user agent should report Expect-CT failures.
-    /// </param>
-    /// <param name="maxAge">
-    /// [REQUIRED, HAS DEFAULT]
-    /// Specifies the number of seconds after reception of the Expect-CT header field
-    /// during which the user agent should regard the host from whom the message was
-    /// received as a known Expect-CT host
-    /// </param>
-    /// <param name="enforce">
-    /// [OPTIONAL]
-    /// Signals to the user agent that compliance with the Certificate Transparency
-    /// policy should be enforced (rather than only reporting compliance) and that the
-    /// user agent should refuse future connections that violate its Certificate
-    /// Transparency policy.
-    /// </param>
-    /// <exception cref="ArgumentException">
-    /// An ArgumentException is thrown when no Report URI is supplied
-    /// </exception>
-    /// <remarks>
-    /// The Expect-CT header has been deprecated by OWASP. See
-    /// https://owasp.org/www-project-secure-headers/#expect-ct for details. This method
-    /// is retained so that existing opt-in usages continue to compile, but it is no
-    /// longer recommended and will be removed in a future major version.
-    /// </remarks>
-    [Obsolete("The Expect-CT header has been deprecated by OWASP and will be removed in a future major version. See https://owasp.org/www-project-secure-headers/#expect-ct for details.", false)]
-    public static SecureHeadersMiddlewareConfiguration UseExpectCt
-    (this SecureHeadersMiddlewareConfiguration config,
-        string reportUri, int maxAge = 86400, bool enforce = false)
-    {
-        config.UseExpectCt = true;
-        config.ExpectCt = new ExpectCt(reportUri, maxAge, enforce);
         return config;
     }
 

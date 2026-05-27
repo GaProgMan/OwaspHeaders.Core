@@ -53,15 +53,6 @@ public class SecureHeadersMiddlewareConfiguration
     public bool UseReferrerPolicy { get; internal set; }
 
     /// <summary>
-    /// Indicates whether the response should use Expect-CT
-    /// </summary>
-    /// <remarks>
-    /// The Expect-CT header has been deprecated by OWASP. The <c>UseExpectCt</c> builder
-    /// extension is the only writer for this flag and carries the deprecation warning.
-    /// </remarks>
-    public bool UseExpectCt { get; internal set; }
-
-    /// <summary>
     /// Indicates whether the response should use Cache-Control
     /// </summary>
     public bool UseCacheControl { get; internal set; }
@@ -131,15 +122,6 @@ public class SecureHeadersMiddlewareConfiguration
     /// </summary>
     public CacheControl CacheControl { get; internal set; }
 
-    /// <summary>
-    /// The Expect-CT configuration to use
-    /// </summary>
-    /// <remarks>
-    /// The Expect-CT header has been deprecated by OWASP. The <c>UseExpectCt</c> builder
-    /// extension is the only writer for this property and carries the deprecation warning.
-    /// </remarks>
-    public ExpectCt ExpectCt { get; internal set; }
-
     public CrossOriginResourcePolicy CrossOriginResourcePolicy { get; internal set; }
 
     public CrossOriginOpenerPolicy CrossOriginOpenerPolicy { get; internal set; }
@@ -204,7 +186,6 @@ public class SecureHeadersMiddlewareConfiguration
         Check(UsePermittedCrossDomainPolicy, PermittedCrossDomainPolicyConfiguration,
             nameof(UsePermittedCrossDomainPolicy));
         Check(UseReferrerPolicy, ReferrerPolicy, nameof(UseReferrerPolicy));
-        Check(UseExpectCt, ExpectCt, nameof(UseExpectCt));
         Check(UseCacheControl, CacheControl, nameof(UseCacheControl));
         Check(UseCrossOriginResourcePolicy, CrossOriginResourcePolicy, nameof(UseCrossOriginResourcePolicy));
         Check(UseCrossOriginOpenerPolicy, CrossOriginOpenerPolicy, nameof(UseCrossOriginOpenerPolicy));

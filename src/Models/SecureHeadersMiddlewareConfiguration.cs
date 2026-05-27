@@ -174,8 +174,58 @@ public class SecureHeadersMiddlewareConfiguration
     public List<string> UrlsToIgnore { get; set; } = [];
 
     /// <summary>
-    /// Configuration for logging event IDs. Allows customization to avoid conflicts 
+    /// Configuration for logging event IDs. Allows customization to avoid conflicts
     /// with application event IDs. Defaults to standard SecureHeaders event ID ranges.
     /// </summary>
     public SecureHeadersLoggingConfiguration LoggingConfiguration { get; set; } = new();
+
+    /// <summary>
+    /// Returns a list of validation issues describing every <c>UseX</c> flag that has
+    /// been set to <c>true</c> without a matching configuration object being populated.
+    /// An empty list indicates the configuration is internally consistent.
+    /// </summary>
+    /// <remarks>
+    /// Mismatches typically occur when a flag is set directly on the configuration
+    /// instance instead of via the corresponding builder extension on
+    /// <see cref="SecureHeadersMiddlewareBuilder"/>, which would normally allocate both
+    /// the flag and the matching configuration object together.
+    /// </remarks>
+    public IReadOnlyList<string> Validate()
+    {
+        var issues = new List<string>();
+
+        void Check(bool enabled, object configuration, string flagName)
+        {
+            if (enabled && configuration is null)
+            {
+                issues.Add(
+                    $"{flagName} is true but its matching configuration object is null. " +
+                    $"Configure this header via the corresponding SecureHeadersMiddlewareBuilder extension method " +
+                    $"instead of setting {flagName} directly.");
+            }
+        }
+
+        // UseXContentTypeOptions is intentionally omitted: the X-Content-Type-Options header
+        // emits a constant value ("nosniff") and has no backing configuration object, so there
+        // is nothing to validate against.
+        Check(UseHsts, HstsConfiguration, nameof(UseHsts));
+        Check(UseXFrameOptions, XFrameOptionsConfiguration, nameof(UseXFrameOptions));
+        Check(UseXssProtection, XssConfiguration, nameof(UseXssProtection));
+        Check(UseContentSecurityPolicy, ContentSecurityPolicyConfiguration, nameof(UseContentSecurityPolicy));
+        Check(UseContentSecurityPolicyReportOnly, ContentSecurityPolicyReportOnlyConfiguration,
+            nameof(UseContentSecurityPolicyReportOnly));
+        Check(UseXContentSecurityPolicy, ContentSecurityPolicyConfiguration, nameof(UseXContentSecurityPolicy));
+        Check(UsePermittedCrossDomainPolicy, PermittedCrossDomainPolicyConfiguration,
+            nameof(UsePermittedCrossDomainPolicy));
+        Check(UseReferrerPolicy, ReferrerPolicy, nameof(UseReferrerPolicy));
+        Check(UseExpectCt, ExpectCt, nameof(UseExpectCt));
+        Check(UseCacheControl, CacheControl, nameof(UseCacheControl));
+        Check(UseCrossOriginResourcePolicy, CrossOriginResourcePolicy, nameof(UseCrossOriginResourcePolicy));
+        Check(UseCrossOriginOpenerPolicy, CrossOriginOpenerPolicy, nameof(UseCrossOriginOpenerPolicy));
+        Check(UseCrossOriginEmbedderPolicy, CrossOriginEmbedderPolicy, nameof(UseCrossOriginEmbedderPolicy));
+        Check(UseReportingEndPoints, ReportingEndpointsPolicy, nameof(UseReportingEndPoints));
+        Check(UseClearSiteData, ClearSiteDataPathConfiguration, nameof(UseClearSiteData));
+
+        return issues;
+    }
 }

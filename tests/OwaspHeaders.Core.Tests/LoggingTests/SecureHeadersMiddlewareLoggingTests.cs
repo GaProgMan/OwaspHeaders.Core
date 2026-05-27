@@ -233,6 +233,26 @@ public class SecureHeadersMiddlewareLoggingTests
     }
 
     [Fact]
+    public async Task InvokeAsync_WithFlagButNoMatchingConfig_LogsConsolidatedConfigurationError()
+    {
+        var config = SecureHeadersMiddlewareBuilder
+            .CreateBuilder()
+            .UseReferrerPolicy()
+            .Build();
+
+        config.UseCacheControl = true;
+        config.UseHsts = true;
+
+        var middleware = new SecureHeadersMiddleware(_onNext, config, _mockLogger.Object);
+
+        var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
+
+        Assert.NotNull(exception);
+        VerifyLogCalled(LogLevel.Error, 3001, nameof(SecureHeadersMiddlewareConfiguration.UseCacheControl));
+        VerifyLogCalled(LogLevel.Error, 3001, nameof(SecureHeadersMiddlewareConfiguration.UseHsts));
+    }
+
+    [Fact]
     public async Task InvokeAsync_WithNullConfig_ChecksErrorLogLevel()
     {
         _mockLogger.Setup(x => x.IsEnabled(LogLevel.Error)).Returns(true);

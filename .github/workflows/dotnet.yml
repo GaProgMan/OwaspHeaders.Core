@@ -18,7 +18,7 @@ permissions:
 jobs:
 
   check-code-formatting:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     name: Check code formatting against editorconfig
 
     steps:
@@ -45,7 +45,7 @@ jobs:
   build:
 
     needs: [check-code-formatting]
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     name: Build code base, checking for compilation errors
 
     steps:
@@ -75,7 +75,7 @@ jobs:
     permissions:
       contents: read  # for actions/checkout to fetch code
     needs: [build]
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     name: Run all tests and generate PR-level code coverage report
 
     steps:
@@ -122,7 +122,7 @@ jobs:
    permissions:
      contents: read
    needs: [build, test]
-   runs-on: ubuntu-slim
+   runs-on: ubuntu-latest
    name: Create the NuGet package for PR-level user testing
 
    steps:

@@ -6,7 +6,7 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 
 | Major Version Number | Changes                                                                                                                                                                                                                                                                                                                                                                                                                     |
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 10                    | (as of Nov 12th, 2025) no API changes made yet. Library now supports ASP .NET Core (by updating the TFM to include `net10.0`) <br /> Added support for the EXPERIMENTAL Report-Endpoints header. This is listed nas EXPERIMENTAL (as of January 7th, 2025) on the [relevant MDN docs page](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints), it is also not listed as a recommended header. As such, it is not added when the default builder is used <br /> Fixed model properties in OwaspHeaders.Core.Models namespace that were incorrectly set to private - they are now public for serialization and external consumption |
+| 10                    | (as of Nov 12th, 2025) no API changes made yet. Library now supports ASP .NET Core (by updating the TFM to include `net10.0`) <br /> Added support for the EXPERIMENTAL Report-Endpoints header. This is listed nas EXPERIMENTAL (as of January 7th, 2025) on the [relevant MDN docs page](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints), it is also not listed as a recommended header. As such, it is not added when the default builder is used <br /> Fixed model properties in OwaspHeaders.Core.Models namespace that were incorrectly set to private - they are now public for serialization and external consumption <br /> Marked the `UseExpectCt` builder extension as `[Obsolete]` to reflect OWASP's deprecation of the Expect-CT header (issue #198) |
 | 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. <br /> A number of small optimisation have been made to the middleware's `Invoke` method <br /> Added support for both Cross-Origin-Opener-Policy (CORP) and Cross-Origin-Embedder-Policy (COEP) headers <br /> Added support for Clear-Site-Data header with path-specific configuration for logout scenarios <br/> Increased documentation coverage for Content-Security-Policy directive generation |
 | 8                    | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes                                                                                                                                                                                                                                                         |
 | 7                    | Added Cross-Origin-Resource-Policy header to list of defaults; simplified the use of the middleware in Composite Root/Program.cs                                                                                                                                                                                                                                                                                            |
@@ -78,6 +78,22 @@ This version corrects an issue where properties in model classes within the `Owa
 - All affected properties are now properly accessible for serialization scenarios
 - No breaking changes to existing functionality
 - Improved maintainability with centralized ReSharper configuration
+
+#### Version 10.3.x
+
+This version marks the Expect-CT opt-in as `[Obsolete]`, addressing issue #198. The Expect-CT header has been deprecated by OWASP (see the [OWASP Secure Headers Project page on Expect-CT](https://owasp.org/www-project-secure-headers/#expect-ct)). It was already absent from `BuildDefaultConfiguration` as of Version 6; the opt-in surface is retained so existing usages continue to compile, but it is no longer recommended and will be removed in a future major version.
+
+**Changes:**
+
+- Added `[Obsolete]` attribute to `SecureHeadersMiddlewareBuilder.UseExpectCt` with a message pointing callers at the OWASP deprecation notice.
+- Added `[Obsolete]` to the *setters* of `SecureHeadersMiddlewareConfiguration.UseExpectCt` and `SecureHeadersMiddlewareConfiguration.ExpectCt` so that callers who bypass the builder extension and assign these properties directly (for example from `Program.cs`) also see the deprecation warning. The getters remain non-obsolete so that the middleware can read the flag and configuration at request time without producing warnings.
+- Added a test asserting that `BuildDefaultConfiguration()` leaves `UseExpectCt = false` and `ExpectCt = null`, guarding against future regressions that would re-add Expect-CT to the default header chain.
+- Added a reflection-based test asserting that `UseExpectCt` carries the `[Obsolete]` attribute, so the deprecation marker cannot be removed silently.
+
+**Impact:**
+
+- Callers of `UseExpectCt`, or of `config.UseExpectCt = ...` / `config.ExpectCt = ...`, will see a compiler warning (`CS0618`) prompting them to remove or suppress the opt-in.
+- No runtime behaviour change: Expect-CT remains opt-in and absent from the default header chain.
 
 ### Version 9
 

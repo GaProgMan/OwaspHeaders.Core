@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
-using Moq;
+using Microsoft.Extensions.Logging.Testing;
 
 namespace OwaspHeaders.Core.Tests.LoggingTests;
 
 public class HttpContextExtensionsLoggingTests
 {
-    private readonly Mock<ILogger> _mockLogger;
+    private readonly FakeLogger _logger;
     private readonly DefaultHttpContext _context;
 
     public HttpContextExtensionsLoggingTests()
     {
-        _mockLogger = new Mock<ILogger>();
+        _logger = new FakeLogger();
         _context = new DefaultHttpContext();
     }
 
@@ -39,17 +39,10 @@ public class HttpContextExtensionsLoggingTests
     {
         var eventId = new EventId(2001, "TestEvent");
 
-        var result = _context.TryAddHeader("Test-Header", "test-value", _mockLogger.Object, eventId);
+        var result = _context.TryAddHeader("Test-Header", "test-value", _logger, eventId);
 
         Assert.True(result);
-        _mockLogger.Verify(
-            x => x.Log(
-                It.IsAny<LogLevel>(),
-                It.IsAny<EventId>(),
-                It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Never);
+        Assert.Empty(_logger.Collector.GetSnapshot());
     }
 
     [Fact]
@@ -67,39 +60,23 @@ public class HttpContextExtensionsLoggingTests
     [Fact]
     public void TryAddHeader_WithoutEventId_DoesNotLog()
     {
-        _mockLogger.Setup(x => x.IsEnabled(LogLevel.Warning)).Returns(true);
-
-        var result = _context.TryAddHeader("Test-Header", "test-value", _mockLogger.Object);
+        var result = _context.TryAddHeader("Test-Header", "test-value", _logger);
 
         Assert.True(result);
-        _mockLogger.Verify(
-            x => x.Log(
-                It.IsAny<LogLevel>(),
-                It.IsAny<EventId>(),
-                It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Never);
+        Assert.Empty(_logger.Collector.GetSnapshot());
     }
 
     [Fact]
     public void TryAddHeader_WithLoggerDisabled_DoesNotLog()
     {
-        _mockLogger.Setup(x => x.IsEnabled(LogLevel.Warning)).Returns(false);
+        _logger.ControlLevel(LogLevel.Warning, false);
         var eventId = new EventId(2001, "TestEvent");
 
-        var result = _context.TryAddHeader("Test-Header", "test-value", _mockLogger.Object, eventId);
+        var result = _context.TryAddHeader("Test-Header", "test-value", _logger, eventId);
 
         Assert.True(result);
         // IsEnabled is only called when there's an exception, which doesn't happen on successful addition
-        _mockLogger.Verify(
-            x => x.Log(
-                It.IsAny<LogLevel>(),
-                It.IsAny<EventId>(),
-                It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Never);
+        Assert.Empty(_logger.Collector.GetSnapshot());
     }
 
     [Fact]
@@ -127,17 +104,10 @@ public class HttpContextExtensionsLoggingTests
         _context.Response.Headers.Append("Test-Header", "test-value");
         var eventId = new EventId(2002, "TestEvent");
 
-        var result = _context.TryRemoveHeader("Test-Header", _mockLogger.Object, eventId);
+        var result = _context.TryRemoveHeader("Test-Header", _logger, eventId);
 
         Assert.True(result);
-        _mockLogger.Verify(
-            x => x.Log(
-                It.IsAny<LogLevel>(),
-                It.IsAny<EventId>(),
-                It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Never);
+        Assert.Empty(_logger.Collector.GetSnapshot());
     }
 
     [Fact]
@@ -157,40 +127,25 @@ public class HttpContextExtensionsLoggingTests
     public void TryRemoveHeader_WithoutEventId_DoesNotLog()
     {
         _context.Response.Headers.Append("Test-Header", "test-value");
-        _mockLogger.Setup(x => x.IsEnabled(LogLevel.Warning)).Returns(true);
 
-        var result = _context.TryRemoveHeader("Test-Header", _mockLogger.Object);
+        var result = _context.TryRemoveHeader("Test-Header", _logger);
 
         Assert.True(result);
-        _mockLogger.Verify(
-            x => x.Log(
-                It.IsAny<LogLevel>(),
-                It.IsAny<EventId>(),
-                It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Never);
+        Assert.Empty(_logger.Collector.GetSnapshot());
     }
 
     [Fact]
     public void TryRemoveHeader_WithLoggerDisabled_DoesNotLog()
     {
         _context.Response.Headers.Append("Test-Header", "test-value");
-        _mockLogger.Setup(x => x.IsEnabled(LogLevel.Warning)).Returns(false);
+        _logger.ControlLevel(LogLevel.Warning, false);
         var eventId = new EventId(2002, "TestEvent");
 
-        var result = _context.TryRemoveHeader("Test-Header", _mockLogger.Object, eventId);
+        var result = _context.TryRemoveHeader("Test-Header", _logger, eventId);
 
         Assert.True(result);
         // IsEnabled is only called when there's an exception, which doesn't happen on successful removal
-        _mockLogger.Verify(
-            x => x.Log(
-                It.IsAny<LogLevel>(),
-                It.IsAny<EventId>(),
-                It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()),
-            Times.Never);
+        Assert.Empty(_logger.Collector.GetSnapshot());
     }
 
     [Fact]

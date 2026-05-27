@@ -21,11 +21,10 @@ This middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIONS**. This is
 
 ## .NET Version Support
 
-OwaspHeaders.Core aims to keep in step with the official support lifecycle for .NET, as such the current (as of November 19th, 2024) supported versions of .NET are:
+OwaspHeaders.Core aims to keep in step with the official support lifecycle for .NET, as such the current (as of May 27th, 2026) supported versions of .NET are:
 
-- .NET 8
-- .NET 9
-- .NET 10
+- .NET 10 (LTS)
+- .NET 11
 
 However, a number of previous releases can be found in the GitHub repository. Specifically:
 

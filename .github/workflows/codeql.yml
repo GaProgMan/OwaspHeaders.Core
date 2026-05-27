@@ -92,13 +92,15 @@ jobs:
     # https://resources.github.com/learn/pathways/security/intermediate/codeql-advanced-setup/
     # https://learn.microsoft.com/en-us/dotnet/devops/dotnet-secure-github-action
 
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
-    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
-    - name: Setup .NET SDK 10
+    # The NuGet package we're building targets net10.0 and net11.0. The runner's
+    # pre-installed SDKs lag behind these versions, so we install both explicitly.
+    - name: Setup .NET SDKs
       if: matrix.build-mode == 'none'
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
-        dotnet-version: '10.0.x'
+        dotnet-version: |
+          10.0.x
+          11.0.x
 
     - name: Install dependencies
       if: matrix.build-mode == 'none'

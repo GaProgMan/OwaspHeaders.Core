@@ -17,7 +17,7 @@ public class DefaultSecureHeadersIntegrationTests : SecureHeadersTests
         {
             c.Request.Path = testUrl;
             c.Request.Method = HttpMethods.Get;
-        });
+        }, TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(headerPresentConfig.UseHsts);

@@ -49,4 +49,4 @@ The values available for the `XFrameOptions` enum are:
 - `Deny`
 - `Sameorigin`
 
-These values can be set when creating a new instance of the `HstsConfiguration` object, or by calling the `UseHsts` extension method on the `SecureHeadersMiddlewareConfiguration` class.
+These values are set by calling the `UseXFrameOptions` extension method on the `SecureHeadersMiddlewareConfiguration` class.

@@ -97,7 +97,7 @@ This version marks the Expect-CT opt-in as `[Obsolete]`, addressing issue #198. 
 
 #### Version 10.4.x
 
-This version addresses issue #220, where setting a `UseX` flag on `SecureHeadersMiddlewareConfiguration` directly (i.e. bypassing the matching builder extension on `SecureHeadersMiddlewareBuilder`) would surface as an unhandled `NullReferenceException` on the first request handled by the middleware. The middleware now validates the configuration on first invoke and raises a diagnostic exception listing every mismatch, so the misconfiguration is named explicitly rather than reaching the consuming application as a generic null reference.
+This version addresses [issue #220](https://github.com/GaProgMan/OwaspHeaders.Core/issues/220), where setting a `UseX` flag on `SecureHeadersMiddlewareConfiguration` directly (i.e. bypassing the matching builder extension on `SecureHeadersMiddlewareBuilder`) would surface as an unhandled `NullReferenceException` on the first request handled by the middleware. The middleware now validates the configuration on first invoke and raises a diagnostic exception listing every mismatch, so the misconfiguration is named explicitly rather than reaching the consuming application as a generic null reference.
 
 **Changes:**
 

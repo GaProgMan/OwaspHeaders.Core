@@ -16,11 +16,11 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Sets the default permissions of the GITHUB_TOKEN to read-only.
+# The `deploy` job grants itself the elevated `pages: write` and
+# `id-token: write` permissions it needs for deployment.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # Allow one concurrent deployment
 concurrency:

@@ -14,8 +14,6 @@ on:
 
 permissions:
   contents: read
-  id-token: write
-  attestations: write
 
 jobs:
 
@@ -28,6 +26,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
+        persist-credentials: false
 
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
@@ -52,6 +51,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
+        persist-credentials: false
       
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
@@ -78,6 +78,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
+        persist-credentials: false
       
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
@@ -95,7 +96,7 @@ jobs:
         subject-path: ${{ github.workspace }}/**/*.nupkg
 
     - name: NuGet login (OIDC → temp API key)
-      uses: NuGet/login@d22cc5f58ff5b88bf9bd452535b4335137e24544 # v1
+      uses: NuGet/login@d22cc5f58ff5b88bf9bd452535b4335137e24544 # v1.1.0
       id: nuget-login
       with:
         user: ${{ secrets.NUGET_USER }}
@@ -104,4 +105,6 @@ jobs:
       # use of --skip-duplicate here will stop NuGet from complaining
       # if we try to publish the same version multiple times by making
       # publish actions idempotent.
-      run: dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --skip-duplicate
+      run: dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key "${STEPS_NUGET_LOGIN_OUTPUTS_NUGET_API_KEY}" --skip-duplicate
+      env:
+        STEPS_NUGET_LOGIN_OUTPUTS_NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}

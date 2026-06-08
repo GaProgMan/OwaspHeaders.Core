@@ -107,6 +107,6 @@ jobs:
       # use of --skip-duplicate here will stop NuGet from complaining
       # if we try to publish the same version multiple times by making
       # publish actions idempotent.
-      run: dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${STEPS_NUGET_LOGIN_OUTPUTS_NUGET_API_KEY} --skip-duplicate
+      run: dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key "${STEPS_NUGET_LOGIN_OUTPUTS_NUGET_API_KEY}" --skip-duplicate
       env:
         STEPS_NUGET_LOGIN_OUTPUTS_NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}

@@ -26,6 +26,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 1
+        persist-credentials: false
 
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
@@ -51,6 +52,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
+        persist-credentials: false
 
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
@@ -80,6 +82,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
+        persist-credentials: false
       
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
@@ -124,6 +127,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
+        persist-credentials: false
       
     # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
     # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.

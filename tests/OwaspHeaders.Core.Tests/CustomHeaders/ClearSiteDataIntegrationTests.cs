@@ -20,7 +20,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client = testServer.CreateClient();
 
         // act - test logout path
-        var logoutResponse = await client.GetAsync("/logout");
+        var logoutResponse = await client.GetAsync("/logout", TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(logoutResponse.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -30,7 +30,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         // act - test api path (need to configure endpoint)
         using var apiTestServer = CreateTestServer("/api/auth/signout", config);
         var apiClient = apiTestServer.CreateClient();
-        var apiResponse = await apiClient.GetAsync("/api/auth/signout");
+        var apiResponse = await apiClient.GetAsync("/api/auth/signout", TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(apiResponse.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -55,7 +55,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client = testServer.CreateClient();
 
         // act
-        var response = await client.GetAsync("/login");
+        var response = await client.GetAsync("/login", TestContext.Current.CancellationToken);
 
         // assert
         Assert.False(response.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -73,7 +73,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client = testServer.CreateClient();
 
         // act
-        var response = await client.GetAsync("/any-path");
+        var response = await client.GetAsync("/any-path", TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(response.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -95,7 +95,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client1 = testServer1.CreateClient();
 
         // act
-        var response1 = await client1.GetAsync("/logout");
+        var response1 = await client1.GetAsync("/logout", TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(response1.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -107,7 +107,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client2 = testServer2.CreateClient();
 
         // act
-        var response2 = await client2.GetAsync("/account/logout");
+        var response2 = await client2.GetAsync("/account/logout", TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(response2.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -133,7 +133,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client = testServer.CreateClient();
 
         // act
-        var response = await client.GetAsync("/admin/logout");
+        var response = await client.GetAsync("/admin/logout", TestContext.Current.CancellationToken);
 
         // assert - should match the longer, more specific path
         Assert.True(response.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -156,7 +156,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client = testServer.CreateClient();
 
         // act
-        var response = await client.GetAsync("/logout");
+        var response = await client.GetAsync("/logout", TestContext.Current.CancellationToken);
 
         // assert - all headers should be present
         Assert.True(response.Headers.Contains(Constants.StrictTransportSecurityHeaderName));
@@ -188,8 +188,8 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client2 = testServer2.CreateClient();
 
         // act
-        var response1 = await client1.GetAsync("/Logout"); // Should match
-        var response2 = await client2.GetAsync("/logout"); // Should NOT match (case sensitive)
+        var response1 = await client1.GetAsync("/Logout", TestContext.Current.CancellationToken); // Should match
+        var response2 = await client2.GetAsync("/logout", TestContext.Current.CancellationToken); // Should NOT match (case sensitive)
 
         // assert
         Assert.True(response1.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -219,7 +219,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client = testServer.CreateClient();
 
         // act
-        var response = await client.GetAsync(requestPath);
+        var response = await client.GetAsync(requestPath, TestContext.Current.CancellationToken);
 
         // assert
         if (expectedHeader != null)
@@ -257,7 +257,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
 
         for (int i = 0; i < requestCount; i++)
         {
-            await client.GetAsync("/logout");
+            await client.GetAsync("/logout", TestContext.Current.CancellationToken);
         }
 
         stopwatch.Stop();

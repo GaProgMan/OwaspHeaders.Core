@@ -6,6 +6,7 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 
 | Major Version Number | Changes                                                                                                                                                                                                                                                                                                                                                                                                                     |
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 11                    | Dropped support for .NET 8 and .NET 9 (both reaching end-of-support in November 2026) and added support for .NET 11. <br /> Removed the Expect-CT header surface entirely (the `ExpectCt` model, `UseExpectCt` flag, builder extension, header constant, and tests are all gone) following its full deprecation by OWASP and the `[Obsolete]` marker shipped in version 10.3. <br /> Restricted the setters on `SecureHeadersMiddlewareConfiguration` to `internal`, so that `UseX` flags and their matching configuration objects can no longer be assigned directly from outside the assembly. The `SecureHeadersMiddlewareBuilder` extension methods are now the only supported way to populate a configuration, closing the bypass that issue #220 surfaced as an unhandled `NullReferenceException` in version 10 and earlier. |
 | 10                    | (as of Nov 12th, 2025) no API changes made yet. Library now supports ASP .NET Core (by updating the TFM to include `net10.0`) <br /> Added support for the EXPERIMENTAL Report-Endpoints header. This is listed nas EXPERIMENTAL (as of January 7th, 2025) on the [relevant MDN docs page](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints), it is also not listed as a recommended header. As such, it is not added when the default builder is used <br /> Fixed model properties in OwaspHeaders.Core.Models namespace that were incorrectly set to private - they are now public for serialization and external consumption <br /> Marked the `UseExpectCt` builder extension as `[Obsolete]` to reflect OWASP's deprecation of the Expect-CT header (issue #198) <br /> Replaced the unhandled `NullReferenceException` raised when a `UseX` flag is enabled without its matching configuration object with a diagnostic `ArgumentException` listing every mismatch (issue #220) |
 | 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. <br /> A number of small optimisation have been made to the middleware's `Invoke` method <br /> Added support for both Cross-Origin-Opener-Policy (CORP) and Cross-Origin-Embedder-Policy (COEP) headers <br /> Added support for Clear-Site-Data header with path-specific configuration for logout scenarios <br/> Increased documentation coverage for Content-Security-Policy directive generation |
 | 8                    | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes                                                                                                                                                                                                                                                         |
@@ -16,6 +17,65 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 | 3                    | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0                                                                                                                                                                                                                                                                                                 |
 | 2                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0                                                                                                                                                                                                                                                               |
 | 1                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4                                                                                                                                                                                                                                                           |
+
+### Version 11
+
+Version 11 brings three breaking changes together: the supported runtimes shift to .NET 10 and .NET 11, the long-deprecated Expect-CT header is removed entirely, and direct assignment to `SecureHeadersMiddlewareConfiguration` is no longer possible. Each is detailed below.
+
+#### Supported runtimes
+
+The library now targets `net10.0` and `net11.0` only. Support for .NET 8 and .NET 9 has been dropped — both reach end-of-support from Microsoft in November 2026 and are no longer worth carrying through the test matrix or the NuGet package. Consumers still running on .NET 8 or .NET 9 should stay on the 10.x release line.
+
+#### Expect-CT removal
+
+The Expect-CT header has been removed from the library in its entirety:
+
+- The `ExpectCt` model class is gone.
+- The `UseExpectCt` flag and the matching `ExpectCt` property on `SecureHeadersMiddlewareConfiguration` are gone.
+- The `UseExpectCt` builder extension is gone.
+- The `ExpectCtHeaderName` constant and the matching middleware branch are gone.
+- The Expect-CT test fixtures are gone.
+
+This finishes the work that started in version 6 (when Expect-CT was dropped from `BuildDefaultConfiguration`) and continued in version 10.3 (when the remaining opt-in surface was marked `[Obsolete]`). OWASP have fully deprecated the header — see the [OWASP Secure Headers Project page on Expect-CT](https://owasp.org/www-project-secure-headers/#expect-ct) — and the browser support story collapsed long before that.
+
+Any code still calling `.UseExpectCt(...)` or assigning to `config.UseExpectCt`/`config.ExpectCt` will fail to compile against version 11. Delete the call; no replacement is needed.
+
+#### Configuration setter lockdown ([issue #220](https://github.com/GaProgMan/OwaspHeaders.Core/issues/220))
+
+In version 10 and earlier, a caller could write `config.UseCacheControl = true` without populating `config.CacheControl`, which surfaced as an unhandled `NullReferenceException` on the first request. Version 10.4 replaced the crash with a diagnostic `ArgumentException` raised at runtime. Version 11 prevents the bypass from compiling at all.
+
+**Changes:**
+
+- Every writable property on `SecureHeadersMiddlewareConfiguration` is now declared as `{ get; internal set; }`. This covers all `UseX` flags, every matching configuration object (`HstsConfiguration`, `CacheControl`, `ReferrerPolicy`, and so on), `UrlsToIgnore`, and `LoggingConfiguration`. Getters remain public so the middleware and consuming applications can still read the configured state.
+- The `OwaspHeaders.Core` assembly now exposes its `internal` members to `OwaspHeaders.Core.Tests` via `InternalsVisibleTo`, allowing the existing regression suite (including the reflection-based coverage check for `Validate()`) to continue exercising the misconfiguration paths.
+- The runtime `Validate()` method introduced in 10.4 is retained. It now functions as a defensive safety net against reflection-based bypass or future internal misuse rather than as the primary defence.
+
+**Migration:**
+
+Code that assigned flags or configuration objects directly will no longer compile:
+
+```csharp
+// version 10 and earlier — compiles, but throws on first request from 10.4 onward
+var config = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+config.UseCacheControl = true;
+```
+
+Replace direct assignment with the matching builder extension:
+
+```csharp
+// version 11 — the only supported path
+var config = SecureHeadersMiddlewareBuilder
+    .CreateBuilder()
+    .UseCacheControl()
+    .Build();
+```
+
+The same applies to every other `UseX` flag and its configuration object.
+
+**Impact:**
+
+- Breaking change: any external code that assigned to a property on `SecureHeadersMiddlewareConfiguration` will fail to compile with `CS0272` ("the property or indexer cannot be assigned to — it is read-only"). The compiler error names the property, pointing callers at the matching builder extension.
+- No runtime behaviour change for code that already used the builder. The `Validate()` safety net continues to run on first request but should never report issues for builder-built configurations.
 
 ### Version 10
 

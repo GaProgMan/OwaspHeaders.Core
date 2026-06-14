@@ -12,7 +12,7 @@ dotnet run
 
 2. Open your browser to the displayed URL (typically `https://localhost:7xxx`, check the `launchSettings.json` file for the exact port)
 
-3. Navigate to the Swagger UI to explore the available endpoints
+3. Navigate to `/scalar/v1` in your browser to explore the available endpoints via the Scalar API reference UI. The raw OpenAPI document is served at `/openapi/v1.json`.
 
 ## Available Endpoints
 

@@ -18,10 +18,9 @@ OwaspHeaders.Core is an open-source ASP.NET Core middleware library designed to 
 
 ## Supported .NET Versions
 
-OwaspHeaders.Core aims to keep in step with the official Microsoft .NET support lifecycle. As of November 19th, 2024, the supported versions are:
-- .NET 8 (LTS)
-- .NET 9
-- .NET 10
+OwaspHeaders.Core aims to keep in step with the official Microsoft .NET support lifecycle. As of May 27th, 2026, the supported versions are:
+- .NET 10 (LTS)
+- .NET 11
 
 **Important Note:** Backporting features and fixes are not provided by default. However, paid support is available through sponsorship agreements for older versions like .NET 6 and 7 (which are no longer officially supported by Microsoft).
 

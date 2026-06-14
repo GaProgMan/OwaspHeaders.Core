@@ -237,12 +237,6 @@ public class SecureHeadersMiddleware
                 _config.ReferrerPolicy.BuildHeaderValue());
         }
 
-        if (_config.UseExpectCt)
-        {
-            temporaryDictionary.Add(Constants.ExpectCtHeaderName,
-                _config.ExpectCt.BuildHeaderValue());
-        }
-
         if (_config.UseCacheControl)
         {
             temporaryDictionary.Add(Constants.CacheControlHeaderName,

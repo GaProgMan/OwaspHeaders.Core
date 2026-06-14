@@ -18,7 +18,7 @@ public class UrlIgnoreListTests : SecureHeadersTests
         {
             c.Request.Path = UrlToIgnore;
             c.Request.Method = HttpMethods.Get;
-        });
+        }, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(context.Response);
@@ -48,7 +48,7 @@ public class UrlIgnoreListTests : SecureHeadersTests
         {
             c.Request.Path = UrlWontIgnore;
             c.Request.Method = HttpMethods.Get;
-        });
+        }, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(context.Response);

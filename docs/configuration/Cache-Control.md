@@ -43,7 +43,7 @@ The Cache-Control header object (known internally as `CacheControl`) has the fol
 - bool: `MustReevaluate`
 - bool: `NoStore`
 
-These values can be set when creating a new instance of the `ReferrerPolicyOptions` object, or by calling the `UseCacheControl` extension method on the `SecureHeadersMiddlewareConfiguration` class.
+These values are set by calling the `UseCacheControl` extension method on the `SecureHeadersMiddlewareConfiguration` class.
 
 {: .warning }
 > It's worth noting that the default values for this header mean that no content will be cached in the browser. You may need to evaluate this default value on a case-by-case basis. 

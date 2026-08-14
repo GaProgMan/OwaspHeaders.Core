@@ -25,11 +25,11 @@ GEM
     ethon (0.16.0)
       ffi (>= 1.15.0)
     eventmachine (1.2.7)
-    faraday (2.14.2)
+    faraday (2.14.3)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
-    faraday-net_http (3.4.3)
+    faraday-net_http (3.4.4)
       net-http (~> 0.5)
     ffi (1.17.4-arm64-darwin)
     ffi (1.17.4-x86_64-linux-gnu)
@@ -90,7 +90,7 @@ GEM
       jekyll (>= 3.7, < 5.0)
     jekyll-watch (2.2.1)
       listen (~> 3.0)
-    json (2.7.2)
+    json (2.20.0)
     just-the-docs (0.12.0)
       jekyll (>= 3.8.5)
       jekyll-include-cache

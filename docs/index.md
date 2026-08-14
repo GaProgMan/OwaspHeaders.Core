@@ -21,22 +21,26 @@ This middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIONS**. This is
 
 ## .NET Version Support
 
-OwaspHeaders.Core aims to keep in step with the official support lifecycle for .NET, as such the current (as of November 19th, 2024) supported versions of .NET are:
+OwaspHeaders.Core aims to keep in step with the official support lifecycle for .NET. The currently supported versions of .NET, and the dates on which Microsoft's support for them ends, are:
 
-- .NET 8
-- .NET 9
-- .NET 10
+- .NET 8 — 10 November 2026
+- .NET 9 — 10 November 2026
+- .NET 10 — 14 November 2028
 
-However, a number of previous releases can be found in the GitHub repository. Specifically:
+Support for this package is scoped by runtime rather than by package version: a release is supported for as long as the newest .NET version it targets is supported. See the [Security](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md) documentation for the full rule and a per-version breakdown.
+
+A number of previous releases remain available in the GitHub repository, and are listed here as historical markers:
 
 - [Removal of support for .NET 6 and 7](https://github.com/GaProgMan/OwaspHeaders.Core/releases/tag/v9.0.0)
 - [The final version which supports .NET 6](https://github.com/GaProgMan/OwaspHeaders.Core/releases/tag/v8.1.3)
 - [The final version which supports .NET Framework & ASP .NET Core 2.2](https://github.com/GaProgMan/OwaspHeaders.Core/releases/tag/framework)
 
+Releases which only target retired versions of .NET are unsupported, and will not receive new features, bug fixes, or security patches.
+
 Please see the .NET support lifecycle documentation for details: https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle
 
 {: .note }
-Please note that backporting features and fixes are not provided for this NuGet package. However, as per the [Security](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md) documentation in the repository, a sponsorship agreement could be reached where supported features could be backported. 
+Please note that backporting features and fixes to unsupported releases is not provided for this NuGet package. If you need to report a vulnerability, please follow the process described in the [Security](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md) documentation.
 
 ## Quick Start
 

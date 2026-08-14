@@ -64,6 +64,10 @@ See the [Attestations](https://gaprogman.github.io/OwaspHeaders.Core/attestation
 
 Please raise any issues and bugs at the above mentioned source code repo.
 
+## Security & Support
+
+Please see the [SECURITY](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md) file in the project's repo for the latest details.
+
 ## Server Header: A Warning
 
 The default configuration for this middleware removes the `X-Powered-By` header, as this can help malicious users to use targeted attacks for specific server infrastructure. However, since the `Server` header is added by the reverse proxy used when hosting an ASP .NET Core application, removing this header is out of scope for this middleware.

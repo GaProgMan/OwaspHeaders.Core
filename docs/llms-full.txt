@@ -10,7 +10,7 @@ OwaspHeaders.Core is an open-source ASP.NET Core middleware library designed to 
 - **Maintainer:** Jamie Taylor
 - **Company:** RJJ Software Ltd
 - **License:** MIT
-- **Current Version:** 10.2.0
+- **Current Version:** 10.4.1
 - **Repository:** https://github.com/GaProgMan/OwaspHeaders.Core
 - **Documentation:** https://gaprogman.github.io/OwaspHeaders.Core/
 - **NuGet Package:** https://www.nuget.org/packages/OwaspHeaders.Core/
@@ -22,7 +22,7 @@ OwaspHeaders.Core aims to keep in step with the official Microsoft .NET support 
 - .NET 10 (LTS)
 - .NET 11
 
-**Important Note:** Backporting features and fixes are not provided by default. However, paid support is available through sponsorship agreements for older versions like .NET 6 and 7 (which are no longer officially supported by Microsoft).
+**Important Note:** Backporting features and fixes to older versions is not provided. Versions earlier than 8.0.0, and the .NET Framework release, are no longer supported.
 
 ## Quick Start
 
@@ -281,17 +281,23 @@ OwaspHeaders.Core minimizes security risk by:
 - Using deterministic builds and SourceLink for all NuGet packages
 
 ### Supported Versions
-- 10.x.x: ✅ Fully supported
-- 9.x.x: ✅ Fully supported
-- 8.x.x: ✅ Fully supported
-- 6.x.x: 💵 Paid support available
-- < 6.0.0: ❌ Not supported
-- Framework version: 💵 Paid support available
+
+Support is scoped by .NET runtime, not by package version: any release of OwaspHeaders.Core running on a .NET version that Microsoft still supports is supported. A release targeting a .NET version that has reached end of support is unsupported, regardless of its version number.
+
+- 10.x.x (targets .NET 8, 9, 10): ✅ Supported until November 14, 2028
+- 9.x.x (targets .NET 8, 9): ✅ Supported until November 10, 2026
+- 8.x.x (targets .NET 6, 7, 8): ✅ Supported until November 10, 2026, on .NET 8 only. Consuming 8.x.x on .NET 6 or .NET 7 is unsupported today, as Microsoft has retired both runtimes.
+- < 8.0.0 (targets .NET 6 and earlier): ❌ Not supported
+- .NET Framework version (targets .NET Framework, ASP .NET Core 2.2): ❌ Not supported
+
+.NET 8 and .NET 9 both reach end of support on November 10, 2026, so 8.x.x and 9.x.x become unsupported on the same date, leaving 10.x.x supported by way of its .NET 10 target.
+
+Backporting features and fixes to unsupported releases is not provided.
 
 ### Vulnerability Reporting
-Report vulnerabilities using GitHub Issues: https://github.com/GaProgMan/OwaspHeaders.Core/issues
+Report vulnerabilities using GitHub's Private Vulnerability Reporting: https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/report-privately
 
-The maintainers aim to fix any vulnerabilities within 48-72 hours of them being reported.
+The maintainers aim to acknowledge any vulnerabilities within 72 hours, and fix them as soon as practicable, with severity-dependent timelines.
 
 ## Community Guidelines
 

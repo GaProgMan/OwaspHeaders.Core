@@ -12,8 +12,6 @@ on:
 
 permissions:
   contents: read
-  id-token: write
-  attestations: write
 
 jobs:
 
@@ -26,6 +24,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 1
+        persist-credentials: false
 
     # The NuGet package we're building targets net10.0 and net11.0. The runner's
     # pre-installed SDKs lag behind these versions, so we install both explicitly.
@@ -53,6 +52,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
+        persist-credentials: false
 
     # The NuGet package we're building targets net10.0 and net11.0. The runner's
     # pre-installed SDKs lag behind these versions, so we install both explicitly.
@@ -84,6 +84,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
+        persist-credentials: false
       
     # The NuGet package we're building targets net10.0 and net11.0. The runner's
     # pre-installed SDKs lag behind these versions, so we install both explicitly.
@@ -130,6 +131,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
+        persist-credentials: false
       
     # The NuGet package we're building targets net10.0 and net11.0. The runner's
     # pre-installed SDKs lag behind these versions, so we install both explicitly.

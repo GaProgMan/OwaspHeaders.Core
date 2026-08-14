@@ -32,10 +32,12 @@ However, a number of previous releases can be found in the GitHub repository. Sp
 - [The final version which supports .NET 6](https://github.com/GaProgMan/OwaspHeaders.Core/releases/tag/v8.1.3)
 - [The final version which supports .NET Framework & ASP .NET Core 2.2](https://github.com/GaProgMan/OwaspHeaders.Core/releases/tag/framework)
 
+Releases which only target retired versions of .NET are unsupported, and will not receive new features, bug fixes, or security patches.
+
 Please see the .NET support lifecycle documentation for details: https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle
 
 {: .note }
-Please note that backporting features and fixes are not provided for this NuGet package. However, as per the [Security](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md) documentation in the repository, a sponsorship agreement could be reached where supported features could be backported. 
+Please note that backporting features and fixes to unsupported releases is not provided for this NuGet package. If you need to report a vulnerability, please follow the process described in the [Security](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md) documentation.
 
 ## Quick Start
 

@@ -18,6 +18,10 @@ Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIO
 
 That's it.
 
+## Security & Support
+
+Please see the [SECURITY](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md) file in the project's repo for the latest details.
+
 ## Example Project Coding Guidelines
 
 ### Primary Constructors Restriction

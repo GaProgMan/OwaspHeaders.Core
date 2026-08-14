@@ -13,14 +13,11 @@ The following table contains the list of versions of OwaspHeaders.Core that are 
 | 10.x.x   | :white_check_mark: |
 | 9.x.x   | :white_check_mark: |
 | 8.x.x   | :white_check_mark: |
-| 6.x.x   | 💵 &ast;           |
-| < 6.0.0 | :x:                |
-| [framework](https://github.com/GaProgMan/OwaspHeaders.Core/releases/tag/framework) | 💵 &ast; |
+| <= 7.0.0 OR .NET Framework | :x: |
 
-&ast; = paid support is available for this version, as Microsoft has dropped the version of .NET required or no longer supports that hosting situation (in the case of framework).
 
 ## Reporting a Vulnerability
 
-Please report vulnerabilities using GitHub's [Issues](https://github.com/GaProgMan/OwaspHeaders.Core/issues) functionality.
+Please report vulnerabilities using GitHub's [Private Vulnerability Reporting](https://docs.github.com/en/code-security/how-tos/report-and-fix-vulnerabilities/report-privately) functionality.
 
-We will aim to fix any vulnerabilities within 48-72 hours of them being reported.
+We will aim to acknlowledge any vulnerabilities within 72 hours, and fix them as soon as practicable, with severity-dependent timelines.

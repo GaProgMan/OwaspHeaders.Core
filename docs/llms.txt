@@ -12,7 +12,7 @@ OwaspHeaders.Core is an open-source middleware library that enhances web applica
 - OpenSSF Best Practices certified
 - Does not support Blazor/WebAssembly applications
 
-**Current Version:** 10.2.0
+**Current Version:** 10.4.1
 
 **Installation:** `dotnet add package OwaspHeaders.Core`
 

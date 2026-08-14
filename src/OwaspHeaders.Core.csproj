@@ -2,17 +2,11 @@
 
   <PropertyGroup>
 
-    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
     <AssemblyName>OwaspHeaders.Core</AssemblyName>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
-    <!-- NuGet metadata -->
+    <!-- NuGet metadata. Version, Authors, Company, Copyright and the licence
+         expression are shared, and live in /Directory.Build.props -->
     <PackageId>OwaspHeaders.Core</PackageId>
-    <Version>11.0.0</Version>
-    <Authors>Jamie Taylor</Authors>
-    <Company>RJJ Software Ltd</Company>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright (c) Jamie Taylor / RJJ Software Ltd</Copyright>
     <PackageTags>owasp http headers security</PackageTags>
     <Description>An ASP.NET Core Middleware which adds the OWASP recommended HTTP headers, with a single line of code, for enhanced security.</Description>
     <PackageIcon>icon.png</PackageIcon>
@@ -22,7 +16,6 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
     <!-- Source Link things -->
     <Deterministic>true</Deterministic>

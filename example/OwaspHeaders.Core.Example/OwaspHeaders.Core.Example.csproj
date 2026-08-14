@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+        <!-- Deliberately local to this project: src and tests are not yet
+             nullable-annotated, so these cannot be hoisted to
+             /Directory.Build.props without a wider piece of work. -->
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>

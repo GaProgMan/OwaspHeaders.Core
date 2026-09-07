@@ -65,7 +65,7 @@ jobs:
           11.0.x
 
     - name: Run all tests
-      run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --filter "Category!=Performance"
+      run: dotnet test --solution OwaspHeaders.Core.sln --verbosity minimal --filter-not-trait "Category=Performance"
 
 
   package:

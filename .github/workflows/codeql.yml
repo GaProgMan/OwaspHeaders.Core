@@ -118,7 +118,7 @@ jobs:
 
     - name: Run all tests
       if: matrix.build-mode == 'none'
-      run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --filter "Category!=Performance"
+      run: dotnet test --solution OwaspHeaders.Core.sln --verbosity minimal --filter-not-trait "Category=Performance"
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@38697555549f1db7851b81482ff19f1fa5c4fedc # v4.34.1

@@ -77,6 +77,24 @@ The same applies to every other `UseX` flag and its configuration object.
 - Breaking change: any external code that assigned to a property on `SecureHeadersMiddlewareConfiguration` will fail to compile with `CS0272` ("the property or indexer cannot be assigned to — it is read-only"). The compiler error names the property, pointing callers at the matching builder extension.
 - No runtime behaviour change for code that already used the builder. The `Validate()` safety net continues to run on first request but should never report issues for builder-built configurations.
 
+#### Test tooling: xUnit v3 on the Microsoft Testing Platform ([issue #226](https://github.com/GaProgMan/OwaspHeaders.Core/issues/226), [issue #234](https://github.com/GaProgMan/OwaspHeaders.Core/issues/234))
+
+No consumer-facing change — this affects contributors and CI only.
+
+The test suite moved from xUnit v2 to xUnit v3 and, with it, from VSTest to the [Microsoft Testing Platform](https://learn.microsoft.com/en-us/dotnet/core/testing/microsoft-testing-platform-intro) (MTP), which is the runner xUnit v3 is built around and the one Microsoft is investing in.
+
+**Changes:**
+
+- `xunit.v3` is now referenced at 4.0.0, the first stable release built on MTP v2.
+- `Microsoft.NET.Test.Sdk`, `xunit.runner.visualstudio` and `coverlet.collector` have been removed. `Microsoft.Testing.Extensions.CodeCoverage` and `Microsoft.Testing.Extensions.TrxReport` replace them, so coverage and TRX reporting now come from MTP rather than from VSTest collectors and loggers.
+- A `global.json` has been added at the repository root selecting the MTP runner for `dotnet test`. It deliberately does not pin an SDK version — the CI workflows install the SDKs they need explicitly.
+- The three CI workflows now invoke the suite as `dotnet test --solution OwaspHeaders.Core.sln`, and the coverage summary reads `coverage/merged/*.cobertura.xml` rather than VSTest's `coverage/<guid>/coverage.cobertura.xml`.
+
+**Impact:**
+
+- `--filter "Category!=Performance"` has been replaced by xUnit's `--filter-not-trait "Category=Performance"`. The old spelling was silently ignored under VSTest, so the timing-sensitive performance test ran on every CI build regardless (issue #234). CI test counts therefore drop from 165 to 164 per target framework; that is the filter starting to work, not tests going missing.
+- Contributors need an IDE with MTP support to run tests from the Test Explorer: JetBrains Rider 2024.3 or later, or Visual Studio 2022 17.14 or later (where the MTP Test Explorer experience is enabled by default). Running tests from the command line — `dotnet test`, or `dotnet run --project tests/OwaspHeaders.Core.Tests` — works regardless of IDE.
+
 ### Version 10
 
 As of November 12th, 2025, no API changes have been added. This is a major version bump to maintain parity with the latest version of ASP .NET Core available. This version of the library still supports the following versions of ASP .NET Core:

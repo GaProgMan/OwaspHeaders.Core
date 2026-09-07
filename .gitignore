@@ -32,6 +32,10 @@ bld/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+# Microsoft Testing Platform output — the local equivalent of what CI writes
+# via --results-directory coverage
+coverage/
+
 # NUNIT
 *.VisualState.xml
 TestResult.xml

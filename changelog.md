@@ -93,7 +93,7 @@ app.UseSecureHeadersMiddleware(opt =>
 - `SecureHeadersBuilder` is a new type: a real builder with instance methods over a wrapped configuration, whose `Build()` returns that configuration. Previously the builder *was* the configuration — every `UseX(...)` was an extension method on `SecureHeadersMiddlewareConfiguration`, and `Build()` returned its own argument unchanged, which meant every builder method appeared in IntelliSense on any configuration object in scope.
 - `UseRecommendedDefaults()` applies the OWASP recommended header set from inside the delegate. It holds the body that `BuildDefaultConfiguration` used to.
 - `SetCspUris` and `SetCspSandBox` are available on the builder, so a Content-Security-Policy can be configured entirely within the delegate.
-- The following are marked `[Obsolete]` and **will be removed in version 12**: `SecureHeadersMiddlewareBuilder.CreateBuilder`, `SecureHeadersMiddlewareBuilder.Build`, `SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration`, and the `UseSecureHeadersMiddleware(SecureHeadersMiddlewareConfiguration, List<string>)` overload.
+- The following are marked `[Obsolete]` and **will be removed in version 12**: `SecureHeadersMiddlewareBuilder.CreateBuilder`, `SecureHeadersMiddlewareBuilder.Build`, `SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration`, and the `UseSecureHeadersMiddleware(SecureHeadersMiddlewareConfiguration, List<string>)` overload. `BoolValueGuardClauses` is also deprecated, for the reason given in the validation entry below.
 - The individual `UseX`/`SetX`/`WithX`/`AddX` extension methods on `SecureHeadersMiddlewareConfiguration` are deliberately **not** marked `[Obsolete]`, even though they are removed at the same time. Marking them would emit a warning per call, so a twelve-call chain would produce fourteen warnings where two — one at `CreateBuilder`, one at the `app.Use...` call — already identify the problem and the fix. Every one of them is now a one-line forwarder onto `SecureHeadersBuilder`, so there is a single implementation of each header's logic during the deprecation window.
 
 **Migration:**
@@ -149,7 +149,7 @@ SecureHeadersBuilder.BuildAndValidate(ConfigureSecureHeaders);
 
 - Headers are now generated in the middleware constructor rather than lazily on the first request. This also removes a data race on the header cache under concurrent first requests.
 - A configuration which enables no headers at all is still valid, but now logs a warning (event ID 2003) at startup.
-- `BoolValueGuardClauses` no longer has a caller inside the library. It remains public API and is a candidate for removal in a future major version.
+- `BoolValueGuardClauses` no longer has a caller inside the library — enforcing the Cross-Origin-Embedder-Policy pairing rule was its only use, in `src/` and across the whole history of the type. It is now marked `[Obsolete]` and **will be removed in version 12**. If you were calling it directly, supply your own guard clause or use `ArgumentOutOfRangeException.ThrowIfNotEqual`.
 
 **Impact:**
 

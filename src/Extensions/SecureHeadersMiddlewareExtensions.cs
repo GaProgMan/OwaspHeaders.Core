@@ -22,21 +22,8 @@ public static class SecureHeadersMiddlewareExtensions
     public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration(
         List<string> urlIgnoreList = null)
     {
-        return SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
-            .UseHsts()
-            .UseXFrameOptions()
-            .UseContentTypeOptions()
-            .UseDefaultContentSecurityPolicy()
-            .UsePermittedCrossDomainPolicies()
-            .UseReferrerPolicy()
-            .UseCacheControl()
-            .UseXssProtection()
-            .UseCrossOriginResourcePolicy()
-            .UseCrossOriginOpenerPolicy()
-            .UseCrossOriginEmbedderPolicy()
-            // When the OWASP Secure Headers project recommends the use of the Reporting-Endpoints header, we will
-            // enable it here
+        return new SecureHeadersBuilder()
+            .UseRecommendedDefaults()
             .SetUrlsToIgnore(urlIgnoreList)
             .Build();
     }

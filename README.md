@@ -11,8 +11,8 @@ Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIO
 ## Tools Required to Build This Repo
 
 - .NET SDKs vLatest
-  - 8.0
-  - 9.0
+  - 10.0
+  - 11.0
 - an IDE (VS Code, Rider, or Visual Studio)
 
 That's it. Code formatting is checked with [`dotnet format`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format), which ships as part of the SDK, so there is no separate tool to install.

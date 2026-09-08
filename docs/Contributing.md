@@ -69,7 +69,7 @@ For instance, if you were to create a branch to implement a new HTTP header call
 > These items are essential and must be completed for each commit. If they are not completed, the PR may not be accepted.
 > 
 > - [x] I have added tests to the OwaspHeaders.Core.Tests project
-> - [x] I have run the `dotnet-format` command and fixed any .editorconfig issues
+> - [x] I have run `dotnet format OwaspHeaders.Core.sln` and fixed any .editorconfig issues
 > - [x] I have ensured that the code coverage has not dropped below 65%
 > - [x] I have increased the version number in OwaspHeaders.Core.csproj (only relevant for code changes)
 > #### Optional

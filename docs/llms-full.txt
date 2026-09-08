@@ -273,7 +273,7 @@ OwaspHeaders.Core is completely open-source and welcomes community contributions
 - Add tests to OwaspHeaders.Core.Tests project
 - Run `dotnet format OwaspHeaders.Core.sln` and fix any .editorconfig issues
 - Ensure code coverage stays above 65%
-- Increase version number in OwaspHeaders.Core.csproj (for code changes)
+- Increase version number in Directory.Build.props at the repository root (for code changes). It is set once there and shared by every project; the individual .csproj files do not carry it
 - Document new features in the docs directory
 
 ### Tools Required to Build

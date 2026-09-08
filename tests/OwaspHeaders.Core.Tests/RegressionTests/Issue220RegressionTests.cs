@@ -22,8 +22,7 @@ public class Issue220RegressionTests
     [Fact]
     public void FlagSetWithoutBuilder_Throws_ArgumentException_NamingTheFlag()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseReferrerPolicy()
             .Build();
 
@@ -40,8 +39,7 @@ public class Issue220RegressionTests
     [Fact]
     public void MultipleFlagsSetWithoutBuilder_AllReportedInSingleMessage()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .Build();
 
         config.UseCacheControl = true;
@@ -59,8 +57,7 @@ public class Issue220RegressionTests
     [Fact]
     public async Task ValidBuilderConfiguration_DoesNotThrow()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .UseCacheControl()
             .UseReferrerPolicy()
@@ -76,8 +73,7 @@ public class Issue220RegressionTests
     [Fact]
     public void Validate_OnConfigBuiltViaBuilder_ReturnsNoIssues()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .UseXFrameOptions()
             .UseCacheControl()

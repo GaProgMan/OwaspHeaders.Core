@@ -8,7 +8,7 @@ public class ReportingEndpointsTests : SecureHeadersTests
         // arrange
         var reportingEndpoints =
             new Dictionary<string, Uri> { { "standard", new Uri("https://test.test/reporting-endpoint/") } };
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseReportingEndpointsPolicy(reportingEndpoints).Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
@@ -25,7 +25,7 @@ public class ReportingEndpointsTests : SecureHeadersTests
     public async Task When_UseReportingEndpointsPolicyCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 

@@ -29,63 +29,62 @@ app.UseAuthorization();
 
 // Example 1: Basic SecureHeaders with default logging (uses default Event IDs 1000-3999)
 var listOfUrlsToIgnore = new List<string> { "/skipthis", "/scalar/v1" };
-app.UseSecureHeadersMiddleware(urlIgnoreList: listOfUrlsToIgnore);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseRecommendedDefaults();
+    opt.SetUrlsToIgnore(listOfUrlsToIgnore);
+});
 
 // Example 2 (commented): Custom configuration with custom Event IDs
 // This demonstrates how to configure SecureHeaders with custom Event IDs to avoid conflicts
 /*
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .UseContentTypeOptions()
-    .UseReferrerPolicy()
-    .WithLoggingEventIdBase(5000) // Use Event IDs starting from 5000 instead of 1000
-    .SetUrlsToIgnore(["/skipthis"])
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    opt.UseContentTypeOptions();
+    opt.UseReferrerPolicy();
+    opt.WithLoggingEventIdBase(5000); // Use Event IDs starting from 5000 instead of 1000
+    opt.SetUrlsToIgnore(["/skipthis"]);
+});
 */
 
 // Example 3 (commented): Fully custom Event ID configuration
 // This shows complete control over individual Event IDs
 /*
-var fullyCustomLoggingConfig = new SecureHeadersLoggingConfiguration
+app.UseSecureHeadersMiddleware(opt =>
 {
-    MiddlewareInitialized = new EventId(9001, "SecureHeadersInit"),
-    HeadersAdded = new EventId(9002, "HeadersSet"),
-    RequestIgnored = new EventId(9003, "RequestSkipped"),
-    ConfigurationError = new EventId(9999, "ConfigError")
-};
-
-var fullyCustomConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .UseContentTypeOptions()
-    .WithLoggingEventIds(fullyCustomLoggingConfig)
-    .SetUrlsToIgnore(["/skipthis"])
-    .Build();
-
-app.UseSecureHeadersMiddleware(fullyCustomConfig);
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    opt.UseContentTypeOptions();
+    opt.SetUrlsToIgnore(["/skipthis"]);
+    opt.WithLoggingEventIds(new SecureHeadersLoggingConfiguration
+    {
+        MiddlewareInitialized = new EventId(9001, "SecureHeadersInit"),
+        HeadersAdded = new EventId(9002, "HeadersSet"),
+        RequestIgnored = new EventId(9003, "RequestSkipped"),
+        ConfigurationError = new EventId(9999, "ConfigError")
+    });
+});
 */
 
 // Example 4 (commented): Clear-Site-Data configuration for logout endpoints
 // This demonstrates path-specific Clear-Site-Data header configuration for enhanced logout security
 /*
-var clearSiteDataConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .UseContentTypeOptions()
-    .UseReferrerPolicy()
-    .AddClearSiteDataPath("/auth/logout", ClearSiteDataOptions.wildcard) // Clear all data on standard logout
-    .AddClearSiteDataPath("/auth/api/logout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies) // Selective clearing for API logout
-    .AddClearSiteDataPath("/auth/admin/logout", ClearSiteDataOptions.wildcard) // Maximum security for admin logout
-    .SetUrlsToIgnore(["/skipthis"])
-    .Build();
-
-app.UseSecureHeadersMiddleware(clearSiteDataConfig);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    opt.UseContentTypeOptions();
+    opt.UseReferrerPolicy();
+    // Clear all data on standard logout
+    opt.AddClearSiteDataPath("/auth/logout", ClearSiteDataOptions.wildcard);
+    // Selective clearing for API logout
+    opt.AddClearSiteDataPath("/auth/api/logout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies);
+    // Maximum security for admin logout
+    opt.AddClearSiteDataPath("/auth/admin/logout", ClearSiteDataOptions.wildcard);
+    opt.SetUrlsToIgnore(["/skipthis"]);
+});
 */
 
 // Example 5 (commented): Bare minimum required to use the new, experimental ReportingEndpointsPolicy header
@@ -94,10 +93,20 @@ var reportingEndpoints =
     new Dictionary<string, Uri> {
         { "standard", new Uri("https://localhost:5000/reporting-endpoint") }
     };
-var secureHeadersMiddlewareConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
-    .UseReportingEndpointsPolicy(reportingEndpoints)
-    .Build();
-app.UseSecureHeadersMiddleware(secureHeadersMiddlewareConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseReportingEndpointsPolicy(reportingEndpoints));
+*/
+
+// Example 6 (commented): Sharing one configuration between Program.cs and a test
+// Hoisting the delegate into a named method means a test can assert the configuration is valid
+// via SecureHeadersBuilder.BuildAndValidate(ConfigureSecureHeaders), without standing up a host.
+/*
+static void ConfigureSecureHeaders(SecureHeadersBuilder opt)
+{
+    opt.UseRecommendedDefaults();
+    opt.SetUrlsToIgnore(["/skipthis"]);
+}
+
+app.UseSecureHeadersMiddleware(ConfigureSecureHeaders);
 */
 
 app.MapControllers();

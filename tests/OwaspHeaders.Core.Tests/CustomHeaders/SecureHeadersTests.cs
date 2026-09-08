@@ -34,7 +34,7 @@ public abstract class SecureHeadersTests
         Assert.Contains(nameof(SecureHeadersMiddlewareConfiguration), exception.Message);
     }
 
-    internal TestServer CreateTestServer(string urlToMap, SecureHeadersMiddlewareConfiguration config = null,
+    internal TestServer CreateTestServer(string urlToMap, Action<SecureHeadersBuilder> configure = null,
         string urlToIgnore = null)
     {
         var host = new HostBuilder()
@@ -49,7 +49,27 @@ public abstract class SecureHeadersTests
                     .Configure(app =>
                     {
                         app.UseRouting();
-                        app.UseSecureHeadersMiddleware(config, urlIgnoreList: [urlToIgnore]);
+                        app.UseSecureHeadersMiddleware(opt =>
+                        {
+                            if (configure == null)
+                            {
+                                opt.UseRecommendedDefaults();
+                            }
+                            else
+                            {
+                                configure(opt);
+                            }
+
+                            // Deliberately conditional. The ignore list is now honoured whatever
+                            // else is configured, where the deprecated overload used to discard it
+                            // whenever a configuration was supplied. Passing [null] through would
+                            // put a null into UrlsToIgnore, which RequestShouldBeIgnored would
+                            // then call Equals on.
+                            if (!string.IsNullOrWhiteSpace(urlToIgnore))
+                            {
+                                opt.SetUrlsToIgnore([urlToIgnore]);
+                            }
+                        });
                         app.UseEndpoints(endpoints =>
                         {
                             if (!string.IsNullOrWhiteSpace(urlToIgnore))

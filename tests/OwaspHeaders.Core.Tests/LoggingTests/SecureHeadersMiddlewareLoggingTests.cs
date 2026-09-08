@@ -28,8 +28,7 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public async Task InvokeAsync_WithValidConfig_LogsMiddlewareInitialization()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .UseXFrameOptions()
             .Build();
@@ -45,8 +44,7 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public async Task InvokeAsync_WithValidConfig_LogsHeadersAdded()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .Build();
 
@@ -61,8 +59,7 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public async Task InvokeAsync_WithIgnoredUrl_LogsRequestIgnored()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .SetUrlsToIgnore(["/ignore"])
             .Build();
@@ -78,8 +75,7 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public async Task InvokeAsync_WithHeadersEnabled_LogsIndividualHeaders()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .UseXFrameOptions()
             .Build();
@@ -94,8 +90,7 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public void ConstructWithCOEPConfigurationIssue_LogsConfigurationWarning()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseCrossOriginEmbedderPolicy()
             .Build();
 
@@ -114,8 +109,7 @@ public class SecureHeadersMiddlewareLoggingTests
             HeadersAdded = new EventId(9002, "CustomHeaders")
         };
 
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .WithLoggingEventIds(customConfig)
             .Build();
@@ -131,8 +125,7 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public async Task InvokeAsync_WithBaseEventId_UsesOffsetEventIds()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .WithLoggingEventIdBase(5000)
             .Build();
@@ -149,8 +142,7 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public async Task InvokeAsync_WithNullLogger_DoesNotThrow()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .Build();
 
@@ -170,8 +162,7 @@ public class SecureHeadersMiddlewareLoggingTests
             _logger.ControlLevel(level, false);
         }
 
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .Build();
 
@@ -192,8 +183,7 @@ public class SecureHeadersMiddlewareLoggingTests
             _logger.ControlLevel(level, level == enabledLevel);
         }
 
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .Build();
 
@@ -209,8 +199,7 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public void ConstructWithFlagButNoMatchingConfig_LogsConsolidatedConfigurationError()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseReferrerPolicy()
             .Build();
 

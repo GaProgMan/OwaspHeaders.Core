@@ -256,23 +256,6 @@ public class SecureHeadersBuilderTests
         Assert.Equal(5001, config.LoggingConfiguration.MiddlewareInitialized.Id);
     }
 
-    [Fact]
-    public void DeprecatedExtensions_MutateTheSameInstanceTheyAreGiven()
-    {
-        // arrange
-        // The forwarders wrap the caller's configuration rather than allocating a new one, so
-        // the fluent chain must keep returning the very same object it was handed.
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder();
-
-        // act
-        var returned = config.UseHsts().UseXFrameOptions();
-
-        // assert
-        Assert.Same(config, returned);
-        Assert.True(config.UseHsts);
-        Assert.True(config.UseXFrameOptions);
-    }
-
     private static List<string> HeadersFor(SecureHeadersMiddlewareConfiguration config)
     {
         var headers = new List<string>();

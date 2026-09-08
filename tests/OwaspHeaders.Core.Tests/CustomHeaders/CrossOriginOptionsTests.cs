@@ -7,7 +7,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     {
         // arrange
         var headerPresentConfig =
-            SecureHeadersMiddlewareBuilder.CreateBuilder()
+            new SecureHeadersBuilder()
                 .UseCrossOriginResourcePolicy().Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
@@ -25,7 +25,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     {
         // arrange
         var headerPresentConfig =
-            SecureHeadersMiddlewareBuilder.CreateBuilder()
+            new SecureHeadersBuilder()
                 .UseCrossOriginOpenerPolicy().Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
@@ -43,7 +43,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     {
         // arrange
         var headerPresentConfig =
-            SecureHeadersMiddlewareBuilder.CreateBuilder()
+            new SecureHeadersBuilder()
                 .UseCrossOriginResourcePolicy()
                 .UseCrossOriginEmbedderPolicy().Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
@@ -67,7 +67,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     {
         // arrange
         var headerPresentConfig =
-            SecureHeadersMiddlewareBuilder.CreateBuilder()
+            new SecureHeadersBuilder()
                 .UseCrossOriginEmbedderPolicy().Build();
 
         // act
@@ -90,7 +90,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     public async Task When_UseCrossOriginResourcePolicyNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
@@ -106,7 +106,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     public async Task When_UseCrossOriginOpenerPolicyNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
@@ -122,7 +122,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     public async Task When_UseCrossOriginEmbedderPolicyNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 

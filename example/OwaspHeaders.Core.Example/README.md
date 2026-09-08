@@ -81,14 +81,12 @@ app.UseSecureHeadersMiddleware();
 ### 2. Custom Base Event ID
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .WithLoggingEventIdBase(5000)  // Event IDs will be 5001, 5002, etc.
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    opt.WithLoggingEventIdBase(5000);  // Event IDs will be 5001, 5002, etc.
+});
 ```
 
 ### 3. Fully Custom Event IDs
@@ -101,13 +99,11 @@ var customLogging = new SecureHeadersLoggingConfiguration
     ConfigurationError = new EventId(9999, "ConfigError")
 };
 
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .WithLoggingEventIds(customLogging)
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.WithLoggingEventIds(customLogging);
+});
 ```
 
 ### 4. Using Helper Extension Methods

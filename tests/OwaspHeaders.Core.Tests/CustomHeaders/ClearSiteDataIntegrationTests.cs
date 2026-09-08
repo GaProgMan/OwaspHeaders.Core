@@ -12,9 +12,8 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/api/auth/signout"] = [ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer = CreateTestServer("/logout", config);
         var client = testServer.CreateClient();
@@ -47,9 +46,8 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/logout"] = [ClearSiteDataOptions.wildcard]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer = CreateTestServer("/login", config);
         var client = testServer.CreateClient();
@@ -65,9 +63,9 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
     public async Task IntegrationTest_ClearSiteData_WithDefaultConfiguration()
     {
         // arrange
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        Action<SecureHeadersBuilder> config = opt => opt
             .UseClearSiteData() // Uses default OWASP recommended options
-            .Build();
+        ;
 
         using var testServer = CreateTestServer("/any-path", config);
         var client = testServer.CreateClient();
@@ -85,10 +83,9 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
     public async Task IntegrationTest_ClearSiteData_WithFluentConfiguration()
     {
         // arrange
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        Action<SecureHeadersBuilder> config = opt => opt
             .AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard)
-            .AddClearSiteDataPath("/account/logout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies)
-            .Build();
+            .AddClearSiteDataPath("/account/logout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies);
 
         // Test first path
         using var testServer1 = CreateTestServer("/logout", config);
@@ -125,9 +122,8 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/admin/logout"] = [ClearSiteDataOptions.wildcard]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer = CreateTestServer("/admin/logout", config);
         var client = testServer.CreateClient();
@@ -145,12 +141,11 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
     public async Task IntegrationTest_ClearSiteData_WithOtherSecurityHeaders()
     {
         // arrange - test that Clear-Site-Data works alongside other security headers
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        Action<SecureHeadersBuilder> config = opt => opt
             .UseHsts()
             .UseXFrameOptions()
             .UseContentTypeOptions()
-            .AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard)
-            .Build();
+            .AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard);
 
         using var testServer = CreateTestServer("/logout", config);
         var client = testServer.CreateClient();
@@ -177,9 +172,8 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/Logout"] = [ClearSiteDataOptions.wildcard] // Capital L
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer1 = CreateTestServer("/Logout", config);
         var client1 = testServer1.CreateClient();
@@ -211,9 +205,8 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/mobile/logout"] = [ClearSiteDataOptions.storage]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer = CreateTestServer(requestPath, config);
         var client = testServer.CreateClient();
@@ -244,9 +237,8 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/logout"] = [ClearSiteDataOptions.wildcard]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer = CreateTestServer("/logout", config);
         var client = testServer.CreateClient();

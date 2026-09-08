@@ -40,7 +40,11 @@ public class SecureHeadersBuilderTests
     {
         // arrange
         var viaPreset = new SecureHeadersBuilder().UseRecommendedDefaults().Build();
+        // Comparing against the deprecated helper is the whole point: UseRecommendedDefaults
+        // took over its body, and this asserts the two have not drifted while both ship.
+#pragma warning disable CS0618
         var viaDefaults = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration();
+#pragma warning restore CS0618
 
         // act
         var presetHeaders = HeadersFor(viaPreset);

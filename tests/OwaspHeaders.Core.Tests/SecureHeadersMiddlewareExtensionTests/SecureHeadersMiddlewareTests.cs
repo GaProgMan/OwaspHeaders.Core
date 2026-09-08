@@ -54,7 +54,12 @@ public class SecureHeadersMiddlewareTests
         // Arrange
 
         // Act
+        // BuildDefaultConfiguration is deprecated, but it still ships in version 11 and
+        // these tests exist to prove it still works. The suppression is the point of the
+        // test, not a way around the warning.
+#pragma warning disable CS0618
         var middlewareConfiguration = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration();
+#pragma warning restore CS0618
 
         // Assert
         Assert.NotNull(middlewareConfiguration);
@@ -70,7 +75,12 @@ public class SecureHeadersMiddlewareTests
         var ignoreList = new List<string> { "/ignore" };
 
         // Act
+        // BuildDefaultConfiguration is deprecated, but it still ships in version 11 and
+        // these tests exist to prove it still works. The suppression is the point of the
+        // test, not a way around the warning.
+#pragma warning disable CS0618
         var middlewareConfiguration = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration(ignoreList);
+#pragma warning restore CS0618
 
         // Assert
         Assert.NotNull(middlewareConfiguration);
@@ -91,7 +101,12 @@ public class SecureHeadersMiddlewareTests
         List<string> ignoreList = null;
 
         // Act
+        // BuildDefaultConfiguration is deprecated, but it still ships in version 11 and
+        // these tests exist to prove it still works. The suppression is the point of the
+        // test, not a way around the warning.
+#pragma warning disable CS0618
         var middlewareConfiguration = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration(ignoreList);
+#pragma warning restore CS0618
 
         // Assert
         Assert.NotNull(middlewareConfiguration);

@@ -19,6 +19,11 @@ public static class SecureHeadersMiddlewareExtensions
     /// url for the current best practises:
     /// https://www.owasp.org/index.php/OWASP_Secure_Headers_Project#tab=Best_Practices
     /// </remarks>
+    [Obsolete("BuildDefaultConfiguration exists to produce a configuration object to pass to " +
+              "UseSecureHeadersMiddleware, which is deprecated and will be removed in version 12. " +
+              "Use app.UseSecureHeadersMiddleware() for the recommended defaults, or call " +
+              "opt.UseRecommendedDefaults() inside the configure delegate. See " +
+              "https://github.com/GaProgMan/OwaspHeaders.Core/issues/59", false)]
     public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration(
         List<string> urlIgnoreList = null)
     {
@@ -52,6 +57,11 @@ public static class SecureHeadersMiddlewareExtensions
     /// If an instance of <see cref="SecureHeadersMiddlewareConfiguration"/> is not provided,
     /// then the default value from <see cref="BuildDefaultConfiguration"/> will be provided.
     /// </remarks>
+    [Obsolete("Passing a prebuilt SecureHeadersMiddlewareConfiguration is deprecated and this " +
+              "overload will be removed in version 12. Configure the middleware in place instead: " +
+              "app.UseSecureHeadersMiddleware(opt => opt.UseRecommendedDefaults()). Note that " +
+              "urlIgnoreList is silently ignored by this overload whenever config is supplied; " +
+              "opt.SetUrlsToIgnore(...) always applies. See " + "https://github.com/GaProgMan/OwaspHeaders.Core/issues/59", false)]
     public static IApplicationBuilder UseSecureHeadersMiddleware(this IApplicationBuilder builder,
         SecureHeadersMiddlewareConfiguration config = null, List<string> urlIgnoreList = null)
     {

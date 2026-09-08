@@ -23,6 +23,19 @@ public static class SecureHeadersMiddlewareBuilder
     /// <summary>
     /// Creates a new, empty <see cref="SecureHeadersMiddlewareConfiguration"/> to configure.
     /// </summary>
+    /// <remarks>
+    /// Building a configuration and passing it to <c>UseSecureHeadersMiddleware</c> is
+    /// deprecated. Configure the middleware in place instead, which removes the need for both
+    /// this method and the matching <c>Build</c> call:
+    /// <code>app.UseSecureHeadersMiddleware(opt => opt.UseRecommendedDefaults());</code>
+    /// Where a configuration object really is needed, construct
+    /// <see cref="SecureHeadersBuilder"/> directly.
+    /// </remarks>
+    [Obsolete("Building a configuration and passing it to UseSecureHeadersMiddleware is deprecated " +
+              "and will be removed in version 12. Configure the middleware in place instead: " +
+              "app.UseSecureHeadersMiddleware(opt => opt.UseRecommendedDefaults()). If you need a " +
+              "configuration object, use new SecureHeadersBuilder() instead. See " +
+              "https://github.com/GaProgMan/OwaspHeaders.Core/issues/59", false)]
     public static SecureHeadersMiddlewareConfiguration CreateBuilder()
     {
         return new SecureHeadersBuilder().Build();
@@ -181,6 +194,16 @@ public static class SecureHeadersMiddlewareBuilder
     /// Return the completed <see cref="SecureHeadersMiddlewareConfiguration"/> ready for consumption by the
     /// <see cref="SecureHeadersMiddleware"/> class
     /// </summary>
+    /// <remarks>
+    /// This method returns its own argument unchanged: the configuration and the thing that
+    /// built it are the same object. Use <see cref="SecureHeadersBuilder.Build"/>, which returns
+    /// the configuration a builder has produced.
+    /// </remarks>
+    [Obsolete("Building a configuration and passing it to UseSecureHeadersMiddleware is deprecated " +
+              "and will be removed in version 12. Configure the middleware in place instead: " +
+              "app.UseSecureHeadersMiddleware(opt => opt.UseRecommendedDefaults()). If you need a " +
+              "configuration object, use new SecureHeadersBuilder().…Build() instead. See " +
+              "https://github.com/GaProgMan/OwaspHeaders.Core/issues/59", false)]
     public static SecureHeadersMiddlewareConfiguration Build
         (this SecureHeadersMiddlewareConfiguration config)
     {

@@ -55,6 +55,18 @@ app.UseSecureHeadersMiddleware();
 
 This will add a number of default HTTP headers to all responses from your server component.
 
+To choose the headers yourself, pass a configure delegate instead:
+
+```csharp
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseRecommendedDefaults();
+    opt.SetUrlsToIgnore(["/health"]);
+});
+```
+
+The configuration is validated as your application starts, so a mistake stops the host from starting rather than surfacing on the first request.
+
 {: .note }
 The middleware includes comprehensive logging functionality. To see logging output, ensure your application has logging configured. See the [Logging](./logging) section for detailed information.
 

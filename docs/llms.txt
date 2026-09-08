@@ -6,6 +6,8 @@ OwaspHeaders.Core is an open-source middleware library that enhances web applica
 
 **Key Features:**
 - One-line setup: `app.UseSecureHeadersMiddleware();`
+- Custom setup via a configure delegate: `app.UseSecureHeadersMiddleware(opt => opt.UseRecommendedDefaults());`
+- Configuration is validated at application startup, not on the first request
 - 11 OWASP-recommended security headers included by default
 - Configurable header values using fluent builder pattern
 - Comprehensive logging support

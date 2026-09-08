@@ -93,6 +93,18 @@ app.UseSecureHeadersMiddleware();
 
 This will add a number of default HTTP headers to all responses from your server component.
 
+To choose the headers yourself, pass a configure delegate instead:
+
+```csharp
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseRecommendedDefaults();
+    opt.SetUrlsToIgnore(["/health"]);
+});
+```
+
+The configuration is validated as your application starts, so a mistake stops the host from starting rather than surfacing on the first request.
+
 The following is an example of the response headers from version 9.0.0 (taken on November 19th, 2024)
 
 ```http
@@ -134,25 +146,25 @@ https://github.com/GaProgMan/OwaspHeaders.Core/blob/433cbb764956e86b80b598c5d076
 In order to use a custom configuration, follow the same pattern (perhaps creating your own extension method to encapsulate it):
 
 ``` csharp
-public static SecureHeadersMiddlewareConfiguration CustomConfiguration()
+public static void CustomConfiguration(SecureHeadersBuilder opt)
 {
-    return SecureHeadersMiddlewareBuilder
-        .CreateBuilder()
-        .UseHsts(1200, false)
-        .UseContentDefaultSecurityPolicy()
-        .UsePermittedCrossDomainPolicy
-            (XPermittedCrossDomainOptionValue.masterOnly)
-        .UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin)
-        .Build();
+    opt.UseHsts(1200, false);
+    opt.UseDefaultContentSecurityPolicy();
+    opt.UsePermittedCrossDomainPolicies(XPermittedCrossDomainOptionValue.masterOnly);
+    opt.UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin);
 }
 ```
 
 Then consume it in the following manner:
 
 ```csharp
-app.UseSecureHeadersMiddleware(
-    CustomSecureHeaderExtensions.CustomConfiguration()
-);
+app.UseSecureHeadersMiddleware(CustomSecureHeaderExtensions.CustomConfiguration);
+```
+
+Naming the method rather than inlining the lambda means a test can assert the configuration is valid without starting your application:
+
+```csharp
+SecureHeadersBuilder.BuildAndValidate(CustomSecureHeaderExtensions.CustomConfiguration);
 ```
 
 #### Testing the Middleware

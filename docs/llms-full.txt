@@ -10,7 +10,7 @@ OwaspHeaders.Core is an open-source ASP.NET Core middleware library designed to 
 - **Maintainer:** Jamie Taylor
 - **Company:** RJJ Software Ltd
 - **License:** MIT
-- **Current Version:** 10.4.1
+- **Current Version:** 11.0.0
 - **Repository:** https://github.com/GaProgMan/OwaspHeaders.Core
 - **Documentation:** https://gaprogman.github.io/OwaspHeaders.Core/
 - **NuGet Package:** https://www.nuget.org/packages/OwaspHeaders.Core/
@@ -115,46 +115,59 @@ app.UseSecureHeadersMiddleware();
 
 ### Custom Configuration
 
-Use the fluent builder pattern to customize header values:
+Pass a configure delegate. The builder it hands you starts empty, so call
+`UseRecommendedDefaults()` first if you want the OWASP recommended set as a starting point:
 
 ```csharp
-public static SecureHeadersMiddlewareConfiguration CustomConfiguration()
+app.UseSecureHeadersMiddleware(opt =>
 {
-    return SecureHeadersMiddlewareBuilder
-        .CreateBuilder()
-        .UseHsts(1200, false)
-        .UseContentDefaultSecurityPolicy()
-        .UsePermittedCrossDomainPolicy(XPermittedCrossDomainOptionValue.masterOnly)
-        .UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin)
-        .Build();
-}
+    opt.UseHsts(1200, false);
+    opt.UseDefaultContentSecurityPolicy();
+    opt.UsePermittedCrossDomainPolicies(XPermittedCrossDomainOptionValue.masterOnly);
+    opt.UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin);
+});
 ```
 
-Then consume it:
+Hoisting the delegate into a named method lets the same configuration be asserted on from a test:
 
 ```csharp
-app.UseSecureHeadersMiddleware(
-    CustomSecureHeaderExtensions.CustomConfiguration()
-);
+public static class CustomSecureHeaderExtensions
+{
+    public static void CustomConfiguration(SecureHeadersBuilder opt)
+    {
+        opt.UseHsts(1200, false);
+        opt.UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin);
+    }
+}
+
+// in Program.cs
+app.UseSecureHeadersMiddleware(CustomSecureHeaderExtensions.CustomConfiguration);
+
+// in a test
+SecureHeadersBuilder.BuildAndValidate(CustomSecureHeaderExtensions.CustomConfiguration);
 ```
+
+The configuration is validated as the request pipeline is built, so an invalid configuration
+throws an `ArgumentException` at application startup rather than on the first request.
+
+**Deprecated in version 11:** building a `SecureHeadersMiddlewareConfiguration` with
+`SecureHeadersMiddlewareBuilder.CreateBuilder()` and passing it to `UseSecureHeadersMiddleware`
+still works, but emits `CS0618` and will be removed in version 12.
 
 ### Clear-Site-Data Configuration
 
 The Clear-Site-Data header is particularly useful for logout endpoints:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseClearSiteData(
-        new Dictionary<string, ClearSiteDataOptions>
-        {
-            { "/logout", ClearSiteDataOptions.Cache | ClearSiteDataOptions.Cookies | ClearSiteDataOptions.Storage }
-        }
-    )
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseRecommendedDefaults();
+    opt.AddClearSiteDataPath("/logout",
+        ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies, ClearSiteDataOptions.storage);
+});
 ```
+
+`AddClearSiteDataPath` can be called repeatedly to build up a path map.
 
 ### Reporting-Endpoints Configuration
 
@@ -164,10 +177,7 @@ The Reporting-Endpoints header is experimental and allows specifying endpoints f
 var reportingEndpoints = new Dictionary<string, Uri> {
     { "standard", new Uri("https://localhost:5000/reporting-endpoint") }
 };
-var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-    .UseReportingEndpointsPolicy(reportingEndpoints)
-    .Build();
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt => opt.UseReportingEndpointsPolicy(reportingEndpoints));
 ```
 
 ## Logging

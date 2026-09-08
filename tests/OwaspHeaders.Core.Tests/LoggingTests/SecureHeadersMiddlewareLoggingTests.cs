@@ -17,11 +17,9 @@ public class SecureHeadersMiddlewareLoggingTests
     }
 
     [Fact]
-    public async Task InvokeAsync_WithNullConfig_LogsConfigurationError()
+    public void ConstructWithNullConfig_LogsConfigurationError()
     {
-        var middleware = new SecureHeadersMiddleware(_onNext, null, _logger);
-
-        var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, null, _logger));
 
         Assert.NotNull(exception);
         AssertLogged(LogLevel.Error, 3001, "Configuration validation failed:");
@@ -94,16 +92,14 @@ public class SecureHeadersMiddlewareLoggingTests
     }
 
     [Fact]
-    public async Task InvokeAsync_WithCOEPConfigurationIssue_LogsConfigurationWarning()
+    public void ConstructWithCOEPConfigurationIssue_LogsConfigurationWarning()
     {
         var config = SecureHeadersMiddlewareBuilder
             .CreateBuilder()
             .UseCrossOriginEmbedderPolicy()
             .Build();
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
-
-        var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, config, _logger));
 
         Assert.NotNull(exception);
         AssertLogged(LogLevel.Warning, 2003, "Cross-Origin-Embedder-Policy requires Cross-Origin-Resource-Policy to be enabled");
@@ -211,7 +207,7 @@ public class SecureHeadersMiddlewareLoggingTests
     }
 
     [Fact]
-    public async Task InvokeAsync_WithFlagButNoMatchingConfig_LogsConsolidatedConfigurationError()
+    public void ConstructWithFlagButNoMatchingConfig_LogsConsolidatedConfigurationError()
     {
         var config = SecureHeadersMiddlewareBuilder
             .CreateBuilder()
@@ -221,13 +217,25 @@ public class SecureHeadersMiddlewareLoggingTests
         config.UseCacheControl = true;
         config.UseHsts = true;
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config, _logger);
-
-        var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, config, _logger));
 
         Assert.NotNull(exception);
         AssertLogged(LogLevel.Error, 3001, nameof(SecureHeadersMiddlewareConfiguration.UseCacheControl));
         AssertLogged(LogLevel.Error, 3001, nameof(SecureHeadersMiddlewareConfiguration.UseHsts));
+    }
+
+    [Fact]
+    public void ConstructWithNoHeadersEnabled_LogsConfigurationIssue()
+    {
+        // A configuration that enables nothing is valid, but it leaves the middleware in the
+        // pipeline doing no work at all. That is almost never what was intended, so it is worth
+        // a warning at startup even though it is not an error.
+        var config = new SecureHeadersBuilder().Build();
+
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, config, _logger));
+
+        Assert.Null(exception);
+        AssertLogged(LogLevel.Warning, 2003, "No security headers are enabled");
     }
 
     private static readonly LogLevel[] AllLogLevels =

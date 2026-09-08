@@ -63,16 +63,18 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     }
 
     [Fact]
-    public async Task When_UseCrossOriginEmbedderPolicyCalled_But_UseCrossOriginResourcePolicy_NotSupplied_Header_Is_Not_Present()
+    public void When_UseCrossOriginEmbedderPolicyCalled_But_UseCrossOriginResourcePolicy_NotSupplied_Header_Is_Not_Present()
     {
         // arrange
         var headerPresentConfig =
             SecureHeadersMiddlewareBuilder.CreateBuilder()
                 .UseCrossOriginEmbedderPolicy().Build();
-        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
         // act
-        var exception = await Record.ExceptionAsync(() => secureHeadersMiddleware.InvokeAsync(_context));
+        // Cross-Origin-Embedder-Policy requires Cross-Origin-Resource-Policy. That pairing rule
+        // is part of configuration validation, so it is caught when the middleware is
+        // constructed rather than when the first request arrives.
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, headerPresentConfig));
 
         // assert
         Assert.NotNull(exception);

@@ -20,7 +20,7 @@ public class Issue220RegressionTests
     }
 
     [Fact]
-    public async Task FlagSetWithoutBuilder_Throws_ArgumentException_NamingTheFlag()
+    public void FlagSetWithoutBuilder_Throws_ArgumentException_NamingTheFlag()
     {
         var config = SecureHeadersMiddlewareBuilder
             .CreateBuilder()
@@ -30,9 +30,7 @@ public class Issue220RegressionTests
         // bypass the builder — this is the exact scenario from issue #220
         config.UseCacheControl = true;
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config);
-
-        var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, config));
 
         Assert.NotNull(exception);
         var argEx = Assert.IsAssignableFrom<ArgumentException>(exception);
@@ -40,7 +38,7 @@ public class Issue220RegressionTests
     }
 
     [Fact]
-    public async Task MultipleFlagsSetWithoutBuilder_AllReportedInSingleMessage()
+    public void MultipleFlagsSetWithoutBuilder_AllReportedInSingleMessage()
     {
         var config = SecureHeadersMiddlewareBuilder
             .CreateBuilder()
@@ -50,9 +48,7 @@ public class Issue220RegressionTests
         config.UseHsts = true;
         config.UseXFrameOptions = true;
 
-        var middleware = new SecureHeadersMiddleware(_onNext, config);
-
-        var exception = await Record.ExceptionAsync(() => middleware.InvokeAsync(_context));
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, config));
 
         var argEx = Assert.IsAssignableFrom<ArgumentException>(exception);
         Assert.Contains(nameof(SecureHeadersMiddlewareConfiguration.UseCacheControl), argEx.Message);
@@ -115,6 +111,12 @@ public class Issue220RegressionTests
     /// call from <c>Validate</c>, and a contributor adding a new <c>UseX</c> flag without
     /// extending <c>Validate</c>. In both cases the failure message names the offending
     /// flag and points at the fix.
+    /// </remarks>
+    /// <remarks>
+    /// This covers the per-flag half of <c>Validate</c> only. <c>Validate</c> also enforces
+    /// cross-header rules, where one header is only meaningful in the presence of another;
+    /// those are not enumerable by reflection and are covered by
+    /// <c>ConfigurationValidationTests</c> instead.
     /// </remarks>
     [Fact]
     public void Validate_ReportsEveryUseFlagThatHasABackingConfiguration()

@@ -154,9 +154,13 @@ public class SecureHeadersMiddlewareConfiguration
     /// </summary>
     /// <remarks>
     /// Mismatches typically occur when a flag is set directly on the configuration
-    /// instance instead of via the corresponding builder extension on
-    /// <see cref="SecureHeadersMiddlewareBuilder"/>, which would normally allocate both
-    /// the flag and the matching configuration object together.
+    /// instance instead of via the corresponding method on <see cref="SecureHeadersBuilder"/>,
+    /// which would normally allocate both the flag and the matching configuration object
+    /// together.
+    /// </remarks>
+    /// <remarks>
+    /// As well as the per-flag checks, this method enforces cross-header rules: rules where
+    /// one header's value is only meaningful in the presence of another.
     /// </remarks>
     public IReadOnlyList<string> Validate()
     {
@@ -168,7 +172,7 @@ public class SecureHeadersMiddlewareConfiguration
             {
                 issues.Add(
                     $"{flagName} is true but its matching configuration object is null. " +
-                    $"Configure this header via the corresponding SecureHeadersMiddlewareBuilder extension method " +
+                    $"Configure this header via the corresponding SecureHeadersBuilder method " +
                     $"instead of setting {flagName} directly.");
             }
         }
@@ -193,6 +197,52 @@ public class SecureHeadersMiddlewareConfiguration
         Check(UseReportingEndPoints, ReportingEndpointsPolicy, nameof(UseReportingEndPoints));
         Check(UseClearSiteData, ClearSiteDataPathConfiguration, nameof(UseClearSiteData));
 
+        // Cross-header rule: Cross-Origin-Embedder-Policy is only meaningful alongside
+        // Cross-Origin-Resource-Policy. This was previously enforced from inside the
+        // middleware's header generation, which meant it only surfaced on the first request.
+        // The null check matters: a null policy object with the flag set is already reported
+        // by the Check call above, and dereferencing it here would throw from inside the very
+        // method that exists to prevent that class of failure.
+        if (UseCrossOriginEmbedderPolicy && CrossOriginEmbedderPolicy is not null &&
+            !CrossOriginEmbedderPolicy.HeaderValueIsValid(UseCrossOriginResourcePolicy))
+        {
+            issues.Add("Cross-Origin-Embedder-Policy requires Cross-Origin-Resource-Policy " +
+                       "to be enabled. Call UseCrossOriginResourcePolicy as well, or drop the " +
+                       "call to UseCrossOriginEmbedderPolicy.");
+        }
+
         return issues;
+    }
+
+    /// <summary>
+    /// Throws when <see cref="Validate"/> reports any issues, and does nothing otherwise.
+    /// </summary>
+    /// <remarks>
+    /// The middleware calls this as the request pipeline is built, so an invalid configuration
+    /// fails at application start rather than on the first request to reach the middleware.
+    /// Consumers can call it directly to assert, from a test, that their configuration is valid.
+    /// </remarks>
+    /// <exception cref="ArgumentException">
+    /// Thrown when the configuration is not internally consistent.
+    /// </exception>
+    public void ValidateOrThrow()
+    {
+        var issues = Validate();
+        if (issues.Count == 0)
+        {
+            return;
+        }
+
+        throw new ArgumentException(BuildValidationFailureMessage(issues));
+    }
+
+    /// <summary>
+    /// Builds the message used by every configuration validation failure, so that the wording
+    /// is identical wherever the failure is raised from.
+    /// </summary>
+    internal static string BuildValidationFailureMessage(IReadOnlyList<string> issues)
+    {
+        return $"SecureHeaders configuration is invalid. {issues.Count} issue(s) found: "
+               + string.Join(" ", issues);
     }
 }

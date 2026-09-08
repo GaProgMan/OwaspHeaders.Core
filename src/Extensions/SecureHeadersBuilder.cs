@@ -62,6 +62,46 @@ public sealed class SecureHeadersBuilder
     }
 
     /// <summary>
+    /// Builds the configuration described by <paramref name="configure"/> and throws if it is
+    /// not valid.
+    /// </summary>
+    /// <remarks>
+    /// This takes the same delegate as
+    /// <c>UseSecureHeadersMiddleware(Action&lt;SecureHeadersBuilder&gt;)</c>, so a consumer can
+    /// hoist their configuration into a named method and assert its validity from a test without
+    /// standing up a host:
+    /// <code>
+    /// static void ConfigureSecureHeaders(SecureHeadersBuilder opt) => opt.UseRecommendedDefaults();
+    ///
+    /// // in Program.cs
+    /// app.UseSecureHeadersMiddleware(ConfigureSecureHeaders);
+    ///
+    /// // in a test
+    /// SecureHeadersBuilder.BuildAndValidate(ConfigureSecureHeaders);
+    /// </code>
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="configure"/> is null.
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    /// Thrown when the resulting configuration is not internally consistent.
+    /// </exception>
+    public static SecureHeadersMiddlewareConfiguration BuildAndValidate(
+        Action<SecureHeadersBuilder> configure)
+    {
+        ObjectGuardClauses.ObjectCannotBeNull(configure, nameof(configure),
+            "cannot be null when configuring OWASP Secure Headers in OwaspHeaders.Core");
+
+        var builder = new SecureHeadersBuilder();
+        configure(builder);
+
+        var configuration = builder.Build();
+        configuration.ValidateOrThrow();
+
+        return configuration;
+    }
+
+    /// <summary>
     /// Applies the full set of headers recommended by the OWASP Secure Headers Project,
     /// using the default values described on each of the <c>Use...</c> methods.
     /// </summary>

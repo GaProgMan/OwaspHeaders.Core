@@ -19,11 +19,12 @@ public abstract class SecureHeadersTests
     }
 
     [Fact]
-    public async Task InvokeWith_NullConfig_ExceptionThrown()
+    public void ConstructWith_NullConfig_ExceptionThrown()
     {
-        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, null);
-
-        var exception = await Record.ExceptionAsync(() => secureHeadersMiddleware.InvokeAsync(_context));
+        // The configuration is checked when the middleware is constructed, which ASP.NET Core
+        // does while building the request pipeline, so this fails at application start rather
+        // than on the first request.
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, null));
 
         Assert.NotNull(exception);
         Assert.IsAssignableFrom<ArgumentException>(exception);

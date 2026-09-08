@@ -35,7 +35,7 @@ In order to submit a PR to OwaspHeaders.Core, please follow these steps (or simi
 3. Create a branch with a descriptive name under the `feature/` directory
 4. Commit all of your changes to that branch
 5. Don't forget to add tests 
-6. Ensure that you run `dotnet-format` (with the optional `fix` verb for auto-fixes)
+6. Ensure that you run `dotnet format OwaspHeaders.Core.sln` (add `--verify-no-changes` to check without editing)
 7. Push those changes to your forked version of the repository 
 8. Create a Pull Request through the GitHub user interface and leave a detailed description
 
@@ -46,7 +46,7 @@ For instance, if you were to create a branch to implement a new HTTP header call
 3. Create a branch called `feature/x-example-header` (you might do this with `git checkout -b feature/x-example-header`)
 4. Add code changes
 5. Add tests
-6. Run `dotnet-format fix` to ensure that all formatting is correct
+6. Run `dotnet format OwaspHeaders.Core.sln` to ensure that all formatting is correct
 7. Push all the changes to the fork of the repository
 8. Create a Pull Request with the following information
 

@@ -35,11 +35,12 @@ jobs:
           10.0.x
           11.0.x
 
-    - name: Install dotnet-format tool
-      run: dotnet tool install -g dotnet-format
-    
+    # dotnet format ships with the SDK, so there is nothing to install. The standalone
+    # dotnet-format tool this replaced was last released for .NET 5 and is no longer
+    # maintained; it disagreed with the SDK tool over indentation, which meant code that
+    # `dotnet format` considered clean locally still failed this job.
     - name: Check Code Format
-      run: dotnet-format --check
+      run: dotnet format OwaspHeaders.Core.sln --verify-no-changes
 
   build:
 

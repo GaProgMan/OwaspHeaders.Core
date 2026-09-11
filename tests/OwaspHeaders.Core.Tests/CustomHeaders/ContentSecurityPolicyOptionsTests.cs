@@ -54,7 +54,8 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
 
         // assert
         Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyReportOnlyHeaderName));
-        Assert.Equal($"block-all-mixed-content;upgrade-insecure-requests;report-uri {reportUri};",
+        Assert.Equal(
+            $"sandbox allow-forms allow-scripts allow-same-origin;block-all-mixed-content;upgrade-insecure-requests;report-uri {reportUri};",
             _context.Response.Headers[Constants.ContentSecurityPolicyReportOnlyHeaderName]);
     }
 

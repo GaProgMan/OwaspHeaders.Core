@@ -29,7 +29,7 @@ public class CspRegressionTests
     public async Task ContentSecurityPolicy_Adds_MultipleSameValue()
     {
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder().UseContentSecurityPolicy()
+        var headerPresentConfig = new SecureHeadersBuilder().UseContentSecurityPolicy()
             .SetCspUris(
             [
                 new ContentSecurityPolicyElement { CommandType = CspCommandType.Directive, DirectiveOrUri = "self" },
@@ -59,7 +59,7 @@ public class CspRegressionTests
     {
         // arrange
         const string targetCsp = "style-src 'self' cdnjs.cloudflare.com;";
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests: false)
             .SetCspUris(
                 // originally PRODUCES: style-src 'self'  cdnjs.cloudflare.com;
@@ -95,7 +95,7 @@ public class CspRegressionTests
     {
         // arrange
         const string targetCsp = "style-src 'self';";
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests: false)
             .SetCspUris(
                 // originally PRODUCES: style-src 'self' ;
@@ -128,7 +128,7 @@ public class CspRegressionTests
     {
         // arrange
         const string targetCsp = "style-src cdnjs.cloudflare.com;";
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests: false)
             .SetCspUris(
                 // originally PRODUCES: style-src  cdnjs.cloudflare.com;
@@ -161,7 +161,7 @@ public class CspRegressionTests
     {
         // arrange
         const string targetCsp = "script-src 'self' 'unsafe-inline' 'none';";
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests: false)
             .SetCspUris(
             [
@@ -198,7 +198,7 @@ public class CspRegressionTests
     {
         // arrange
         const string targetCsp = "img-src https://example.com *.googleapis.com data: blob:;";
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests: false)
             .SetCspUris(
             [
@@ -245,7 +245,7 @@ public class CspRegressionTests
         // arrange - This mirrors the user's intended CSP directive:
         // img-src 'self' data: https://cdn.abc.net https://cdn.abc.org;
         const string targetCsp = "img-src 'self' data: https://cdn.abc.net https://cdn.abc.org;";
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests: false)
             .SetCspUris(
             [
@@ -285,7 +285,7 @@ public class CspRegressionTests
     {
         // arrange
         const string targetCsp = "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com data:;";
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicy(blockAllMixedContent: false, upgradeInsecureRequests: false)
             .SetCspUris(
             [

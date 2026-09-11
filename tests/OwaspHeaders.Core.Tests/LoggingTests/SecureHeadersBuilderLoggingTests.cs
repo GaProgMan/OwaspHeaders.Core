@@ -14,8 +14,7 @@ public class SecureHeadersBuilderLoggingTests
             ConfigurationError = new EventId(9003, "CustomError")
         };
 
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .WithLoggingEventIds(customLoggingConfig)
             .Build();
@@ -31,7 +30,7 @@ public class SecureHeadersBuilderLoggingTests
     [Fact]
     public void WithLoggingEventIds_WithNullConfig_ThrowsArgumentException()
     {
-        var builder = SecureHeadersMiddlewareBuilder.CreateBuilder();
+        var builder = new SecureHeadersBuilder();
 
         var exception = Record.Exception(() => builder.WithLoggingEventIds(null));
 
@@ -47,8 +46,7 @@ public class SecureHeadersBuilderLoggingTests
     [InlineData(-1000)]
     public void WithLoggingEventIdBase_SetsOffsetEventIds(int baseEventId)
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .WithLoggingEventIdBase(baseEventId)
             .Build();
@@ -68,8 +66,7 @@ public class SecureHeadersBuilderLoggingTests
     [Fact]
     public void WithLoggingEventIdBase_PreservesEventIdNames()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .WithLoggingEventIdBase(5000)
             .Build();
 
@@ -88,8 +85,7 @@ public class SecureHeadersBuilderLoggingTests
     [Fact]
     public void Builder_WithoutLoggingConfiguration_UsesDefaults()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .UseXFrameOptions()
             .Build();
@@ -109,8 +105,7 @@ public class SecureHeadersBuilderLoggingTests
             MiddlewareInitialized = new EventId(8001, "ChainInit")
         };
 
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .UseXFrameOptions()
             .UseContentTypeOptions()
@@ -129,8 +124,7 @@ public class SecureHeadersBuilderLoggingTests
     [Fact]
     public void Builder_MethodChaining_WithLoggingEventIdBase()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseHsts()
             .WithLoggingEventIdBase(7000)
             .UseXFrameOptions()
@@ -157,8 +151,7 @@ public class SecureHeadersBuilderLoggingTests
             MiddlewareInitialized = new EventId(9001, "Second")
         };
 
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .WithLoggingEventIds(firstConfig)
             .WithLoggingEventIdBase(7000)
             .WithLoggingEventIds(secondConfig)
@@ -171,14 +164,12 @@ public class SecureHeadersBuilderLoggingTests
     [Fact]
     public void LoggingConfiguration_IsIndependentFromSecuritySettings()
     {
-        var config1 = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config1 = new SecureHeadersBuilder()
             .UseHsts()
             .WithLoggingEventIdBase(5000)
             .Build();
 
-        var config2 = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        var config2 = new SecureHeadersBuilder()
             .UseXFrameOptions()
             .WithLoggingEventIdBase(6000)
             .Build();

@@ -19,11 +19,12 @@ public abstract class SecureHeadersTests
     }
 
     [Fact]
-    public async Task InvokeWith_NullConfig_ExceptionThrown()
+    public void ConstructWith_NullConfig_ExceptionThrown()
     {
-        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, null);
-
-        var exception = await Record.ExceptionAsync(() => secureHeadersMiddleware.InvokeAsync(_context));
+        // The configuration is checked when the middleware is constructed, which ASP.NET Core
+        // does while building the request pipeline, so this fails at application start rather
+        // than on the first request.
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, null));
 
         Assert.NotNull(exception);
         Assert.IsAssignableFrom<ArgumentException>(exception);
@@ -33,7 +34,7 @@ public abstract class SecureHeadersTests
         Assert.Contains(nameof(SecureHeadersMiddlewareConfiguration), exception.Message);
     }
 
-    internal TestServer CreateTestServer(string urlToMap, SecureHeadersMiddlewareConfiguration config = null,
+    internal TestServer CreateTestServer(string urlToMap, Action<SecureHeadersBuilder> configure = null,
         string urlToIgnore = null)
     {
         var host = new HostBuilder()
@@ -48,7 +49,27 @@ public abstract class SecureHeadersTests
                     .Configure(app =>
                     {
                         app.UseRouting();
-                        app.UseSecureHeadersMiddleware(config, urlIgnoreList: [urlToIgnore]);
+                        app.UseSecureHeadersMiddleware(opt =>
+                        {
+                            if (configure == null)
+                            {
+                                opt.UseRecommendedDefaults();
+                            }
+                            else
+                            {
+                                configure(opt);
+                            }
+
+                            // Deliberately conditional. The ignore list is now honoured whatever
+                            // else is configured, where the deprecated overload used to discard it
+                            // whenever a configuration was supplied. Passing [null] through would
+                            // put a null into UrlsToIgnore, which RequestShouldBeIgnored would
+                            // then call Equals on.
+                            if (!string.IsNullOrWhiteSpace(urlToIgnore))
+                            {
+                                opt.SetUrlsToIgnore([urlToIgnore]);
+                            }
+                        });
                         app.UseEndpoints(endpoints =>
                         {
                             if (!string.IsNullOrWhiteSpace(urlToIgnore))

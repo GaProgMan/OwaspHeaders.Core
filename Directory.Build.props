@@ -1,0 +1,23 @@
+<Project>
+
+  <!-- Shared MSBuild properties for every project in this repository.
+       This file is imported *before* each csproj, so any individual project
+       can still override anything set here. -->
+
+  <PropertyGroup Label="Build settings">
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Versioning and authorship">
+    <!-- Only src is packed and published, but keeping the version here means a
+         release is a single-line change rather than a hand-synced pair. -->
+    <Version>11.0.0</Version>
+    <Authors>Jamie Taylor</Authors>
+    <Company>RJJ Software Ltd</Company>
+    <Copyright>Copyright (c) Jamie Taylor / RJJ Software Ltd</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+</Project>

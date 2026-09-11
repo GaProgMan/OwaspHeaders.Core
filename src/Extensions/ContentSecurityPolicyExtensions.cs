@@ -1,35 +1,25 @@
 ﻿namespace OwaspHeaders.Core.Extensions;
 
+/// <summary>
+/// Content Security Policy helpers exposed as extension methods on
+/// <see cref="SecureHeadersMiddlewareConfiguration"/>.
+/// </summary>
+/// <remarks>
+/// These forward to the equivalent instance methods on <see cref="SecureHeadersBuilder"/>, which
+/// own the real implementations. Prefer configuring the middleware in place:
+/// <code>app.UseSecureHeadersMiddleware(opt => opt.UseContentSecurityPolicy().SetCspUris(...));</code>
+/// </remarks>
 public static class ContentSecurityPolicyExtensions
 {
-    /// <summary>
-    /// Used to set the Content Security Policy URIs for a given <see cref="CspUriType"/>
-    /// </summary>
+    /// <inheritdoc cref="SecureHeadersBuilder.SetCspUris"/>
     public static SecureHeadersMiddlewareConfiguration SetCspUris(
         this SecureHeadersMiddlewareConfiguration config,
         List<ContentSecurityPolicyElement> baseUri,
         CspUriType cspUriType)
-    {
-        if (config.UseContentSecurityPolicy)
-        {
-            config.ContentSecurityPolicyConfiguration?.SetCspUri(baseUri, cspUriType);
-        }
+        => new SecureHeadersBuilder(config).SetCspUris(baseUri, cspUriType).Build();
 
-        return config;
-    }
-
-    /// <summary>
-    /// Used to set up the Content Security Policy Sandbox for a given or multiple
-    /// <see cref="CspSandboxType"/>s
-    /// </summary>
+    /// <inheritdoc cref="SecureHeadersBuilder.SetCspSandBox"/>
     public static SecureHeadersMiddlewareConfiguration SetCspSandBox
         (this SecureHeadersMiddlewareConfiguration config, params CspSandboxType[] sandboxType)
-    {
-        if (config.UseContentSecurityPolicy)
-        {
-            config.ContentSecurityPolicyConfiguration?.SetSandbox(sandboxType);
-        }
-
-        return config;
-    }
+        => new SecureHeadersBuilder(config).SetCspSandBox(sandboxType).Build();
 }

@@ -7,7 +7,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     {
         // arrange
         var headerPresentConfig =
-            SecureHeadersMiddlewareBuilder.CreateBuilder()
+            new SecureHeadersBuilder()
                 .UseCrossOriginResourcePolicy().Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
@@ -25,7 +25,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     {
         // arrange
         var headerPresentConfig =
-            SecureHeadersMiddlewareBuilder.CreateBuilder()
+            new SecureHeadersBuilder()
                 .UseCrossOriginOpenerPolicy().Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
@@ -43,7 +43,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     {
         // arrange
         var headerPresentConfig =
-            SecureHeadersMiddlewareBuilder.CreateBuilder()
+            new SecureHeadersBuilder()
                 .UseCrossOriginResourcePolicy()
                 .UseCrossOriginEmbedderPolicy().Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
@@ -63,16 +63,18 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     }
 
     [Fact]
-    public async Task When_UseCrossOriginEmbedderPolicyCalled_But_UseCrossOriginResourcePolicy_NotSupplied_Header_Is_Not_Present()
+    public void When_UseCrossOriginEmbedderPolicyCalled_But_UseCrossOriginResourcePolicy_NotSupplied_Header_Is_Not_Present()
     {
         // arrange
         var headerPresentConfig =
-            SecureHeadersMiddlewareBuilder.CreateBuilder()
+            new SecureHeadersBuilder()
                 .UseCrossOriginEmbedderPolicy().Build();
-        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
         // act
-        var exception = await Record.ExceptionAsync(() => secureHeadersMiddleware.InvokeAsync(_context));
+        // Cross-Origin-Embedder-Policy requires Cross-Origin-Resource-Policy. That pairing rule
+        // is part of configuration validation, so it is caught when the middleware is
+        // constructed rather than when the first request arrives.
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, headerPresentConfig));
 
         // assert
         Assert.NotNull(exception);
@@ -88,7 +90,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     public async Task When_UseCrossOriginResourcePolicyNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
@@ -104,7 +106,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     public async Task When_UseCrossOriginOpenerPolicyNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
@@ -120,7 +122,7 @@ public class CrossOriginOptionsTests : SecureHeadersTests
     public async Task When_UseCrossOriginEmbedderPolicyNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 

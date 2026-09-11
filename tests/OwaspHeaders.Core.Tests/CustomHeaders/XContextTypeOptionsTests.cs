@@ -6,7 +6,7 @@ public class XContextTypeOptionsTests : SecureHeadersTests
     public async Task When_UseContentTypeOptionNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 

@@ -19,24 +19,16 @@ public static class SecureHeadersMiddlewareExtensions
     /// url for the current best practises:
     /// https://www.owasp.org/index.php/OWASP_Secure_Headers_Project#tab=Best_Practices
     /// </remarks>
+    [Obsolete("BuildDefaultConfiguration exists to produce a configuration object to pass to " +
+              "UseSecureHeadersMiddleware, which is deprecated and will be removed in version 12. " +
+              "Use app.UseSecureHeadersMiddleware() for the recommended defaults, or call " +
+              "opt.UseRecommendedDefaults() inside the configure delegate. See " +
+              "https://github.com/GaProgMan/OwaspHeaders.Core/issues/59", false)]
     public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration(
         List<string> urlIgnoreList = null)
     {
-        return SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
-            .UseHsts()
-            .UseXFrameOptions()
-            .UseContentTypeOptions()
-            .UseDefaultContentSecurityPolicy()
-            .UsePermittedCrossDomainPolicies()
-            .UseReferrerPolicy()
-            .UseCacheControl()
-            .UseXssProtection()
-            .UseCrossOriginResourcePolicy()
-            .UseCrossOriginOpenerPolicy()
-            .UseCrossOriginEmbedderPolicy()
-            // When the OWASP Secure Headers project recommends the use of the Reporting-Endpoints header, we will
-            // enable it here
+        return new SecureHeadersBuilder()
+            .UseRecommendedDefaults()
             .SetUrlsToIgnore(urlIgnoreList)
             .Build();
     }
@@ -65,11 +57,107 @@ public static class SecureHeadersMiddlewareExtensions
     /// If an instance of <see cref="SecureHeadersMiddlewareConfiguration"/> is not provided,
     /// then the default value from <see cref="BuildDefaultConfiguration"/> will be provided.
     /// </remarks>
+    [Obsolete("Passing a prebuilt SecureHeadersMiddlewareConfiguration is deprecated and this " +
+              "overload will be removed in version 12. Configure the middleware in place instead: " +
+              "app.UseSecureHeadersMiddleware(opt => opt.UseRecommendedDefaults()). Note that " +
+              "urlIgnoreList is silently ignored by this overload whenever config is supplied; " +
+              "opt.SetUrlsToIgnore(...) always applies. See " + "https://github.com/GaProgMan/OwaspHeaders.Core/issues/59", false)]
     public static IApplicationBuilder UseSecureHeadersMiddleware(this IApplicationBuilder builder,
         SecureHeadersMiddlewareConfiguration config = null, List<string> urlIgnoreList = null)
     {
         ObjectGuardClauses.ObjectCannotBeNull(builder, nameof(builder),
             "cannot be null when setting up OWASP Secure Headers in OwaspHeaders.Core");
-        return builder.UseMiddleware<SecureHeadersMiddleware>(config ?? BuildDefaultConfiguration(urlIgnoreList));
+
+        return AddMiddleware(builder, config ?? BuildDefaultConfiguration(urlIgnoreList));
+    }
+
+    /// <summary>
+    /// Extension method to include the <see cref="SecureHeadersMiddleware" /> in an instance of
+    /// an <see cref="IApplicationBuilder" />, using the headers recommended by OWASP.
+    /// </summary>
+    /// <param name="builder">
+    /// The instance of the <see cref="IApplicationBuilder" /> to use
+    /// </param>
+    /// <returns>
+    /// The <see cref="IApplicationBuilder"/> with the <see cref="SecureHeadersMiddleware" /> added
+    /// </returns>
+    /// <remarks>
+    /// This is the one-line setup. It is equivalent to calling the overload which takes a
+    /// configure delegate and calling <see cref="SecureHeadersBuilder.UseRecommendedDefaults"/>
+    /// on the builder it hands you.
+    /// </remarks>
+    public static IApplicationBuilder UseSecureHeadersMiddleware(this IApplicationBuilder builder)
+    {
+        ObjectGuardClauses.ObjectCannotBeNull(builder, nameof(builder),
+            "cannot be null when setting up OWASP Secure Headers in OwaspHeaders.Core");
+
+        return AddMiddleware(builder, new SecureHeadersBuilder().UseRecommendedDefaults().Build());
+    }
+
+    /// <summary>
+    /// Extension method to include the <see cref="SecureHeadersMiddleware" /> in an instance of
+    /// an <see cref="IApplicationBuilder" />, configured by the supplied delegate.
+    /// </summary>
+    /// <param name="builder">
+    /// The instance of the <see cref="IApplicationBuilder" /> to use
+    /// </param>
+    /// <param name="configure">
+    /// An action which configures the <see cref="SecureHeadersBuilder"/> describing which headers
+    /// to emit, and how
+    /// </param>
+    /// <returns>
+    /// The <see cref="IApplicationBuilder"/> with the <see cref="SecureHeadersMiddleware" /> added
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// The builder handed to <paramref name="configure"/> starts empty: it does not pre-apply the
+    /// OWASP recommended headers. Call
+    /// <see cref="SecureHeadersBuilder.UseRecommendedDefaults"/> first to start from that set.
+    /// </para>
+    /// <para>
+    /// <paramref name="configure"/> is invoked once, here, as the request pipeline is being built.
+    /// Holding on to the builder and mutating it later is not supported.
+    /// </para>
+    /// <example>
+    /// <code>
+    /// app.UseSecureHeadersMiddleware(opt =>
+    /// {
+    ///     opt.UseRecommendedDefaults();
+    ///     opt.SetUrlsToIgnore(["/health"]);
+    /// });
+    /// </code>
+    /// </example>
+    /// </remarks>
+    public static IApplicationBuilder UseSecureHeadersMiddleware(this IApplicationBuilder builder,
+        Action<SecureHeadersBuilder> configure)
+    {
+        ObjectGuardClauses.ObjectCannotBeNull(builder, nameof(builder),
+            "cannot be null when setting up OWASP Secure Headers in OwaspHeaders.Core");
+        ObjectGuardClauses.ObjectCannotBeNull(configure, nameof(configure),
+            "cannot be null when setting up OWASP Secure Headers in OwaspHeaders.Core");
+
+        var secureHeadersBuilder = new SecureHeadersBuilder();
+        configure(secureHeadersBuilder);
+
+        return AddMiddleware(builder, secureHeadersBuilder.Build());
+    }
+
+    /// <summary>
+    /// Validates the configuration and adds the middleware to the pipeline.
+    /// </summary>
+    /// <remarks>
+    /// Every overload routes through here, so an invalid configuration throws from the line the
+    /// consumer wrote in their own startup code, before the middleware is registered at all.
+    /// The middleware validates again when it is constructed, which covers callers who reach
+    /// for <c>UseMiddleware&lt;SecureHeadersMiddleware&gt;</c> directly.
+    /// Nothing is logged here: this runs before the middleware owns a logger, and
+    /// <see cref="IApplicationBuilder.ApplicationServices"/> is not guaranteed to be populated.
+    /// </remarks>
+    private static IApplicationBuilder AddMiddleware(
+        IApplicationBuilder builder, SecureHeadersMiddlewareConfiguration config)
+    {
+        config.ValidateOrThrow();
+
+        return builder.UseMiddleware<SecureHeadersMiddleware>(config);
     }
 }

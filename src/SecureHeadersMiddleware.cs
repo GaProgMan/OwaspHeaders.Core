@@ -10,19 +10,66 @@ namespace OwaspHeaders.Core;
 /// </summary>
 public class SecureHeadersMiddleware
 {
-    private FrozenDictionary<string, string> _headers;
-    private bool _configurationValidated;
+    private readonly FrozenDictionary<string, string> _headers;
     private readonly RequestDelegate _next;
     private readonly SecureHeadersMiddlewareConfiguration _config;
     private readonly ILogger<SecureHeadersMiddleware> _logger;
 
+    /// <summary>
+    /// Creates the middleware, validating the supplied configuration and generating the set of
+    /// headers it describes.
+    /// </summary>
+    /// <remarks>
+    /// ASP.NET Core constructs middleware while the request pipeline is being built, so both the
+    /// validation and the header generation happen at application start rather than on the first
+    /// request. An invalid configuration therefore stops the host from starting instead of
+    /// throwing once traffic arrives.
+    /// </remarks>
+    /// <exception cref="ArgumentException">
+    /// Thrown when <paramref name="config"/> is null, or is not internally consistent.
+    /// </exception>
     public SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config,
         ILogger<SecureHeadersMiddleware> logger = null)
     {
-        _config = config;
         _next = next;
         _logger = logger;
-        _headers = FrozenDictionary<string, string>.Empty;
+        // Assigned before anything logs: the log helpers read _config for its event IDs.
+        _config = config;
+
+        if (_config == null)
+        {
+            var nullConfigMessage =
+                $"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.";
+            LogConfigurationError(nullConfigMessage);
+            throw new ArgumentException(nullConfigMessage);
+        }
+
+        var issues = _config.Validate();
+        if (issues.Count > 0)
+        {
+            foreach (var issue in issues)
+            {
+                LogConfigurationIssue(issue);
+            }
+
+            var errorMessage = SecureHeadersMiddlewareConfiguration.BuildValidationFailureMessage(issues);
+            LogConfigurationError(errorMessage);
+            throw new ArgumentException(errorMessage);
+        }
+
+        _headers = GenerateRelevantHeaders();
+
+        if (_headers.Count == 0)
+        {
+            // A valid configuration that emits nothing is legal but almost never intended: it
+            // means the middleware is in the pipeline doing no work at all.
+            LogConfigurationIssue(
+                "No security headers are enabled, so this middleware will not add any headers " +
+                "to responses. Call UseRecommendedDefaults to start from the OWASP recommended set.");
+        }
+
+        LogMiddlewareInitialized(_headers.Count);
+        LogHeadersGenerated(_headers.Count);
     }
 
     /// <summary>
@@ -33,24 +80,8 @@ public class SecureHeadersMiddleware
     /// <returns></returns>
     public async Task InvokeAsync(HttpContext httpContext)
     {
-        if (_config == null)
-        {
-            var errorMessage = $"Expected an instance of the {nameof(SecureHeadersMiddlewareConfiguration)} object.";
-            LogConfigurationError(errorMessage);
-            throw new ArgumentException(errorMessage);
-        }
-
-        ValidateConfigurationOrThrow();
-
         if (!RequestShouldBeIgnored(httpContext.Request.Path))
         {
-            if (_headers.Count == 0)
-            {
-                _headers = GenerateRelevantHeaders();
-                LogMiddlewareInitialized(_headers.Count);
-                LogHeadersGenerated(_headers.Count);
-            }
-
             var totalHeadersAdded = 0;
 
             foreach (var (key, value) in _headers)
@@ -237,12 +268,6 @@ public class SecureHeadersMiddleware
                 _config.ReferrerPolicy.BuildHeaderValue());
         }
 
-        if (_config.UseExpectCt)
-        {
-            temporaryDictionary.Add(Constants.ExpectCtHeaderName,
-                _config.ExpectCt.BuildHeaderValue());
-        }
-
         if (_config.UseCacheControl)
         {
             temporaryDictionary.Add(Constants.CacheControlHeaderName,
@@ -263,14 +288,8 @@ public class SecureHeadersMiddleware
 
         if (_config.UseCrossOriginEmbedderPolicy)
         {
-            if (!_config.CrossOriginEmbedderPolicy.HeaderValueIsValid(_config.UseCrossOriginResourcePolicy))
-            {
-                LogConfigurationIssue(
-                    "Cross-Origin-Embedder-Policy requires Cross-Origin-Resource-Policy to be enabled");
-                BoolValueGuardClauses.MustBeTrue(_config.UseCrossOriginResourcePolicy,
-                    nameof(_config.UseCrossOriginResourcePolicy));
-            }
-
+            // The Cross-Origin-Resource-Policy pairing rule is enforced by
+            // SecureHeadersMiddlewareConfiguration.Validate, which runs before we get here.
             temporaryDictionary.Add(Constants.CrossOriginEmbedderPolicyHeaderName,
                 _config.CrossOriginEmbedderPolicy.BuildHeaderValue());
         }
@@ -282,26 +301,6 @@ public class SecureHeadersMiddleware
         }
 
         return temporaryDictionary.ToFrozenDictionary();
-    }
-
-    private void ValidateConfigurationOrThrow()
-    {
-        if (_configurationValidated)
-        {
-            return;
-        }
-
-        var issues = _config.Validate();
-        if (issues.Count > 0)
-        {
-            var errorMessage =
-                $"SecureHeaders configuration is invalid. {issues.Count} header flag(s) are enabled without a matching configuration object: "
-                + string.Join(" ", issues);
-            LogConfigurationError(errorMessage);
-            throw new ArgumentException(errorMessage);
-        }
-
-        _configurationValidated = true;
     }
 
     private bool RequestShouldBeIgnored(PathString requestedPath)

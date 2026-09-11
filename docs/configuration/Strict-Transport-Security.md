@@ -52,4 +52,4 @@ The HSTS header object (known internally as `HstsConfiguration`) has the followi
 - int: `maxAge`
 - bool: `includeSubdomains`
 
-These values can be set when creating a new instance of the `HstsConfiguration` object, or by calling the `UseHsts` extension method on the `SecureHeadersMiddlewareConfiguration` class.
+These values are set by calling the `UseHsts` extension method on the `SecureHeadersMiddlewareConfiguration` class.

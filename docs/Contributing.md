@@ -35,7 +35,7 @@ In order to submit a PR to OwaspHeaders.Core, please follow these steps (or simi
 3. Create a branch with a descriptive name under the `feature/` directory
 4. Commit all of your changes to that branch
 5. Don't forget to add tests 
-6. Ensure that you run `dotnet-format` (with the optional `fix` verb for auto-fixes)
+6. Ensure that you run `dotnet format OwaspHeaders.Core.sln` (add `--verify-no-changes` to check without editing)
 7. Push those changes to your forked version of the repository 
 8. Create a Pull Request through the GitHub user interface and leave a detailed description
 
@@ -46,7 +46,7 @@ For instance, if you were to create a branch to implement a new HTTP header call
 3. Create a branch called `feature/x-example-header` (you might do this with `git checkout -b feature/x-example-header`)
 4. Add code changes
 5. Add tests
-6. Run `dotnet-format fix` to ensure that all formatting is correct
+6. Run `dotnet format OwaspHeaders.Core.sln` to ensure that all formatting is correct
 7. Push all the changes to the fork of the repository
 8. Create a Pull Request with the following information
 
@@ -69,9 +69,9 @@ For instance, if you were to create a branch to implement a new HTTP header call
 > These items are essential and must be completed for each commit. If they are not completed, the PR may not be accepted.
 > 
 > - [x] I have added tests to the OwaspHeaders.Core.Tests project
-> - [x] I have run the `dotnet-format` command and fixed any .editorconfig issues
+> - [x] I have run `dotnet format OwaspHeaders.Core.sln` and fixed any .editorconfig issues
 > - [x] I have ensured that the code coverage has not dropped below 65%
-> - [x] I have increased the version number in OwaspHeaders.Core.csproj (only relevant for code changes)
+> - [x] I have increased the version number in Directory.Build.props (only relevant for code changes)
 > #### Optional
 > 
 > - :negative_squared_cross_mark: I have documented the new feature in the docs directory

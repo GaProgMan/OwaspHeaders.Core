@@ -2,34 +2,21 @@
   
   <PropertyGroup>
     <Description>A Unit Test project (using xunit) for the OwaspHeaders.Core project</Description>
-    <VersionPrefix>10.2.1</VersionPrefix>
-    <Authors>Jamie Taylor</Authors>
     <AssemblyName>OwaspHeaders.Core.Tests</AssemblyName>
-    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <OutputType>Exe</OutputType>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <!-- Microsoft Testing Platform runner extensions: these replace the VSTest
+         trio of Microsoft.NET.Test.Sdk, xunit.runner.visualstudio and
+         coverlet.collector. See issue #226. -->
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.11.0" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="2.4.0" />
     
-    <!--
-      Currently locked to version 8, as we support .NET 8 as a target platform here.
-      As all of the SDKs are backward compatible, we can leave this here until Microsoft
-      drops support for .NET 8.
-    -->
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.0" />
-    <PackageReference Include="Moq" Version="4.20.72" />
-    <PackageReference Include="xunit" Version="2.9.2" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.0-*" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.6.0" />
+    <PackageReference Include="xunit.v3" Version="4.0.0" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <ProjectReference Include="..\..\src\OwaspHeaders.Core.csproj" />
   </ItemGroup>

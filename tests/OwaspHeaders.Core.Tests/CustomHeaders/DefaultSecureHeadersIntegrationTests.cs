@@ -6,18 +6,26 @@ public class DefaultSecureHeadersIntegrationTests : SecureHeadersTests
     public async Task AllHeaders_Present_When_BuildDefault_Used()
     {
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareExtensions
-            .BuildDefaultConfiguration()
-            .UseDefaultContentSecurityPolicy();
         const string testUrl = "/hello";
-        TestServer = CreateTestServer(testUrl, headerPresentConfig);
+
+        // One delegate, used for both the pipeline and the assertions below. This is the shape
+        // consumers are meant to adopt: hoist the configuration into a named method, hand it to
+        // UseSecureHeadersMiddleware, and assert on it from a test via BuildAndValidate.
+        static void Configure(SecureHeadersBuilder opt)
+        {
+            opt.UseRecommendedDefaults();
+            opt.UseDefaultContentSecurityPolicy();
+        }
+
+        var headerPresentConfig = SecureHeadersBuilder.BuildAndValidate(Configure);
+        TestServer = CreateTestServer(testUrl, Configure);
 
         // act
         var context = await TestServer.SendAsync(c =>
         {
             c.Request.Path = testUrl;
             c.Request.Method = HttpMethods.Get;
-        });
+        }, TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(headerPresentConfig.UseHsts);

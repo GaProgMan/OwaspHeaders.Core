@@ -5,27 +5,27 @@ public class SecureHeadersMiddlewareConfiguration
     /// <summary>
     /// Indicates whether the response should use HTTP Strict Transport Security
     /// </summary>
-    public bool UseHsts { get; set; }
+    public bool UseHsts { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use X-Frame-Options
     /// </summary>
-    public bool UseXFrameOptions { get; set; }
+    public bool UseXFrameOptions { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use X-XSS-Protection
     /// </summary>                
-    public bool UseXssProtection { get; set; }
+    public bool UseXssProtection { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use X-Content-Type-Options
     /// </summary>
-    public bool UseXContentTypeOptions { get; set; }
+    public bool UseXContentTypeOptions { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Content-Security-Policy
     /// </summary>
-    public bool UseContentSecurityPolicy { get; set; }
+    public bool UseContentSecurityPolicy { get; internal set; }
 
     /// <summary>
     /// <para>Indicates whether the response should use a Report-Only version
@@ -34,150 +34,118 @@ public class SecureHeadersMiddlewareConfiguration
     /// not block content which violates the CSP rule set - it will report to
     /// the supplied ReportUri</para>
     /// </summary>
-    public bool UseContentSecurityPolicyReportOnly { get; set; }
+    public bool UseContentSecurityPolicyReportOnly { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use X-Content-Security-Policy for
     /// Internet Explorer compatibility
     /// </summary>
-    public bool UseXContentSecurityPolicy { get; set; }
+    public bool UseXContentSecurityPolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use X-Permitted-Cross-Domain-Policy
     /// </summary>
-    public bool UsePermittedCrossDomainPolicy { get; set; }
+    public bool UsePermittedCrossDomainPolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Referrer-Policy
     /// </summary>
-    public bool UseReferrerPolicy { get; set; }
-
-    /// <summary>
-    /// Indicates whether the response should use Expect-CT
-    /// </summary>
-    /// <remarks>
-    /// The Expect-CT header has been deprecated by OWASP. The setter is marked
-    /// <see cref="ObsoleteAttribute"/> so that callers who bypass the (also obsolete)
-    /// <c>UseExpectCt</c> builder extension still see a deprecation warning. The getter
-    /// remains non-obsolete so the middleware can read the flag without warnings.
-    /// </remarks>
-    public bool UseExpectCt
-    {
-        get;
-        [Obsolete("Expect-CT has been deprecated by OWASP and will be removed in a future major version. See https://owasp.org/www-project-secure-headers/#expect-ct for details.", false)]
-        set;
-    }
+    public bool UseReferrerPolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Cache-Control
     /// </summary>
-    public bool UseCacheControl { get; set; }
+    public bool UseCacheControl { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Cross-Origin-Resource-Policy
     /// </summary>
-    public bool UseCrossOriginResourcePolicy { get; set; }
+    public bool UseCrossOriginResourcePolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Cross-Origin-Opener-Policy
     /// </summary>
-    public bool UseCrossOriginOpenerPolicy { get; set; }
+    public bool UseCrossOriginOpenerPolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Cross-Origin-Embedder-Policy
     /// </summary>
-    public bool UseCrossOriginEmbedderPolicy { get; set; }
+    public bool UseCrossOriginEmbedderPolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use the Reporting-Endpoints header
     /// </summary>
-    public bool UseReportingEndPoints { get; set; }
+    public bool UseReportingEndPoints { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Clear-Site-Data
     /// </summary>
-    public bool UseClearSiteData { get; set; }
+    public bool UseClearSiteData { get; internal set; }
 
     /// <summary>
     /// The HTTP Strict Transport Security configuration to use
     /// </summary>
-    public HstsConfiguration HstsConfiguration { get; set; }
+    public HstsConfiguration HstsConfiguration { get; internal set; }
 
     /// <summary>
     /// The X-Frame-Options configuration to use
     /// </summary>
-    public XFrameOptionsConfiguration XFrameOptionsConfiguration { get; set; }
+    public XFrameOptionsConfiguration XFrameOptionsConfiguration { get; internal set; }
 
     /// <summary>
     /// The X-XSS-Protection configuration to use
     /// </summary>
-    public XssConfiguration XssConfiguration { get; set; }
+    public XssConfiguration XssConfiguration { get; internal set; }
 
     /// <summary>
     /// The Content-Security-Policy configuration to use
     /// </summary>
-    public ContentSecurityPolicyConfiguration ContentSecurityPolicyConfiguration { get; set; }
+    public ContentSecurityPolicyConfiguration ContentSecurityPolicyConfiguration { get; internal set; }
 
     /// <summary>
     /// The Content-Security-Policy-Report-Only configuration to use 
     /// </summary>
-    public ContentSecurityPolicyReportOnlyConfiguration ContentSecurityPolicyReportOnlyConfiguration { get; set; }
+    public ContentSecurityPolicyReportOnlyConfiguration ContentSecurityPolicyReportOnlyConfiguration { get; internal set; }
 
     /// <summary>
     /// The X-Permitted-Cross-Domain-Policy configuration to use
     /// </summary>
-    public PermittedCrossDomainPolicyConfiguration PermittedCrossDomainPolicyConfiguration { get; set; }
+    public PermittedCrossDomainPolicyConfiguration PermittedCrossDomainPolicyConfiguration { get; internal set; }
 
     /// <summary>
     /// The Referrer-Policy configuration to use
     /// </summary>
-    public ReferrerPolicy ReferrerPolicy { get; set; }
+    public ReferrerPolicy ReferrerPolicy { get; internal set; }
 
     /// <summary>
     /// The Cache-Control configuration to use
     /// </summary>
-    public CacheControl CacheControl { get; set; }
+    public CacheControl CacheControl { get; internal set; }
 
-    /// <summary>
-    /// The Expect-CT configuration to use
-    /// </summary>
-    /// <remarks>
-    /// The Expect-CT header has been deprecated by OWASP. The setter is marked
-    /// <see cref="ObsoleteAttribute"/> so that callers who assign this directly still see
-    /// a deprecation warning. The getter remains non-obsolete so the middleware can read
-    /// the value without warnings.
-    /// </remarks>
-    public ExpectCt ExpectCt
-    {
-        get;
-        [Obsolete("Expect-CT has been deprecated by OWASP and will be removed in a future major version. See https://owasp.org/www-project-secure-headers/#expect-ct for details.", false)]
-        set;
-    }
+    public CrossOriginResourcePolicy CrossOriginResourcePolicy { get; internal set; }
 
-    public CrossOriginResourcePolicy CrossOriginResourcePolicy { get; set; }
+    public CrossOriginOpenerPolicy CrossOriginOpenerPolicy { get; internal set; }
 
-    public CrossOriginOpenerPolicy CrossOriginOpenerPolicy { get; set; }
+    public CrossOriginEmbedderPolicy CrossOriginEmbedderPolicy { get; internal set; }
 
-    public CrossOriginEmbedderPolicy CrossOriginEmbedderPolicy { get; set; }
-
-    public ReportingEndpointsPolicy ReportingEndpointsPolicy { get; set; }
+    public ReportingEndpointsPolicy ReportingEndpointsPolicy { get; internal set; }
 
     /// <summary>
     /// The Clear-Site-Data path configuration to use
     /// </summary>
-    public ClearSiteDataPathConfiguration ClearSiteDataPathConfiguration { get; set; }
+    public ClearSiteDataPathConfiguration ClearSiteDataPathConfiguration { get; internal set; }
 
     /// <summary>
     /// A list of URLs that, when requested, should be ignored completely by
     /// the middleware
     /// </summary>
-    public List<string> UrlsToIgnore { get; set; } = [];
+    public List<string> UrlsToIgnore { get; internal set; } = [];
 
     /// <summary>
     /// Configuration for logging event IDs. Allows customization to avoid conflicts
     /// with application event IDs. Defaults to standard SecureHeaders event ID ranges.
     /// </summary>
-    public SecureHeadersLoggingConfiguration LoggingConfiguration { get; set; } = new();
+    public SecureHeadersLoggingConfiguration LoggingConfiguration { get; internal set; } = new();
 
     /// <summary>
     /// Returns a list of validation issues describing every <c>UseX</c> flag that has
@@ -186,9 +154,13 @@ public class SecureHeadersMiddlewareConfiguration
     /// </summary>
     /// <remarks>
     /// Mismatches typically occur when a flag is set directly on the configuration
-    /// instance instead of via the corresponding builder extension on
-    /// <see cref="SecureHeadersMiddlewareBuilder"/>, which would normally allocate both
-    /// the flag and the matching configuration object together.
+    /// instance instead of via the corresponding method on <see cref="SecureHeadersBuilder"/>,
+    /// which would normally allocate both the flag and the matching configuration object
+    /// together.
+    /// </remarks>
+    /// <remarks>
+    /// As well as the per-flag checks, this method enforces cross-header rules: rules where
+    /// one header's value is only meaningful in the presence of another.
     /// </remarks>
     public IReadOnlyList<string> Validate()
     {
@@ -200,7 +172,7 @@ public class SecureHeadersMiddlewareConfiguration
             {
                 issues.Add(
                     $"{flagName} is true but its matching configuration object is null. " +
-                    $"Configure this header via the corresponding SecureHeadersMiddlewareBuilder extension method " +
+                    $"Configure this header via the corresponding SecureHeadersBuilder method " +
                     $"instead of setting {flagName} directly.");
             }
         }
@@ -218,7 +190,6 @@ public class SecureHeadersMiddlewareConfiguration
         Check(UsePermittedCrossDomainPolicy, PermittedCrossDomainPolicyConfiguration,
             nameof(UsePermittedCrossDomainPolicy));
         Check(UseReferrerPolicy, ReferrerPolicy, nameof(UseReferrerPolicy));
-        Check(UseExpectCt, ExpectCt, nameof(UseExpectCt));
         Check(UseCacheControl, CacheControl, nameof(UseCacheControl));
         Check(UseCrossOriginResourcePolicy, CrossOriginResourcePolicy, nameof(UseCrossOriginResourcePolicy));
         Check(UseCrossOriginOpenerPolicy, CrossOriginOpenerPolicy, nameof(UseCrossOriginOpenerPolicy));
@@ -226,6 +197,52 @@ public class SecureHeadersMiddlewareConfiguration
         Check(UseReportingEndPoints, ReportingEndpointsPolicy, nameof(UseReportingEndPoints));
         Check(UseClearSiteData, ClearSiteDataPathConfiguration, nameof(UseClearSiteData));
 
+        // Cross-header rule: Cross-Origin-Embedder-Policy is only meaningful alongside
+        // Cross-Origin-Resource-Policy. This was previously enforced from inside the
+        // middleware's header generation, which meant it only surfaced on the first request.
+        // The null check matters: a null policy object with the flag set is already reported
+        // by the Check call above, and dereferencing it here would throw from inside the very
+        // method that exists to prevent that class of failure.
+        if (UseCrossOriginEmbedderPolicy && CrossOriginEmbedderPolicy is not null &&
+            !CrossOriginEmbedderPolicy.HeaderValueIsValid(UseCrossOriginResourcePolicy))
+        {
+            issues.Add("Cross-Origin-Embedder-Policy requires Cross-Origin-Resource-Policy " +
+                       "to be enabled. Call UseCrossOriginResourcePolicy as well, or drop the " +
+                       "call to UseCrossOriginEmbedderPolicy.");
+        }
+
         return issues;
+    }
+
+    /// <summary>
+    /// Throws when <see cref="Validate"/> reports any issues, and does nothing otherwise.
+    /// </summary>
+    /// <remarks>
+    /// The middleware calls this as the request pipeline is built, so an invalid configuration
+    /// fails at application start rather than on the first request to reach the middleware.
+    /// Consumers can call it directly to assert, from a test, that their configuration is valid.
+    /// </remarks>
+    /// <exception cref="ArgumentException">
+    /// Thrown when the configuration is not internally consistent.
+    /// </exception>
+    public void ValidateOrThrow()
+    {
+        var issues = Validate();
+        if (issues.Count == 0)
+        {
+            return;
+        }
+
+        throw new ArgumentException(BuildValidationFailureMessage(issues));
+    }
+
+    /// <summary>
+    /// Builds the message used by every configuration validation failure, so that the wording
+    /// is identical wherever the failure is raised from.
+    /// </summary>
+    internal static string BuildValidationFailureMessage(IReadOnlyList<string> issues)
+    {
+        return $"SecureHeaders configuration is invalid. {issues.Count} issue(s) found: "
+               + string.Join(" ", issues);
     }
 }

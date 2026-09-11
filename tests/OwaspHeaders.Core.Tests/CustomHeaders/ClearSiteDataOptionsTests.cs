@@ -6,7 +6,7 @@ public class ClearSiteDataOptionsTests : SecureHeadersTests
     public async Task When_UseClearSiteDataNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
@@ -22,7 +22,7 @@ public class ClearSiteDataOptionsTests : SecureHeadersTests
     public async Task When_UseClearSiteDataCalled_With_DefaultOptions_Header_Present()
     {
         // arrange
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseClearSiteData()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, config);
@@ -42,7 +42,7 @@ public class ClearSiteDataOptionsTests : SecureHeadersTests
     public async Task When_UseClearSiteDataCalled_With_WildcardOption_Header_Present()
     {
         // arrange
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseClearSiteData(ClearSiteDataOptions.wildcard)
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, config);
@@ -62,7 +62,7 @@ public class ClearSiteDataOptionsTests : SecureHeadersTests
     public async Task When_UseClearSiteDataCalled_With_CustomOptions_Header_Present()
     {
         // arrange
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseClearSiteData(ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies)
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, config);
@@ -87,7 +87,7 @@ public class ClearSiteDataOptionsTests : SecureHeadersTests
             ["/logout"] = [ClearSiteDataOptions.wildcard]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseClearSiteDataForPaths(pathConfig)
             .Build();
 
@@ -115,7 +115,7 @@ public class ClearSiteDataOptionsTests : SecureHeadersTests
             ["/logout"] = [ClearSiteDataOptions.wildcard]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseClearSiteDataForPaths(pathConfig)
             .Build();
 
@@ -135,7 +135,7 @@ public class ClearSiteDataOptionsTests : SecureHeadersTests
     public async Task When_AddClearSiteDataPath_FluentConfiguration_Works()
     {
         // arrange
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard)
             .AddClearSiteDataPath("/admin/logout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies)
             .Build();
@@ -175,7 +175,7 @@ public class ClearSiteDataOptionsTests : SecureHeadersTests
             ["/account/logout"] = [ClearSiteDataOptions.wildcard]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseClearSiteDataForPaths(pathConfig)
             .Build();
 

@@ -28,6 +28,18 @@ app.UseSecureHeadersMiddleware();
 
 This will add a number of default HTTP headers to all responses from your server component.
 
+To choose the headers yourself, pass a configure delegate instead:
+
+```csharp
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseRecommendedDefaults();
+    opt.SetUrlsToIgnore(["/health"]);
+});
+```
+
+The configuration is validated as your application starts, so a mistake stops the host from starting rather than surfacing on the first request.
+
 The following is an example of the response headers from version 9.0.0 (taken on November 19th, 2024)
 
 ```http

@@ -1,5 +1,9 @@
 ﻿namespace OwaspHeaders.Core.Tests.GuardClauses;
 
+// Guards.BoolValueGuardClauses is deprecated for removal in version 12. It still ships in
+// version 11, so it still needs to behave; these tests are the reason the suppression is here.
+#pragma warning disable CS0618
+
 public class BoolValueGuardClauses
 {
     [Fact]
@@ -30,6 +34,8 @@ public class BoolValueGuardClauses
         Assert.Contains(argName, exception.Message);
     }
 }
+
+#pragma warning restore CS0618
 
 public class HeaderValueGuardClauses
 {

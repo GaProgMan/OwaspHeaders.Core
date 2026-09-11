@@ -6,7 +6,7 @@ public class ReferrerPolicyOptionsTests : SecureHeadersTests
     public async Task When_UseReferrerPolicyNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 

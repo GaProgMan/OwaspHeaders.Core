@@ -52,4 +52,4 @@ The values available for the `XPermittedCrossDomainOptionValue` enum are:
 - `byFtpFileType`
 - `all`
 
-These values can be set when creating a new instance of the `XPermittedCrossDomainOptionValue` object, or by calling the `UsePermittedCrossDomainPolicies` extension method on the `SecureHeadersMiddlewareConfiguration` class.
+These values are set by calling the `UsePermittedCrossDomainPolicies` extension method on the `SecureHeadersMiddlewareConfiguration` class.

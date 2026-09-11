@@ -240,11 +240,13 @@ public sealed class SecureHeadersBuilder
         _configuration.ContentSecurityPolicyConfiguration = new ContentSecurityPolicyConfiguration
             (null, true, true, null, null, null);
 
-        SetCspUris(
+        // Written to this policy directly rather than through SetCspUris, which also applies to a
+        // report-only policy if one has already been configured.
+        _configuration.ContentSecurityPolicyConfiguration.SetCspUri(
             [ContentSecurityPolicyHelpers.CreateSelfDirective()],
             CspUriType.Script);
 
-        SetCspUris(
+        _configuration.ContentSecurityPolicyConfiguration.SetCspUri(
             [ContentSecurityPolicyHelpers.CreateSelfDirective()],
             CspUriType.Object);
 
@@ -294,14 +296,38 @@ public sealed class SecureHeadersBuilder
     /// <summary>
     /// Configures Content Security Policy Report Only mode, reporting to the supplied report URI.
     /// </summary>
+    /// <param name="useXContentSecurityPolicy">
+    /// Must be <c>false</c>. X-Content-Security-Policy is an enforcing header with no report-only
+    /// form, so it cannot be enabled from here: call <see cref="UseContentSecurityPolicy"/> with
+    /// <c>useXContentSecurityPolicy: true</c> instead. The parameter remains only so that this
+    /// method's signature is unchanged, and will be removed in version 12.
+    /// </param>
+    /// <remarks>
+    /// Add directives to the report-only policy by calling <see cref="SetCspUris"/> and
+    /// <see cref="SetCspSandBox"/> after this method.
+    /// </remarks>
+    /// <exception cref="ArgumentException">
+    /// Thrown when <paramref name="useXContentSecurityPolicy"/> is <c>true</c>.
+    /// </exception>
     public SecureHeadersBuilder UseContentSecurityPolicyReportUriOnly(
         string reportUri,
         string pluginTypes = null, bool blockAllMixedContent = true,
         bool upgradeInsecureRequests = true, string referrer = null,
         bool useXContentSecurityPolicy = false, string reportTo = null)
     {
+        // Report-only mode must neither enable nor disable X-Content-Security-Policy. Enabling it
+        // here set the flag with no enforcing policy behind it, and the default of false switched
+        // off an X-Content-Security-Policy that UseContentSecurityPolicy had enabled (issue #240).
+        if (useXContentSecurityPolicy)
+        {
+            throw new ArgumentException(
+                "X-Content-Security-Policy has no report-only form, so it cannot be enabled from a " +
+                "report-only Content-Security-Policy method. Call " +
+                "UseContentSecurityPolicy(useXContentSecurityPolicy: true) to emit it.",
+                nameof(useXContentSecurityPolicy));
+        }
+
         _configuration.UseContentSecurityPolicyReportOnly = true;
-        _configuration.UseXContentSecurityPolicy = useXContentSecurityPolicy;
 
         _configuration.ContentSecurityPolicyReportOnlyConfiguration = new ContentSecurityPolicyReportOnlyConfiguration
             (pluginTypes, blockAllMixedContent, upgradeInsecureRequests, referrer, reportUri, reportTo);
@@ -316,6 +342,9 @@ public sealed class SecureHeadersBuilder
     /// This method has been renamed to UseContentSecurityPolicyReportUriOnly for clarity.
     /// Please update your code to use the new method name.
     /// </remarks>
+    /// <exception cref="ArgumentException">
+    /// Thrown when <paramref name="useXContentSecurityPolicy"/> is <c>true</c>.
+    /// </exception>
     [Obsolete("UseContentSecurityPolicyReportOnly has been renamed to UseContentSecurityPolicyReportUriOnly. Please use the new method name.", false)]
     public SecureHeadersBuilder UseContentSecurityPolicyReportOnly(
         string reportUri,
@@ -653,15 +682,19 @@ public sealed class SecureHeadersBuilder
     /// Used to set the Content Security Policy URIs for a given <see cref="CspUriType"/>
     /// </summary>
     /// <remarks>
-    /// This is a no-op unless <see cref="UseContentSecurityPolicy"/> or
-    /// <see cref="UseDefaultContentSecurityPolicy"/> has already been called.
+    /// The URIs are applied to every Content Security Policy configured so far: the enforcing
+    /// policy from <see cref="UseContentSecurityPolicy"/> or
+    /// <see cref="UseDefaultContentSecurityPolicy"/>, and the report-only policy from
+    /// <see cref="UseContentSecurityPolicyReportUriOnly"/>. This is a no-op if neither has been
+    /// called yet.
     /// </remarks>
     public SecureHeadersBuilder SetCspUris(List<ContentSecurityPolicyElement> baseUri, CspUriType cspUriType)
     {
-        if (_configuration.UseContentSecurityPolicy)
-        {
-            _configuration.ContentSecurityPolicyConfiguration?.SetCspUri(baseUri, cspUriType);
-        }
+        _configuration.ContentSecurityPolicyConfiguration?.SetCspUri(baseUri, cspUriType);
+
+        // The report-only policy gets its own copy, so that adding to one policy's list later
+        // cannot change the other policy.
+        _configuration.ContentSecurityPolicyReportOnlyConfiguration?.SetCspUri([.. baseUri], cspUriType);
 
         return this;
     }
@@ -671,15 +704,13 @@ public sealed class SecureHeadersBuilder
     /// <see cref="CspSandboxType"/>s
     /// </summary>
     /// <remarks>
-    /// This is a no-op unless <see cref="UseContentSecurityPolicy"/> or
-    /// <see cref="UseDefaultContentSecurityPolicy"/> has already been called.
+    /// The sandbox is applied to every Content Security Policy configured so far, in the same way
+    /// as <see cref="SetCspUris"/>. This is a no-op if no policy has been configured yet.
     /// </remarks>
     public SecureHeadersBuilder SetCspSandBox(params CspSandboxType[] sandboxType)
     {
-        if (_configuration.UseContentSecurityPolicy)
-        {
-            _configuration.ContentSecurityPolicyConfiguration?.SetSandbox(sandboxType);
-        }
+        _configuration.ContentSecurityPolicyConfiguration?.SetSandbox(sandboxType);
+        _configuration.ContentSecurityPolicyReportOnlyConfiguration?.SetSandbox([.. sandboxType]);
 
         return this;
     }

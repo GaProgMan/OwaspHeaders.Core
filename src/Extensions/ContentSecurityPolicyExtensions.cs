@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Extensions;
+﻿namespace OwaspHeaders.Core.Extensions;
 
 /// <summary>
 /// Content Security Policy helpers exposed as extension methods on

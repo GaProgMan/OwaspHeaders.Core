@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System.Collections.Frozen;
+﻿using System.Collections.Frozen;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,7 +13,7 @@ public class SecureHeadersMiddleware
     private readonly FrozenDictionary<string, string> _headers;
     private readonly RequestDelegate _next;
     private readonly SecureHeadersMiddlewareConfiguration _config;
-    private readonly ILogger<SecureHeadersMiddleware> _logger;
+    private readonly ILogger<SecureHeadersMiddleware>? _logger;
 
     /// <summary>
     /// Creates the middleware, validating the supplied configuration and generating the set of
@@ -30,7 +29,7 @@ public class SecureHeadersMiddleware
     /// Thrown when <paramref name="config"/> is null, or is not internally consistent.
     /// </exception>
     public SecureHeadersMiddleware(RequestDelegate next, SecureHeadersMiddlewareConfiguration config,
-        ILogger<SecureHeadersMiddleware> logger = null)
+        ILogger<SecureHeadersMiddleware>? logger = null)
     {
         _next = next;
         _logger = logger;
@@ -87,7 +86,7 @@ public class SecureHeadersMiddleware
 
             foreach (var (key, value) in _headers)
             {
-                var headerFailedEventId = _config?.LoggingConfiguration?.HeaderAdditionFailed ?? SecureHeadersEventIds.HeaderAdditionFailed;
+                var headerFailedEventId = _config.LoggingConfiguration.HeaderAdditionFailed;
                 if (httpContext.TryAddHeader(key, value, _logger, headerFailedEventId))
                 {
                     LogHeaderAdded(key, value.Length);
@@ -104,7 +103,7 @@ public class SecureHeadersMiddleware
                 if (clearSiteDataConfig != null)
                 {
                     var clearSiteDataValue = clearSiteDataConfig.BuildHeaderValue();
-                    var headerFailedEventId = _config?.LoggingConfiguration?.HeaderAdditionFailed ?? SecureHeadersEventIds.HeaderAdditionFailed;
+                    var headerFailedEventId = _config.LoggingConfiguration.HeaderAdditionFailed;
 
                     if (httpContext.TryAddHeader(Constants.ClearSiteDataHeaderName, clearSiteDataValue, _logger, headerFailedEventId))
                     {

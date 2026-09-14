@@ -28,6 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Tracks the public API in PublicAPI.Shipped.txt and PublicAPI.Unshipped.txt, so that any
+         change to the public surface has to be recorded there or the build fails. PrivateAssets
+         keeps it out of the published package's dependencies. See issue #242. -->
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.6.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
     <InternalsVisibleTo Include="OwaspHeaders.Core.Tests" />
   </ItemGroup>
 

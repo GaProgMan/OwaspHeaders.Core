@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Models;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Models;
 
 /// <summary>
 /// This class represents some of the most commonly used Cache Control

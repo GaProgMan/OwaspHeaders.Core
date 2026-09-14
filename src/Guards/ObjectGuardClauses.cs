@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Guards;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Guards;
 
 public static class ObjectGuardClauses
 {

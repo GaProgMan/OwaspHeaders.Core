@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Models;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Models;
 
 /// <summary>
 /// Configuration for the Clear-Site-Data header

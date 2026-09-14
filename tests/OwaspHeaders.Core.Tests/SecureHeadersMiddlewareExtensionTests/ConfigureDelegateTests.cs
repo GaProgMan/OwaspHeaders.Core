@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Tests.SecureHeadersMiddlewareExtensionTests;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Tests.SecureHeadersMiddlewareExtensionTests;
 
 /// <summary>
 /// Covers the configure-delegate overload of <c>UseSecureHeadersMiddleware</c>, end to end

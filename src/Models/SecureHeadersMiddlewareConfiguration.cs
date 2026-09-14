@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Models;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Models;
 
 public class SecureHeadersMiddlewareConfiguration
 {

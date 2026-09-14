@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Tests.BuilderTests;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Tests.BuilderTests;
 
 /// <summary>
 /// Covers configuration validation and, in particular, *when* it happens: at the point the

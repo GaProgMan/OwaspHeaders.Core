@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Tests.GuardClauses;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Tests.GuardClauses;
 
 public class ObjectGuardClauses
 {

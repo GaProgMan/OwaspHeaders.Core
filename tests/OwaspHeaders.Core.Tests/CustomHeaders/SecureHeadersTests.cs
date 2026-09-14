@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Tests.CustomHeaders;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Tests.CustomHeaders;
 
 public abstract class SecureHeadersTests
 {

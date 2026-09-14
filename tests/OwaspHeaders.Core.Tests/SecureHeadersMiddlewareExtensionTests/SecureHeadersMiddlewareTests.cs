@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.Features;
+﻿#nullable disable
+using Microsoft.AspNetCore.Http.Features;
 
 namespace OwaspHeaders.Core.Tests.SecureHeadersMiddlewareExtensionTests;
 

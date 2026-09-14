@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Helpers;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Helpers;
 
 public static class ContentSecurityPolicyHelpers
 {

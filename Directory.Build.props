@@ -8,10 +8,10 @@
     <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <!-- Nullable is on for every project, but each file which has not yet been
-         reviewed for null-safety opts out with a #nullable disable directive on
-         its first line. Deleting a file's directive is the review, so
-         `grep -rl '#nullable disable' src tests` is the work left. See issue #233. -->
+    <!-- Nullable is on for every project, and nothing opts back out: the
+         #nullable disable directives are gone from src and tests alike
+         (issue #233). New code is written nullable-annotated, and RS0041 fails
+         the build on public API added without nullability annotations. -->
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>

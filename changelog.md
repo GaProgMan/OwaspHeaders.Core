@@ -210,6 +210,33 @@ The configuration models are now nullable-annotated, which meant deciding what e
 - Breaking change: an object initialiser for `ContentSecurityPolicyElement` which omits `DirectiveOrUri` no longer compiles (`CS9035`). Every initialiser in this repository and every one found in public code already sets it. Note that System.Text.Json enforces `required` when deserialising, and that a type with required members cannot satisfy a generic `new()` constraint.
 - Behaviour change: `DirectiveOrUri = ""` and `ReportingEndpointsPolicy` with bad input now throw where they used to emit a malformed header or crash later. Because configuration is built while the request pipeline is built, that happens at startup.
 
+#### The configuration object is nullable-annotated ([issue #233](https://github.com/GaProgMan/OwaspHeaders.Core/issues/233))
+
+`SecureHeadersMiddlewareConfiguration` holds a `UseX` flag and a matching configuration object for each header, and the configuration object is null until that header is configured. Those thirteen properties are now declared as `T?`, which says so.
+
+On its own that would force a null check on every read, including reads which have just checked the flag. So each flag carries `[MemberNotNullWhen(true, ...)]` naming its configuration object, and checking the flag is enough for the compiler:
+
+```csharp
+if (config.UseHsts)
+{
+    // config.HstsConfiguration is known to be non-null here
+    var value = config.HstsConfiguration.BuildHeaderValue();
+}
+```
+
+`Assert.True(config.UseHsts)` narrows in the same way, because xUnit annotates its condition, so tests reading a configuration after asserting its flag need no changes.
+
+**Changes:**
+
+- The thirteen per-header configuration properties are `T?`. `UrlsToIgnore` and `LoggingConfiguration` are unchanged: both are initialised and neither can be null.
+- Each of the fourteen flags which has a backing configuration object carries `[MemberNotNullWhen]`. `UseXContentTypeOptions` does not, because X-Content-Type-Options emits a constant value and has no configuration object. `UseContentSecurityPolicy` and `UseXContentSecurityPolicy` both name `ContentSecurityPolicyConfiguration`, which is the pairing the report-only fixes in this release made honest.
+- `Validate()` is unchanged in behaviour and remains the runtime backstop for a pairing broken from inside the assembly, which is the only way it can now be broken: the setters have been internal since #220.
+
+**Impact:**
+
+- Consumers who read a configuration property **without** checking its flag will see new `CS8602` warnings, which are errors for anyone building with `TreatWarningsAsErrors`. Checking the matching flag first resolves it, and is what the library has always required in practice — the property really was null before the header was configured.
+- No runtime behaviour changes.
+
 #### Test tooling: xUnit v3 on the Microsoft Testing Platform ([issue #226](https://github.com/GaProgMan/OwaspHeaders.Core/issues/226), [issue #234](https://github.com/GaProgMan/OwaspHeaders.Core/issues/234))
 
 No consumer-facing change — this affects contributors and CI only.

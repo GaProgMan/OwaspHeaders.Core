@@ -86,6 +86,8 @@ public class Issue240RegressionTests
             .SetCspUris([ContentSecurityPolicyHelpers.CreateSelfDirective()], CspUriType.DefaultUri)
             .Build();
 
+        Assert.True(config.UseContentSecurityPolicy);
+        Assert.True(config.UseContentSecurityPolicyReportOnly);
         var enforcing = config.ContentSecurityPolicyConfiguration.DefaultSrc;
         var reportOnly = config.ContentSecurityPolicyReportOnlyConfiguration.DefaultSrc;
 
@@ -102,6 +104,8 @@ public class Issue240RegressionTests
             .UseDefaultContentSecurityPolicy()
             .Build();
 
+        Assert.True(config.UseContentSecurityPolicy);
+        Assert.True(config.UseContentSecurityPolicyReportOnly);
         Assert.Equal("script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;",
             config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
         Assert.Equal($"block-all-mixed-content;upgrade-insecure-requests;report-uri {ReportUri};",
@@ -134,6 +138,7 @@ public class Issue240RegressionTests
             .SetCspUris([ContentSecurityPolicyHelpers.CreateSelfDirective()], CspUriType.DefaultUri)
             .Build();
 
+        Assert.True(config.UseContentSecurityPolicyReportOnly);
         Assert.Equal($"default-src 'self';report-uri {ReportUri};",
             config.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue());
     }

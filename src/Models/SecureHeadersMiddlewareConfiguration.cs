@@ -1,21 +1,35 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Models;
+﻿namespace OwaspHeaders.Core.Models;
 
+/// <summary>
+/// The configuration the middleware turns into HTTP response headers.
+/// </summary>
+/// <remarks>
+/// Each header is described by a <c>UseX</c> flag and a matching configuration object, and the
+/// two are always populated together by <see cref="SecureHeadersBuilder"/>. The configuration
+/// objects are therefore null until their header is configured, and each flag carries
+/// <see cref="MemberNotNullWhenAttribute"/> so that checking the flag is enough for the compiler:
+/// inside <c>if (config.UseHsts)</c>, <c>config.HstsConfiguration</c> is known to be non-null.
+/// <see cref="Validate"/> remains the runtime backstop for a pairing broken from inside the
+/// assembly.
+/// </remarks>
 public class SecureHeadersMiddlewareConfiguration
 {
     /// <summary>
     /// Indicates whether the response should use HTTP Strict Transport Security
     /// </summary>
+    [MemberNotNullWhen(true, nameof(HstsConfiguration))]
     public bool UseHsts { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use X-Frame-Options
     /// </summary>
+    [MemberNotNullWhen(true, nameof(XFrameOptionsConfiguration))]
     public bool UseXFrameOptions { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use X-XSS-Protection
     /// </summary>                
+    [MemberNotNullWhen(true, nameof(XssConfiguration))]
     public bool UseXssProtection { get; internal set; }
 
     /// <summary>
@@ -26,6 +40,7 @@ public class SecureHeadersMiddlewareConfiguration
     /// <summary>
     /// Indicates whether the response should use Content-Security-Policy
     /// </summary>
+    [MemberNotNullWhen(true, nameof(ContentSecurityPolicyConfiguration))]
     public bool UseContentSecurityPolicy { get; internal set; }
 
     /// <summary>
@@ -35,106 +50,116 @@ public class SecureHeadersMiddlewareConfiguration
     /// not block content which violates the CSP rule set - it will report to
     /// the supplied ReportUri</para>
     /// </summary>
+    [MemberNotNullWhen(true, nameof(ContentSecurityPolicyReportOnlyConfiguration))]
     public bool UseContentSecurityPolicyReportOnly { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use X-Content-Security-Policy for
     /// Internet Explorer compatibility
     /// </summary>
+    [MemberNotNullWhen(true, nameof(ContentSecurityPolicyConfiguration))]
     public bool UseXContentSecurityPolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use X-Permitted-Cross-Domain-Policy
     /// </summary>
+    [MemberNotNullWhen(true, nameof(PermittedCrossDomainPolicyConfiguration))]
     public bool UsePermittedCrossDomainPolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Referrer-Policy
     /// </summary>
+    [MemberNotNullWhen(true, nameof(ReferrerPolicy))]
     public bool UseReferrerPolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Cache-Control
     /// </summary>
+    [MemberNotNullWhen(true, nameof(CacheControl))]
     public bool UseCacheControl { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Cross-Origin-Resource-Policy
     /// </summary>
+    [MemberNotNullWhen(true, nameof(CrossOriginResourcePolicy))]
     public bool UseCrossOriginResourcePolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Cross-Origin-Opener-Policy
     /// </summary>
+    [MemberNotNullWhen(true, nameof(CrossOriginOpenerPolicy))]
     public bool UseCrossOriginOpenerPolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Cross-Origin-Embedder-Policy
     /// </summary>
+    [MemberNotNullWhen(true, nameof(CrossOriginEmbedderPolicy))]
     public bool UseCrossOriginEmbedderPolicy { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use the Reporting-Endpoints header
     /// </summary>
+    [MemberNotNullWhen(true, nameof(ReportingEndpointsPolicy))]
     public bool UseReportingEndPoints { get; internal set; }
 
     /// <summary>
     /// Indicates whether the response should use Clear-Site-Data
     /// </summary>
+    [MemberNotNullWhen(true, nameof(ClearSiteDataPathConfiguration))]
     public bool UseClearSiteData { get; internal set; }
 
     /// <summary>
     /// The HTTP Strict Transport Security configuration to use
     /// </summary>
-    public HstsConfiguration HstsConfiguration { get; internal set; }
+    public HstsConfiguration? HstsConfiguration { get; internal set; }
 
     /// <summary>
     /// The X-Frame-Options configuration to use
     /// </summary>
-    public XFrameOptionsConfiguration XFrameOptionsConfiguration { get; internal set; }
+    public XFrameOptionsConfiguration? XFrameOptionsConfiguration { get; internal set; }
 
     /// <summary>
     /// The X-XSS-Protection configuration to use
     /// </summary>
-    public XssConfiguration XssConfiguration { get; internal set; }
+    public XssConfiguration? XssConfiguration { get; internal set; }
 
     /// <summary>
     /// The Content-Security-Policy configuration to use
     /// </summary>
-    public ContentSecurityPolicyConfiguration ContentSecurityPolicyConfiguration { get; internal set; }
+    public ContentSecurityPolicyConfiguration? ContentSecurityPolicyConfiguration { get; internal set; }
 
     /// <summary>
     /// The Content-Security-Policy-Report-Only configuration to use 
     /// </summary>
-    public ContentSecurityPolicyReportOnlyConfiguration ContentSecurityPolicyReportOnlyConfiguration { get; internal set; }
+    public ContentSecurityPolicyReportOnlyConfiguration? ContentSecurityPolicyReportOnlyConfiguration { get; internal set; }
 
     /// <summary>
     /// The X-Permitted-Cross-Domain-Policy configuration to use
     /// </summary>
-    public PermittedCrossDomainPolicyConfiguration PermittedCrossDomainPolicyConfiguration { get; internal set; }
+    public PermittedCrossDomainPolicyConfiguration? PermittedCrossDomainPolicyConfiguration { get; internal set; }
 
     /// <summary>
     /// The Referrer-Policy configuration to use
     /// </summary>
-    public ReferrerPolicy ReferrerPolicy { get; internal set; }
+    public ReferrerPolicy? ReferrerPolicy { get; internal set; }
 
     /// <summary>
     /// The Cache-Control configuration to use
     /// </summary>
-    public CacheControl CacheControl { get; internal set; }
+    public CacheControl? CacheControl { get; internal set; }
 
-    public CrossOriginResourcePolicy CrossOriginResourcePolicy { get; internal set; }
+    public CrossOriginResourcePolicy? CrossOriginResourcePolicy { get; internal set; }
 
-    public CrossOriginOpenerPolicy CrossOriginOpenerPolicy { get; internal set; }
+    public CrossOriginOpenerPolicy? CrossOriginOpenerPolicy { get; internal set; }
 
-    public CrossOriginEmbedderPolicy CrossOriginEmbedderPolicy { get; internal set; }
+    public CrossOriginEmbedderPolicy? CrossOriginEmbedderPolicy { get; internal set; }
 
-    public ReportingEndpointsPolicy ReportingEndpointsPolicy { get; internal set; }
+    public ReportingEndpointsPolicy? ReportingEndpointsPolicy { get; internal set; }
 
     /// <summary>
     /// The Clear-Site-Data path configuration to use
     /// </summary>
-    public ClearSiteDataPathConfiguration ClearSiteDataPathConfiguration { get; internal set; }
+    public ClearSiteDataPathConfiguration? ClearSiteDataPathConfiguration { get; internal set; }
 
     /// <summary>
     /// A list of URLs that, when requested, should be ignored completely by
@@ -167,7 +192,7 @@ public class SecureHeadersMiddlewareConfiguration
     {
         var issues = new List<string>();
 
-        void Check(bool enabled, object configuration, string flagName)
+        void Check(bool enabled, object? configuration, string flagName)
         {
             if (enabled && configuration is null)
             {

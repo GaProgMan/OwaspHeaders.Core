@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Models;
+﻿namespace OwaspHeaders.Core.Models;
 
 /// <summary>
 /// Configuration for the Clear-Site-Data header
@@ -10,11 +9,6 @@ public class ClearSiteDataConfiguration : IConfigurationBase
     /// The directive options to include in the Clear-Site-Data header
     /// </summary>
     public ClearSiteDataOptions[] DirectiveOptions { get; init; } = [];
-
-    /// <summary>
-    /// Protected parameterless constructor for deserialization
-    /// </summary>
-    protected ClearSiteDataConfiguration() { }
 
     /// <summary>
     /// Initializes a new instance of the ClearSiteDataConfiguration class

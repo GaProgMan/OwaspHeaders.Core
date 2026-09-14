@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Models;
+﻿namespace OwaspHeaders.Core.Models;
 
 /// <summary>
 /// This class represents some of the most commonly used Cache Control
@@ -57,13 +56,6 @@ public class CacheControl : IConfigurationBase
     /// or private caches)
     /// </summary>
     public bool NoStore { get; }
-
-    /// <summary>
-    /// Protected constructor, we can no longer create instances of this class without
-    /// using the public constructor
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    protected CacheControl() { }
 
     public CacheControl(bool @private, int maxAge = 0, bool noCache = false,
         bool noStore = true, bool mustRevalidate = false)

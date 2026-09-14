@@ -220,74 +220,74 @@ const OwaspHeaders.Core.Constants.XContentTypeOptionsHeaderName = "X-Content-Typ
 const OwaspHeaders.Core.Constants.XContentTypeOptionsValue = "nosniff" -> string!
 const OwaspHeaders.Core.Constants.XFrameOptionsHeaderName = "X-Frame-Options" -> string!
 const OwaspHeaders.Core.Constants.XssProtectionHeaderName = "X-XSS-Protection" -> string!
-~OwaspHeaders.Core.Models.CacheControl.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.ClearSiteDataConfiguration.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.ClearSiteDataConfiguration.ClearSiteDataConfiguration(params OwaspHeaders.Core.Enums.ClearSiteDataOptions[] directiveOptions) -> void
-~OwaspHeaders.Core.Models.ClearSiteDataConfiguration.DirectiveOptions.get -> OwaspHeaders.Core.Enums.ClearSiteDataOptions[]
-~OwaspHeaders.Core.Models.ClearSiteDataConfiguration.DirectiveOptions.init -> void
-~OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.ClearSiteDataPathConfiguration(System.Collections.Generic.Dictionary<string, OwaspHeaders.Core.Models.ClearSiteDataConfiguration> pathConfigurations, OwaspHeaders.Core.Models.ClearSiteDataConfiguration defaultConfiguration = null) -> void
-~OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.DefaultConfiguration.get -> OwaspHeaders.Core.Models.ClearSiteDataConfiguration
-~OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.DefaultConfiguration.init -> void
-~OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.GetConfigurationForPath(string requestPath) -> OwaspHeaders.Core.Models.ClearSiteDataConfiguration
-~OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.PathConfigurations.get -> System.Collections.Frozen.FrozenDictionary<string, OwaspHeaders.Core.Models.ClearSiteDataConfiguration>
-~OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.PathConfigurations.init -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.BaseUri.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.BaseUri.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ChildSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ChildSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ConnectSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ConnectSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ContentSecurityPolicyConfiguration(string pluginTypes, bool blockAllMixedContent, bool upgradeInsecureRequests, string referrer, string reportUri, string reportTo) -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.DefaultSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.DefaultSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FontSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FontSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FormAction.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FormAction.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FrameAncestors.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FrameAncestors.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FrameSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FrameSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ImgSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ImgSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ManifestSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ManifestSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.MediaSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.MediaSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ObjectSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ObjectSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.PluginTypes.get -> string
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.Referrer.get -> string
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ReportTo.get -> string
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ReportTo.init -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ReportUri.get -> string
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ReportUri.init -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.Sandbox.get -> OwaspHeaders.Core.Models.ContentSecurityPolicySandBox
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.Sandbox.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ScriptSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ScriptSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.StyleSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement>
-~OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.StyleSrc.set -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyElement.DirectiveOrUri.get -> string
-~OwaspHeaders.Core.Models.ContentSecurityPolicyElement.DirectiveOrUri.init -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.ContentSecurityPolicyReportOnlyConfiguration.ContentSecurityPolicyReportOnlyConfiguration(string pluginTypes, bool blockAllMixedContent, bool upgradeInsecureRequests, string referrer, string reportUri, string reportTo) -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicySandBox.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.ContentSecurityPolicySandBox.ContentSecurityPolicySandBox(params OwaspHeaders.Core.Enums.CspSandboxType[] sandboxType) -> void
-~OwaspHeaders.Core.Models.ContentSecurityPolicySandBox.SandboxTypes.get -> System.Collections.Generic.IList<OwaspHeaders.Core.Enums.CspSandboxType>
-~OwaspHeaders.Core.Models.CrossOriginEmbedderPolicy.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.CrossOriginOpenerPolicy.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.CrossOriginResourcePolicy.BuildHeaderValue() -> string
+OwaspHeaders.Core.Models.CacheControl.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.ClearSiteDataConfiguration.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.ClearSiteDataConfiguration.ClearSiteDataConfiguration(params OwaspHeaders.Core.Enums.ClearSiteDataOptions[]! directiveOptions) -> void
+OwaspHeaders.Core.Models.ClearSiteDataConfiguration.DirectiveOptions.get -> OwaspHeaders.Core.Enums.ClearSiteDataOptions[]!
+OwaspHeaders.Core.Models.ClearSiteDataConfiguration.DirectiveOptions.init -> void
+OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.ClearSiteDataPathConfiguration(System.Collections.Generic.Dictionary<string!, OwaspHeaders.Core.Models.ClearSiteDataConfiguration!>! pathConfigurations, OwaspHeaders.Core.Models.ClearSiteDataConfiguration? defaultConfiguration = null) -> void
+OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.DefaultConfiguration.get -> OwaspHeaders.Core.Models.ClearSiteDataConfiguration?
+OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.DefaultConfiguration.init -> void
+OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.GetConfigurationForPath(string? requestPath) -> OwaspHeaders.Core.Models.ClearSiteDataConfiguration?
+OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.PathConfigurations.get -> System.Collections.Frozen.FrozenDictionary<string!, OwaspHeaders.Core.Models.ClearSiteDataConfiguration!>!
+OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration.PathConfigurations.init -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.BaseUri.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.BaseUri.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ChildSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ChildSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ConnectSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ConnectSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ContentSecurityPolicyConfiguration(string? pluginTypes, bool blockAllMixedContent, bool upgradeInsecureRequests, string? referrer, string? reportUri, string? reportTo) -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.DefaultSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.DefaultSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FontSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FontSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FormAction.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FormAction.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FrameAncestors.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FrameAncestors.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FrameSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.FrameSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ImgSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ImgSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ManifestSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ManifestSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.MediaSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.MediaSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ObjectSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ObjectSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.PluginTypes.get -> string?
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.Referrer.get -> string?
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ReportTo.get -> string?
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ReportTo.init -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ReportUri.get -> string?
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ReportUri.init -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.Sandbox.get -> OwaspHeaders.Core.Models.ContentSecurityPolicySandBox?
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.Sandbox.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ScriptSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ScriptSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.StyleSrc.get -> System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>!
+OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.StyleSrc.set -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyElement.DirectiveOrUri.get -> string!
+OwaspHeaders.Core.Models.ContentSecurityPolicyElement.DirectiveOrUri.init -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicyReportOnlyConfiguration.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.ContentSecurityPolicyReportOnlyConfiguration.ContentSecurityPolicyReportOnlyConfiguration(string? pluginTypes, bool blockAllMixedContent, bool upgradeInsecureRequests, string? referrer, string? reportUri, string? reportTo) -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicySandBox.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.ContentSecurityPolicySandBox.ContentSecurityPolicySandBox(params OwaspHeaders.Core.Enums.CspSandboxType[]! sandboxType) -> void
+OwaspHeaders.Core.Models.ContentSecurityPolicySandBox.SandboxTypes.get -> System.Collections.Generic.IList<OwaspHeaders.Core.Enums.CspSandboxType>!
+OwaspHeaders.Core.Models.CrossOriginEmbedderPolicy.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.CrossOriginOpenerPolicy.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.CrossOriginResourcePolicy.BuildHeaderValue() -> string!
 ~OwaspHeaders.Core.Models.ExpectCt.BuildHeaderValue() -> string
 ~OwaspHeaders.Core.Models.ExpectCt.ExpectCt(string reportUri, int maxAge = 86400, bool enforce = false) -> void
 ~OwaspHeaders.Core.Models.ExpectCt.ReportUri.get -> string
-~OwaspHeaders.Core.Models.HstsConfiguration.BuildHeaderValue() -> string
+OwaspHeaders.Core.Models.HstsConfiguration.BuildHeaderValue() -> string!
 OwaspHeaders.Core.Models.IConfigurationBase.BuildHeaderValue() -> string!
-~OwaspHeaders.Core.Models.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.ReferrerPolicy.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.ReportingEndpointsPolicy.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.ReportingEndpointsPolicy.ReportingEndpointsPolicy(System.Collections.Generic.Dictionary<string, System.Uri> endpoints) -> void
+OwaspHeaders.Core.Models.PermittedCrossDomainPolicyConfiguration.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.ReferrerPolicy.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.ReportingEndpointsPolicy.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.ReportingEndpointsPolicy.ReportingEndpointsPolicy(System.Collections.Generic.Dictionary<string!, System.Uri!>! endpoints) -> void
 ~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.CacheControl.get -> OwaspHeaders.Core.Models.CacheControl
 ~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.CacheControl.set -> void
 ~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ClearSiteDataPathConfiguration.get -> OwaspHeaders.Core.Models.ClearSiteDataPathConfiguration
@@ -321,11 +321,11 @@ OwaspHeaders.Core.Models.IConfigurationBase.BuildHeaderValue() -> string!
 ~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.XFrameOptionsConfiguration.set -> void
 ~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.XssConfiguration.get -> OwaspHeaders.Core.Models.XssConfiguration
 ~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.XssConfiguration.set -> void
-~OwaspHeaders.Core.Models.XFrameOptionsConfiguration.AllowFromDomain.get -> string
-~OwaspHeaders.Core.Models.XFrameOptionsConfiguration.AllowFromDomain.init -> void
-~OwaspHeaders.Core.Models.XFrameOptionsConfiguration.BuildHeaderValue() -> string
-~OwaspHeaders.Core.Models.XFrameOptionsConfiguration.XFrameOptionsConfiguration(OwaspHeaders.Core.Enums.XFrameOptions xFrameOption, string allowFromDomain) -> void
-~OwaspHeaders.Core.Models.XssConfiguration.BuildHeaderValue() -> string
+OwaspHeaders.Core.Models.XFrameOptionsConfiguration.AllowFromDomain.get -> string?
+OwaspHeaders.Core.Models.XFrameOptionsConfiguration.AllowFromDomain.init -> void
+OwaspHeaders.Core.Models.XFrameOptionsConfiguration.BuildHeaderValue() -> string!
+OwaspHeaders.Core.Models.XFrameOptionsConfiguration.XFrameOptionsConfiguration(OwaspHeaders.Core.Enums.XFrameOptions xFrameOption, string? allowFromDomain) -> void
+OwaspHeaders.Core.Models.XssConfiguration.BuildHeaderValue() -> string!
 ~OwaspHeaders.Core.SecureHeadersMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) -> System.Threading.Tasks.Task
 ~OwaspHeaders.Core.SecureHeadersMiddleware.SecureHeadersMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration config, Microsoft.Extensions.Logging.ILogger<OwaspHeaders.Core.SecureHeadersMiddleware> logger = null) -> void
 ~static OwaspHeaders.Core.Extensions.ContentSecurityPolicyExtensions.SetCspSandBox(this OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration config, params OwaspHeaders.Core.Enums.CspSandboxType[] sandboxType) -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration
@@ -367,7 +367,7 @@ OwaspHeaders.Core.Models.IConfigurationBase.BuildHeaderValue() -> string!
 ~static OwaspHeaders.Core.Helpers.ArgumentExceptionHelper.RaiseArgumentNullException(string argumentName, string message) -> void
 ~static OwaspHeaders.Core.Helpers.ArgumentExceptionHelper.RaiseException(string argumentName) -> void
 ~static OwaspHeaders.Core.Helpers.ArgumentExceptionHelper.RaiseNotTrueException(string argumentName) -> void
-~static OwaspHeaders.Core.Helpers.ContentSecurityPolicyHelpers.CreateSelfDirective() -> OwaspHeaders.Core.Models.ContentSecurityPolicyElement
-~static OwaspHeaders.Core.Models.ContentSecurityPolicyExtensions.SetCspUri(this OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration this, System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement> uris, OwaspHeaders.Core.Enums.CspUriType uriType) -> OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration
-~static OwaspHeaders.Core.Models.ContentSecurityPolicyExtensions.SetSandbox(this OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration this, params OwaspHeaders.Core.Enums.CspSandboxType[] sandboxType) -> OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration
-~static OwaspHeaders.Core.Models.SecureHeadersLoggingConfiguration.CreateWithBaseEventId(int baseEventId) -> OwaspHeaders.Core.Models.SecureHeadersLoggingConfiguration
+static OwaspHeaders.Core.Helpers.ContentSecurityPolicyHelpers.CreateSelfDirective() -> OwaspHeaders.Core.Models.ContentSecurityPolicyElement!
+static OwaspHeaders.Core.Models.ContentSecurityPolicyExtensions.SetCspUri(this OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration! this, System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement!>! uris, OwaspHeaders.Core.Enums.CspUriType uriType) -> OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration!
+static OwaspHeaders.Core.Models.ContentSecurityPolicyExtensions.SetSandbox(this OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration! this, params OwaspHeaders.Core.Enums.CspSandboxType[]! sandboxType) -> OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration!
+static OwaspHeaders.Core.Models.SecureHeadersLoggingConfiguration.CreateWithBaseEventId(int baseEventId) -> OwaspHeaders.Core.Models.SecureHeadersLoggingConfiguration!

@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System.Collections.Frozen;
+﻿using System.Collections.Frozen;
 
 namespace OwaspHeaders.Core.Models;
 
@@ -16,7 +15,7 @@ public class ClearSiteDataPathConfiguration
     /// <summary>
     /// Default configuration to use when no path-specific configuration matches
     /// </summary>
-    public ClearSiteDataConfiguration DefaultConfiguration { get; init; }
+    public ClearSiteDataConfiguration? DefaultConfiguration { get; init; }
 
     /// <summary>
     /// Initializes a new instance of the ClearSiteDataPathConfiguration class
@@ -27,7 +26,7 @@ public class ClearSiteDataPathConfiguration
     /// <exception cref="ArgumentException">Thrown when path keys are invalid</exception>
     public ClearSiteDataPathConfiguration(
         Dictionary<string, ClearSiteDataConfiguration> pathConfigurations,
-        ClearSiteDataConfiguration defaultConfiguration = null)
+        ClearSiteDataConfiguration? defaultConfiguration = null)
     {
         ObjectGuardClauses.ObjectCannotBeNull(pathConfigurations, nameof(pathConfigurations),
             $"{nameof(pathConfigurations)} cannot be null");
@@ -53,7 +52,7 @@ public class ClearSiteDataPathConfiguration
     /// </summary>
     /// <param name="requestPath">The request path to match</param>
     /// <returns>The matching configuration or null if no match found</returns>
-    public ClearSiteDataConfiguration GetConfigurationForPath(string requestPath)
+    public ClearSiteDataConfiguration? GetConfigurationForPath(string? requestPath)
     {
         if (string.IsNullOrEmpty(requestPath))
         {

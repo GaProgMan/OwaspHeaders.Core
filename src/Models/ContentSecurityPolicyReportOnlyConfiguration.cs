@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Models;
+﻿namespace OwaspHeaders.Core.Models;
 
 /// <summary>
 /// Represents a Report-Only CSP rule set. See the following link for more information:
@@ -7,8 +6,8 @@ namespace OwaspHeaders.Core.Models;
 /// </summary>
 public class ContentSecurityPolicyReportOnlyConfiguration : ContentSecurityPolicyConfiguration
 {
-    public ContentSecurityPolicyReportOnlyConfiguration(string pluginTypes, bool blockAllMixedContent,
-        bool upgradeInsecureRequests, string referrer, string reportUri, string reportTo)
+    public ContentSecurityPolicyReportOnlyConfiguration(string? pluginTypes, bool blockAllMixedContent,
+        bool upgradeInsecureRequests, string? referrer, string? reportUri, string? reportTo)
         : base(pluginTypes, blockAllMixedContent, upgradeInsecureRequests, referrer, reportUri, reportTo)
     {
     }

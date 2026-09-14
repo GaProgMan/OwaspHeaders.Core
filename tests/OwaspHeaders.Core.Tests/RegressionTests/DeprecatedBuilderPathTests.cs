@@ -75,6 +75,7 @@ public class DeprecatedBuilderPathTests
             .Build();
 
         // assert
+        Assert.True(config.UseClearSiteData);
         Assert.Equal(2, config.ClearSiteDataPathConfiguration.PathConfigurations.Count);
     }
 
@@ -94,6 +95,7 @@ public class DeprecatedBuilderPathTests
             .Build();
 
         // assert
+        Assert.True(config.UseContentSecurityPolicy);
         Assert.Contains("script-src 'self'", config.ContentSecurityPolicyConfiguration.BuildHeaderValue());
     }
 

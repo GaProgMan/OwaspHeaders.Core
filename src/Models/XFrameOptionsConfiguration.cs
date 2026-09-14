@@ -1,19 +1,16 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Models;
+﻿namespace OwaspHeaders.Core.Models;
 
 public class XFrameOptionsConfiguration : IConfigurationBase
 {
     public XFrameOptions OptionValue { get; }
-    public string AllowFromDomain { get; init; }
 
-    /// <summary>
-    /// Protected constructor, we can no longer create instances of this class without
-    /// using the public constructor
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    protected XFrameOptionsConfiguration() { }
+    /// <remarks>
+    /// Only meaningful for <see cref="XFrameOptions.Allowfrom"/>, and null for every other option,
+    /// which is why <see cref="BuildHeaderValue"/> guards it before use.
+    /// </remarks>
+    public string? AllowFromDomain { get; init; }
 
-    public XFrameOptionsConfiguration(XFrameOptions xFrameOption, string allowFromDomain)
+    public XFrameOptionsConfiguration(XFrameOptions xFrameOption, string? allowFromDomain)
     {
         OptionValue = xFrameOption;
         AllowFromDomain = allowFromDomain;

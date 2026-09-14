@@ -89,3 +89,12 @@ OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ValidateOrThrow() 
 *REMOVED*OwaspHeaders.Core.Guards.HeaderValueGuardClauses
 *REMOVED*OwaspHeaders.Core.Guards.ObjectGuardClauses
 *REMOVED*OwaspHeaders.Core.Helpers.ArgumentExceptionHelper
+*REMOVED*OwaspHeaders.Core.Models.CacheControl.CacheControl() -> void
+*REMOVED*OwaspHeaders.Core.Models.ClearSiteDataConfiguration.ClearSiteDataConfiguration() -> void
+*REMOVED*OwaspHeaders.Core.Models.ContentSecurityPolicyConfiguration.ContentSecurityPolicyConfiguration() -> void
+*REMOVED*OwaspHeaders.Core.Models.ContentSecurityPolicySandBox.ContentSecurityPolicySandBox() -> void
+*REMOVED*OwaspHeaders.Core.Models.HstsConfiguration.HstsConfiguration() -> void
+*REMOVED*OwaspHeaders.Core.Models.PermittedCrossDomainPolicyConfiguration.PermittedCrossDomainPolicyConfiguration() -> void
+*REMOVED*OwaspHeaders.Core.Models.ReferrerPolicy.ReferrerPolicy() -> void
+*REMOVED*OwaspHeaders.Core.Models.ReportingEndpointsPolicy.ReportingEndpointsPolicy() -> void
+*REMOVED*OwaspHeaders.Core.Models.XFrameOptionsConfiguration.XFrameOptionsConfiguration() -> void

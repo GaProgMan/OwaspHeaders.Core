@@ -20,7 +20,7 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 
 ### Version 11
 
-Version 11 brings five breaking changes together: the supported runtimes shift to .NET 10 and .NET 11, the long-deprecated Expect-CT header is removed entirely, direct assignment to `SecureHeadersMiddlewareConfiguration` is no longer possible, configuration moves to a delegate passed to `UseSecureHeadersMiddleware`, and the guard clauses and extension helpers which were public by accident become internal. Configuration validation also moves from the first request to application startup, and three long-standing defects in report-only Content-Security-Policy mode are fixed. Each is detailed below.
+Version 11 brings six breaking changes together: the supported runtimes shift to .NET 10 and .NET 11, the long-deprecated Expect-CT header is removed entirely, direct assignment to `SecureHeadersMiddlewareConfiguration` is no longer possible, configuration moves to a delegate passed to `UseSecureHeadersMiddleware`, the guard clauses and extension helpers which were public by accident become internal, and the configuration models drop their protected parameterless constructors as part of being nullable-annotated. Configuration validation also moves from the first request to application startup, and three long-standing defects in report-only Content-Security-Policy mode are fixed. Each is detailed below.
 
 #### Supported runtimes
 
@@ -192,6 +192,23 @@ Six types which were public by accident rather than by design are now `internal`
 - A leftover `using OwaspHeaders.Core.Guards;` no longer compiles, even where nothing in the file calls a guard.
 - A public GitHub code search found no callers of any of these types outside this repository before the change was made.
 - If you were using them as general-purpose guards, the BCL equivalents are `ArgumentNullException.ThrowIfNull` and `ArgumentException.ThrowIfNullOrWhiteSpace`. Neither is a drop-in replacement: `ThrowIfNullOrWhiteSpace` throws `ArgumentNullException` for null where these threw `ArgumentException` with the message `No value for {parameterName} was supplied`, and `ThrowIfNull` takes no custom message. The behaviour of the library's own methods is unchanged, so the exceptions thrown by `AddClearSiteDataPath`, `UseSecureHeadersMiddleware` and the rest are exactly as before.
+
+#### Model constructors, required members and validation ([issue #233](https://github.com/GaProgMan/OwaspHeaders.Core/issues/233))
+
+The configuration models are now nullable-annotated, which meant deciding what each of them actually promises. Three of those decisions are breaking changes.
+
+**Changes:**
+
+- **The nine protected parameterless constructors are gone**, from `HstsConfiguration`, `XFrameOptionsConfiguration`, `ContentSecurityPolicyConfiguration`, `ContentSecurityPolicySandBox`, `ReferrerPolicy`, `CacheControl`, `PermittedCrossDomainPolicyConfiguration`, `ReportingEndpointsPolicy` and `ClearSiteDataConfiguration`. They were introduced in 2018 to stop instances being created without their members being set, but the public constructors added at the same time are what actually achieve that: C# only generates a parameterless constructor for a class which declares none. The protected ones reopened that route for subclasses, and for `ContentSecurityPolicyConfiguration` and `ContentSecurityPolicySandBox` the instance they produced threw a `NullReferenceException` from `BuildHeaderValue()`, because its collections were never initialised.
+- **`ContentSecurityPolicyElement.DirectiveOrUri` is `required`**, and its initialiser rejects null, empty and whitespace values with an `ArgumentException`. An element with no value renders as `''` for a directive or as an empty token for a URI, so it quietly produced a malformed header. `CommandType` is deliberately left optional, defaulting to `CspCommandType.Directive`, because consumers do rely on that default.
+- **`ReportingEndpointsPolicy` validates its endpoints**, in the same way `ClearSiteDataPathConfiguration` already validated its paths: a null dictionary or a null `Uri` throws `ArgumentNullException`, and an endpoint name which is null, empty or whitespace throws `ArgumentException`. It also takes its own copy of the dictionary, so changing the caller's copy afterwards cannot get round that validation. Previously a null dictionary passed validation and then threw an unhandled `NullReferenceException` while the middleware was being constructed, which is the class of failure #220 set out to remove.
+- **Genuinely optional values are now `T?`**: the Content-Security-Policy `pluginTypes`, `referrer`, `reportUri` and `reportTo`, the `Sandbox` which the public constructor never sets, `XFrameOptionsConfiguration.AllowFromDomain`, which is only meaningful for `allow-from`, and the Clear-Site-Data default configuration. `ClearSiteDataPathConfiguration.GetConfigurationForPath` takes a `string?` and returns a `ClearSiteDataConfiguration?`, which is what it always did in practice.
+
+**Impact:**
+
+- Breaking change: a subclass of one of those nine models which called `base()` fails to compile with `CS7036`, or fails at runtime with `MissingMethodException` if it was compiled against version 10. No such code was found in a public GitHub code search.
+- Breaking change: an object initialiser for `ContentSecurityPolicyElement` which omits `DirectiveOrUri` no longer compiles (`CS9035`). Every initialiser in this repository and every one found in public code already sets it. Note that System.Text.Json enforces `required` when deserialising, and that a type with required members cannot satisfy a generic `new()` constraint.
+- Behaviour change: `DirectiveOrUri = ""` and `ReportingEndpointsPolicy` with bad input now throw where they used to emit a malformed header or crash later. Because configuration is built while the request pipeline is built, that happens at startup.
 
 #### Test tooling: xUnit v3 on the Microsoft Testing Platform ([issue #226](https://github.com/GaProgMan/OwaspHeaders.Core/issues/226), [issue #234](https://github.com/GaProgMan/OwaspHeaders.Core/issues/234))
 

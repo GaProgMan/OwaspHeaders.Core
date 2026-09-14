@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Models;
+﻿namespace OwaspHeaders.Core.Models;
 
 /// <summary>
 /// Cross-Origin-Embedder-Policy

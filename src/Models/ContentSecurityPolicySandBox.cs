@@ -1,15 +1,7 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Models;
+﻿namespace OwaspHeaders.Core.Models;
 
 public class ContentSecurityPolicySandBox : IConfigurationBase
 {
-    /// <summary>
-    /// Protected constructor, we can no longer create instances of this class without
-    /// using the public constructor
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    protected ContentSecurityPolicySandBox() { }
-
     public IList<CspSandboxType> SandboxTypes { get; }
 
     public ContentSecurityPolicySandBox(params CspSandboxType[] sandboxType)

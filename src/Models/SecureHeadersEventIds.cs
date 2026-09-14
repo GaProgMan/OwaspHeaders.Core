@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Models;
+﻿namespace OwaspHeaders.Core.Models;
 
 /// <summary>
 /// Defines default Event IDs for SecureHeaders logging events.

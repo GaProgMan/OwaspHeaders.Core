@@ -1,4 +1,5 @@
-﻿using OwaspHeaders.Core.Helpers;
+﻿#nullable disable
+using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Tests.BuilderTests;
 

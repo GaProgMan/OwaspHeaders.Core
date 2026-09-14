@@ -1,4 +1,5 @@
-﻿// Note:  some commments (especially those which explain what the different
+﻿#nullable disable
+// Note:  some commments (especially those which explain what the different
 //        parameters for each header) are taken from the OWASP Secure Headers
 //        page. The original comments can be found at:
 //                https://www.owasp.org/index.php/OWASP_Secure_Headers_Project

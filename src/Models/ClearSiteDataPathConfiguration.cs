@@ -1,4 +1,5 @@
-﻿using System.Collections.Frozen;
+﻿#nullable disable
+using System.Collections.Frozen;
 
 namespace OwaspHeaders.Core.Models;
 

@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Models;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Models;
 
 /// <summary>
 /// Represents a Report-Only CSP rule set. See the following link for more information:

@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Models;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Models;
 
 /// <summary>
 /// Represents a Content Security Policy element that can be either a CSP directive keyword or a URI source.

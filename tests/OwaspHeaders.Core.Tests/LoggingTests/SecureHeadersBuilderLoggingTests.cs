@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿#nullable disable
+using Microsoft.Extensions.Logging;
 
 namespace OwaspHeaders.Core.Tests.LoggingTests;
 

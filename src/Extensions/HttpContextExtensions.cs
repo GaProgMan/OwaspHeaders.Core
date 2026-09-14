@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Extensions;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Extensions;
 
 public static class HttpContextExtensions
 {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿#nullable disable
+using Microsoft.AspNetCore.Builder;
 
 namespace OwaspHeaders.Core.Extensions;
 

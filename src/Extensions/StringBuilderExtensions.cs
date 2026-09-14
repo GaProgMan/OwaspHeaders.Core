@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿#nullable disable
+using System.Linq;
 
 namespace OwaspHeaders.Core.Extensions;
 

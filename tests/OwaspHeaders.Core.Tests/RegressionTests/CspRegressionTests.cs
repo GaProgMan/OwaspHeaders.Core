@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Tests.RegressionTests;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Tests.RegressionTests;
 
 /// <summary>
 /// This class contains a number of regression tests against bugs which were reported

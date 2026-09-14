@@ -1,4 +1,5 @@
-﻿using static OwaspHeaders.Core.Models.CrossOriginResourcePolicy;
+﻿#nullable disable
+using static OwaspHeaders.Core.Models.CrossOriginResourcePolicy;
 
 namespace OwaspHeaders.Core.Extensions;
 

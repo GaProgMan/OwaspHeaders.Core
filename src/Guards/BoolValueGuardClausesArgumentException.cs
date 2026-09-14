@@ -1,4 +1,5 @@
-﻿namespace OwaspHeaders.Core.Guards;
+﻿#nullable disable
+namespace OwaspHeaders.Core.Guards;
 
 /// <summary>
 /// Guard clause which throws when a boolean argument is not true.

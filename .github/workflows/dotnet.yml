@@ -26,18 +26,21 @@ jobs:
         fetch-depth: 1
         persist-credentials: false
 
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
-    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
-    - name: Setup .NET SDK 10
+    # The NuGet package we're building targets net10.0 and net11.0. The runner's
+    # pre-installed SDKs lag behind these versions, so we install both explicitly.
+    - name: Setup .NET SDKs
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
-        dotnet-version: '10.0.x'
+        dotnet-version: |
+          10.0.x
+          11.0.x
 
-    - name: Install dotnet-format tool
-      run: dotnet tool install -g dotnet-format
-    
+    # dotnet format ships with the SDK, so there is nothing to install. The standalone
+    # dotnet-format tool this replaced was last released for .NET 5 and is no longer
+    # maintained; it disagreed with the SDK tool over indentation, which meant code that
+    # `dotnet format` considered clean locally still failed this job.
     - name: Check Code Format
-      run: dotnet-format --check
+      run: dotnet format OwaspHeaders.Core.sln --verify-no-changes
 
   build:
 
@@ -52,12 +55,14 @@ jobs:
         fetch-depth: 0
         persist-credentials: false
 
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
-    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
-    - name: Setup .NET SDK 10
+    # The NuGet package we're building targets net10.0 and net11.0. The runner's
+    # pre-installed SDKs lag behind these versions, so we install both explicitly.
+    - name: Setup .NET SDKs
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
-        dotnet-version: '10.0.x'
+        dotnet-version: |
+          10.0.x
+          11.0.x
 
     - name: Install dependencies
       run: dotnet restore --locked-mode
@@ -82,20 +87,22 @@ jobs:
         fetch-depth: 0
         persist-credentials: false
       
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
-    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
-    - name: Setup .NET SDK 10
+    # The NuGet package we're building targets net10.0 and net11.0. The runner's
+    # pre-installed SDKs lag behind these versions, so we install both explicitly.
+    - name: Setup .NET SDKs
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
-        dotnet-version: '10.0.x'
+        dotnet-version: |
+          10.0.x
+          11.0.x
     
     - name: Run all tests
-      run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage --filter "Category!=Performance"
+      run: dotnet test --solution OwaspHeaders.Core.sln --verbosity minimal --coverage --coverage-output-format cobertura --report-trx --results-directory coverage --filter-not-trait "Category=Performance"
 
     - name: Code Coverage Summary Report
       uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95 # v1.3.0
       with:
-        filename: 'coverage/*/coverage.cobertura.xml'
+        filename: 'coverage/merged/*.cobertura.xml'
         badge: true
         format: 'markdown'
         output: 'both'
@@ -107,7 +114,7 @@ jobs:
         name: coverage-results
         path: |
           code-coverage-results.md
-          coverage/*/coverage.cobertura.xml
+          coverage/merged/*.cobertura.xml
         retention-days: 1
 
     - name: Write to Job Summary
@@ -127,12 +134,14 @@ jobs:
         fetch-depth: 0
         persist-credentials: false
       
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
-    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
-    - name: Setup .NET SDK 10
+    # The NuGet package we're building targets net10.0 and net11.0. The runner's
+    # pre-installed SDKs lag behind these versions, so we install both explicitly.
+    - name: Setup .NET SDKs
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
-        dotnet-version: '10.0.x'
+        dotnet-version: |
+          10.0.x
+          11.0.x
 
     - name: Build NuGet Package
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release

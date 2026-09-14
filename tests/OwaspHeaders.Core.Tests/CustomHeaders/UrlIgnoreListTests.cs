@@ -10,15 +10,18 @@ public class UrlIgnoreListTests : SecureHeadersTests
     {
         // arrange
         var urlsToIgnore = new List<string> { UrlToIgnore };
-        var config = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration(urlsToIgnore);
-        TestServer = CreateTestServer(UrlWontIgnore, config);
+        TestServer = CreateTestServer(UrlWontIgnore, opt =>
+        {
+            opt.UseRecommendedDefaults();
+            opt.SetUrlsToIgnore(urlsToIgnore);
+        });
 
         // Act
         var context = await TestServer.SendAsync(c =>
         {
             c.Request.Path = UrlToIgnore;
             c.Request.Method = HttpMethods.Get;
-        });
+        }, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(context.Response);
@@ -40,15 +43,18 @@ public class UrlIgnoreListTests : SecureHeadersTests
     {
         // Arrange
         var urlsToIgnore = new List<string> { UrlToIgnore };
-        var config = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration(urlsToIgnore);
-        TestServer = CreateTestServer(UrlWontIgnore, config);
+        TestServer = CreateTestServer(UrlWontIgnore, opt =>
+        {
+            opt.UseRecommendedDefaults();
+            opt.SetUrlsToIgnore(urlsToIgnore);
+        });
 
         // Act
         var context = await TestServer.SendAsync(c =>
         {
             c.Request.Path = UrlWontIgnore;
             c.Request.Method = HttpMethods.Get;
-        });
+        }, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(context.Response);

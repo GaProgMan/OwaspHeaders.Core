@@ -57,13 +57,6 @@ public class CacheControl : IConfigurationBase
     /// </summary>
     public bool NoStore { get; }
 
-    /// <summary>
-    /// Protected constructor, we can no longer create instances of this class without
-    /// using the public constructor
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    protected CacheControl() { }
-
     public CacheControl(bool @private, int maxAge = 0, bool noCache = false,
         bool noStore = true, bool mustRevalidate = false)
     {

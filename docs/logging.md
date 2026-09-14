@@ -71,14 +71,12 @@ dbug: OwaspHeaders.Core.SecureHeadersMiddleware[1005]
 Use this to offset all Event IDs when your application uses the default 1000-3999 range:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .WithLoggingEventIdBase(5000)  // Event IDs become 5001, 5002, etc.
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    opt.WithLoggingEventIdBase(5000);  // Event IDs become 5001, 5002, etc.
+});
 ```
 
 ### Option 2: Fully Custom Event IDs
@@ -94,14 +92,12 @@ var customLogging = new SecureHeadersLoggingConfiguration
     ConfigurationError = new EventId(9999, "ConfigError")
 };
 
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .WithLoggingEventIds(customLogging)
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    opt.WithLoggingEventIds(customLogging);
+});
 ```
 
 ## Log Level Configuration

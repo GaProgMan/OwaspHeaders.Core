@@ -14,6 +14,7 @@ The table below applies that rule to the current releases:
 
 | Version | Targets | Supported |
 | ------- | ------- | --------- |
+| 11.x.x | .NET 10, 11 | :white_check_mark: until 14 November 2028 |
 | 10.x.x | .NET 8, 9, 10 | :white_check_mark: until 14 November 2028 |
 | 9.x.x | .NET 8, 9 | :white_check_mark: until 10 November 2026 |
 | 8.x.x | .NET 6, 7, 8 | :white_check_mark: until 10 November 2026, **on .NET 8 only** |
@@ -23,7 +24,7 @@ The table below applies that rule to the current releases:
 Two consequences of the rule are worth calling out:
 
 - **8.x.x is only supported when run on .NET 8.** It also targets .NET 6 and .NET 7, both of which Microsoft has retired. If you are consuming 8.x.x on either of those runtimes, you are unsupported today, and the fix is to move to a supported .NET version rather than to a newer package version.
-- **.NET 8 and .NET 9 both reach end of support on 10 November 2026.** On that date, 8.x.x and 9.x.x become unsupported together, and 10.x.x continues by way of its .NET 10 target.
+- **.NET 8 and .NET 9 both reach end of support on 10 November 2026.** On that date, 8.x.x and 9.x.x become unsupported together, and both 10.x.x and 11.x.x continue by way of their .NET 10 target.
 
 Backporting features and fixes to unsupported releases is not provided.
 

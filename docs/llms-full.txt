@@ -10,7 +10,7 @@ OwaspHeaders.Core is an open-source ASP.NET Core middleware library designed to 
 - **Maintainer:** Jamie Taylor
 - **Company:** RJJ Software Ltd
 - **License:** MIT
-- **Current Version:** 10.4.1
+- **Current Version:** 11.0.0
 - **Repository:** https://github.com/GaProgMan/OwaspHeaders.Core
 - **Documentation:** https://gaprogman.github.io/OwaspHeaders.Core/
 - **NuGet Package:** https://www.nuget.org/packages/OwaspHeaders.Core/
@@ -18,10 +18,9 @@ OwaspHeaders.Core is an open-source ASP.NET Core middleware library designed to 
 
 ## Supported .NET Versions
 
-OwaspHeaders.Core aims to keep in step with the official Microsoft .NET support lifecycle. As of November 19th, 2024, the supported versions are:
-- .NET 8 (LTS)
-- .NET 9
-- .NET 10
+OwaspHeaders.Core aims to keep in step with the official Microsoft .NET support lifecycle. As of September 8th, 2026, the supported versions are:
+- .NET 10 (LTS)
+- .NET 11
 
 **Important Note:** Backporting features and fixes to older versions is not provided. Versions earlier than 8.0.0, and the .NET Framework release, are no longer supported.
 
@@ -116,46 +115,59 @@ app.UseSecureHeadersMiddleware();
 
 ### Custom Configuration
 
-Use the fluent builder pattern to customize header values:
+Pass a configure delegate. The builder it hands you starts empty, so call
+`UseRecommendedDefaults()` first if you want the OWASP recommended set as a starting point:
 
 ```csharp
-public static SecureHeadersMiddlewareConfiguration CustomConfiguration()
+app.UseSecureHeadersMiddleware(opt =>
 {
-    return SecureHeadersMiddlewareBuilder
-        .CreateBuilder()
-        .UseHsts(1200, false)
-        .UseContentDefaultSecurityPolicy()
-        .UsePermittedCrossDomainPolicy(XPermittedCrossDomainOptionValue.masterOnly)
-        .UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin)
-        .Build();
-}
+    opt.UseHsts(1200, false);
+    opt.UseDefaultContentSecurityPolicy();
+    opt.UsePermittedCrossDomainPolicies(XPermittedCrossDomainOptionValue.masterOnly);
+    opt.UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin);
+});
 ```
 
-Then consume it:
+Hoisting the delegate into a named method lets the same configuration be asserted on from a test:
 
 ```csharp
-app.UseSecureHeadersMiddleware(
-    CustomSecureHeaderExtensions.CustomConfiguration()
-);
+public static class CustomSecureHeaderExtensions
+{
+    public static void CustomConfiguration(SecureHeadersBuilder opt)
+    {
+        opt.UseHsts(1200, false);
+        opt.UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin);
+    }
+}
+
+// in Program.cs
+app.UseSecureHeadersMiddleware(CustomSecureHeaderExtensions.CustomConfiguration);
+
+// in a test
+SecureHeadersBuilder.BuildAndValidate(CustomSecureHeaderExtensions.CustomConfiguration);
 ```
+
+The configuration is validated as the request pipeline is built, so an invalid configuration
+throws an `ArgumentException` at application startup rather than on the first request.
+
+**Deprecated in version 11:** building a `SecureHeadersMiddlewareConfiguration` with
+`SecureHeadersMiddlewareBuilder.CreateBuilder()` and passing it to `UseSecureHeadersMiddleware`
+still works, but emits `CS0618` and will be removed in version 12.
 
 ### Clear-Site-Data Configuration
 
 The Clear-Site-Data header is particularly useful for logout endpoints:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseClearSiteData(
-        new Dictionary<string, ClearSiteDataOptions>
-        {
-            { "/logout", ClearSiteDataOptions.Cache | ClearSiteDataOptions.Cookies | ClearSiteDataOptions.Storage }
-        }
-    )
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseRecommendedDefaults();
+    opt.AddClearSiteDataPath("/logout",
+        ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies, ClearSiteDataOptions.storage);
+});
 ```
+
+`AddClearSiteDataPath` can be called repeatedly to build up a path map.
 
 ### Reporting-Endpoints Configuration
 
@@ -165,10 +177,7 @@ The Reporting-Endpoints header is experimental and allows specifying endpoints f
 var reportingEndpoints = new Dictionary<string, Uri> {
     { "standard", new Uri("https://localhost:5000/reporting-endpoint") }
 };
-var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-    .UseReportingEndpointsPolicy(reportingEndpoints)
-    .Build();
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt => opt.UseReportingEndpointsPolicy(reportingEndpoints));
 ```
 
 ## Logging
@@ -256,21 +265,21 @@ OwaspHeaders.Core is completely open-source and welcomes community contributions
 2. Clone your forked version
 3. Create a branch under `feature/` directory
 4. Commit changes with tests
-5. Run `dotnet-format fix` to ensure formatting compliance
+5. Run `dotnet format OwaspHeaders.Core.sln` to ensure formatting compliance
 6. Push to your fork
 7. Create a Pull Request with detailed description
 
 ### Contribution Requirements
 - Add tests to OwaspHeaders.Core.Tests project
-- Run `dotnet-format` and fix any .editorconfig issues
+- Run `dotnet format OwaspHeaders.Core.sln` and fix any .editorconfig issues
 - Ensure code coverage stays above 65%
-- Increase version number in OwaspHeaders.Core.csproj (for code changes)
+- Increase version number in Directory.Build.props at the repository root (for code changes). It is set once there and shared by every project; the individual .csproj files do not carry it
 - Document new features in the docs directory
 
 ### Tools Required to Build
-- .NET SDK 8.0, 9.0, and 10.0
+- .NET SDK 10.0 and 11.0
 - An IDE (VS Code, Rider, or Visual Studio)
-- dotnet-format global tool
+- No separate formatter to install: `dotnet format` ships with the SDK
 
 ## Security Policy
 
@@ -285,13 +294,14 @@ OwaspHeaders.Core minimizes security risk by:
 
 Support is scoped by .NET runtime, not by package version: any release of OwaspHeaders.Core running on a .NET version that Microsoft still supports is supported. A release targeting a .NET version that has reached end of support is unsupported, regardless of its version number.
 
+- 11.x.x (targets .NET 10, 11): ✅ Supported until November 14, 2028
 - 10.x.x (targets .NET 8, 9, 10): ✅ Supported until November 14, 2028
 - 9.x.x (targets .NET 8, 9): ✅ Supported until November 10, 2026
 - 8.x.x (targets .NET 6, 7, 8): ✅ Supported until November 10, 2026, on .NET 8 only. Consuming 8.x.x on .NET 6 or .NET 7 is unsupported today, as Microsoft has retired both runtimes.
 - < 8.0.0 (targets .NET 6 and earlier): ❌ Not supported
 - .NET Framework version (targets .NET Framework, ASP .NET Core 2.2): ❌ Not supported
 
-.NET 8 and .NET 9 both reach end of support on November 10, 2026, so 8.x.x and 9.x.x become unsupported on the same date, leaving 10.x.x supported by way of its .NET 10 target.
+.NET 8 and .NET 9 both reach end of support on November 10, 2026, so 8.x.x and 9.x.x become unsupported on the same date, leaving 10.x.x and 11.x.x supported by way of their .NET 10 target.
 
 Backporting features and fixes to unsupported releases is not provided.
 

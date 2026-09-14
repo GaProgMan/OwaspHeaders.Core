@@ -11,53 +11,15 @@ Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIO
 ## Tools Required to Build This Repo
 
 - .NET SDKs vLatest
-  - 8.0
-  - 9.0
+  - 10.0
+  - 11.0
 - an IDE (VS Code, Rider, or Visual Studio)
-- [dotnet-format](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format) global tool.
 
-That's it.
+That's it. Code formatting is checked with [`dotnet format`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-format), which ships as part of the SDK, so there is no separate tool to install.
 
 ## Security & Support
 
 Please see the [SECURITY](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md) file in the project's repo for the latest details.
-
-## Example Project Coding Guidelines
-
-### Primary Constructors Restriction
-
-**Important**: When contributing to the **example project only** (`OwaspHeaders.Core.Example` directory), please avoid using primary constructors due to a known issue with `dotnet-format` that causes incorrect indentation.
-
-#### ❌ Don't use (in example project):
-
-```csharp
-public class HomeController(ILogger<HomeController> logger) : ControllerBase
-{
-    private readonly ILogger<HomeController> _logger = logger;
-    // dotnet-format will incorrectly indent methods here
-}
-```
-
-#### ✅ Use instead (in example project):
-
-```csharp
-public class HomeController : ControllerBase
-{
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-    // dotnet-format handles this correctly
-}
-```
-
-**Why**: This restriction exists because of a bug in `dotnet-format` when processing primary constructors (see [dotnet/format#2165](https://github.com/dotnet/format/issues/2165)). Since this project uses `.editorconfig` and `dotnet-format` for consistent code formatting, primary constructors cause formatting issues that break our CI/CD pipeline.
-
-**Scope**: This restriction applies **only to the example project**. The main OwaspHeaders.Core library does not use primary constructors and is not affected by this issue.
-
-**Future**: This guidance will be removed once the upstream `dotnet-format` bug is resolved.
 
 ## Documentation
 
@@ -92,6 +54,18 @@ app.UseSecureHeadersMiddleware();
 ```
 
 This will add a number of default HTTP headers to all responses from your server component.
+
+To choose the headers yourself, pass a configure delegate instead:
+
+```csharp
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseRecommendedDefaults();
+    opt.SetUrlsToIgnore(["/health"]);
+});
+```
+
+The configuration is validated as your application starts, so a mistake stops the host from starting rather than surfacing on the first request.
 
 The following is an example of the response headers from version 9.0.0 (taken on November 19th, 2024)
 
@@ -134,25 +108,25 @@ https://github.com/GaProgMan/OwaspHeaders.Core/blob/433cbb764956e86b80b598c5d076
 In order to use a custom configuration, follow the same pattern (perhaps creating your own extension method to encapsulate it):
 
 ``` csharp
-public static SecureHeadersMiddlewareConfiguration CustomConfiguration()
+public static void CustomConfiguration(SecureHeadersBuilder opt)
 {
-    return SecureHeadersMiddlewareBuilder
-        .CreateBuilder()
-        .UseHsts(1200, false)
-        .UseContentDefaultSecurityPolicy()
-        .UsePermittedCrossDomainPolicy
-            (XPermittedCrossDomainOptionValue.masterOnly)
-        .UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin)
-        .Build();
+    opt.UseHsts(1200, false);
+    opt.UseDefaultContentSecurityPolicy();
+    opt.UsePermittedCrossDomainPolicies(XPermittedCrossDomainOptionValue.masterOnly);
+    opt.UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin);
 }
 ```
 
 Then consume it in the following manner:
 
 ```csharp
-app.UseSecureHeadersMiddleware(
-    CustomSecureHeaderExtensions.CustomConfiguration()
-);
+app.UseSecureHeadersMiddleware(CustomSecureHeaderExtensions.CustomConfiguration);
+```
+
+Naming the method rather than inlining the lambda means a test can assert the configuration is valid without starting your application:
+
+```csharp
+SecureHeadersBuilder.BuildAndValidate(CustomSecureHeaderExtensions.CustomConfiguration);
 ```
 
 #### Testing the Middleware

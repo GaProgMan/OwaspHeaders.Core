@@ -11,11 +11,6 @@ public class ClearSiteDataConfiguration : IConfigurationBase
     public ClearSiteDataOptions[] DirectiveOptions { get; init; } = [];
 
     /// <summary>
-    /// Protected parameterless constructor for deserialization
-    /// </summary>
-    protected ClearSiteDataConfiguration() { }
-
-    /// <summary>
     /// Initializes a new instance of the ClearSiteDataConfiguration class
     /// </summary>
     /// <param name="directiveOptions">The directive options to include</param>

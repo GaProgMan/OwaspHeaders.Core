@@ -6,7 +6,7 @@ public class StrictTransportSecurityOptionsTests : SecureHeadersTests
     public async Task When_UseHstsNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresetConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresetConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresetConfig);
 

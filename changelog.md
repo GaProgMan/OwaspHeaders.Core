@@ -6,6 +6,7 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 
 | Major Version Number | Changes                                                                                                                                                                                                                                                                                                                                                                                                                     |
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 11                    | Dropped support for .NET 8 and .NET 9 (both reaching end-of-support in November 2026) and added support for .NET 11. <br /> Removed the Expect-CT header surface entirely (the `ExpectCt` model, `UseExpectCt` flag, builder extension, header constant, and tests are all gone) following its full deprecation by OWASP and the `[Obsolete]` marker shipped in version 10.3. <br /> Restricted the setters on `SecureHeadersMiddlewareConfiguration` to `internal`, so that `UseX` flags and their matching configuration objects can no longer be assigned directly from outside the assembly. The `SecureHeadersBuilder` methods are now the only supported way to populate a configuration, closing the bypass that issue #220 surfaced as an unhandled `NullReferenceException` in version 10 and earlier. <br /> Added a configure-delegate API — `app.UseSecureHeadersMiddleware(opt => ...)` — and deprecated the build-then-pass path (`SecureHeadersMiddlewareBuilder.CreateBuilder`, `Build`, `BuildDefaultConfiguration`, and the `UseSecureHeadersMiddleware(config, urlIgnoreList)` overload), which will be removed in version 12 (issue #59). <br /> Configuration is now validated while the request pipeline is built, so an invalid configuration stops the application from starting rather than throwing on the first request. <br /> Fixed three defects in report-only Content-Security-Policy mode: `SetCspUris` and `SetCspSandBox` now apply to the report-only policy, and the report-only methods no longer mishandle X-Content-Security-Policy (issue #240). <br /> The guard clauses, `ArgumentExceptionHelper`, `StringBuilderExtensions` and `HttpContextExtensions` are now `internal` — all six were public by accident rather than by design, and are library plumbing rather than features (issue #233). <br /> Enabled nullable reference types across the whole library and annotated the entire public API, so consumers building with nullable enabled now get accurate null-safety warnings from every method and property; code which passed null into a parameter the library never accepted will start warning, and the fix is to stop passing null, since the runtime guard was already throwing for it (issue #233). |
 | 10                    | (as of Nov 12th, 2025) no API changes made yet. Library now supports ASP .NET Core (by updating the TFM to include `net10.0`) <br /> Added support for the EXPERIMENTAL Report-Endpoints header. This is listed nas EXPERIMENTAL (as of January 7th, 2025) on the [relevant MDN docs page](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints), it is also not listed as a recommended header. As such, it is not added when the default builder is used <br /> Fixed model properties in OwaspHeaders.Core.Models namespace that were incorrectly set to private - they are now public for serialization and external consumption <br /> Marked the `UseExpectCt` builder extension as `[Obsolete]` to reflect OWASP's deprecation of the Expect-CT header (issue #198) <br /> Replaced the unhandled `NullReferenceException` raised when a `UseX` flag is enabled without its matching configuration object with a diagnostic `ArgumentException` listing every mismatch (issue #220) |
 | 9                    | Removed support for both .NET 6 and .NET 7 as these are no longer supported by Microsoft. It also adds support for .NET 9. <br /> A number of small optimisation have been made to the middleware's `Invoke` method <br /> Added support for both Cross-Origin-Opener-Policy (CORP) and Cross-Origin-Embedder-Policy (COEP) headers <br /> Added support for Clear-Site-Data header with path-specific configuration for logout scenarios <br/> Increased documentation coverage for Content-Security-Policy directive generation |
 | 8                    | Removed support for ASP .NET Core on .NET Framework workflows; example and test projects now have OwaspHeaders.Core prefix, re-architected some of the test classes                                                                                                                                                                                                                                                         |
@@ -16,6 +17,260 @@ This changelog represents all the major (i.e. breaking) changes made to the Owas
 | 3                    | Uses builder pattern to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 2.0                                                                                                                                                                                                                                                                                                 |
 | 2                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Core 2.0                                                                                                                                                                                                                                                               |
 | 1                    | Uses `secureHeaderSettings.json` and default config loader to create instances of `SecureHeadersMiddlewareConfiguration` class <br /> also uses .NET Standard 1.4                                                                                                                                                                                                                                                           |
+
+### Version 11
+
+Version 11 brings six breaking changes together: the supported runtimes shift to .NET 10 and .NET 11, the long-deprecated Expect-CT header is removed entirely, direct assignment to `SecureHeadersMiddlewareConfiguration` is no longer possible, configuration moves to a delegate passed to `UseSecureHeadersMiddleware`, the guard clauses and extension helpers which were public by accident become internal, and the configuration models drop their protected parameterless constructors as part of being nullable-annotated. Configuration validation also moves from the first request to application startup, and three long-standing defects in report-only Content-Security-Policy mode are fixed. Each is detailed below.
+
+#### Supported runtimes
+
+The library now targets `net10.0` and `net11.0` only. Support for .NET 8 and .NET 9 has been dropped — both reach end-of-support from Microsoft in November 2026 and are no longer worth carrying through the test matrix or the NuGet package. Consumers still running on .NET 8 or .NET 9 should stay on the 10.x release line.
+
+#### Expect-CT removal
+
+The Expect-CT header has been removed from the library in its entirety:
+
+- The `ExpectCt` model class is gone.
+- The `UseExpectCt` flag and the matching `ExpectCt` property on `SecureHeadersMiddlewareConfiguration` are gone.
+- The `UseExpectCt` builder extension is gone.
+- The `ExpectCtHeaderName` constant and the matching middleware branch are gone.
+- The Expect-CT test fixtures are gone.
+
+This finishes the work that started in version 6 (when Expect-CT was dropped from `BuildDefaultConfiguration`) and continued in version 10.3 (when the remaining opt-in surface was marked `[Obsolete]`). OWASP have fully deprecated the header — see the [OWASP Secure Headers Project page on Expect-CT](https://owasp.org/www-project-secure-headers/#expect-ct) — and the browser support story collapsed long before that.
+
+Any code still calling `.UseExpectCt(...)` or assigning to `config.UseExpectCt`/`config.ExpectCt` will fail to compile against version 11. Delete the call; no replacement is needed.
+
+#### Configuration setter lockdown ([issue #220](https://github.com/GaProgMan/OwaspHeaders.Core/issues/220))
+
+In version 10 and earlier, a caller could write `config.UseCacheControl = true` without populating `config.CacheControl`, which surfaced as an unhandled `NullReferenceException` on the first request. Version 10.4 replaced the crash with a diagnostic `ArgumentException` raised at runtime. Version 11 prevents the bypass from compiling at all.
+
+**Changes:**
+
+- Every writable property on `SecureHeadersMiddlewareConfiguration` is now declared as `{ get; internal set; }`. This covers all `UseX` flags, every matching configuration object (`HstsConfiguration`, `CacheControl`, `ReferrerPolicy`, and so on), `UrlsToIgnore`, and `LoggingConfiguration`. Getters remain public so the middleware and consuming applications can still read the configured state.
+- The `OwaspHeaders.Core` assembly now exposes its `internal` members to `OwaspHeaders.Core.Tests` via `InternalsVisibleTo`, allowing the existing regression suite (including the reflection-based coverage check for `Validate()`) to continue exercising the misconfiguration paths.
+- The runtime `Validate()` method introduced in 10.4 is retained. It now functions as a defensive safety net against reflection-based bypass or future internal misuse rather than as the primary defence.
+
+**Migration:**
+
+Code that assigned flags or configuration objects directly will no longer compile:
+
+```csharp
+// version 10 and earlier — compiles, but throws on first request from 10.4 onward
+var config = SecureHeadersMiddlewareBuilder.CreateBuilder().Build();
+config.UseCacheControl = true;
+```
+
+Replace direct assignment with the matching builder method:
+
+```csharp
+// version 11 — the supported path
+app.UseSecureHeadersMiddleware(opt => opt.UseCacheControl());
+```
+
+The same applies to every other `UseX` flag and its configuration object. See the configure-delegate entry below, which is the other half of this change.
+
+**Impact:**
+
+- Breaking change: any external code that assigned to a property on `SecureHeadersMiddlewareConfiguration` will fail to compile with `CS0272` ("the property or indexer cannot be assigned to — it is read-only"). The compiler error names the property, pointing callers at the matching builder method.
+- No runtime behaviour change for code that already used the builder. The `Validate()` safety net now runs as the request pipeline is built rather than on the first request, but should never report issues for builder-built configurations.
+
+#### Configure the middleware with a delegate ([issue #59](https://github.com/GaProgMan/OwaspHeaders.Core/issues/59))
+
+Configuring the middleware no longer means building a configuration object and passing it in. `UseSecureHeadersMiddleware` now takes a delegate which configures a `SecureHeadersBuilder`:
+
+```csharp
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseRecommendedDefaults();
+    opt.SetUrlsToIgnore(["/health"]);
+});
+```
+
+`app.UseSecureHeadersMiddleware()` with no arguments still applies the OWASP recommended set, and still does not emit a deprecation warning.
+
+**Changes:**
+
+- `SecureHeadersBuilder` is a new type: a real builder with instance methods over a wrapped configuration, whose `Build()` returns that configuration. Previously the builder *was* the configuration — every `UseX(...)` was an extension method on `SecureHeadersMiddlewareConfiguration`, and `Build()` returned its own argument unchanged, which meant every builder method appeared in IntelliSense on any configuration object in scope.
+- `UseRecommendedDefaults()` applies the OWASP recommended header set from inside the delegate. It holds the body that `BuildDefaultConfiguration` used to.
+- `SetCspUris` and `SetCspSandBox` are available on the builder, so a Content-Security-Policy can be configured entirely within the delegate.
+- The following are marked `[Obsolete]` and **will be removed in version 12**: `SecureHeadersMiddlewareBuilder.CreateBuilder`, `SecureHeadersMiddlewareBuilder.Build`, `SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration`, and the `UseSecureHeadersMiddleware(SecureHeadersMiddlewareConfiguration, List<string>)` overload. `BoolValueGuardClauses` was briefly deprecated alongside them; it is now internal instead, along with the other guard clauses — see the guard clause entry below.
+- The individual `UseX`/`SetX`/`WithX`/`AddX` extension methods on `SecureHeadersMiddlewareConfiguration` are deliberately **not** marked `[Obsolete]`, even though they are removed at the same time. Marking them would emit a warning per call, so a twelve-call chain would produce fourteen warnings where two — one at `CreateBuilder`, one at the `app.Use...` call — already identify the problem and the fix. Every one of them is now a one-line forwarder onto `SecureHeadersBuilder`, so there is a single implementation of each header's logic during the deprecation window.
+
+**Migration:**
+
+```csharp
+// version 10 and earlier, and still supported in version 11 with a CS0618 warning
+var config = SecureHeadersMiddlewareBuilder
+    .CreateBuilder()
+    .UseHsts()
+    .SetUrlsToIgnore(["/health"])
+    .Build();
+
+app.UseSecureHeadersMiddleware(config);
+```
+
+```csharp
+// version 11
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.SetUrlsToIgnore(["/health"]);
+});
+```
+
+Where a configuration object is genuinely needed, construct `SecureHeadersBuilder` directly — `new SecureHeadersBuilder().UseHsts().Build()` — which is not deprecated.
+
+**Impact:**
+
+- The deprecation warnings are deliberate, and nothing is done to suppress them on a consumer's behalf. `CS0618` is raised in the consuming project's compilation, and the only mechanism which could reach it — injecting `NoWarn` through a `buildTransitive` targets file — would disable obsoletion warnings across that entire project rather than only for this package. Consumers who build with `TreatWarningsAsErrors` and want the warning silenced until they migrate should add `CS0618` to `NoWarn` in their own project.
+- `app.UseSecureHeadersMiddleware(null)` no longer compiles: the literal is ambiguous between the deprecated configuration overload and the new delegate overload (`CS0121`). Either drop the argument or supply a delegate. A *typed* variable holding a possibly-null configuration is unaffected.
+- The deprecated overload silently discarded its `urlIgnoreList` argument whenever a configuration was also supplied. `opt.SetUrlsToIgnore(...)` always applies, so code which passed both and relied — knowingly or otherwise — on the list being dropped will change behaviour.
+- The signature of the deprecated overload is unchanged, so already-compiled assemblies continue to bind against it.
+
+#### Configuration is validated at startup ([issue #59](https://github.com/GaProgMan/OwaspHeaders.Core/issues/59))
+
+An invalid configuration now stops the application from starting, rather than throwing on the first request to reach the middleware.
+
+**Changes:**
+
+- Validation runs in `UseSecureHeadersMiddleware` and again in the `SecureHeadersMiddleware` constructor. ASP.NET Core constructs middleware while building the request pipeline, so both happen before the server accepts a connection.
+- The rule that Cross-Origin-Embedder-Policy requires Cross-Origin-Resource-Policy has moved into `SecureHeadersMiddlewareConfiguration.Validate()`. It previously lived inside header generation, which meant it only surfaced on the first request that was not ignored.
+- `SecureHeadersMiddlewareConfiguration.ValidateOrThrow()` and `SecureHeadersBuilder.BuildAndValidate(Action<SecureHeadersBuilder>)` are new. `BuildAndValidate` takes the same delegate as `UseSecureHeadersMiddleware`, so a configuration hoisted into a named method can be asserted on from a test without starting a host:
+
+```csharp
+static void ConfigureSecureHeaders(SecureHeadersBuilder opt) => opt.UseRecommendedDefaults();
+
+// in Program.cs
+app.UseSecureHeadersMiddleware(ConfigureSecureHeaders);
+
+// in a test
+SecureHeadersBuilder.BuildAndValidate(ConfigureSecureHeaders);
+```
+
+- Headers are now generated in the middleware constructor rather than lazily on the first request. This also removes a data race on the header cache under concurrent first requests.
+- A configuration which enables no headers at all is still valid, but now logs a warning (event ID 2003) at startup.
+- `BoolValueGuardClauses` no longer has a caller inside the library — enforcing the Cross-Origin-Embedder-Policy pairing rule was its only use, in `src/` and across the whole history of the type. It is now `internal`, along with the other guard clauses, and can be deleted outright in version 12. If you were calling it directly, supply your own guard clause or use `ArgumentOutOfRangeException.ThrowIfNotEqual`. See the guard clause entry below.
+
+**Impact:**
+
+- The exception type is unchanged (`ArgumentException`), but the *timing* is not. Code which caught it around the first request will no longer see it there; it surfaces from `app.Build()`/`Run()` instead.
+- The `MiddlewareInitialized` (1001) and `HeadersGenerated` (1004) log entries are now emitted during startup rather than on the first request. Applications asserting on log ordering in their own integration tests may need updating.
+- The wording of the validation failure message has changed, because it now covers cross-header rules as well as missing configuration objects. The individual issue descriptions still name the offending flag.
+
+#### Report-only Content-Security-Policy fixes ([issue #240](https://github.com/GaProgMan/OwaspHeaders.Core/issues/240))
+
+Report-only Content-Security-Policy mode has had three defects since it was added in 2019, and all three are still present in 10.4.1. Version 11 fixes them.
+
+**Changes:**
+
+- `UseContentSecurityPolicyReportUriOnly`, and its obsolete alias `UseContentSecurityPolicyReportOnly`, no longer change the X-Content-Security-Policy flag. Passing `useXContentSecurityPolicy: true` used to enable X-Content-Security-Policy with no enforcing policy behind it, which threw a `NullReferenceException` on the first request in version 10. It now throws an `ArgumentException` immediately, naming the parameter and pointing at `UseContentSecurityPolicy(useXContentSecurityPolicy: true)`. X-Content-Security-Policy is an enforcing header with no report-only form, so enabling it from a report-only method has no correct meaning. The parameter remains so that the methods' signatures are unchanged, and will be removed in version 12.
+- Leaving that parameter at its default of `false` used to switch off an X-Content-Security-Policy enabled by an earlier call to `UseContentSecurityPolicy(useXContentSecurityPolicy: true)`. It no longer does.
+- `SetCspUris` and `SetCspSandBox` now apply to every Content-Security-Policy that has been set up: the enforcing policy, the report-only policy, or both. They used to write only to the enforcing policy, so in report-only mode they were silently ignored and the `Content-Security-Policy-Report-Only` header carried no directives. Where both policies exist, each receives its own copy of the values.
+- `UseDefaultContentSecurityPolicy`, and therefore `UseRecommendedDefaults`, adds its `script-src` and `object-src` directives to the enforcing policy only, never to a report-only policy.
+
+**Impact:**
+
+- Behaviour change: calling a report-only method with `useXContentSecurityPolicy: true` now throws while the request pipeline is built. That includes the one combination which previously passed validation: `UseContentSecurityPolicy()` followed by a report-only method with `useXContentSecurityPolicy: true`. To keep emitting X-Content-Security-Policy, pass `useXContentSecurityPolicy: true` to `UseContentSecurityPolicy` instead; the report-only call no longer switches it off.
+- Behaviour change: report-only headers now include the directives configured through `SetCspUris` and `SetCspSandBox`, so browsers will start sending violation reports to the configured `report-uri`. A report-only policy never blocks content.
+- As before, `SetCspUris` and `SetCspSandBox` only affect policies that already exist, so call them after the method that sets up the policy they are meant for.
+
+#### Guard clauses and extension helpers are now internal ([issue #233](https://github.com/GaProgMan/OwaspHeaders.Core/issues/233))
+
+Six types which were public by accident rather than by design are now `internal`. They are library plumbing: none of them is a feature, and all of them are called only from inside `OwaspHeaders.Core`.
+
+**Changes:**
+
+- `OwaspHeaders.Core.Guards.ObjectGuardClauses`, `OwaspHeaders.Core.Guards.HeaderValueGuardClauses` and `OwaspHeaders.Core.Guards.BoolValueGuardClauses` are internal, so `OwaspHeaders.Core.Guards` contains no public types at all.
+- `OwaspHeaders.Core.Helpers.ArgumentExceptionHelper` is internal. `OwaspHeaders.Core.Helpers` remains a public namespace, because `ContentSecurityPolicyHelpers` is a genuine part of the API.
+- `OwaspHeaders.Core.Extensions.StringBuilderExtensions` and `OwaspHeaders.Core.Extensions.HttpContextExtensions` are internal. Both lived in the namespace consumers import to reach `SecureHeadersBuilder` and `UseSecureHeadersMiddleware`, so `TrimEnd`, `RemoveTrailingCharacter` and `BuildValuesForDirective` appeared on every `StringBuilder` in a consuming project, and `TryAddHeader` and `TryRemoveHeader` on every `HttpContext`.
+- `HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace` is renamed to `StringCannotBeNullOrWhiteSpace`, correcting a long-standing typo. Renaming it is only possible because the type is no longer public.
+- The same types are now nullable-annotated, which is what made this the right moment to move them. The guard clauses take `[NotNull] object?` and `[NotNull] string?`, so the compiler knows the argument is not null once a guard returns; the `ArgumentExceptionHelper` throw helpers are `[DoesNotReturn]`, without which those annotations do not compile; `TrimEnd` and `RemoveTrailingCharacter` are `[return: NotNullIfNotNull]`, keeping their null-in, null-out behaviour; and the optional `ILogger` parameters are `ILogger?`.
+
+**Impact:**
+
+- Breaking change. Code calling any of these types fails to compile with `CS0122` ("inaccessible due to its protection level"). An assembly compiled against version 10 which calls one fails at runtime with a `MethodAccessException`.
+- A leftover `using OwaspHeaders.Core.Guards;` no longer compiles, even where nothing in the file calls a guard.
+- A public GitHub code search found no callers of any of these types outside this repository before the change was made.
+- If you were using them as general-purpose guards, the BCL equivalents are `ArgumentNullException.ThrowIfNull` and `ArgumentException.ThrowIfNullOrWhiteSpace`. Neither is a drop-in replacement: `ThrowIfNullOrWhiteSpace` throws `ArgumentNullException` for null where these threw `ArgumentException` with the message `No value for {parameterName} was supplied`, and `ThrowIfNull` takes no custom message. The behaviour of the library's own methods is unchanged, so the exceptions thrown by `AddClearSiteDataPath`, `UseSecureHeadersMiddleware` and the rest are exactly as before.
+
+#### Model constructors, required members and validation ([issue #233](https://github.com/GaProgMan/OwaspHeaders.Core/issues/233))
+
+The configuration models are now nullable-annotated, which meant deciding what each of them actually promises. Three of those decisions are breaking changes.
+
+**Changes:**
+
+- **The nine protected parameterless constructors are gone**, from `HstsConfiguration`, `XFrameOptionsConfiguration`, `ContentSecurityPolicyConfiguration`, `ContentSecurityPolicySandBox`, `ReferrerPolicy`, `CacheControl`, `PermittedCrossDomainPolicyConfiguration`, `ReportingEndpointsPolicy` and `ClearSiteDataConfiguration`. They were introduced in 2018 to stop instances being created without their members being set, but the public constructors added at the same time are what actually achieve that: C# only generates a parameterless constructor for a class which declares none. The protected ones reopened that route for subclasses, and for `ContentSecurityPolicyConfiguration` and `ContentSecurityPolicySandBox` the instance they produced threw a `NullReferenceException` from `BuildHeaderValue()`, because its collections were never initialised.
+- **`ContentSecurityPolicyElement.DirectiveOrUri` is `required`**, and its initialiser rejects null, empty and whitespace values with an `ArgumentException`. An element with no value renders as `''` for a directive or as an empty token for a URI, so it quietly produced a malformed header. `CommandType` is deliberately left optional, defaulting to `CspCommandType.Directive`, because consumers do rely on that default.
+- **`ReportingEndpointsPolicy` validates its endpoints**, in the same way `ClearSiteDataPathConfiguration` already validated its paths: a null dictionary or a null `Uri` throws `ArgumentNullException`, and an endpoint name which is null, empty or whitespace throws `ArgumentException`. It also takes its own copy of the dictionary, so changing the caller's copy afterwards cannot get round that validation. Previously a null dictionary passed validation and then threw an unhandled `NullReferenceException` while the middleware was being constructed, which is the class of failure #220 set out to remove.
+- **Genuinely optional values are now `T?`**: the Content-Security-Policy `pluginTypes`, `referrer`, `reportUri` and `reportTo`, the `Sandbox` which the public constructor never sets, `XFrameOptionsConfiguration.AllowFromDomain`, which is only meaningful for `allow-from`, and the Clear-Site-Data default configuration. `ClearSiteDataPathConfiguration.GetConfigurationForPath` takes a `string?` and returns a `ClearSiteDataConfiguration?`, which is what it always did in practice.
+
+**Impact:**
+
+- Breaking change: a subclass of one of those nine models which called `base()` fails to compile with `CS7036`, or fails at runtime with `MissingMethodException` if it was compiled against version 10. No such code was found in a public GitHub code search.
+- Breaking change: an object initialiser for `ContentSecurityPolicyElement` which omits `DirectiveOrUri` no longer compiles (`CS9035`). Every initialiser in this repository and every one found in public code already sets it. Note that System.Text.Json enforces `required` when deserialising, and that a type with required members cannot satisfy a generic `new()` constraint.
+- Behaviour change: `DirectiveOrUri = ""` and `ReportingEndpointsPolicy` with bad input now throw where they used to emit a malformed header or crash later. Because configuration is built while the request pipeline is built, that happens at startup.
+
+#### The configuration object is nullable-annotated ([issue #233](https://github.com/GaProgMan/OwaspHeaders.Core/issues/233))
+
+`SecureHeadersMiddlewareConfiguration` holds a `UseX` flag and a matching configuration object for each header, and the configuration object is null until that header is configured. Those thirteen properties are now declared as `T?`, which says so.
+
+On its own that would force a null check on every read, including reads which have just checked the flag. So each flag carries `[MemberNotNullWhen(true, ...)]` naming its configuration object, and checking the flag is enough for the compiler:
+
+```csharp
+if (config.UseHsts)
+{
+    // config.HstsConfiguration is known to be non-null here
+    var value = config.HstsConfiguration.BuildHeaderValue();
+}
+```
+
+`Assert.True(config.UseHsts)` narrows in the same way, because xUnit annotates its condition, so tests reading a configuration after asserting its flag need no changes.
+
+**Changes:**
+
+- The thirteen per-header configuration properties are `T?`. `UrlsToIgnore` and `LoggingConfiguration` are unchanged: both are initialised and neither can be null.
+- Each of the fourteen flags which has a backing configuration object carries `[MemberNotNullWhen]`. `UseXContentTypeOptions` does not, because X-Content-Type-Options emits a constant value and has no configuration object. `UseContentSecurityPolicy` and `UseXContentSecurityPolicy` both name `ContentSecurityPolicyConfiguration`, which is the pairing the report-only fixes in this release made honest.
+- `Validate()` is unchanged in behaviour and remains the runtime backstop for a pairing broken from inside the assembly, which is the only way it can now be broken: the setters have been internal since #220.
+
+**Impact:**
+
+- Consumers who read a configuration property **without** checking its flag will see new `CS8602` warnings, which are errors for anyone building with `TreatWarningsAsErrors`. Checking the matching flag first resolves it, and is what the library has always required in practice — the property really was null before the header was configured.
+- No runtime behaviour changes.
+
+#### Nullable reference types are enabled library-wide ([issue #233](https://github.com/GaProgMan/OwaspHeaders.Core/issues/233))
+
+The entries above describe the individual contract decisions which came out of annotating the library. This entry records the end state: `Nullable` is enabled for every project in the repository, no file opts out of it, and the whole public API is annotated. `RS0041` — the Public API analyzer rule which reports public members whose types carry no nullability annotations — is enabled, so an unannotated addition to the public surface now fails the build.
+
+**Changes:**
+
+- The builder's optional parameters are `T?` wherever the library genuinely accepts null: `domain` on `UseXFrameOptions`, `pluginTypes`, `referrer`, `reportUri` and `reportTo` on the Content-Security-Policy methods, `urlsToIgnore` on `SetUrlsToIgnore`, and `defaultConfiguration` on `UseClearSiteDataForPaths`. The deprecated `SecureHeadersMiddlewareBuilder` and `ContentSecurityPolicyExtensions` forwarders carry the same annotations, so both configuration surfaces agree.
+- `reportUri` on `UseContentSecurityPolicyReportUriOnly` and its obsolete alias stays non-nullable. A report-only policy with no report URI is rejected when its header is built, so the parameter is genuinely required.
+- The middleware's optional logger is `ILogger<SecureHeadersMiddleware>?`, matching the parameter it is assigned from.
+- Annotations do not replace the runtime guards. Every `ObjectCannotBeNull` and `StringCannotBeNullOrWhiteSpace` check still runs, because a consumer compiling without nullable enabled, or ignoring the warnings, can still pass null.
+
+**Impact:**
+
+- Consumers building with nullable enabled now get accurate warnings from every method and property, rather than the silence which an unannotated (oblivious) API produces. This is the point of the change, but it does mean that code which passes null into a parameter the library never accepted will start warning — and will be an error for anyone building with `TreatWarningsAsErrors`. In every case the fix is to stop passing null: the runtime guard was already throwing an `ArgumentException` or `ArgumentNullException` for it.
+- Reading a per-header configuration object without first checking its `UseX` flag produces `CS8602`, as described in the entry above.
+- No runtime behaviour changes.
+
+#### Test tooling: xUnit v3 on the Microsoft Testing Platform ([issue #226](https://github.com/GaProgMan/OwaspHeaders.Core/issues/226), [issue #234](https://github.com/GaProgMan/OwaspHeaders.Core/issues/234))
+
+No consumer-facing change — this affects contributors and CI only.
+
+The test suite moved from xUnit v2 to xUnit v3 and, with it, from VSTest to the [Microsoft Testing Platform](https://learn.microsoft.com/en-us/dotnet/core/testing/microsoft-testing-platform-intro) (MTP), which is the runner xUnit v3 is built around and the one Microsoft is investing in.
+
+**Changes:**
+
+- `xunit.v3` is now referenced at 4.0.0, the first stable release built on MTP v2.
+- `Microsoft.NET.Test.Sdk`, `xunit.runner.visualstudio` and `coverlet.collector` have been removed. `Microsoft.Testing.Extensions.CodeCoverage` and `Microsoft.Testing.Extensions.TrxReport` replace them, so coverage and TRX reporting now come from MTP rather than from VSTest collectors and loggers.
+- A `global.json` has been added at the repository root selecting the MTP runner for `dotnet test`. It deliberately does not pin an SDK version — the CI workflows install the SDKs they need explicitly.
+- The three CI workflows now invoke the suite as `dotnet test --solution OwaspHeaders.Core.sln`, and the coverage summary reads `coverage/merged/*.cobertura.xml` rather than VSTest's `coverage/<guid>/coverage.cobertura.xml`.
+
+**Impact:**
+
+- `--filter "Category!=Performance"` has been replaced by xUnit's `--filter-not-trait "Category=Performance"`. The old spelling was silently ignored under VSTest, so the timing-sensitive performance test ran on every CI build regardless (issue #234). CI test counts therefore drop from 165 to 164 per target framework; that is the filter starting to work, not tests going missing.
+- Contributors need an IDE with MTP support to run tests from the Test Explorer: JetBrains Rider 2024.3 or later, or Visual Studio 2022 17.14 or later (where the MTP Test Explorer experience is enabled by default). Running tests from the command line — `dotnet test`, or `dotnet run --project tests/OwaspHeaders.Core.Tests` — works regardless of IDE.
 
 ### Version 10
 

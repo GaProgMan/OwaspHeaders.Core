@@ -1,0 +1,74 @@
+OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+OwaspHeaders.Core.Extensions.SecureHeadersBuilder.SecureHeadersBuilder() -> void
+OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ValidateOrThrow() -> void
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.AddClearSiteDataPath(string path, params OwaspHeaders.Core.Enums.ClearSiteDataOptions[] directiveOptions) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.Build() -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.SetCspSandBox(params OwaspHeaders.Core.Enums.CspSandboxType[] sandboxType) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.SetCspUris(System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement> baseUri, OwaspHeaders.Core.Enums.CspUriType cspUriType) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.SetUrlsToIgnore(System.Collections.Generic.List<string> urlsToIgnore = null) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseCacheControl(bool private = false, int maxAge = 0, bool noCache = false, bool noStore = true, bool mustRevalidate = false) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseClearSiteData(params OwaspHeaders.Core.Enums.ClearSiteDataOptions[] directiveOptions) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseClearSiteDataForPaths(System.Collections.Generic.Dictionary<string, OwaspHeaders.Core.Enums.ClearSiteDataOptions[]> pathConfigurations, OwaspHeaders.Core.Enums.ClearSiteDataOptions[] defaultConfiguration = null) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseContentSecurityPolicy(string pluginTypes = null, bool blockAllMixedContent = true, bool upgradeInsecureRequests = true, string referrer = null, string reportUri = null, bool useXContentSecurityPolicy = false, string reportTo = null) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseContentSecurityPolicyReportOnly(string reportUri, string pluginTypes = null, bool blockAllMixedContent = true, bool upgradeInsecureRequests = true, string referrer = null, bool useXContentSecurityPolicy = false, string reportTo = null) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseContentSecurityPolicyReportUriOnly(string reportUri, string pluginTypes = null, bool blockAllMixedContent = true, bool upgradeInsecureRequests = true, string referrer = null, bool useXContentSecurityPolicy = false, string reportTo = null) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseContentTypeOptions() -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseCrossOriginEmbedderPolicy(OwaspHeaders.Core.Models.CrossOriginEmbedderPolicy.CrossOriginEmbedderOptions value = OwaspHeaders.Core.Models.CrossOriginEmbedderPolicy.CrossOriginEmbedderOptions.RequireCorp) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseCrossOriginOpenerPolicy(OwaspHeaders.Core.Models.CrossOriginOpenerPolicy.CrossOriginOpenerOptions value = OwaspHeaders.Core.Models.CrossOriginOpenerPolicy.CrossOriginOpenerOptions.SameOrigin) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseCrossOriginResourcePolicy(OwaspHeaders.Core.Models.CrossOriginResourcePolicy.CrossOriginResourceOptions value = OwaspHeaders.Core.Models.CrossOriginResourcePolicy.CrossOriginResourceOptions.SameOrigin) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseDefaultContentSecurityPolicy() -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseHsts(int maxAge = 31536000, bool includeSubDomains = true) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UsePermittedCrossDomainPolicies(OwaspHeaders.Core.Enums.XPermittedCrossDomainOptionValue xPermittedCrossDomainOptionValue = OwaspHeaders.Core.Enums.XPermittedCrossDomainOptionValue.none) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseRecommendedDefaults() -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseReferrerPolicy(OwaspHeaders.Core.Enums.ReferrerPolicyOptions referrerPolicyOption = OwaspHeaders.Core.Enums.ReferrerPolicyOptions.noReferrer) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseReportingEndpointsPolicy(System.Collections.Generic.Dictionary<string, System.Uri> endpoints) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseXFrameOptions(OwaspHeaders.Core.Enums.XFrameOptions xFrameOption = OwaspHeaders.Core.Enums.XFrameOptions.Deny, string domain = null) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.UseXssProtection() -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.WithLoggingEventIdBase(int baseEventId) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~OwaspHeaders.Core.Extensions.SecureHeadersBuilder.WithLoggingEventIds(OwaspHeaders.Core.Models.SecureHeadersLoggingConfiguration loggingConfig) -> OwaspHeaders.Core.Extensions.SecureHeadersBuilder
+~static OwaspHeaders.Core.Extensions.SecureHeadersBuilder.BuildAndValidate(System.Action<OwaspHeaders.Core.Extensions.SecureHeadersBuilder> configure) -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration
+~static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareExtensions.UseSecureHeadersMiddleware(this Microsoft.AspNetCore.Builder.IApplicationBuilder builder) -> Microsoft.AspNetCore.Builder.IApplicationBuilder
+~static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareExtensions.UseSecureHeadersMiddleware(this Microsoft.AspNetCore.Builder.IApplicationBuilder builder, System.Action<OwaspHeaders.Core.Extensions.SecureHeadersBuilder> configure) -> Microsoft.AspNetCore.Builder.IApplicationBuilder
+*REMOVED*~const OwaspHeaders.Core.Constants.ExpectCtHeaderName = "Expect-CT" -> string
+*REMOVED*~OwaspHeaders.Core.Models.ExpectCt.BuildHeaderValue() -> string
+*REMOVED*~OwaspHeaders.Core.Models.ExpectCt.ExpectCt(string reportUri, int maxAge = 86400, bool enforce = false) -> void
+*REMOVED*~OwaspHeaders.Core.Models.ExpectCt.ReportUri.get -> string
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.CacheControl.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ClearSiteDataPathConfiguration.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ContentSecurityPolicyConfiguration.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ContentSecurityPolicyReportOnlyConfiguration.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.CrossOriginEmbedderPolicy.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.CrossOriginOpenerPolicy.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.CrossOriginResourcePolicy.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ExpectCt.get -> OwaspHeaders.Core.Models.ExpectCt
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ExpectCt.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.HstsConfiguration.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.LoggingConfiguration.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.PermittedCrossDomainPolicyConfiguration.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ReferrerPolicy.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ReportingEndpointsPolicy.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UrlsToIgnore.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.XFrameOptionsConfiguration.set -> void
+*REMOVED*~OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.XssConfiguration.set -> void
+*REMOVED*~static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareBuilder.UseExpectCt(this OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration config, string reportUri, int maxAge = 86400, bool enforce = false) -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration
+*REMOVED*OwaspHeaders.Core.Models.ExpectCt
+*REMOVED*OwaspHeaders.Core.Models.ExpectCt.Enforce.get -> bool
+*REMOVED*OwaspHeaders.Core.Models.ExpectCt.ExpectCt() -> void
+*REMOVED*OwaspHeaders.Core.Models.ExpectCt.MaxAge.get -> int
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseCacheControl.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseClearSiteData.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseContentSecurityPolicy.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseContentSecurityPolicyReportOnly.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseCrossOriginEmbedderPolicy.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseCrossOriginOpenerPolicy.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseCrossOriginResourcePolicy.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseExpectCt.get -> bool
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseExpectCt.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseHsts.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UsePermittedCrossDomainPolicy.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseReferrerPolicy.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseReportingEndPoints.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseXContentSecurityPolicy.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseXContentTypeOptions.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseXFrameOptions.set -> void
+*REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseXssProtection.set -> void

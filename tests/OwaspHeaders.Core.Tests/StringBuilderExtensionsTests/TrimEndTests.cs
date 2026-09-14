@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System.Text;
+﻿using System.Text;
 
 namespace OwaspHeaders.Core.Tests.StringBuilderExtensionsTests;
 
@@ -9,7 +8,7 @@ public class TrimEndTests
     public void TrimEnd_StringBuilder_Is_Null_Return_StringBuilder()
     {
         // arrange & act
-        var builder = ((StringBuilder)null).TrimEnd();
+        var builder = ((StringBuilder?)null).TrimEnd();
 
         // assert
         Assert.Null(builder);

@@ -645,7 +645,7 @@ public sealed class SecureHeadersBuilder
         string path,
         params ClearSiteDataOptions[] directiveOptions)
     {
-        HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(path, nameof(path));
+        HeaderValueGuardClauses.StringCannotBeNullOrWhiteSpace(path, nameof(path));
         ObjectGuardClauses.ObjectCannotBeNull(directiveOptions, nameof(directiveOptions),
             $"{nameof(directiveOptions)} cannot be null");
 

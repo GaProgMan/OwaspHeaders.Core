@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Tests.RegressionTests;
+﻿namespace OwaspHeaders.Core.Tests.RegressionTests;
 
 /// <summary>
 /// This class contains a number of regression tests against bugs which were reported
@@ -45,8 +44,10 @@ public class CspRegressionTests
         Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyHeaderName));
 
         var headerValue = _context.Response.Headers[Constants.ContentSecurityPolicyHeaderName].ToList();
+        var actualCsp = headerValue.First();
+        Assert.NotNull(actualCsp);
         Assert.Equal(1,
-            headerValue.First()
+            actualCsp
                 .Split(" ")
                 .Count(hv => hv.Contains("cdnjs.cloudflare.com", StringComparison.InvariantCultureIgnoreCase)));
     }
@@ -80,6 +81,7 @@ public class CspRegressionTests
         Assert.NotNull(headerStrings);
 
         var actualCsp = headerStrings.First();
+        Assert.NotNull(actualCsp);
         var actualCharCount = actualCsp.Length;
         var targetCharCount = targetCsp.Length;
 
@@ -113,6 +115,7 @@ public class CspRegressionTests
         Assert.NotNull(headerStrings);
 
         var actualCsp = headerStrings.First();
+        Assert.NotNull(actualCsp);
         var actualCharCount = actualCsp.Length;
         var targetCharCount = targetCsp.Length;
 
@@ -146,6 +149,7 @@ public class CspRegressionTests
         Assert.NotNull(headerStrings);
 
         var actualCsp = headerStrings.First();
+        Assert.NotNull(actualCsp);
         var actualCharCount = actualCsp.Length;
         var targetCharCount = targetCsp.Length;
 

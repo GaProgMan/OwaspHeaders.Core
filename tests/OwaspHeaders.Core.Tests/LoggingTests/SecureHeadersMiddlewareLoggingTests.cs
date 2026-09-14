@@ -1,5 +1,4 @@
-﻿#nullable disable
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
 
 namespace OwaspHeaders.Core.Tests.LoggingTests;
@@ -20,7 +19,7 @@ public class SecureHeadersMiddlewareLoggingTests
     [Fact]
     public void ConstructWithNullConfig_LogsConfigurationError()
     {
-        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, null, _logger));
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, null!, _logger));
 
         Assert.NotNull(exception);
         AssertLogged(LogLevel.Error, 3001, "Configuration validation failed:");

@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Tests.CustomHeaders;
+﻿namespace OwaspHeaders.Core.Tests.CustomHeaders;
 
 public class ClearSiteDataIntegrationTests : SecureHeadersTests
 {
@@ -196,7 +195,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
     [InlineData("/api/logout", "\"cache\",\"cookies\"")]
     [InlineData("/mobile/logout", "\"storage\"")]
     [InlineData("/other", null)]
-    public async Task IntegrationTest_ClearSiteData_MultiplePathConfigurations(string requestPath, string expectedHeader)
+    public async Task IntegrationTest_ClearSiteData_MultiplePathConfigurations(string requestPath, string? expectedHeader)
     {
         // arrange
         var pathConfig = new Dictionary<string, ClearSiteDataOptions[]>

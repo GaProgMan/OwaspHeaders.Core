@@ -1,5 +1,4 @@
-﻿#nullable disable
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace OwaspHeaders.Core.Tests.LoggingTests;
 
@@ -33,7 +32,7 @@ public class SecureHeadersBuilderLoggingTests
     {
         var builder = new SecureHeadersBuilder();
 
-        var exception = Record.Exception(() => builder.WithLoggingEventIds(null));
+        var exception = Record.Exception(() => builder.WithLoggingEventIds(null!));
 
         Assert.NotNull(exception);
         Assert.IsType<ArgumentNullException>(exception);

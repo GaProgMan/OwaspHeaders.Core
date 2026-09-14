@@ -1,5 +1,4 @@
-﻿#nullable disable
-using OwaspHeaders.Core.Helpers;
+﻿using OwaspHeaders.Core.Helpers;
 
 namespace OwaspHeaders.Core.Tests.BuilderTests;
 
@@ -89,6 +88,7 @@ public class SecureHeadersBuilderTests
 
         // assert
         Assert.True(config.UseClearSiteData);
+        Assert.NotNull(config.ClearSiteDataPathConfiguration.DefaultConfiguration);
         var headerValue = config.ClearSiteDataPathConfiguration.DefaultConfiguration.BuildHeaderValue();
         Assert.Contains("cache", headerValue);
         Assert.Contains("cookies", headerValue);
@@ -159,6 +159,7 @@ public class SecureHeadersBuilderTests
         var config = builder.AddClearSiteDataPath("/signout", ClearSiteDataOptions.storage).Build();
 
         // assert
+        Assert.True(config.UseClearSiteData);
         Assert.Equal(2, config.ClearSiteDataPathConfiguration.PathConfigurations.Count);
         Assert.NotNull(config.ClearSiteDataPathConfiguration.DefaultConfiguration);
         Assert.Contains("cache",
@@ -175,6 +176,7 @@ public class SecureHeadersBuilderTests
             .Build();
 
         // assert
+        Assert.True(config.UseClearSiteData);
         var paths = config.ClearSiteDataPathConfiguration.PathConfigurations;
         Assert.Single(paths);
         Assert.Contains("storage", paths["/logout"].BuildHeaderValue());
@@ -187,7 +189,7 @@ public class SecureHeadersBuilderTests
         var builder = new SecureHeadersBuilder();
 
         // act
-        var exception = Record.Exception(() => builder.UseClearSiteDataForPaths(null));
+        var exception = Record.Exception(() => builder.UseClearSiteDataForPaths(null!));
 
         // assert
         Assert.NotNull(exception);
@@ -232,6 +234,7 @@ public class SecureHeadersBuilderTests
             .Build();
 
         // assert
+        Assert.True(config.UseContentSecurityPolicy);
         var headerValue = config.ContentSecurityPolicyConfiguration.BuildHeaderValue();
         Assert.Contains("sandbox", headerValue);
         Assert.Contains("allow-forms", headerValue);
@@ -244,7 +247,7 @@ public class SecureHeadersBuilderTests
         var builder = new SecureHeadersBuilder();
 
         // act
-        var exception = Record.Exception(() => builder.WithLoggingEventIds(null));
+        var exception = Record.Exception(() => builder.WithLoggingEventIds(null!));
 
         // assert
         Assert.NotNull(exception);

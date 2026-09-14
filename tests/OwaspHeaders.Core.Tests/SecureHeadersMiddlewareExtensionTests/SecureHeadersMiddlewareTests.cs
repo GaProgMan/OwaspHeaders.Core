@@ -1,5 +1,4 @@
-﻿#nullable disable
-using Microsoft.AspNetCore.Http.Features;
+﻿using Microsoft.AspNetCore.Http.Features;
 
 namespace OwaspHeaders.Core.Tests.SecureHeadersMiddlewareExtensionTests;
 
@@ -22,9 +21,15 @@ public class SecureHeadersMiddlewareTests
             throw new NotImplementedException();
         }
 
-        public IServiceProvider ApplicationServices { get; set; }
-        public IFeatureCollection ServerFeatures { get; }
-        public IDictionary<string, object> Properties { get; }
+        public IServiceProvider ApplicationServices
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
+
+        public IFeatureCollection ServerFeatures => throw new NotImplementedException();
+
+        public IDictionary<string, object?> Properties => throw new NotImplementedException();
     }
 
     /// <remarks>
@@ -40,10 +45,10 @@ public class SecureHeadersMiddlewareTests
     public void Raises_ArgumentNullException_If_IApplicationBuilder_IsNull()
     {
         // Arrange
-        MockedApplicationBuilder mockedApplicationBuilder = null;
+        MockedApplicationBuilder? mockedApplicationBuilder = null;
 
         // Act
-        var result = Record.Exception(() => mockedApplicationBuilder.UseSecureHeadersMiddleware());
+        var result = Record.Exception(() => mockedApplicationBuilder!.UseSecureHeadersMiddleware());
 
         // Assert
         Assert.IsType<ArgumentNullException>(result);
@@ -99,7 +104,7 @@ public class SecureHeadersMiddlewareTests
     public void BuildDefaultConfiguration_WhenInvalidIgnoreListSupplied_Returns_Valid_Configuration_With_Empty_IgnoreList()
     {
         // Arrange
-        List<string> ignoreList = null;
+        List<string>? ignoreList = null;
 
         // Act
         // BuildDefaultConfiguration is deprecated, but it still ships in version 11 and

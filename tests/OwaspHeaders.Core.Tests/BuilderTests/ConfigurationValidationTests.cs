@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Tests.BuilderTests;
+﻿namespace OwaspHeaders.Core.Tests.BuilderTests;
 
 /// <summary>
 /// Covers configuration validation and, in particular, *when* it happens: at the point the
@@ -142,7 +141,7 @@ public class ConfigurationValidationTests
     public void BuildAndValidate_WithANullDelegate_Throws()
     {
         // arrange, act
-        var exception = Record.Exception(() => SecureHeadersBuilder.BuildAndValidate(null));
+        var exception = Record.Exception(() => SecureHeadersBuilder.BuildAndValidate(null!));
 
         // assert
         Assert.NotNull(exception);

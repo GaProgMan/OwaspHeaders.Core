@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Tests.CustomHeaders;
+﻿namespace OwaspHeaders.Core.Tests.CustomHeaders;
 
 public class ClearSiteDataOptionsTests : SecureHeadersTests
 {
@@ -196,7 +195,7 @@ public class ClearSiteDataOptionsTests : SecureHeadersTests
     public void When_ClearSiteDataConfiguration_WithNullOptions_ThrowsException()
     {
         // arrange & act & assert
-        Assert.Throws<ArgumentNullException>(() => new ClearSiteDataConfiguration(null));
+        Assert.Throws<ArgumentNullException>(() => new ClearSiteDataConfiguration(null!));
     }
 
     [Fact]
@@ -255,7 +254,7 @@ public class ClearSiteDataOptionsTests : SecureHeadersTests
     public void When_ClearSiteDataPathConfiguration_WithNullPaths_ThrowsException()
     {
         // arrange & act & assert
-        Assert.Throws<ArgumentNullException>(() => new ClearSiteDataPathConfiguration(null));
+        Assert.Throws<ArgumentNullException>(() => new ClearSiteDataPathConfiguration(null!));
     }
 
     [Fact]

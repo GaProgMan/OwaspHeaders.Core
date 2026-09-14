@@ -72,3 +72,20 @@ OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.ValidateOrThrow() 
 *REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseXContentTypeOptions.set -> void
 *REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseXFrameOptions.set -> void
 *REMOVED*OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration.UseXssProtection.set -> void
+*REMOVED*~static OwaspHeaders.Core.Extensions.HttpContextExtensions.TryAddHeader(this Microsoft.AspNetCore.Http.HttpContext httpContext, string headerName, string headerValue, Microsoft.Extensions.Logging.ILogger logger = null, Microsoft.Extensions.Logging.EventId? eventId = null) -> bool
+*REMOVED*~static OwaspHeaders.Core.Extensions.HttpContextExtensions.TryRemoveHeader(this Microsoft.AspNetCore.Http.HttpContext httpContext, string headerName, Microsoft.Extensions.Logging.ILogger logger = null, Microsoft.Extensions.Logging.EventId? eventId = null) -> bool
+*REMOVED*~static OwaspHeaders.Core.Extensions.StringBuilderExtensions.BuildValuesForDirective(this System.Text.StringBuilder stringBuilder, string directiveName, System.Collections.Generic.List<OwaspHeaders.Core.Models.ContentSecurityPolicyElement> directiveValues) -> System.Text.StringBuilder
+*REMOVED*~static OwaspHeaders.Core.Extensions.StringBuilderExtensions.RemoveTrailingCharacter(this System.Text.StringBuilder input, char toRemove) -> System.Text.StringBuilder
+*REMOVED*~static OwaspHeaders.Core.Extensions.StringBuilderExtensions.TrimEnd(this System.Text.StringBuilder sb) -> System.Text.StringBuilder
+*REMOVED*~static OwaspHeaders.Core.Guards.BoolValueGuardClauses.MustBeTrue(bool value, string parameterName) -> void
+*REMOVED*~static OwaspHeaders.Core.Guards.HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(string value, string parameterName) -> void
+*REMOVED*~static OwaspHeaders.Core.Guards.ObjectGuardClauses.ObjectCannotBeNull(object obj, string parameterName, string message) -> void
+*REMOVED*~static OwaspHeaders.Core.Helpers.ArgumentExceptionHelper.RaiseArgumentNullException(string argumentName, string message) -> void
+*REMOVED*~static OwaspHeaders.Core.Helpers.ArgumentExceptionHelper.RaiseException(string argumentName) -> void
+*REMOVED*~static OwaspHeaders.Core.Helpers.ArgumentExceptionHelper.RaiseNotTrueException(string argumentName) -> void
+*REMOVED*OwaspHeaders.Core.Extensions.HttpContextExtensions
+*REMOVED*OwaspHeaders.Core.Extensions.StringBuilderExtensions
+*REMOVED*OwaspHeaders.Core.Guards.BoolValueGuardClauses
+*REMOVED*OwaspHeaders.Core.Guards.HeaderValueGuardClauses
+*REMOVED*OwaspHeaders.Core.Guards.ObjectGuardClauses
+*REMOVED*OwaspHeaders.Core.Helpers.ArgumentExceptionHelper

@@ -32,7 +32,7 @@ public class XFrameOptionsConfiguration : IConfigurationBase
             case XFrameOptions.Sameorigin:
                 return "sameorigin";
             case XFrameOptions.Allowfrom:
-                HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(AllowFromDomain, nameof(AllowFromDomain));
+                HeaderValueGuardClauses.StringCannotBeNullOrWhiteSpace(AllowFromDomain, nameof(AllowFromDomain));
                 return $"allow-from: ({AllowFromDomain})";
             case XFrameOptions.AllowAll:
                 return "allowall";

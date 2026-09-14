@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Tests.GuardClauses;
+﻿namespace OwaspHeaders.Core.Tests.GuardClauses;
 
 public class ObjectGuardClauses
 {
@@ -7,7 +6,7 @@ public class ObjectGuardClauses
     public void NullObject_Raises_NullArgumentException()
     {
         // Arrange
-        Object inputObject = null;
+        object? inputObject = null;
         var expectedOutputMessage = Guid.NewGuid().ToString();
 
         // Act
@@ -15,16 +14,16 @@ public class ObjectGuardClauses
             nameof(inputObject), expectedOutputMessage));
 
         // Assert
-        Assert.IsType<ArgumentNullException>(exception);
-        Assert.Contains(expectedOutputMessage, exception.Message);
-        Assert.Contains(nameof(inputObject), exception.Message);
+        var argumentNullException = Assert.IsType<ArgumentNullException>(exception);
+        Assert.Contains(expectedOutputMessage, argumentNullException.Message);
+        Assert.Contains(nameof(inputObject), argumentNullException.Message);
     }
 
     [Fact]
     public void NotNullObject_DoesNotThrow_NullArgumentException()
     {
         // Arrange
-        Object inputObject = new Object();
+        object inputObject = new object();
         var expectedOutputMessage = Guid.NewGuid().ToString();
 
         // Act

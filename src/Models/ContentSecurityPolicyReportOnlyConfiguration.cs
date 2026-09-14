@@ -27,7 +27,7 @@ public class ContentSecurityPolicyReportOnlyConfiguration : ContentSecurityPolic
         // an empty one has been supplied.
         // This decision was taken to ensure that the Report-Uri will
         // actually be called - otherwise this response header is useless
-        HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(ReportUri, nameof(ReportUri));
+        HeaderValueGuardClauses.StringCannotBeNullOrWhiteSpace(ReportUri, nameof(ReportUri));
         return base.BuildHeaderValue();
     }
 #pragma warning restore CS0618

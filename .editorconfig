@@ -142,14 +142,3 @@ visual_basic_preferred_modifier_order = Partial,Default,Private,Protected,Public
 # These properties need to be public for serialization and external consumption
 [src/Models/*.cs]
 resharper_member_can_be_private_global_highlighting = none
-
-###############################
-# Public API tracking         #
-###############################
-# The public surface is recorded in src/PublicAPI.Shipped.txt and src/PublicAPI.Unshipped.txt,
-# and any change to it which is not reflected there fails the build (issue #242).
-# RS0041 reports every public member whose types carry no nullability annotations yet, which is
-# every file still opted out with a #nullable disable directive. It stays off until the nullable
-# burn-down finishes (issue #233); turning it back on then checks that none are left.
-[*.cs]
-dotnet_diagnostic.RS0041.severity = none

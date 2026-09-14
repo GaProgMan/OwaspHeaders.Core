@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Tests.SecureHeadersMiddlewareExtensionTests;
+﻿namespace OwaspHeaders.Core.Tests.SecureHeadersMiddlewareExtensionTests;
 
 /// <summary>
 /// Covers the configure-delegate overload of <c>UseSecureHeadersMiddleware</c>, end to end
@@ -87,7 +86,7 @@ public class ConfigureDelegateTests
 
         // act
         var exception = Record.Exception(() =>
-            applicationBuilder.UseSecureHeadersMiddleware((Action<SecureHeadersBuilder>)null));
+            applicationBuilder.UseSecureHeadersMiddleware((Action<SecureHeadersBuilder>)null!));
 
         // assert
         Assert.IsType<ArgumentNullException>(exception);
@@ -107,7 +106,7 @@ public class ConfigureDelegateTests
         Assert.Equal(1, invocations);
     }
 
-    private static TestServer CreateTestServer(Action<SecureHeadersBuilder> configure)
+    private static TestServer CreateTestServer(Action<SecureHeadersBuilder>? configure)
     {
         var host = new HostBuilder()
             .ConfigureWebHost(webBuilder =>

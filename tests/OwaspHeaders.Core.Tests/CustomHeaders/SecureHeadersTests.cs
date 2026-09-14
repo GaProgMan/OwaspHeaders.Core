@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace OwaspHeaders.Core.Tests.CustomHeaders;
+﻿namespace OwaspHeaders.Core.Tests.CustomHeaders;
 
 public abstract class SecureHeadersTests
 {
@@ -7,7 +6,9 @@ public abstract class SecureHeadersTests
     private readonly Task _onNextResult = Task.FromResult(0);
     internal readonly RequestDelegate _onNext;
     internal readonly DefaultHttpContext _context;
-    internal TestServer TestServer;
+    // Assigned by a derived test method rather than by this constructor, so it is null until
+    // that test calls CreateTestServer.
+    internal TestServer? TestServer;
 
     protected SecureHeadersTests()
     {
@@ -25,7 +26,7 @@ public abstract class SecureHeadersTests
         // The configuration is checked when the middleware is constructed, which ASP.NET Core
         // does while building the request pipeline, so this fails at application start rather
         // than on the first request.
-        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, null));
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, null!));
 
         Assert.NotNull(exception);
         Assert.IsAssignableFrom<ArgumentException>(exception);
@@ -35,8 +36,8 @@ public abstract class SecureHeadersTests
         Assert.Contains(nameof(SecureHeadersMiddlewareConfiguration), exception.Message);
     }
 
-    internal TestServer CreateTestServer(string urlToMap, Action<SecureHeadersBuilder> configure = null,
-        string urlToIgnore = null)
+    internal TestServer CreateTestServer(string urlToMap, Action<SecureHeadersBuilder>? configure = null,
+        string? urlToIgnore = null)
     {
         var host = new HostBuilder()
             .ConfigureWebHost(webBuilder =>

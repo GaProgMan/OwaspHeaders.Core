@@ -1,5 +1,4 @@
-﻿#nullable disable
-using static OwaspHeaders.Core.Models.CrossOriginResourcePolicy;
+﻿using static OwaspHeaders.Core.Models.CrossOriginResourcePolicy;
 
 namespace OwaspHeaders.Core.Extensions;
 
@@ -52,7 +51,7 @@ public static class SecureHeadersMiddlewareBuilder
     public static SecureHeadersMiddlewareConfiguration UseXFrameOptions
     (this SecureHeadersMiddlewareConfiguration config,
         XFrameOptions xFrameOption = XFrameOptions.Deny,
-        string domain = null)
+        string? domain = null)
         => new SecureHeadersBuilder(config).UseXFrameOptions(xFrameOption, domain).Build();
 
     /// <inheritdoc cref="SecureHeadersBuilder.UseXssProtection"/>
@@ -73,18 +72,18 @@ public static class SecureHeadersMiddlewareBuilder
     /// <inheritdoc cref="SecureHeadersBuilder.UseContentSecurityPolicy"/>
     public static SecureHeadersMiddlewareConfiguration UseContentSecurityPolicy
     (this SecureHeadersMiddlewareConfiguration config,
-        string pluginTypes = null, bool blockAllMixedContent = true,
-        bool upgradeInsecureRequests = true, string referrer = null,
-        string reportUri = null, bool useXContentSecurityPolicy = false, string reportTo = null)
+        string? pluginTypes = null, bool blockAllMixedContent = true,
+        bool upgradeInsecureRequests = true, string? referrer = null,
+        string? reportUri = null, bool useXContentSecurityPolicy = false, string? reportTo = null)
         => new SecureHeadersBuilder(config).UseContentSecurityPolicy(pluginTypes, blockAllMixedContent,
             upgradeInsecureRequests, referrer, reportUri, useXContentSecurityPolicy, reportTo).Build();
 
     /// <inheritdoc cref="SecureHeadersBuilder.UseContentSecurityPolicyReportUriOnly"/>
     public static SecureHeadersMiddlewareConfiguration UseContentSecurityPolicyReportUriOnly
     (this SecureHeadersMiddlewareConfiguration config, string reportUri,
-        string pluginTypes = null, bool blockAllMixedContent = true,
-        bool upgradeInsecureRequests = true, string referrer = null,
-        bool useXContentSecurityPolicy = false, string reportTo = null)
+        string? pluginTypes = null, bool blockAllMixedContent = true,
+        bool upgradeInsecureRequests = true, string? referrer = null,
+        bool useXContentSecurityPolicy = false, string? reportTo = null)
         => new SecureHeadersBuilder(config).UseContentSecurityPolicyReportUriOnly(reportUri, pluginTypes,
             blockAllMixedContent, upgradeInsecureRequests, referrer, useXContentSecurityPolicy, reportTo).Build();
 
@@ -98,9 +97,9 @@ public static class SecureHeadersMiddlewareBuilder
     [Obsolete("UseContentSecurityPolicyReportOnly has been renamed to UseContentSecurityPolicyReportUriOnly. Please use the new method name.", false)]
     public static SecureHeadersMiddlewareConfiguration UseContentSecurityPolicyReportOnly
     (this SecureHeadersMiddlewareConfiguration config, string reportUri,
-        string pluginTypes = null, bool blockAllMixedContent = true,
-        bool upgradeInsecureRequests = true, string referrer = null,
-        bool useXContentSecurityPolicy = false, string reportTo = null)
+        string? pluginTypes = null, bool blockAllMixedContent = true,
+        bool upgradeInsecureRequests = true, string? referrer = null,
+        bool useXContentSecurityPolicy = false, string? reportTo = null)
         => config.UseContentSecurityPolicyReportUriOnly(reportUri, pluginTypes, blockAllMixedContent,
             upgradeInsecureRequests, referrer, useXContentSecurityPolicy, reportTo);
 
@@ -155,7 +154,7 @@ public static class SecureHeadersMiddlewareBuilder
     /// <inheritdoc cref="SecureHeadersBuilder.SetUrlsToIgnore"/>
     public static SecureHeadersMiddlewareConfiguration SetUrlsToIgnore(
         this SecureHeadersMiddlewareConfiguration config,
-        List<string> urlsToIgnore = null)
+        List<string>? urlsToIgnore = null)
         => new SecureHeadersBuilder(config).SetUrlsToIgnore(urlsToIgnore).Build();
 
     /// <inheritdoc cref="SecureHeadersBuilder.WithLoggingEventIds"/>
@@ -180,7 +179,7 @@ public static class SecureHeadersMiddlewareBuilder
     public static SecureHeadersMiddlewareConfiguration UseClearSiteDataForPaths(
         this SecureHeadersMiddlewareConfiguration config,
         Dictionary<string, ClearSiteDataOptions[]> pathConfigurations,
-        ClearSiteDataOptions[] defaultConfiguration = null)
+        ClearSiteDataOptions[]? defaultConfiguration = null)
         => new SecureHeadersBuilder(config)
             .UseClearSiteDataForPaths(pathConfigurations, defaultConfiguration).Build();
 

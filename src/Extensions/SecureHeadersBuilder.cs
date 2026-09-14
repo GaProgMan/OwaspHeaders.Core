@@ -1,5 +1,4 @@
-﻿#nullable disable
-// Note:  some commments (especially those which explain what the different
+﻿// Note:  some commments (especially those which explain what the different
 //        parameters for each header) are taken from the OWASP Secure Headers
 //        page. The original comments can be found at:
 //                https://www.owasp.org/index.php/OWASP_Secure_Headers_Project
@@ -179,7 +178,7 @@ public sealed class SecureHeadersBuilder
     /// </remarks>
     public SecureHeadersBuilder UseXFrameOptions(
         XFrameOptions xFrameOption = XFrameOptions.Deny,
-        string domain = null)
+        string? domain = null)
     {
         _configuration.UseXFrameOptions = true;
         _configuration.XFrameOptionsConfiguration = new XFrameOptionsConfiguration(xFrameOption, domain);
@@ -282,9 +281,9 @@ public sealed class SecureHeadersBuilder
     /// <see cref="SetCspUris"/>
     /// </remarks>
     public SecureHeadersBuilder UseContentSecurityPolicy(
-        string pluginTypes = null, bool blockAllMixedContent = true,
-        bool upgradeInsecureRequests = true, string referrer = null,
-        string reportUri = null, bool useXContentSecurityPolicy = false, string reportTo = null)
+        string? pluginTypes = null, bool blockAllMixedContent = true,
+        bool upgradeInsecureRequests = true, string? referrer = null,
+        string? reportUri = null, bool useXContentSecurityPolicy = false, string? reportTo = null)
     {
         _configuration.UseContentSecurityPolicy = true;
         _configuration.UseXContentSecurityPolicy = useXContentSecurityPolicy;
@@ -312,9 +311,9 @@ public sealed class SecureHeadersBuilder
     /// </exception>
     public SecureHeadersBuilder UseContentSecurityPolicyReportUriOnly(
         string reportUri,
-        string pluginTypes = null, bool blockAllMixedContent = true,
-        bool upgradeInsecureRequests = true, string referrer = null,
-        bool useXContentSecurityPolicy = false, string reportTo = null)
+        string? pluginTypes = null, bool blockAllMixedContent = true,
+        bool upgradeInsecureRequests = true, string? referrer = null,
+        bool useXContentSecurityPolicy = false, string? reportTo = null)
     {
         // Report-only mode must neither enable nor disable X-Content-Security-Policy. Enabling it
         // here set the flag with no enforcing policy behind it, and the default of false switched
@@ -349,9 +348,9 @@ public sealed class SecureHeadersBuilder
     [Obsolete("UseContentSecurityPolicyReportOnly has been renamed to UseContentSecurityPolicyReportUriOnly. Please use the new method name.", false)]
     public SecureHeadersBuilder UseContentSecurityPolicyReportOnly(
         string reportUri,
-        string pluginTypes = null, bool blockAllMixedContent = true,
-        bool upgradeInsecureRequests = true, string referrer = null,
-        bool useXContentSecurityPolicy = false, string reportTo = null)
+        string? pluginTypes = null, bool blockAllMixedContent = true,
+        bool upgradeInsecureRequests = true, string? referrer = null,
+        bool useXContentSecurityPolicy = false, string? reportTo = null)
     {
         return UseContentSecurityPolicyReportUriOnly(reportUri, pluginTypes, blockAllMixedContent,
             upgradeInsecureRequests, referrer, useXContentSecurityPolicy, reportTo);
@@ -525,7 +524,7 @@ public sealed class SecureHeadersBuilder
     /// Supplying a null list is a no-op: the existing list is left alone rather than being
     /// replaced with null.
     /// </remarks>
-    public SecureHeadersBuilder SetUrlsToIgnore(List<string> urlsToIgnore = null)
+    public SecureHeadersBuilder SetUrlsToIgnore(List<string>? urlsToIgnore = null)
     {
         if (urlsToIgnore != null)
         {
@@ -607,7 +606,7 @@ public sealed class SecureHeadersBuilder
     /// </remarks>
     public SecureHeadersBuilder UseClearSiteDataForPaths(
         Dictionary<string, ClearSiteDataOptions[]> pathConfigurations,
-        ClearSiteDataOptions[] defaultConfiguration = null)
+        ClearSiteDataOptions[]? defaultConfiguration = null)
     {
         ObjectGuardClauses.ObjectCannotBeNull(pathConfigurations, nameof(pathConfigurations),
             $"{nameof(pathConfigurations)} cannot be null");
@@ -620,7 +619,7 @@ public sealed class SecureHeadersBuilder
             configuredPaths[kvp.Key] = new ClearSiteDataConfiguration(kvp.Value);
         }
 
-        ClearSiteDataConfiguration defaultConfig = null;
+        ClearSiteDataConfiguration? defaultConfig = null;
         if (defaultConfiguration != null && defaultConfiguration.Length > 0)
         {
             defaultConfig = new ClearSiteDataConfiguration(defaultConfiguration);

@@ -1,5 +1,4 @@
-﻿#nullable disable
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 
 namespace OwaspHeaders.Core.Extensions;
 
@@ -26,7 +25,7 @@ public static class SecureHeadersMiddlewareExtensions
               "opt.UseRecommendedDefaults() inside the configure delegate. See " +
               "https://github.com/GaProgMan/OwaspHeaders.Core/issues/59", false)]
     public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration(
-        List<string> urlIgnoreList = null)
+        List<string>? urlIgnoreList = null)
     {
         return new SecureHeadersBuilder()
             .UseRecommendedDefaults()
@@ -64,7 +63,7 @@ public static class SecureHeadersMiddlewareExtensions
               "urlIgnoreList is silently ignored by this overload whenever config is supplied; " +
               "opt.SetUrlsToIgnore(...) always applies. See " + "https://github.com/GaProgMan/OwaspHeaders.Core/issues/59", false)]
     public static IApplicationBuilder UseSecureHeadersMiddleware(this IApplicationBuilder builder,
-        SecureHeadersMiddlewareConfiguration config = null, List<string> urlIgnoreList = null)
+        SecureHeadersMiddlewareConfiguration? config = null, List<string>? urlIgnoreList = null)
     {
         ObjectGuardClauses.ObjectCannotBeNull(builder, nameof(builder),
             "cannot be null when setting up OWASP Secure Headers in OwaspHeaders.Core");

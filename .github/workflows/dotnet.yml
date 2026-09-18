@@ -2,13 +2,11 @@ name: Build repo
 
 on:
   workflow_dispatch:
+  # Deliberately unfiltered by path. Roughly half of recent merges are bot PRs
+  # touching only /docs, and a PR that triggers no check run counts against the
+  # OpenSSF Scorecard CI-Tests score. See #238.
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
-      - 'src/**'
-      - 'tests/**'
-      - 'example/**'
-      - '.github/workflows/**'
 
 permissions:
   contents: read

@@ -12,16 +12,14 @@
 name: "CodeQL Advanced"
 
 on:
+  # Deliberately unfiltered by path. The Scorecard SAST check measures the
+  # proportion of commits analysed by a SAST tool, and only 5 of the last 30
+  # PRs merged to main touched .cs or .csproj - the rest were docs, gem bumps
+  # and changelog syncs, which produced no analysis at all. See #238.
   push:
     branches: [ "main" ]
-    paths:
-    - '**.cs'
-    - '**.csproj'
   pull_request:
     branches: [ "main" ]
-    paths:
-    - '**.cs'
-    - '**.csproj'
   schedule:
     - cron: '21 6 * * 3'
 

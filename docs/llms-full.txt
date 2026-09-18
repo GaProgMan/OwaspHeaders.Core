@@ -14,7 +14,7 @@ OwaspHeaders.Core is an open-source ASP.NET Core middleware library designed to 
 - **Repository:** https://github.com/GaProgMan/OwaspHeaders.Core
 - **Documentation:** https://gaprogman.github.io/OwaspHeaders.Core/
 - **NuGet Package:** https://www.nuget.org/packages/OwaspHeaders.Core/
-- **OpenSSF Best Practices:** Certified (https://www.bestpractices.dev/projects/9723)
+- **OpenSSF Best Practices:** Passing (https://www.bestpractices.dev/projects/9723)
 
 ## Supported .NET Versions
 

@@ -22,6 +22,12 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    # Named so this check is distinguishable from the build jobs in dotnet.yml and
+    # pages.yml. Without it the check reports under its job id, "build", which
+    # collides with pages.yml and is indistinguishable in the required status
+    # checks picker - where selecting it would block every PR, since this
+    # workflow never runs on one.
+    name: Build code base for release
 
     steps:
     - name: Checkout code

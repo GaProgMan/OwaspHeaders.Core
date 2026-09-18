@@ -6,7 +6,7 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
     public async Task When_UseContentDefaultSecurityPolicyNotCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
@@ -22,7 +22,7 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
     public async Task Invoke_ContentSecurityPolicyHeaderName_HeaderIsPresent_WithMultipleCspSandboxTypes()
     {
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicy().Build();
         headerPresentConfig.SetCspSandBox(CspSandboxType.allowForms, CspSandboxType.allowScripts,
             CspSandboxType.allowSameOrigin);
@@ -43,7 +43,7 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
     {
         const string reportUri = "https://localhost:5001/report-uri";
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicyReportUriOnly(reportUri).Build();
         headerPresentConfig.SetCspSandBox(CspSandboxType.allowForms, CspSandboxType.allowScripts,
             CspSandboxType.allowSameOrigin);
@@ -54,7 +54,8 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
 
         // assert
         Assert.True(_context.Response.Headers.ContainsKey(Constants.ContentSecurityPolicyReportOnlyHeaderName));
-        Assert.Equal($"block-all-mixed-content;upgrade-insecure-requests;report-uri {reportUri};",
+        Assert.Equal(
+            $"sandbox allow-forms allow-scripts allow-same-origin;block-all-mixed-content;upgrade-insecure-requests;report-uri {reportUri};",
             _context.Response.Headers[Constants.ContentSecurityPolicyReportOnlyHeaderName]);
     }
 
@@ -63,7 +64,7 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
     {
         const string reportTo = "report-endpoint";
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicy(reportTo: reportTo).Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
@@ -80,7 +81,7 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
     public async Task Invoke_ContentSecurityPolicyReportOnly_HeaderIsNotPresent()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 
@@ -96,7 +97,7 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
     public async Task Invoke_XContentSecurityPolicyHeaderName_HeaderIsPresent()
     {
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseContentSecurityPolicy(useXContentSecurityPolicy: true).Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
@@ -115,7 +116,7 @@ public class ContentSecurityPolicyOptionsTests : SecureHeadersTests
     public async Task Invoke_XContentSecurityPolicyHeaderName_HeaderIsNotPresent()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 

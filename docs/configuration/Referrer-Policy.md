@@ -50,4 +50,4 @@ The values available for the `ReferrerPolicyOptions` enum are:
 - `strictWhenCrossOrigin`
 - `unsafeUrl`
 
-These values can be set when creating a new instance of the `ReferrerPolicyOptions` object, or by calling the `UseReferrerPolicy` extension method on the `SecureHeadersMiddlewareConfiguration` class.
+These values are set by calling the `UseReferrerPolicy` extension method on the `SecureHeadersMiddlewareConfiguration` class.

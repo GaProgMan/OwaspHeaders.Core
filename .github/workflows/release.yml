@@ -6,11 +6,13 @@ on:
     branches:
       - main
     paths:
-      - 'src/**'
-      - 'tests/**'
-      - 'example/**'
-      - '.github/workflows/release.yml'
-      - 'README-NuGet.md'
+      # Narrowed to the one file that carries the package version. A release
+      # should happen when the version changes and at no other time.
+      #
+      # Nothing is left unexercised by dropping the other paths: pushing an
+      # unchanged version to NuGet was always a no-op thanks to --skip-duplicate,
+      # and dotnet.yml runs the full build and test suite on every PR.
+      - 'Directory.Build.props'
 
 permissions:
   contents: read
@@ -20,6 +22,12 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    # Named so this check is distinguishable from the build jobs in dotnet.yml and
+    # pages.yml. Without it the check reports under its job id, "build", which
+    # collides with pages.yml and is indistinguishable in the required status
+    # checks picker - where selecting it would block every PR, since this
+    # workflow never runs on one.
+    name: Build code base for release
 
     steps:
     - name: Checkout code
@@ -28,12 +36,14 @@ jobs:
         fetch-depth: 0
         persist-credentials: false
 
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
-    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
-    - name: Setup .NET SDK 10
+    # The NuGet package we're building targets net10.0 and net11.0. The runner's
+    # pre-installed SDKs lag behind these versions, so we install both explicitly.
+    - name: Setup .NET SDKs
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
-        dotnet-version: '10.0.x'
+        dotnet-version: |
+          10.0.x
+          11.0.x
 
     - name: Install dependencies
       run: dotnet restore --locked-mode
@@ -53,15 +63,17 @@ jobs:
         fetch-depth: 0
         persist-credentials: false
       
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
-    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
-    - name: Setup .NET SDK 10
+    # The NuGet package we're building targets net10.0 and net11.0. The runner's
+    # pre-installed SDKs lag behind these versions, so we install both explicitly.
+    - name: Setup .NET SDKs
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
-        dotnet-version: '10.0.x'
+        dotnet-version: |
+          10.0.x
+          11.0.x
 
     - name: Run all tests
-      run: dotnet test OwaspHeaders.Core.sln --verbosity minimal --filter "Category!=Performance"
+      run: dotnet test --solution OwaspHeaders.Core.sln --verbosity minimal --filter-not-trait "Category=Performance"
 
 
   package:
@@ -72,6 +84,9 @@ jobs:
     permissions:
       id-token: write
       attestations: write
+      # Needed to create the GitHub release and the tag that comes with it.
+      # Scoped to this job; the workflow stays at contents: read.
+      contents: write
 
     steps:
     - name: Checkout code
@@ -80,17 +95,42 @@ jobs:
         fetch-depth: 0
         persist-credentials: false
       
-    # The NuGet package we're building supports .NET 8, .NET 9, and .NET 10.
-    # .NET 8 and 9 are pre-installed on ubuntu-latest, so we only need to install .NET 10.
-    - name: Setup .NET SDK 10
+    # The NuGet package we're building targets net10.0 and net11.0. The runner's
+    # pre-installed SDKs lag behind these versions, so we install both explicitly.
+    - name: Setup .NET SDKs
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
       with:
-        dotnet-version: '10.0.x'
+        dotnet-version: |
+          10.0.x
+          11.0.x
 
     - name: Build NuGet package
       run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release
 
+    # The version is read back off the package that was actually built, rather
+    # than parsed out of Directory.Build.props. That keeps this step honest (it
+    # describes what was produced, not what was configured) and means it does not
+    # need changing if the version ever moves between files again.
+    - name: Determine the version that was packed
+      id: version
+      run: |
+        set -euo pipefail
+        nupkg=$(find src/bin/Release -maxdepth 1 -name 'OwaspHeaders.Core.*.nupkg' | head -n 1)
+        if [ -z "$nupkg" ]; then
+          echo "::error::No .nupkg found under src/bin/Release"
+          exit 1
+        fi
+        version=$(basename "$nupkg" .nupkg)
+        version=${version#OwaspHeaders.Core.}
+        {
+          echo "nupkg=$nupkg"
+          echo "version=$version"
+          echo "tag=v$version"
+        } >> "$GITHUB_OUTPUT"
+        echo "Packed OwaspHeaders.Core $version ($nupkg)"
+
     - name: Generate Attestations
+      id: attest
       uses: actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32 # v4.1.0
       with:
         subject-path: ${{ github.workspace }}/**/*.nupkg
@@ -108,3 +148,53 @@ jobs:
       run: dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key "${STEPS_NUGET_LOGIN_OUTPUTS_NUGET_API_KEY}" --skip-duplicate
       env:
         STEPS_NUGET_LOGIN_OUTPUTS_NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+
+    # Creating the release last means a failed NuGet push never leaves a release
+    # pointing at a version that was not published. If the push succeeds and this
+    # step fails, re-running the workflow is safe: the NuGet push no-ops on
+    # --skip-duplicate and the guard below finds no tag, so the release is made.
+    - name: Create the GitHub release if this version has not been released
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+        TAG: ${{ steps.version.outputs.tag }}
+        VERSION: ${{ steps.version.outputs.version }}
+        NUPKG: ${{ steps.version.outputs.nupkg }}
+        BUNDLE_PATH: ${{ steps.attest.outputs.bundle-path }}
+      run: |
+        set -euo pipefail
+
+        # The workflow only runs when Directory.Build.props changes, which is
+        # usually a version bump - but not always. This guard makes a run against
+        # an already-released version a no-op rather than a failure, since
+        # `gh release create` errors on an existing tag.
+        if gh release view "$TAG" > /dev/null 2>&1; then
+          echo "Release $TAG already exists - nothing to do"
+          exit 0
+        fi
+
+        # Scorecard's releasesHaveProvenance probe only recognises assets whose
+        # name ends in .intoto.jsonl, so the attestation bundle is copied to that
+        # name rather than attached under whatever the action called it.
+        provenance="OwaspHeaders.Core.${VERSION}.intoto.jsonl"
+        cp "$BUNDLE_PATH" "$provenance"
+
+        # A SemVer pre-release version carries a hyphen (11.0.0-preview.1), and
+        # should be flagged as such rather than shown as the latest stable release.
+        prerelease=""
+        case "$VERSION" in
+          *-*) prerelease="--prerelease" ;;
+        esac
+
+        # gh creates the tag against the target commit, so no separate tagging
+        # step and no git push is needed - which matters, because the checkout
+        # above uses persist-credentials: false.
+        gh release create "$TAG" \
+          --target "$GITHUB_SHA" \
+          --title "$TAG" \
+          $prerelease \
+          --notes "OwaspHeaders.Core ${VERSION} is published to NuGet: https://www.nuget.org/packages/OwaspHeaders.Core/${VERSION}
+
+        See the [changelog](https://gaprogman.github.io/OwaspHeaders.Core/changelog) for what changed in this version." \
+          "$NUPKG" \
+          "$provenance"

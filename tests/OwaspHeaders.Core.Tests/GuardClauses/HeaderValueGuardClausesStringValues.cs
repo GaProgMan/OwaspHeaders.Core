@@ -1,5 +1,7 @@
 ﻿namespace OwaspHeaders.Core.Tests.GuardClauses;
 
+// Guards.BoolValueGuardClauses has no callers left in the library and is internal as of version
+// 11, so it can be deleted in version 12. Until then these tests are what keep it honest.
 public class BoolValueGuardClauses
 {
     [Fact]
@@ -34,18 +36,19 @@ public class BoolValueGuardClauses
 public class HeaderValueGuardClauses
 {
     [Theory]
+    [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void NullOrWhitespaceValue_Throws_ArgumentException(string inputValue)
+    public void NullOrWhitespaceValue_Throws_ArgumentException(string? inputValue)
     {
         // Arrange
 
         // Act
-        var exception = Record.Exception(() => Guards.HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(inputValue, nameof(inputValue)));
+        var exception = Record.Exception(() => Guards.HeaderValueGuardClauses.StringCannotBeNullOrWhiteSpace(inputValue, nameof(inputValue)));
 
         // Assert
-        Assert.IsType<ArgumentException>(exception);
-        Assert.Equal($"No value for {nameof(inputValue)} was supplied", exception.Message);
+        var argumentException = Assert.IsType<ArgumentException>(exception);
+        Assert.Equal($"No value for {nameof(inputValue)} was supplied", argumentException.Message);
     }
 
     [Fact]
@@ -55,7 +58,7 @@ public class HeaderValueGuardClauses
         var inputValue = Guid.NewGuid().ToString();
 
         // Act
-        Guards.HeaderValueGuardClauses.StringCannotBeNullOrWhitsSpace(inputValue, nameof(inputValue));
+        Guards.HeaderValueGuardClauses.StringCannotBeNullOrWhiteSpace(inputValue, nameof(inputValue));
 
         // Assert
         // Nothing to assert as it returns void if the string is valid

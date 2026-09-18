@@ -1,6 +1,6 @@
 ﻿namespace OwaspHeaders.Core.Extensions;
 
-public static class HttpContextExtensions
+internal static class HttpContextExtensions
 {
     private static bool ResponseContainsHeader(this HttpContext httpContext,
         string header)
@@ -8,8 +8,8 @@ public static class HttpContextExtensions
         return httpContext.Response.Headers.ContainsKey(header);
     }
 
-    public static bool TryAddHeader(this HttpContext httpContext,
-        string headerName, string headerValue, ILogger logger = null, EventId? eventId = null)
+    internal static bool TryAddHeader(this HttpContext httpContext,
+        string headerName, string headerValue, ILogger? logger = null, EventId? eventId = null)
     {
         if (httpContext.ResponseContainsHeader(headerName))
         {
@@ -49,7 +49,7 @@ public static class HttpContextExtensions
     /// <param name="httpContext">The current <see cref="HttpContext"/></param>
     /// <param name="headerName">The name of the HTTP header to remove</param>
     /// <returns></returns>
-    public static bool TryRemoveHeader(this HttpContext httpContext, string headerName, ILogger logger = null, EventId? eventId = null)
+    internal static bool TryRemoveHeader(this HttpContext httpContext, string headerName, ILogger? logger = null, EventId? eventId = null)
     {
         if (!httpContext.ResponseContainsHeader(headerName))
         {

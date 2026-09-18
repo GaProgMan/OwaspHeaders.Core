@@ -8,13 +8,18 @@ on:
   workflow_dispatch:  # Allow manual triggering
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   sync-changelog:
     runs-on: ubuntu-latest
     name: Sync root changelog to docs changelog
+
+    # Scoped to this job rather than the workflow: peter-evans/create-pull-request
+    # needs both to push the sync branch and open the PR.
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout code

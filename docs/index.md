@@ -71,7 +71,7 @@ content-security-policy: script-src 'self';object-src 'self';block-all-mixed-con
 x-permitted-cross-domain-policies: none
 referrer-policy: no-referrer
 cross-origin-resource-policy: same-origin
-cache-control: max-age=0,no-store
+cache-control: no-cache, no-store, max-age=0
 cross-origin-opener-policy: same-origin
 cross-origin-embedder-policy: same-require-corp
 x-xss-protection: 0

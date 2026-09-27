@@ -10,7 +10,7 @@ OwaspHeaders.Core is an open-source ASP.NET Core middleware library designed to 
 - **Maintainer:** Jamie Taylor
 - **Company:** RJJ Software Ltd
 - **License:** MIT
-- **Current Version:** 10.4.0
+- **Current Version:** 10.5.0
 - **Repository:** https://github.com/GaProgMan/OwaspHeaders.Core
 - **Documentation:** https://gaprogman.github.io/OwaspHeaders.Core/
 - **NuGet Package:** https://www.nuget.org/packages/OwaspHeaders.Core/
@@ -43,7 +43,7 @@ app.UseSecureHeadersMiddleware();
 
 This will add 11 OWASP-recommended HTTP headers to all responses from your server component with their secure default values.
 
-### Example Response Headers (v9.9.0)
+### Example Response Headers (v10.5.0)
 
 ```
 strict-transport-security: max-age=31536000;includesubdomains
@@ -53,7 +53,7 @@ content-security-policy: script-src 'self';object-src 'self';block-all-mixed-con
 x-permitted-cross-domain-policies: none
 referrer-policy: no-referrer
 cross-origin-resource-policy: same-origin
-cache-control: max-age=0,no-store
+cache-control: no-cache, no-store, max-age=0
 cross-origin-opener-policy: same-origin
 cross-origin-embedder-policy: same-require-corp
 x-xss-protection: 0
@@ -85,7 +85,7 @@ Controls how much referrer information is included with requests. Default: `no-r
 Protects against cross-origin resource embedding attacks. Default: `same-origin`.
 
 ### 8. Cache-Control
-Controls browser and proxy caching behavior. Default: `max-age=0,no-store` (no caching).
+Controls browser and proxy caching behavior. Default: `no-cache, no-store, max-age=0` (no caching). Directives can be combined; every option that is set is included.
 
 ### 9. Clear-Site-Data
 Instructs browsers to clear client-side data (cache, cookies, storage) for specific paths. Not included in default configuration; must be explicitly configured for logout endpoints.
@@ -214,6 +214,7 @@ The middleware removes the `X-Powered-By` header, but the `Server` header is add
 - UseReportingEndpointsPolicy builder method for middleware configuration
 - Support for the modern `report-to` directive in Content Security Policy
 - All model properties now properly accessible for serialization scenarios
+- Cache-Control options can now be combined, and the default value includes `no-cache` so that it satisfies ASP.NET Core antiforgery (version 10.5.x)
 
 ### Version 9
 - Removed support for .NET 6 and .NET 7 (no longer supported by Microsoft)

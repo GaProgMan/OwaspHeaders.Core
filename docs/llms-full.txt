@@ -10,7 +10,7 @@ OwaspHeaders.Core is an open-source ASP.NET Core middleware library designed to 
 - **Maintainer:** Jamie Taylor
 - **Company:** RJJ Software Ltd
 - **License:** MIT
-- **Current Version:** 10.4.1
+- **Current Version:** 10.4.0
 - **Repository:** https://github.com/GaProgMan/OwaspHeaders.Core
 - **Documentation:** https://gaprogman.github.io/OwaspHeaders.Core/
 - **NuGet Package:** https://www.nuget.org/packages/OwaspHeaders.Core/

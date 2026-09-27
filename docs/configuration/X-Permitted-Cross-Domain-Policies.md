@@ -25,15 +25,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the X-Permitted-Cross-Domain-Policies header with a `none` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UsePermittedCrossDomainPolicies()
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UsePermittedCrossDomainPolicies());
 ```
 
 The above adds the X-Permitted-Cross-Domain-Policies header with a `none` value.

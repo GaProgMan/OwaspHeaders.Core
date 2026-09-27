@@ -20,15 +20,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the Cache-Control header with a `no-cache, no-store, max-age=0` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseCacheControl()
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseCacheControl());
 ```
 
 The above adds the Cache-Control header with a `no-cache, no-store, max-age=0` value.

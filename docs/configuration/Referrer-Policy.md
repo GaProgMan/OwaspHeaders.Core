@@ -20,15 +20,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the Referrer-Policy header with a `no-referrer` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseReferrerPolicy()
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseReferrerPolicy());
 ```
 
 The above adds the Referrer-Policy header with a `no-referrer` value.

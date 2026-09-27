@@ -22,15 +22,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the X-Frame-Options header with a `deny` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseXFrameOptions(XFrameOptions.Sameorigin)
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseXFrameOptions(XFrameOptions.Sameorigin));
 ```
 
 The above adds the X-Frame-Options header with a `Sameorigin` value.

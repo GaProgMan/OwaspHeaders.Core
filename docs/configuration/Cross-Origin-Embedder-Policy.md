@@ -20,16 +20,14 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the COEP header with a `require-corp` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseCrossOriginResourcePolicy()
-    .UseCrossOriginEmbedderPolicy()
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseCrossOriginResourcePolicy();
+    opt.UseCrossOriginEmbedderPolicy();
+});
 ```
 
 {: .warning }

@@ -66,7 +66,7 @@ OwaspHeaders.Core.Helpers.ArgumentExceptionHelper
 OwaspHeaders.Core.Helpers.ContentSecurityPolicyHelpers
 OwaspHeaders.Core.Models.CacheControl
 OwaspHeaders.Core.Models.CacheControl.CacheControl() -> void
-OwaspHeaders.Core.Models.CacheControl.CacheControl(bool private, int maxAge = 0, bool noCache = false, bool noStore = true, bool mustRevalidate = false) -> void
+OwaspHeaders.Core.Models.CacheControl.CacheControl(bool private, int maxAge = 0, bool noCache = true, bool noStore = true, bool mustRevalidate = false) -> void
 OwaspHeaders.Core.Models.CacheControl.MaxAge.get -> int
 OwaspHeaders.Core.Models.CacheControl.MustRevalidate.get -> bool
 OwaspHeaders.Core.Models.CacheControl.NoCache.get -> bool
@@ -336,7 +336,7 @@ static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareBuilder.AddClearSiteD
 static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareBuilder.Build(this OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration! config) -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration!
 static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareBuilder.CreateBuilder() -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration!
 static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareBuilder.SetUrlsToIgnore(this OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration! config, System.Collections.Generic.List<string!>? urlsToIgnore = null) -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration!
-static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareBuilder.UseCacheControl(this OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration! config, bool private = false, int maxAge = 0, bool noCache = false, bool noStore = true, bool mustRevalidate = false) -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration!
+static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareBuilder.UseCacheControl(this OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration! config, bool private = false, int maxAge = 0, bool noCache = true, bool noStore = true, bool mustRevalidate = false) -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration!
 static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareBuilder.UseClearSiteData(this OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration! config, params OwaspHeaders.Core.Enums.ClearSiteDataOptions[]! directiveOptions) -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration!
 static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareBuilder.UseClearSiteDataForPaths(this OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration! config, System.Collections.Generic.Dictionary<string!, OwaspHeaders.Core.Enums.ClearSiteDataOptions[]!>! pathConfigurations, OwaspHeaders.Core.Enums.ClearSiteDataOptions[]? defaultConfiguration = null) -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration!
 static OwaspHeaders.Core.Extensions.SecureHeadersMiddlewareBuilder.UseContentSecurityPolicy(this OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration! config, string? pluginTypes = null, bool blockAllMixedContent = true, bool upgradeInsecureRequests = true, string? referrer = null, string? reportUri = null, bool useXContentSecurityPolicy = false, string? reportTo = null) -> OwaspHeaders.Core.Models.SecureHeadersMiddlewareConfiguration!

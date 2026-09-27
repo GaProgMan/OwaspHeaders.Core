@@ -120,7 +120,7 @@ public static class SecureHeadersMiddlewareBuilder
     /// <inheritdoc cref="SecureHeadersBuilder.UseCacheControl"/>
     public static SecureHeadersMiddlewareConfiguration UseCacheControl
     (this SecureHeadersMiddlewareConfiguration config,
-        bool @private = false, int maxAge = 0, bool noCache = false, bool noStore = true,
+        bool @private = false, int maxAge = 0, bool noCache = true, bool noStore = true,
         bool mustRevalidate = false)
         => new SecureHeadersBuilder(config)
             .UseCacheControl(@private, maxAge, noCache, noStore, mustRevalidate).Build();

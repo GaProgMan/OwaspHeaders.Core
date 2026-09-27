@@ -34,9 +34,7 @@ public class CacheControlHeaderOptionsTests
 
         _context.Response.Headers.TryGetValue(Constants.CacheControlHeaderName, out var headerValues);
         Assert.True(headerValues.Any());
-        Assert.Contains("private", headerValues.First());
-        Assert.DoesNotContain("no-cache", headerValues.First());
-        Assert.DoesNotContain("no-store", headerValues.First());
+        Assert.Equal("private, no-cache, no-store, max-age=0", headerValues.First());
     }
 
     [Fact]
@@ -56,9 +54,7 @@ public class CacheControlHeaderOptionsTests
 
         _context.Response.Headers.TryGetValue(Constants.CacheControlHeaderName, out var headerValues);
         Assert.True(headerValues.Any());
-        Assert.Contains("must-revalidate", headerValues.First());
-        Assert.DoesNotContain("no-cache", headerValues.First());
-        Assert.DoesNotContain("no-store", headerValues.First());
+        Assert.Equal("no-cache, no-store, max-age=0, must-revalidate", headerValues.First());
     }
 
     [Fact]
@@ -78,9 +74,7 @@ public class CacheControlHeaderOptionsTests
 
         _context.Response.Headers.TryGetValue(Constants.CacheControlHeaderName, out var headerValues);
         Assert.True(headerValues.Any());
-        Assert.Contains("no-cache", headerValues.First());
-        Assert.DoesNotContain("private", headerValues.First());
-        Assert.DoesNotContain("must-revalidate", headerValues.First());
+        Assert.Equal("no-cache, no-store, max-age=0", headerValues.First());
     }
 
     [Fact]
@@ -100,8 +94,6 @@ public class CacheControlHeaderOptionsTests
 
         _context.Response.Headers.TryGetValue(Constants.CacheControlHeaderName, out var headerValues);
         Assert.True(headerValues.Any());
-        Assert.Contains("no-store", headerValues.First());
-        Assert.DoesNotContain("private", headerValues.First());
-        Assert.DoesNotContain("must-revalidate", headerValues.First());
+        Assert.Equal("no-cache, no-store, max-age=0", headerValues.First());
     }
 }

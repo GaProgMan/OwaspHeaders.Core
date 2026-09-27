@@ -407,11 +407,26 @@ public sealed class SecureHeadersBuilder
     /// [OPTIONAL]
     /// The maximum age, specified in seconds, that the HTTP client is willing to accept a response.
     /// </param>
-    /// <exception cref="ArgumentException">
-    /// An ArgumentException is thrown when no Report URI is supplied
-    /// </exception>
+    /// <param name="noCache">
+    /// [OPTIONAL]
+    /// Whether caches must revalidate the response with the origin server before reusing it.
+    /// Together with <paramref name="noStore"/>, this is required by ASP.NET Core's antiforgery
+    /// system, which otherwise overrides the header and logs a warning.
+    /// </param>
+    /// <param name="noStore">
+    /// [OPTIONAL]
+    /// Whether the response must not be stored in any cache.
+    /// </param>
+    /// <param name="mustRevalidate">
+    /// [OPTIONAL]
+    /// Whether caches must revalidate the response with the origin server once it is stale.
+    /// </param>
+    /// <remarks>
+    /// Every directive whose flag is set is included in the header value, so the flags can be
+    /// combined. The default values produce "no-cache, no-store, max-age=0".
+    /// </remarks>
     public SecureHeadersBuilder UseCacheControl(
-        bool @private = false, int maxAge = 0, bool noCache = false, bool noStore = true,
+        bool @private = false, int maxAge = 0, bool noCache = true, bool noStore = true,
         bool mustRevalidate = false)
     {
         _configuration.UseCacheControl = true;

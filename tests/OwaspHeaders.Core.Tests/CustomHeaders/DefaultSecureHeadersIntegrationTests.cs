@@ -60,6 +60,6 @@ public class DefaultSecureHeadersIntegrationTests : SecureHeadersTests
 
         Assert.True(headerPresentConfig.UseCacheControl);
         Assert.Contains(context.Response.Headers, h => h.Key == Constants.CacheControlHeaderName);
-        Assert.Equal("max-age=0,no-store", context.Response.Headers[Constants.CacheControlHeaderName]);
+        Assert.Equal("no-cache, no-store, max-age=0", context.Response.Headers[Constants.CacheControlHeaderName]);
     }
 }

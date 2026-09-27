@@ -25,6 +25,9 @@ public class CacheControl : IConfigurationBase
     /// The maximum age, specified in seconds, that the HTTP client is willing
     /// to accept a response.
     /// </summary>
+    /// <remarks>
+    /// A negative value is not a valid max-age, so it is sent as max-age=0
+    /// </remarks>
     public int MaxAge { get; }
 
     /// <summary>
@@ -57,7 +60,7 @@ public class CacheControl : IConfigurationBase
     /// </summary>
     public bool NoStore { get; }
 
-    public CacheControl(bool @private, int maxAge = 0, bool noCache = false,
+    public CacheControl(bool @private, int maxAge = 0, bool noCache = true,
         bool noStore = true, bool mustRevalidate = false)
     {
         Private = @private;
@@ -70,35 +73,38 @@ public class CacheControl : IConfigurationBase
     /// <summary>
     /// Builds the HTTP header value
     /// </summary>
+    /// <remarks>
+    /// Every directive whose flag is set is included, so the flags can be combined. The
+    /// default values produce "no-cache, no-store, max-age=0", which ASP.NET Core's
+    /// antiforgery system accepts without overriding the header or logging a warning.
+    /// See https://github.com/GaProgMan/OwaspHeaders.Core/issues/261
+    /// </remarks>
     /// <returns>A string representing the HTTP header value</returns>
     public string BuildHeaderValue()
     {
-        var stringBuilder = new StringBuilder();
-        if (NoCache)
-        {
-            stringBuilder.Append("no-cache");
-            return stringBuilder.ToString();
-        }
-
+        var directives = new List<string>();
         if (Private)
         {
-            stringBuilder.Append("private");
-            return stringBuilder.ToString();
+            directives.Add("private");
         }
+
+        if (NoCache)
+        {
+            directives.Add("no-cache");
+        }
+
+        if (NoStore)
+        {
+            directives.Add("no-store");
+        }
+
+        directives.Add($"max-age={Math.Max(MaxAge, 0)}");
 
         if (MustRevalidate)
         {
-            stringBuilder.Append("must-revalidate");
-            return stringBuilder.ToString();
+            directives.Add("must-revalidate");
         }
 
-        stringBuilder.Append($"max-age={MaxAge},");
-        if (NoStore)
-        {
-            stringBuilder.Append("no-store");
-            return stringBuilder.ToString();
-        }
-
-        return stringBuilder.ToString();
+        return string.Join(", ", directives);
     }
 }

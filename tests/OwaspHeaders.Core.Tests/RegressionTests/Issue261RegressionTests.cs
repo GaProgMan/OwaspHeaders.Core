@@ -166,8 +166,17 @@ public class Issue261RegressionTests
         {
         }
 
-        private sealed class CapturingLogger(string category, ConcurrentBag<LogEntry> entries) : ILogger
+        private sealed class CapturingLogger : ILogger
         {
+            private readonly string _category;
+            private readonly ConcurrentBag<LogEntry> _entries;
+
+            public CapturingLogger(string category, ConcurrentBag<LogEntry> entries)
+            {
+                _category = category;
+                _entries = entries;
+            }
+
             public IDisposable BeginScope<TState>(TState state) where TState : notnull => null;
 
             public bool IsEnabled(LogLevel logLevel) => true;
@@ -175,7 +184,7 @@ public class Issue261RegressionTests
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
                 Func<TState, Exception, string> formatter)
             {
-                entries.Add(new LogEntry(category, eventId, formatter(state, exception)));
+                _entries.Add(new LogEntry(_category, eventId, formatter(state, exception)));
             }
         }
     }

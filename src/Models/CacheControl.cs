@@ -25,6 +25,9 @@ public class CacheControl : IConfigurationBase
     /// The maximum age, specified in seconds, that the HTTP client is willing
     /// to accept a response.
     /// </summary>
+    /// <remarks>
+    /// A negative value is not a valid max-age, so it is sent as max-age=0
+    /// </remarks>
     public int MaxAge { get; }
 
     /// <summary>
@@ -102,7 +105,7 @@ public class CacheControl : IConfigurationBase
             directives.Add("no-store");
         }
 
-        directives.Add($"max-age={MaxAge}");
+        directives.Add($"max-age={Math.Max(MaxAge, 0)}");
 
         if (MustRevalidate)
         {

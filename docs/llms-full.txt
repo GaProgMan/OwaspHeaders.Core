@@ -46,7 +46,7 @@ This will add 11 OWASP-recommended HTTP headers to all responses from your serve
 ### Example Response Headers (v10.5.0)
 
 ```
-strict-transport-security: max-age=31536000;includesubdomains
+strict-transport-security: max-age=31536000;includeSubDomains
 x-frame-options: deny
 x-content-type-options: nosniff
 content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
@@ -55,7 +55,7 @@ referrer-policy: no-referrer
 cross-origin-resource-policy: same-origin
 cache-control: no-cache, no-store, max-age=0
 cross-origin-opener-policy: same-origin
-cross-origin-embedder-policy: same-require-corp
+cross-origin-embedder-policy: require-corp
 x-xss-protection: 0
 ```
 
@@ -64,7 +64,7 @@ x-xss-protection: 0
 OwaspHeaders.Core implements the following OWASP-recommended security headers:
 
 ### 1. Strict-Transport-Security (HSTS)
-Forces browsers to use HTTPS connections only. Default: `max-age=31536000;includesubdomains` (1 year, including all subdomains).
+Forces browsers to use HTTPS connections only. Default: `max-age=31536000;includeSubDomains` (1 year, including all subdomains).
 
 ### 2. X-Frame-Options
 Prevents clickjacking attacks by controlling whether the page can be displayed in frames. Default: `deny` (no framing allowed).
@@ -97,7 +97,7 @@ Allows website administrators to specify endpoints where browsers can send viola
 Isolates browsing context from other windows. Default: `same-origin`.
 
 ### 12. Cross-Origin-Embedder-Policy (COEP)
-Prevents documents from loading cross-origin resources that don't explicitly grant permission. Default: `same-require-corp`.
+Prevents documents from loading cross-origin resources that don't explicitly grant permission. Default: `require-corp`.
 
 ### 13. X-XSS-Protection
 Legacy header for older browsers. Default: `0` (disabled, as modern CSP is more effective).

@@ -47,11 +47,11 @@ The default configuration is INCREDIBLY restrictive.
 {: .note }
 The [Clear-Site-Data](./Clear-Site-Data) header is **not** included in the default configuration due to its potentially disruptive nature and must be explicitly configured for specific paths (typically logout endpoints).
 
-The following is an example of the response headers from version 9.1.0 (taken on November 19th, 2024) when using the
+The following is an example of the response headers from version 10.5.0 (taken on September 27th, 2026) when using the
 default configuration: 
 
 ```http
-strict-transport-security: max-age=31536000;includesubdomains
+strict-transport-security: max-age=31536000;includeSubDomains
 x-frame-options: deny
 x-content-type-options: nosniff
 content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
@@ -60,7 +60,7 @@ referrer-policy: no-referrer
 cross-origin-resource-policy: same-origin
 cache-control: no-cache, no-store, max-age=0
 cross-origin-opener-policy: same-origin
-cross-origin-embedder-policy: same-require-corp
+cross-origin-embedder-policy: require-corp
 x-xss-protection: 0
 ```
 

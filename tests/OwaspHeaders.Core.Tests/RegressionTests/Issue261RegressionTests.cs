@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Text.Json;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.Extensions.Logging;
 
@@ -61,6 +62,24 @@ public class Issue261RegressionTests
         var headerValue = config.CacheControl.BuildHeaderValue();
 
         Assert.DoesNotContain(headerValue.Split(','), d => string.IsNullOrWhiteSpace(d));
+    }
+
+    [Fact]
+    public void BuildHeaderValue_NegativeMaxAge_IsSentAsZero()
+    {
+        var cacheControl = new CacheControl(false, maxAge: -1);
+
+        Assert.Equal("no-cache, no-store, max-age=0", cacheControl.BuildHeaderValue());
+    }
+
+    [Fact]
+    public void Deserialize_MissingNoCache_UsesNewDefault()
+    {
+        var cacheControl = JsonSerializer.Deserialize<CacheControl>("{\"Private\":false,\"MaxAge\":0}");
+
+        Assert.NotNull(cacheControl);
+        Assert.True(cacheControl.NoCache);
+        Assert.True(cacheControl.NoStore);
     }
 
     [Fact]

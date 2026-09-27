@@ -42,7 +42,7 @@ The Cache-Control header object (known internally as `CacheControl`) has the fol
 | `Private` | bool | `false` | `private` |
 | `NoCache` | bool | `true` | `no-cache` |
 | `NoStore` | bool | `true` | `no-store` |
-| `MaxAge` | int | `0` | `max-age=<value>` (always included) |
+| `MaxAge` | int | `0` | `max-age=<value>` (always included; a negative value is sent as `0`) |
 | `MustRevalidate` | bool | `false` | `must-revalidate` |
 
 These values can be set when creating a new instance of the `CacheControl` object, or by calling the `UseCacheControl` extension method on the `SecureHeadersMiddlewareConfiguration` class.
@@ -57,6 +57,9 @@ var customConfig = SecureHeadersMiddlewareBuilder
 ```
 
 The above adds the Cache-Control header with a `private, max-age=60` value.
+
+{: .warning }
+> As `NoCache` defaults to `true`, allowing caching requires setting both `noCache: false` and `noStore: false`. For example, `UseCacheControl(maxAge: 3600, noStore: false)` produces `no-cache, max-age=3600`, which requires caches to revalidate the response before every reuse and so effectively disables the `max-age`.
 
 {: .note }
 > ASP.NET Core's antiforgery system (used by any Razor page or MVC view containing a `<form method="post">`) requires both `no-cache` and `no-store` on responses which include an antiforgery token. If either is missing, it overrides the Cache-Control header and logs a warning. The default values include both. Prior to version 10.5.0 the default value was `max-age=0,no-store`, and setting one option discarded the others; see [issue #261](https://github.com/GaProgMan/OwaspHeaders.Core/issues/261).

@@ -124,7 +124,7 @@ public class SecureHeadersMiddlewareTests
 
         // Cache-Control
         Assert.True(middlewareConfiguration.UseCacheControl);
-        Assert.Equal("max-age=0,no-store", middlewareConfiguration.CacheControl.BuildHeaderValue());
+        Assert.Equal("no-cache, no-store, max-age=0", middlewareConfiguration.CacheControl.BuildHeaderValue());
 
         // X-XSS-Protection
         Assert.True(middlewareConfiguration.UseXssProtection);

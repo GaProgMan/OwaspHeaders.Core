@@ -61,19 +61,19 @@ This will add a number of default HTTP headers to all responses from your server
 {: .note }
 The middleware includes comprehensive logging functionality. To see logging output, ensure your application has logging configured. See the [Logging](./logging) section for detailed information.
 
-The following is an example of the response headers from version 9.1.0 (taken on November 19th, 2024)
+The following is an example of the response headers from version 10.5.0 (taken on September 27th, 2026)
 
 ```plaintext
-strict-transport-security: max-age=31536000;includesubdomains
+strict-transport-security: max-age=31536000;includeSubDomains
 x-frame-options: deny
 x-content-type-options: nosniff
 content-security-policy: script-src 'self';object-src 'self';block-all-mixed-content;upgrade-insecure-requests;
 x-permitted-cross-domain-policies: none
 referrer-policy: no-referrer
 cross-origin-resource-policy: same-origin
-cache-control: max-age=0,no-store
+cache-control: no-cache, no-store, max-age=0
 cross-origin-opener-policy: same-origin
-cross-origin-embedder-policy: same-require-corp
+cross-origin-embedder-policy: require-corp
 x-xss-protection: 0
 ```
 

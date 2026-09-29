@@ -1,0 +1,10 @@
+# This directory is written by the OwaspHeaders.Core NuGet package when you build, and is
+# refreshed whenever the package is updated. It ignores everything in it, this file included,
+# so nothing here shows up in git.
+#
+# To stop the package writing it, set either property in your project or Directory.Build.props:
+#   <OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>  (this package only)
+#   <EnableEmbeddedAgentSkills>false</EnableEmbeddedAgentSkills>    (every package that honours it)
+#
+# See https://gaprogman.github.io/OwaspHeaders.Core/agent-skills
+*

@@ -46,6 +46,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- The agent skill, and the targets which install it into the consuming repository on
+         build. The skill's folder is lowercase because the Agent Skills spec requires the
+         folder name to match the skill's name. skill.gitignore is renamed as it is packed, since
+         a file called .gitignore here would hide SKILL.md from this repository. See issue #236. -->
+    <None Include="AgentSkill/SKILL.md" Pack="true" PackagePath="skills/owaspheaders-core/SKILL.md" Visible="false" />
+    <None Include="AgentSkill/skill.gitignore" Pack="true" PackagePath="skills/owaspheaders-core/.gitignore" Visible="false" />
+    <None Include="build/OwaspHeaders.Core.targets" Pack="true" PackagePath="build/OwaspHeaders.Core.targets" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="..\README.md">
       <Link>README.md</Link>
     </Content>

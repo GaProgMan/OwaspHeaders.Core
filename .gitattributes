@@ -1,0 +1,3 @@
+# Shell scripts run under bash on every CI runner, including Windows, where a CRLF checkout
+# would break them.
+*.sh text eol=lf

@@ -19,6 +19,9 @@ Listing and commenting on the default values that this middleware provides is ou
 {: .warning }
 This middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIONS**. This is because setting up secure HTTP headers in a WebAssembly context is a non-trivial task.
 
+{: .warning }
+From version 11, **building a project which references OwaspHeaders.Core writes files into your repository.** It installs an agent skill for coding agents into `.agents/skills/owaspheaders-core/` and `.claude/skills/owaspheaders-core/`, hidden from git by a `.gitignore`. It is skipped on CI, and `<OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>` turns it off. See [Agent Skill](./agent-skills) for what is written, why, and when it is not.
+
 ## .NET Version Support
 
 OwaspHeaders.Core aims to keep in step with the official support lifecycle for .NET, as such the current (as of May 27th, 2026) supported versions of .NET are:

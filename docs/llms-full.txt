@@ -213,9 +213,29 @@ The middleware removes the `X-Powered-By` header, but the `Server` header is add
 </configuration>
 ```
 
+## Agent Skill
+
+From version 11, building a project which references OwaspHeaders.Core writes an agent skill for coding agents into its git repository: `SKILL.md` and a `.gitignore` containing `*`, in both `.agents/skills/owaspheaders-core/` and `.claude/skills/owaspheaders-core/`. The skill gives agents version 11 guidance, chiefly never to hand-write the headers the middleware owns and never to weaken the Content-Security-Policy to make a page work.
+
+- Only projects with a direct `PackageReference` install it, and in a multi-targeted project only the build for the first target framework listed
+- Nothing is written on CI (`ContinuousIntegrationBuild=true`, `CI=true` or `CI=1`, `GITHUB_ACTIONS`, `TF_BUILD` or `GITLAB_CI`), in IDE design-time builds, outside a git repository, or when the repository root is the home folder
+- Turn it off with `<OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>`, or `<EnableEmbeddedAgentSkills>false</EnableEmbeddedAgentSkills>` for every package which honours that name. Opting out does not remove files already installed
+- Local edits to the installed files are overwritten on the next build
+- Full details: https://gaprogman.github.io/OwaspHeaders.Core/agent-skills
+
 ## Version History Highlights
 
-### Version 10 (Current)
+### Version 11 (Current)
+- Supports .NET 10 and .NET 11; .NET 8 and .NET 9 support dropped
+- Expect-CT removed entirely
+- `SecureHeadersMiddlewareConfiguration` setters restricted to `internal`; configure through `SecureHeadersBuilder` methods only
+- New configure-delegate API, `app.UseSecureHeadersMiddleware(opt => ...)`; the build-then-pass API is `[Obsolete]` and will be removed in version 12
+- Configuration is validated while the request pipeline is built, so an invalid configuration stops the application from starting
+- Report-only Content-Security-Policy fixes
+- Nullable reference types enabled and the public API fully annotated
+- Installs an agent skill for coding agents into the consuming repository on build (see Agent Skill above)
+
+### Version 10
 - Library now supports .NET 10 (by updating the TFM to include `net10.0`)
 - Added support for the EXPERIMENTAL Reporting-Endpoints header (version 10.1.x)
 - Fixed model properties in OwaspHeaders.Core.Models namespace that were incorrectly set to private (version 10.2.x)
@@ -348,6 +368,7 @@ To verify headers in production applications:
 - Home/Quick Start: https://gaprogman.github.io/OwaspHeaders.Core/
 - Logging Configuration: https://gaprogman.github.io/OwaspHeaders.Core/logging
 - Troubleshooting: https://gaprogman.github.io/OwaspHeaders.Core/troubleshooting
+- Agent Skill: https://gaprogman.github.io/OwaspHeaders.Core/agent-skills
 - Minimal Code Sample: https://gaprogman.github.io/OwaspHeaders.Core/Minimal-Code-Sample
 - Changelog: https://gaprogman.github.io/OwaspHeaders.Core/changelog
 - Contributing Guide: https://gaprogman.github.io/OwaspHeaders.Core/Contributing

@@ -2,6 +2,8 @@
 
 An ASP .NET Core middleware for injection [OWASP](https://www.owasp.org/index.php/Main_Page) recommended HTTP Headers for increased security. This project is designed against the [OWASP Secure Headers Project](https://owasp.org/www-project-secure-headers/).
 
+> **Warning:** from version 11, **building a project which references this package writes files into your repository.** It installs an agent skill for coding agents into `.agents/skills/owaspheaders-core/` and `.claude/skills/owaspheaders-core/`, hidden from git by a `.gitignore`. It is skipped on CI, and `<OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>` in your project file turns it off. See [Agent Skill](https://gaprogman.github.io/OwaspHeaders.Core/agent-skills) for what is written, why, and when it is not.
+
 ## Quick Starts
 
 1. Create a .NET (either Framework, Core, or 5+) project which uses ASP .NET Core

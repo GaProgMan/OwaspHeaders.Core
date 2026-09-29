@@ -13,6 +13,7 @@ OwaspHeaders.Core is an open-source middleware library that enhances web applica
 - Comprehensive logging support
 - OpenSSF Best Practices badge: passing
 - Does not support Blazor/WebAssembly applications
+- Installs an agent skill for coding agents into the consuming repository on build (skipped on CI; turned off with `<OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>`)
 
 **Current Version:** 11.0.0
 
@@ -24,6 +25,7 @@ OwaspHeaders.Core is an open-source middleware library that enhances web applica
 - [Configuration](https://gaprogman.github.io/OwaspHeaders.Core/configuration/): Detailed configuration instructions and examples
 - [Logging](https://gaprogman.github.io/OwaspHeaders.Core/logging): Logging configuration and best practices
 - [Troubleshooting](https://gaprogman.github.io/OwaspHeaders.Core/troubleshooting): Common issues and solutions
+- [Agent Skill](https://gaprogman.github.io/OwaspHeaders.Core/agent-skills): The agent skill written into consuming repositories on build, when it is not, and how to opt out
 
 ## Header Configuration Documentation
 

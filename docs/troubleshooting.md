@@ -227,9 +227,9 @@ warn: OwaspHeaders.Core.SecureHeadersMiddleware[2003]
 If you're still experiencing issues:
 
 1. **Check the [example application](https://github.com/GaProgMan/OwaspHeaders.Core/tree/main/example/OwaspHeaders.Core.Example)** for working configurations
-2. **Review the [Logging](./logging) documentation** for detailed logging information
+2. **Review the [Logging](../logging/) documentation** for detailed logging information
 3. **Enable debug logging** to see detailed middleware operations
-4. **Create a [minimal code sample](./Minimal-Code-Sample)** that reproduces the issue
+4. **Create a [minimal code sample](../Minimal-Code-Sample/)** that reproduces the issue
 5. **Open an issue** on the [GitHub repository](https://github.com/GaProgMan/OwaspHeaders.Core/issues) with:
    - Your configuration code
    - Log output (with debug logging enabled)

@@ -11,6 +11,9 @@
     <Description>An ASP.NET Core Middleware which adds the OWASP recommended HTTP headers, with a single line of code, for enhanced security.</Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README-NuGet.md</PackageReadmeFile>
+    <!-- Read from a file so the notes read as prose in a diff and need no XML escaping. nuget.org
+         shows them as plain text, so they use bare URLs rather than markdown links. -->
+    <PackageReleaseNotes>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)/PackageReleaseNotes.txt'))</PackageReleaseNotes>
     <PackageProjectUrl>https://gaprogman.github.io/OwaspHeaders.Core/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GaProgMan/OwaspHeaders.Core.git</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

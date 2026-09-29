@@ -118,6 +118,46 @@ jobs:
     - name: Write to Job Summary
       run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
 
+  agent-skill-install:
+    # The package installs an agent skill into the consuming repository on build (#236). This
+    # builds throwaway consumers against the freshly packed package and checks where the skill
+    # is, and is not, written. Windows is included because file locking during parallel builds
+    # and path handling are the likeliest ways for the install to break.
+    permissions:
+      contents: read
+    needs: [build]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    name: Check the agent skill install (${{ matrix.os }})
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        fetch-depth: 1
+        persist-credentials: false
+
+    # The NuGet package we're building targets net10.0 and net11.0. The runner's
+    # pre-installed SDKs lag behind these versions, so we install both explicitly.
+    - name: Setup .NET SDKs
+      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+      with:
+        dotnet-version: |
+          10.0.x
+          11.0.x
+
+    - name: Build NuGet Package
+      run: dotnet pack src/OwaspHeaders.Core.csproj --configuration Release --output "$RUNNER_TEMP/feed"
+
+    - name: Check the agent skill install
+      run: .github/scripts/agent-skill-smoke.sh "$RUNNER_TEMP/feed"
+
   package:
    permissions:
      contents: read

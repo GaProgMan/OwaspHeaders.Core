@@ -22,6 +22,15 @@
   </ItemGroup>
   
   <ItemGroup>
+    <!-- The agent skill and the files it is checked against, read by SkillDocumentTests from the
+         output directory. SkillSamples.cs is also compiled as normal. See issue #236. -->
+    <None Include="..\..\src\AgentSkill\SKILL.md" Link="AgentSkill\SKILL.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\src\AgentSkill\skill.gitignore" Link="AgentSkill\skill.gitignore" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\src\build\OwaspHeaders.Core.targets" Link="AgentSkill\OwaspHeaders.Core.targets" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="AgentSkill\SkillSamples.cs" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- ignores this csproj from code coverage -->
     <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
   </ItemGroup>

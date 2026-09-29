@@ -1,0 +1,66 @@
+<Project>
+
+  <!--
+    Installs the OwaspHeaders.Core agent skill (SKILL.md) into the consuming repository, so that
+    coding agents working in it read guidance which matches the installed package version.
+    See https://gaprogman.github.io/OwaspHeaders.Core/agent-skills and issue #236.
+
+    This file ships in build/ rather than buildTransitive/, so it only runs in projects which
+    reference the package directly. That keeps the number of projects copying the same files
+    during one build to a minimum.
+
+    Every guard below is a Condition rather than ContinueOnError. A skipped Condition produces no
+    diagnostics, where ContinueOnError turns a failure into a warning, and consumers building with
+    warnings as errors would then fail.
+
+    To opt out, set either property in the project or Directory.Build.props:
+      <OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>  (this package only)
+      <EnableEmbeddedAgentSkills>false</EnableEmbeddedAgentSkills>    (every package that honours it)
+
+    To choose where it is installed, declare OwaspHeadersCoreAgentSkillDestination items, each a
+    skills directory relative to the repository root. Declaring any replaces the defaults.
+  -->
+
+  <PropertyGroup>
+    <_OwaspHeadersCoreSkillSource>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'skills', 'owaspheaders-core'))</_OwaspHeadersCoreSkillSource>
+
+    <!-- The repository root is the nearest directory above the project containing .git. In a
+         normal checkout .git is a directory, found through .git/HEAD. In a worktree or a
+         submodule it is a file. If both exist, the longer (nearer) path wins. -->
+    <_OwaspHeadersCoreGitDirRoot>$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildProjectDirectory)', '.git/HEAD'))</_OwaspHeadersCoreGitDirRoot>
+    <_OwaspHeadersCoreGitFileRoot>$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildProjectDirectory)', '.git'))</_OwaspHeadersCoreGitFileRoot>
+    <_OwaspHeadersCoreRepoRoot>$(_OwaspHeadersCoreGitDirRoot)</_OwaspHeadersCoreRepoRoot>
+    <_OwaspHeadersCoreRepoRoot Condition="'$(_OwaspHeadersCoreGitFileRoot)' != '' and $(_OwaspHeadersCoreGitFileRoot.Length) &gt; $(_OwaspHeadersCoreGitDirRoot.Length)">$(_OwaspHeadersCoreGitFileRoot)</_OwaspHeadersCoreRepoRoot>
+
+    <!-- Nothing reads the skill during a CI build, so it is never installed there. This detection
+         is a heuristic and will not recognise every CI system. -->
+    <_OwaspHeadersCoreIsCI>false</_OwaspHeadersCoreIsCI>
+    <_OwaspHeadersCoreIsCI Condition="'$(ContinuousIntegrationBuild)' == 'true' or '$(CI)' != '' or '$(GITHUB_ACTIONS)' != '' or '$(TF_BUILD)' != '' or '$(GITLAB_CI)' != ''">true</_OwaspHeadersCoreIsCI>
+  </PropertyGroup>
+
+  <Target Name="_OwaspHeadersCoreInstallAgentSkill"
+          BeforeTargets="PrepareForBuild"
+          Condition="'$(OwaspHeadersCoreAgentSkill)' != 'false' and '$(EnableEmbeddedAgentSkills)' != 'false' and '$(DesignTimeBuild)' != 'true' and '$(_OwaspHeadersCoreIsCI)' != 'true' and '$(_OwaspHeadersCoreRepoRoot)' != '' and Exists('$(_OwaspHeadersCoreSkillSource)SKILL.md')">
+
+    <!-- Defaults are added here rather than at evaluation time, because this file is imported
+         after the consumer's project body: a Remove there would run before these were added. -->
+    <ItemGroup Condition="'@(OwaspHeadersCoreAgentSkillDestination)' == ''">
+      <OwaspHeadersCoreAgentSkillDestination Include=".agents/skills" />
+      <OwaspHeadersCoreAgentSkillDestination Include=".claude/skills" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_OwaspHeadersCoreSkillFile Include="@(OwaspHeadersCoreAgentSkillDestination->'$(_OwaspHeadersCoreRepoRoot)/%(Identity)/owaspheaders-core/SKILL.md')"
+                                  Source="$(_OwaspHeadersCoreSkillSource)SKILL.md" />
+      <_OwaspHeadersCoreSkillFile Include="@(OwaspHeadersCoreAgentSkillDestination->'$(_OwaspHeadersCoreRepoRoot)/%(Identity)/owaspheaders-core/.gitignore')"
+                                  Source="$(_OwaspHeadersCoreSkillSource).gitignore" />
+    </ItemGroup>
+
+    <!-- A plain copy: hardlink and symlink options would tie the consumer's file to the NuGet
+         package cache, so editing it would change the cache (dotnet/msbuild#8273). -->
+    <Copy SourceFiles="@(_OwaspHeadersCoreSkillFile->'%(Source)')"
+          DestinationFiles="@(_OwaspHeadersCoreSkillFile)"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

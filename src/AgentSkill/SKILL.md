@@ -12,7 +12,7 @@ This guidance is for **OwaspHeaders.Core 11.x**, the version installed in this r
 
 This middleware owns the following response headers. Do not set them with `Response.Headers`, `app.Use(...)`, a custom middleware, a filter, or `app.UseHsts()`:
 
-`Strict-Transport-Security`, `X-Frame-Options`, `X-Content-Type-Options`, `Content-Security-Policy`, `Content-Security-Policy-Report-Only`, `X-Permitted-Cross-Domain-Policies`, `Referrer-Policy`, `Cache-Control`, `X-XSS-Protection`, `Cross-Origin-Resource-Policy`, `Cross-Origin-Opener-Policy`, `Cross-Origin-Embedder-Policy`, `Clear-Site-Data`, `Reporting-Endpoints`.
+`Strict-Transport-Security`, `X-Frame-Options`, `X-Content-Type-Options`, `Content-Security-Policy`, `Content-Security-Policy-Report-Only`, `X-Content-Security-Policy`, `X-Permitted-Cross-Domain-Policies`, `Referrer-Policy`, `Cache-Control`, `X-XSS-Protection`, `Cross-Origin-Resource-Policy`, `Cross-Origin-Opener-Policy`, `Cross-Origin-Embedder-Policy`, `Clear-Site-Data`, `Reporting-Endpoints`.
 
 If a header is already on the response when the middleware runs, the middleware leaves it alone and says nothing. So a hand-written value silently replaces the configured one. **Do not write this:**
 

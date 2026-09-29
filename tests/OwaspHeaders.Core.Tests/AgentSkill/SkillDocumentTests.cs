@@ -151,10 +151,12 @@ public partial class SkillDocumentTests
     [GeneratedRegex(@"^(?<key>[a-z][a-z-]*):(?<value>.*)$")]
     private static partial Regex FrontmatterFieldRegex();
 
-    [GeneratedRegex(@"^```csharp\n", RegexOptions.Multiline)]
+    // Every info string Markdown renderers treat as C#, so that a sample cannot escape the check
+    // by being fenced as ```cs or ```c# instead.
+    [GeneratedRegex(@"^```(csharp|cs|c#)[ \t]*\n", RegexOptions.Multiline | RegexOptions.IgnoreCase)]
     private static partial Regex CSharpFenceRegex();
 
-    [GeneratedRegex(@"^<!-- sample: (?<id>[a-z-]+) -->\n```csharp\n(?<code>.*?)^```$", RegexOptions.Multiline | RegexOptions.Singleline)]
+    [GeneratedRegex(@"^<!-- sample: (?<id>[a-z-]+) -->\n```(csharp|cs|c#)[ \t]*\n(?<code>.*?)^```$", RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase)]
     private static partial Regex MarkedFenceRegex();
 
     [GeneratedRegex(@"// <skill-sample:(?<id>[a-z-]+)>\n(?<code>.*?)\n\s*// </skill-sample:\k<id>>", RegexOptions.Singleline)]

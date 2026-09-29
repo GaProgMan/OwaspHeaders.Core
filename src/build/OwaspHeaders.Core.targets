@@ -11,7 +11,9 @@
 
     Every guard below is a Condition rather than ContinueOnError. A skipped Condition produces no
     diagnostics, where ContinueOnError turns a failure into a warning, and consumers building with
-    warnings as errors would then fail.
+    warnings as errors would then fail. The copy itself cannot be guarded that way: if the
+    destination cannot be written, for example in a read-only source tree on a CI system which is
+    not detected below, the build fails with MSB3021, and the fix is to opt out.
 
     To opt out, set either property in the project or Directory.Build.props:
       <OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>  (this package only)
@@ -32,15 +34,31 @@
     <_OwaspHeadersCoreRepoRoot>$(_OwaspHeadersCoreGitDirRoot)</_OwaspHeadersCoreRepoRoot>
     <_OwaspHeadersCoreRepoRoot Condition="'$(_OwaspHeadersCoreGitFileRoot)' != '' and $(_OwaspHeadersCoreGitFileRoot.Length) &gt; $(_OwaspHeadersCoreGitDirRoot.Length)">$(_OwaspHeadersCoreGitFileRoot)</_OwaspHeadersCoreRepoRoot>
 
-    <!-- Nothing reads the skill during a CI build, so it is never installed there. This detection
-         is a heuristic and will not recognise every CI system. -->
-    <_OwaspHeadersCoreIsCI>false</_OwaspHeadersCoreIsCI>
-    <_OwaspHeadersCoreIsCI Condition="'$(ContinuousIntegrationBuild)' == 'true' or '$(CI)' != '' or '$(GITHUB_ACTIONS)' != '' or '$(TF_BUILD)' != '' or '$(GITLAB_CI)' != ''">true</_OwaspHeadersCoreIsCI>
+    <!-- A home directory kept in git (for dotfiles) is not a repository root for this purpose:
+         ~/.claude/skills is where Claude Code looks for skills which apply to every project. -->
+    <_OwaspHeadersCoreRepoRootIsHome>false</_OwaspHeadersCoreRepoRootIsHome>
+    <_OwaspHeadersCoreRepoRootIsHome Condition="'$(_OwaspHeadersCoreRepoRoot)' != '' and '$(HOME)' != '' and '$([MSBuild]::NormalizeDirectory($(_OwaspHeadersCoreRepoRoot)))' == '$([MSBuild]::NormalizeDirectory($(HOME)))'">true</_OwaspHeadersCoreRepoRootIsHome>
+    <_OwaspHeadersCoreRepoRootIsHome Condition="'$(_OwaspHeadersCoreRepoRoot)' != '' and '$(USERPROFILE)' != '' and '$([MSBuild]::NormalizeDirectory($(_OwaspHeadersCoreRepoRoot)))' == '$([MSBuild]::NormalizeDirectory($(USERPROFILE)))'">true</_OwaspHeadersCoreRepoRootIsHome>
+
+    <!-- A project with several target frameworks runs one inner build per framework, often in
+         parallel, and each would copy the same files at the same moment. Only the build for the
+         first framework listed copies them. -->
+    <_OwaspHeadersCoreFirstTargetFramework Condition="'$(TargetFrameworks)' != ''">$(TargetFrameworks.Split(';')[0].Trim())</_OwaspHeadersCoreFirstTargetFramework>
   </PropertyGroup>
 
   <Target Name="_OwaspHeadersCoreInstallAgentSkill"
           BeforeTargets="PrepareForBuild"
-          Condition="'$(OwaspHeadersCoreAgentSkill)' != 'false' and '$(EnableEmbeddedAgentSkills)' != 'false' and '$(DesignTimeBuild)' != 'true' and '$(_OwaspHeadersCoreIsCI)' != 'true' and '$(_OwaspHeadersCoreRepoRoot)' != '' and Exists('$(_OwaspHeadersCoreSkillSource)SKILL.md')">
+          Condition="'$(OwaspHeadersCoreAgentSkill)' != 'false' and '$(EnableEmbeddedAgentSkills)' != 'false' and '$(DesignTimeBuild)' != 'true' and '$(_OwaspHeadersCoreRepoRoot)' != '' and '$(_OwaspHeadersCoreRepoRootIsHome)' != 'true' and Exists('$(_OwaspHeadersCoreSkillSource)SKILL.md')">
+
+    <!-- Nothing reads the skill during a CI build, so it is never installed there. This is worked
+         out here rather than when this file is imported, so that a ContinuousIntegrationBuild set
+         in the consumer's Directory.Build.targets, which is imported later, is seen. It is a
+         heuristic and will not recognise every CI system. -->
+    <PropertyGroup>
+      <_OwaspHeadersCoreInstall>true</_OwaspHeadersCoreInstall>
+      <_OwaspHeadersCoreInstall Condition="'$(ContinuousIntegrationBuild)' == 'true' or '$(CI)' == 'true' or '$(CI)' == '1' or '$(GITHUB_ACTIONS)' == 'true' or '$(TF_BUILD)' == 'true' or '$(GITLAB_CI)' == 'true'">false</_OwaspHeadersCoreInstall>
+      <_OwaspHeadersCoreInstall Condition="'$(_OwaspHeadersCoreFirstTargetFramework)' != '' and '$(TargetFramework)' != '$(_OwaspHeadersCoreFirstTargetFramework)'">false</_OwaspHeadersCoreInstall>
+    </PropertyGroup>
 
     <!-- Defaults are added here rather than at evaluation time, because this file is imported
          after the consumer's project body: a Remove there would run before these were added. -->
@@ -60,7 +78,8 @@
          package cache, so editing it would change the cache (dotnet/msbuild#8273). -->
     <Copy SourceFiles="@(_OwaspHeadersCoreSkillFile->'%(Source)')"
           DestinationFiles="@(_OwaspHeadersCoreSkillFile)"
-          SkipUnchangedFiles="true" />
+          SkipUnchangedFiles="true"
+          Condition="'$(_OwaspHeadersCoreInstall)' == 'true'" />
   </Target>
 
 </Project>

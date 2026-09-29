@@ -54,7 +54,9 @@ expect_no_skill() {
 dotnet_local() { env -u CI -u GITHUB_ACTIONS -u TF_BUILD -u GITLAB_CI dotnet "$@"; }
 
 # Creates a consumer repository at $1 with web projects named by the remaining arguments, each
-# referencing the package directly. Warnings are errors, as they are for many consumers.
+# referencing the package directly. Warnings are errors, as they are for many consumers. The
+# projects target net10.0, or the frameworks in $frameworks when it is set.
+frameworks=""
 new_consumer() {
     local root="$1"; shift
     mkdir -p "$root"
@@ -88,10 +90,12 @@ EOF
     local project
     for project in "$@"; do
         mkdir -p "$root/$project"
+        local target="<TargetFramework>net10.0</TargetFramework>"
+        [[ -z "$frameworks" ]] || target="<TargetFrameworks>$frameworks</TargetFrameworks>"
         cat > "$root/$project/$project.csproj" <<EOF
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    $target
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -141,11 +145,15 @@ status="$(git -C "$repo" status --porcelain --untracked-files=all | grep -v -e '
 if [[ -z "$status" ]]; then pass "git status shows nothing from the skill"; else fail "git status shows nothing from the skill: $status"; fi
 
 echo "A rebuild leaves the installed files alone"
-touch "$work/marker"
-sleep 1
-dotnet_local build "$repo/App" --nologo -v q
-touched="$(find "$repo/.agents" "$repo/.claude" -type f -newer "$work/marker")"
-if [[ -z "$touched" ]]; then pass "no installed file rewritten"; else fail "no installed file rewritten: $touched"; fi
+# Copy keeps the packed file's timestamp, so a timestamp comparison cannot tell a rewrite from no
+# write. Making the files read-only can: Copy fails on a read-only destination it tries to write.
+installed=()
+for dir in "$repo"/.agents/skills/owaspheaders-core "$repo"/.claude/skills/owaspheaders-core; do
+    installed+=("$dir/SKILL.md" "$dir/.gitignore")
+done
+chmod a-w "${installed[@]}"
+if dotnet_local build "$repo/App" --nologo -v q; then pass "no installed file rewritten"; else fail "no installed file rewritten"; fi
+chmod u+w "${installed[@]}"
 
 echo "Opt-outs"
 for property in OwaspHeadersCoreAgentSkill EnableEmbeddedAgentSkills; do
@@ -170,11 +178,39 @@ git_init "$repo"
 dotnet_local build "$repo/App" --nologo -v q -p:ContinuousIntegrationBuild=true
 expect_no_skill "$repo" "ContinuousIntegrationBuild=true installs nothing"
 
+# Set where many consumers set it, in Directory.Build.targets, which is imported after the
+# package's targets.
+repo="$work/ci-targets"
+new_consumer "$repo" App
+git_init "$repo"
+cat > "$repo/Directory.Build.targets" <<'EOF'
+<Project>
+  <PropertyGroup>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+</Project>
+EOF
+dotnet_local build "$repo/App" --nologo -v q
+expect_no_skill "$repo" "ContinuousIntegrationBuild in Directory.Build.targets installs nothing"
+
+repo="$work/ci-false"
+new_consumer "$repo" App
+git_init "$repo"
+env -u GITHUB_ACTIONS -u TF_BUILD -u GITLAB_CI CI=false dotnet build "$repo/App" --nologo -v q
+expect_file "$repo/.claude/skills/owaspheaders-core/SKILL.md" "CI=false still installs"
+
 echo "Outside a git repository"
 repo="$work/no-git"
 new_consumer "$repo" App
 dotnet_local build "$repo/App" --nologo -v q
 expect_no_skill "$work/no-git" "nothing written without a repository"
+
+echo "A home directory kept in git"
+repo="$work/home"
+new_consumer "$repo" App
+git_init "$repo"
+HOME="$(native "$repo")" USERPROFILE="$(native "$repo")" dotnet_local build "$repo/App" --nologo -v q
+expect_no_skill "$repo" "nothing written when the repository is the home directory"
 
 echo "Custom destinations"
 repo="$work/custom"
@@ -222,6 +258,32 @@ for attempt in 1 2 3 4 5; do
     fi
 done
 expect_file "$repo/.claude/skills/owaspheaders-core/SKILL.md" "SKILL.md after parallel builds"
+
+echo "Parallel build of a project with two target frameworks"
+repo="$work/multi"
+frameworks="net10.0;net11.0"
+new_consumer "$repo" App
+frameworks=""
+git_init "$repo"
+for attempt in 1 2 3 4 5; do
+    rm -rf "$repo/.agents" "$repo/.claude" "$repo/App/bin" "$repo/App/obj"
+    if dotnet_local build "$repo/App" --nologo -v q -m -warnaserror; then
+        pass "clean multi-framework build $attempt"
+    else
+        fail "clean multi-framework build $attempt"
+    fi
+done
+expect_file "$repo/.claude/skills/owaspheaders-core/SKILL.md" "SKILL.md after multi-framework builds"
+
+# Only the build for the first framework listed installs the skill, so building only a later one
+# does not. That is documented for consumers, and checked here so the documentation stays true.
+rm -rf "$repo/.agents" "$repo/.claude"
+dotnet_local build "$repo/App" --nologo -v q -f net11.0
+if [[ -e "$repo/.agents" || -e "$repo/.claude" ]]; then
+    fail "building only a later framework installs nothing"
+else
+    pass "building only a later framework installs nothing"
+fi
 
 echo
 if [[ $failures -gt 0 ]]; then

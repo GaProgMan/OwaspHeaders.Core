@@ -11,13 +11,13 @@ public class SkillSampleBehaviourTests
     {
         // The skill tells agents not to set these headers by hand because a value already on the
         // response wins over the configured one. This is that claim.
-        using var server = CreateServer(app =>
+        using var host = CreateHost(app =>
         {
             SkillSamples.HandRolledHeaders(app);
             app.UseSecureHeadersMiddleware(opt => opt.UseXFrameOptions(XFrameOptions.Sameorigin));
         });
 
-        var response = await GetAsync(server, "/");
+        var response = await GetAsync(host.GetTestServer(), "/");
 
         Assert.Equal("DENY", response.Headers[Constants.XFrameOptionsHeaderName]);
     }
@@ -25,9 +25,9 @@ public class SkillSampleBehaviourTests
     [Fact]
     public async Task RecommendedDefaults_AddsTheRecommendedHeaders()
     {
-        using var server = CreateServer(SkillSamples.RecommendedDefaults);
+        using var host = CreateHost(SkillSamples.RecommendedDefaults);
 
-        var response = await GetAsync(server, "/");
+        var response = await GetAsync(host.GetTestServer(), "/");
 
         Assert.Equal("deny", response.Headers[Constants.XFrameOptionsHeaderName]);
         Assert.Equal("max-age=31536000;includeSubDomains", response.Headers[Constants.StrictTransportSecurityHeaderName]);
@@ -36,10 +36,10 @@ public class SkillSampleBehaviourTests
     [Fact]
     public async Task ConfigureDelegate_AppliesTheChangeAndIgnoresTheListedPath()
     {
-        using var server = CreateServer(SkillSamples.ConfigureDelegate);
+        using var host = CreateHost(SkillSamples.ConfigureDelegate);
 
-        var response = await GetAsync(server, "/");
-        var health = await GetAsync(server, "/health");
+        var response = await GetAsync(host.GetTestServer(), "/");
+        var health = await GetAsync(host.GetTestServer(), "/health");
 
         Assert.Equal("max-age=63072000;includeSubDomains", response.Headers[Constants.StrictTransportSecurityHeaderName]);
         Assert.Equal("deny", response.Headers[Constants.XFrameOptionsHeaderName]);
@@ -49,10 +49,10 @@ public class SkillSampleBehaviourTests
     [Fact]
     public async Task SharedConfiguration_ValidatesAndApplies()
     {
-        using var server = CreateServer(SkillSamples.SharedConfiguration);
+        using var host = CreateHost(SkillSamples.SharedConfiguration);
 
-        var response = await GetAsync(server, "/");
-        var health = await GetAsync(server, "/health");
+        var response = await GetAsync(host.GetTestServer(), "/");
+        var health = await GetAsync(host.GetTestServer(), "/health");
 
         Assert.Equal("deny", response.Headers[Constants.XFrameOptionsHeaderName]);
         Assert.False(health.Headers.ContainsKey(Constants.XFrameOptionsHeaderName));
@@ -61,9 +61,9 @@ public class SkillSampleBehaviourTests
     [Fact]
     public async Task CspAllowOrigin_KeepsSelfAndAddsTheOrigin()
     {
-        using var server = CreateServer(SkillSamples.CspAllowOrigin);
+        using var host = CreateHost(SkillSamples.CspAllowOrigin);
 
-        var response = await GetAsync(server, "/");
+        var response = await GetAsync(host.GetTestServer(), "/");
 
         Assert.StartsWith("script-src 'self' https://cdn.example.com;",
             response.Headers[Constants.ContentSecurityPolicyHeaderName].ToString());
@@ -89,7 +89,8 @@ public class SkillSampleBehaviourTests
         Assert.Equal("deny", response.Headers[Constants.XFrameOptionsHeaderName]);
     }
 
-    private static TestServer CreateServer(Action<IApplicationBuilder> pipeline)
+    // Returns the host rather than its TestServer, so that each test disposes the whole host.
+    private static IHost CreateHost(Action<IApplicationBuilder> pipeline)
     {
         var host = new HostBuilder()
             .ConfigureWebHost(webBuilder => webBuilder
@@ -101,9 +102,8 @@ public class SkillSampleBehaviourTests
                 }))
             .Start();
 
-        var server = host.GetTestServer();
-        server.BaseAddress = new Uri("https://example.com/");
-        return server;
+        host.GetTestServer().BaseAddress = new Uri("https://example.com/");
+        return host;
     }
 
     private static async Task<HttpResponse> GetAsync(TestServer server, string path)

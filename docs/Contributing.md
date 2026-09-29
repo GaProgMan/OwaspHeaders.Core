@@ -53,7 +53,7 @@ For instance, if you were to create a branch to implement a new HTTP header call
 {: .quote }
 > ### Rationale for this PR
 > 
-> This PR adds the `X-Example-Header` HTTP header, which you can read about on the [OWASP Secure Headers Project](). 
+> This PR adds the `X-Example-Header` HTTP header, which you can read about on the [OWASP Secure Headers Project](https://owasp.org/www-project-secure-headers/). 
 > This PR closes #999
 >
 > ### PR Checklist

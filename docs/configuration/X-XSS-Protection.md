@@ -6,7 +6,7 @@ layout: page
 ---
 
 {: .warning }
-Both the OWASP Secure Headers Project and MDN recommend not using this header with any value other than "0", which disabled the XSS Auditor. This is due to the X-XSS-Protection header having been dropped from most modern browsers and that using it (with a value other than "0") can cause additional security issues to present themselves. The recommended path forward is to use a [Content-Security-Policy (CSP)](Content-Security-Policy.md) header.
+Both the OWASP Secure Headers Project and MDN recommend not using this header with any value other than "0", which disabled the XSS Auditor. This is due to the X-XSS-Protection header having been dropped from most modern browsers and that using it (with a value other than "0") can cause additional security issues to present themselves. The recommended path forward is to use a [Content-Security-Policy (CSP)](../Content-Security-Policy/) header.
 
 The Mozilla Developer Network describes the X-XSS-Protection header like this:
 

@@ -42,10 +42,11 @@ public class Issue261RegressionTests
     public void UseCacheControl_NoCache_KeepsNoStore()
     {
         // the "obvious fix" from issue #261, which used to drop no-store entirely
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseCacheControl(noCache: true)
             .Build();
 
+        Assert.True(config.UseCacheControl);
         var directives = Directives(config.CacheControl.BuildHeaderValue());
 
         Assert.Contains("no-cache", directives);
@@ -55,10 +56,11 @@ public class Issue261RegressionTests
     [Fact]
     public void UseCacheControl_NoStoreFalse_HasNoEmptyDirective()
     {
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var config = new SecureHeadersBuilder()
             .UseCacheControl(noStore: false)
             .Build();
 
+        Assert.True(config.UseCacheControl);
         var headerValue = config.CacheControl.BuildHeaderValue();
 
         Assert.DoesNotContain(headerValue.Split(','), d => string.IsNullOrWhiteSpace(d));
@@ -85,10 +87,13 @@ public class Issue261RegressionTests
     [Fact]
     public void Defaults_IncludeNoCacheAndNoStore()
     {
-        var builderDirectives = Directives(SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseCacheControl().Build().CacheControl.BuildHeaderValue());
-        var defaultConfigDirectives = Directives(SecureHeadersMiddlewareExtensions
-            .BuildDefaultConfiguration().CacheControl.BuildHeaderValue());
+        var builderConfig = new SecureHeadersBuilder().UseCacheControl().Build();
+        var defaultConfig = new SecureHeadersBuilder().UseRecommendedDefaults().Build();
+
+        Assert.True(builderConfig.UseCacheControl);
+        Assert.True(defaultConfig.UseCacheControl);
+        var builderDirectives = Directives(builderConfig.CacheControl.BuildHeaderValue());
+        var defaultConfigDirectives = Directives(defaultConfig.CacheControl.BuildHeaderValue());
 
         Assert.Contains("no-cache", builderDirectives);
         Assert.Contains("no-store", builderDirectives);
@@ -99,10 +104,10 @@ public class Issue261RegressionTests
     [Fact]
     public async Task DefaultConfiguration_WithAntiforgery_IsNotOverriddenOrWarned()
     {
-        var config = SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration();
         var logs = new CapturingLoggerProvider();
 
-        var context = await GetFormResponse(config, logs);
+        // configure: null uses the parameterless app.UseSecureHeadersMiddleware()
+        var context = await GetFormResponse(configure: null, logs);
 
         Assert.Equal("no-cache, no-store, max-age=0", context.Response.Headers[Constants.CacheControlHeaderName]);
         Assert.DoesNotContain(logs.Entries, e => e.EventId.Id == AntiforgeryCacheHeaderOverriddenEventId
@@ -113,12 +118,9 @@ public class Issue261RegressionTests
     public async Task WithoutNoCache_WithAntiforgery_IsOverriddenAndWarned()
     {
         // proves that the test above would detect the warning from issue #261
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseCacheControl(noCache: false)
-            .Build();
         var logs = new CapturingLoggerProvider();
 
-        await GetFormResponse(config, logs);
+        await GetFormResponse(opt => opt.UseCacheControl(noCache: false), logs);
 
         Assert.Contains(logs.Entries, e => e.EventId.Id == AntiforgeryCacheHeaderOverriddenEventId
                                            && e.Category.StartsWith("Microsoft.AspNetCore.Antiforgery"));
@@ -127,7 +129,7 @@ public class Issue261RegressionTests
     private static string[] Directives(string headerValue) =>
         headerValue.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
-    private static async Task<HttpContext> GetFormResponse(SecureHeadersMiddlewareConfiguration config,
+    private static async Task<HttpContext> GetFormResponse(Action<SecureHeadersBuilder>? configure,
         CapturingLoggerProvider logs)
     {
         using var host = await new HostBuilder()
@@ -149,7 +151,15 @@ public class Issue261RegressionTests
                     .Configure(app =>
                     {
                         app.UseRouting();
-                        app.UseSecureHeadersMiddleware(config);
+                        if (configure is null)
+                        {
+                            app.UseSecureHeadersMiddleware();
+                        }
+                        else
+                        {
+                            app.UseSecureHeadersMiddleware(configure);
+                        }
+
                         app.UseEndpoints(endpoints =>
                         {
                             // what any Razor page containing <form method="post"> does
@@ -161,7 +171,7 @@ public class Issue261RegressionTests
                         });
                     });
             })
-            .StartAsync();
+            .StartAsync(TestContext.Current.CancellationToken);
 
         var testServer = host.GetTestServer();
         testServer.BaseAddress = new Uri("https://example.com/");
@@ -170,7 +180,7 @@ public class Issue261RegressionTests
         {
             c.Request.Path = FormUrl;
             c.Request.Method = HttpMethods.Get;
-        });
+        }, TestContext.Current.CancellationToken);
     }
 
     private sealed record LogEntry(string Category, EventId EventId, string Message);
@@ -196,12 +206,12 @@ public class Issue261RegressionTests
                 _entries = entries;
             }
 
-            public IDisposable BeginScope<TState>(TState state) where TState : notnull => null;
+            public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
 
             public bool IsEnabled(LogLevel logLevel) => true;
 
-            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
-                Func<TState, Exception, string> formatter)
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception,
+                Func<TState, Exception?, string> formatter)
             {
                 _entries.Add(new LogEntry(_category, eventId, formatter(state, exception)));
             }

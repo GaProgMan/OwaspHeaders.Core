@@ -2,6 +2,10 @@
 
 An ASP .NET Core middleware for injection [OWASP](https://www.owasp.org/index.php/Main_Page) recommended HTTP Headers for increased security. This project is designed against the [OWASP Secure Headers Project](https://owasp.org/www-project-secure-headers/).
 
+> **Upgrading from version 10?** Version 11 is a major release with breaking changes. [Upgrading to version 11](https://gaprogman.github.io/OwaspHeaders.Core/upgrading-to-version-11) lists the code to change, what to expect on the first build, and how to opt out of the agent skill install.
+
+> **Warning:** from version 11, **building a project which references this package writes files into your repository.** It installs an agent skill for coding agents into `.agents/skills/owaspheaders-core/` and `.claude/skills/owaspheaders-core/`, hidden from git by a `.gitignore`. It is skipped on CI, and `<OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>` in your project file turns it off. See [Agent Skill](https://gaprogman.github.io/OwaspHeaders.Core/agent-skills) for what is written, why, and when it is not.
+
 ## Quick Starts
 
 1. Create a .NET (either Framework, Core, or 5+) project which uses ASP .NET Core
@@ -27,6 +31,18 @@ app.UseSecureHeadersMiddleware();
 ```
 
 This will add a number of default HTTP headers to all responses from your server component.
+
+To choose the headers yourself, pass a configure delegate instead:
+
+```csharp
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseRecommendedDefaults();
+    opt.SetUrlsToIgnore(["/health"]);
+});
+```
+
+The configuration is validated as your application starts, so a mistake stops the host from starting rather than surfacing on the first request.
 
 The following is an example of the response headers from version 10.5.0 (taken on September 27th, 2026)
 

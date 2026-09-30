@@ -1,7 +1,7 @@
 ---
 title: Troubleshooting
 layout: page
-nav_order: 8
+nav_order: 6
 ---
 
 # Troubleshooting
@@ -29,22 +29,22 @@ This page covers common issues you might encounter when using OwaspHeaders.Core 
 
    ```csharp
    // Check your configuration for ignored URLs
-   var config = SecureHeadersMiddlewareBuilder
-       .CreateBuilder()
-       .UseHsts()
-       .SetUrlsToIgnore(["/health", "/api/status"])  // These URLs will be ignored
-       .Build();
+   app.UseSecureHeadersMiddleware(opt =>
+   {
+       opt.UseHsts();
+       opt.SetUrlsToIgnore(["/health", "/api/status"]); // These URLs will be ignored
+   });
    ```
    Look for Event ID 1003 in logs: "Request ignored due to URL exclusion rule"
 
 3. **Review configuration** - Ensure headers are enabled in your configuration:
 
    ```csharp
-   var config = SecureHeadersMiddlewareBuilder
-       .CreateBuilder()
-       .UseHsts()        // Explicitly enable each header you want
-       .UseXFrameOptions()
-       .Build();
+   app.UseSecureHeadersMiddleware(opt =>
+   {
+       opt.UseHsts();       // Explicitly enable each header you want
+       opt.UseXFrameOptions();
+   });
    ```
 
 ### Configuration Problems
@@ -61,17 +61,17 @@ This page covers common issues you might encounter when using OwaspHeaders.Core 
 
    ```csharp
    // Problem: COEP without CORP
-   var badConfig = SecureHeadersMiddlewareBuilder
-       .CreateBuilder()
-       .UseCrossOriginEmbedderPolicy()  // This requires CORP to be enabled
-       .Build();
+   app.UseSecureHeadersMiddleware(opt =>
+   {
+       opt.UseCrossOriginEmbedderPolicy(); // This requires CORP to be enabled
+   });
 
    // Solution: Enable both headers
-   var goodConfig = SecureHeadersMiddlewareBuilder
-       .CreateBuilder()
-       .UseCrossOriginResourcePolicy()
-       .UseCrossOriginEmbedderPolicy()
-       .Build();
+   app.UseSecureHeadersMiddleware(opt =>
+   {
+       opt.UseCrossOriginResourcePolicy();
+       opt.UseCrossOriginEmbedderPolicy();
+   });
    ```
 
 ### Performance Concerns
@@ -133,11 +133,11 @@ This page covers common issues you might encounter when using OwaspHeaders.Core 
 1. **Use custom base Event ID**:
 
    ```csharp
-   var config = SecureHeadersMiddlewareBuilder
-       .CreateBuilder()
-       .UseHsts()
-       .WithLoggingEventIdBase(5000)  // Offset all Event IDs
-       .Build();
+   app.UseSecureHeadersMiddleware(opt =>
+   {
+       opt.UseHsts();
+       opt.WithLoggingEventIdBase(5000); // Offset all Event IDs
+   });
    ```
 
 2. **Use fully custom Event IDs**:
@@ -149,11 +149,11 @@ This page covers common issues you might encounter when using OwaspHeaders.Core 
        HeadersAdded = new EventId(9002, "HeadersSet")
    };
    
-   var config = SecureHeadersMiddlewareBuilder
-       .CreateBuilder()
-       .UseHsts()
-       .WithLoggingEventIds(customLogging)
-       .Build();
+   app.UseSecureHeadersMiddleware(opt =>
+   {
+       opt.UseHsts();
+       opt.WithLoggingEventIds(customLogging);
+   });
    ```
 
 ## Debug Information
@@ -227,9 +227,9 @@ warn: OwaspHeaders.Core.SecureHeadersMiddleware[2003]
 If you're still experiencing issues:
 
 1. **Check the [example application](https://github.com/GaProgMan/OwaspHeaders.Core/tree/main/example/OwaspHeaders.Core.Example)** for working configurations
-2. **Review the [Logging](./logging) documentation** for detailed logging information
+2. **Review the [Logging](../logging/) documentation** for detailed logging information
 3. **Enable debug logging** to see detailed middleware operations
-4. **Create a [minimal code sample](./Minimal-Code-Sample)** that reproduces the issue
+4. **Create a [minimal code sample](../Minimal-Code-Sample/)** that reproduces the issue
 5. **Open an issue** on the [GitHub repository](https://github.com/GaProgMan/OwaspHeaders.Core/issues) with:
    - Your configuration code
    - Log output (with debug logging enabled)

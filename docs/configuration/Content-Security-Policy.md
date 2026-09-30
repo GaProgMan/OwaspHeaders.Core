@@ -41,12 +41,7 @@ This includes a basic CSP configuration with the following directives:
 For more explicit control over CSP defaults, use:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseDefaultContentSecurityPolicy()
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt => opt.UseDefaultContentSecurityPolicy());
 ```
 
 This produces the same CSP header as above but makes the CSP configuration explicit in your code.
@@ -56,24 +51,22 @@ This produces the same CSP header as above but makes the CSP configuration expli
 For custom CSP policies, create your own configuration:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseContentSecurityPolicy(
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseContentSecurityPolicy(
         pluginTypes: null,
         blockAllMixedContent: true,
         upgradeInsecureRequests: true,
-        reportUri: "https://example.com/csp-report")
-    .SetCspUris([
+        reportUri: "https://example.com/csp-report");
+    opt.SetCspUris([
         ContentSecurityPolicyHelpers.CreateSelfDirective(),
         new ContentSecurityPolicyElement
         {
             CommandType = CspCommandType.Uri,
             DirectiveOrUri = "https://cdn.example.com"
         }
-    ], CspUriType.Script)
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+    ], CspUriType.Script);
+});
 ```
 
 The above configuration allows scripts from the same origin and a specific CDN, while reporting violations to a specified URI.
@@ -101,18 +94,21 @@ The main CSP configuration method with full customisation options:
 - `referrer` - Controls referrer information sent with requests (deprecated, use Referrer-Policy header instead)
 - `reportUri` - URI to send violation reports to
 
-### UseContentSecurityPolicyReportOnly
+### UseContentSecurityPolicyReportUriOnly
 
 For testing CSP policies without enforcing them:
 
 ```csharp
-.UseContentSecurityPolicyReportOnly(
+.UseContentSecurityPolicyReportUriOnly(
     reportUri: "https://example.com/csp-report",
     blockAllMixedContent: true,
     upgradeInsecureRequests: false)
 ```
 
 This sends the `Content-Security-Policy-Report-Only` header instead of `Content-Security-Policy`, allowing you to test policies without breaking functionality.
+
+{: .note }
+> This method was previously called `UseContentSecurityPolicyReportOnly`. The old name is still available in version 11, but is marked `[Obsolete]` and will be removed in version 12.
 
 ## Content Security Policy Directives
 
@@ -147,29 +143,29 @@ These directives control where specific types of resources can be loaded from:
 ### Example: Configuring Multiple Directives
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseContentSecurityPolicy()
-    .SetCspUris([
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseContentSecurityPolicy();
+    opt.SetCspUris([
         ContentSecurityPolicyHelpers.CreateSelfDirective()
-    ], CspUriType.DefaultUri)
-    .SetCspUris([
+    ], CspUriType.DefaultUri);
+    opt.SetCspUris([
         ContentSecurityPolicyHelpers.CreateSelfDirective(),
         new ContentSecurityPolicyElement
         {
             CommandType = CspCommandType.Uri,
             DirectiveOrUri = "https://cdn.jsdelivr.net"
         }
-    ], CspUriType.Script)
-    .SetCspUris([
+    ], CspUriType.Script);
+    opt.SetCspUris([
         ContentSecurityPolicyHelpers.CreateSelfDirective(),
         new ContentSecurityPolicyElement
         {
             CommandType = CspCommandType.Directive,
             DirectiveOrUri = "unsafe-inline"
         }
-    ], CspUriType.Style)
-    .Build();
+    ], CspUriType.Style);
+});
 ```
 
 This configuration:
@@ -278,14 +274,14 @@ ContentSecurityPolicyHelpers.CreateSelfDirective()
 CSP can apply sandbox restrictions similar to iframe sandboxing:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseContentSecurityPolicy()
-    .SetCspSandBox(
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseContentSecurityPolicy();
+    opt.SetCspSandBox(
         CspSandboxType.allowForms,
         CspSandboxType.allowScripts,
-        CspSandboxType.allowSameOrigin)
-    .Build();
+        CspSandboxType.allowSameOrigin);
+});
 ```
 
 ### Available Sandbox Types
@@ -311,14 +307,14 @@ Empty sandbox directive (no permissions) applies the most restrictive sandbox po
 ### Basic Secure Website
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseContentSecurityPolicy(blockAllMixedContent: true, upgradeInsecureRequests: true)
-    .SetCspUris([ContentSecurityPolicyHelpers.CreateSelfDirective()], CspUriType.DefaultUri)
-    .SetCspUris([
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseContentSecurityPolicy(blockAllMixedContent: true, upgradeInsecureRequests: true);
+    opt.SetCspUris([ContentSecurityPolicyHelpers.CreateSelfDirective()], CspUriType.DefaultUri);
+    opt.SetCspUris([
         new ContentSecurityPolicyElement { CommandType = CspCommandType.Directive, DirectiveOrUri = "none" }
-    ], CspUriType.Object)
-    .Build();
+    ], CspUriType.Object);
+});
 ```
 
 Results in: `default-src 'self'; object-src 'none'; block-all-mixed-content; upgrade-insecure-requests;`
@@ -326,22 +322,22 @@ Results in: `default-src 'self'; object-src 'none'; block-all-mixed-content; upg
 ### Website Using CDNs
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseContentSecurityPolicy()
-    .SetCspUris([
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseContentSecurityPolicy();
+    opt.SetCspUris([
         ContentSecurityPolicyHelpers.CreateSelfDirective(),
         new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://cdn.jsdelivr.net" },
         new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://cdnjs.cloudflare.com" }
-    ], CspUriType.Script)
-    .SetCspUris([
+    ], CspUriType.Script);
+    opt.SetCspUris([
         ContentSecurityPolicyHelpers.CreateSelfDirective(),
         new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://fonts.googleapis.com" }
-    ], CspUriType.Style)
-    .SetCspUris([
+    ], CspUriType.Style);
+    opt.SetCspUris([
         new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://fonts.gstatic.com" }
-    ], CspUriType.Font)
-    .Build();
+    ], CspUriType.Font);
+});
 ```
 
 ### Website With Inline SVG Images
@@ -349,18 +345,18 @@ var config = SecureHeadersMiddlewareBuilder
 For websites that need to display inline SVG images using data URIs:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseContentSecurityPolicy()
-    .SetCspUris([
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseContentSecurityPolicy();
+    opt.SetCspUris([
         ContentSecurityPolicyHelpers.CreateSelfDirective()
-    ], CspUriType.DefaultUri)
-    .SetCspUris([
+    ], CspUriType.DefaultUri);
+    opt.SetCspUris([
         ContentSecurityPolicyHelpers.CreateSelfDirective(),
         new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "data:" },
         new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://cdn.example.com" }
-    ], CspUriType.Img)
-    .Build();
+    ], CspUriType.Img);
+});
 ```
 
 This configuration allows:
@@ -376,14 +372,14 @@ Results in: `img-src 'self' data: https://cdn.example.com;`
 ### Report-Only Testing Configuration
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseContentSecurityPolicyReportOnly(
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseContentSecurityPolicyReportUriOnly(
         reportUri: "https://example.com/csp-report",
         blockAllMixedContent: false,
-        upgradeInsecureRequests: false)
-    .SetCspUris([ContentSecurityPolicyHelpers.CreateSelfDirective()], CspUriType.DefaultUri)
-    .Build();
+        upgradeInsecureRequests: false);
+    opt.SetCspUris([ContentSecurityPolicyHelpers.CreateSelfDirective()], CspUriType.DefaultUri);
+});
 ```
 
 This sends violations to your reporting endpoint without blocking resources, allowing you to test policies safely.

@@ -12,7 +12,7 @@ dotnet run
 
 2. Open your browser to the displayed URL (typically `https://localhost:7xxx`, check the `launchSettings.json` file for the exact port)
 
-3. Navigate to the Swagger UI to explore the available endpoints
+3. Navigate to `/scalar/v1` in your browser to explore the available endpoints via the Scalar API reference UI. The raw OpenAPI document is served at `/openapi/v1.json`.
 
 ## Available Endpoints
 
@@ -81,14 +81,12 @@ app.UseSecureHeadersMiddleware();
 ### 2. Custom Base Event ID
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .WithLoggingEventIdBase(5000)  // Event IDs will be 5001, 5002, etc.
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    opt.WithLoggingEventIdBase(5000);  // Event IDs will be 5001, 5002, etc.
+});
 ```
 
 ### 3. Fully Custom Event IDs
@@ -101,13 +99,11 @@ var customLogging = new SecureHeadersLoggingConfiguration
     ConfigurationError = new EventId(9999, "ConfigError")
 };
 
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .WithLoggingEventIds(customLogging)
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.WithLoggingEventIds(customLogging);
+});
 ```
 
 ### 4. Using Helper Extension Methods

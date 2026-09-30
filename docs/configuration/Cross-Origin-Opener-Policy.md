@@ -1,6 +1,6 @@
 ---
 title: Cross-Origin-Opener-Policy
-nav_order: 9
+nav_order: 10
 parent: Configuration
 layout: page
 ---
@@ -22,15 +22,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the COOP header with a `same-origin` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseCrossOriginOpenerPolicy()
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseCrossOriginOpenerPolicy());
 ```
 
 The above adds the COOP header with a `same-origin` value.

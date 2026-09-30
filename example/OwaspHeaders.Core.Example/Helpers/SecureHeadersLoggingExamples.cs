@@ -4,8 +4,8 @@ namespace OwaspHeaders.Core.Example.Helpers;
 
 /// <summary>
 /// This class provides various examples of how to configure SecureHeaders with different logging options.
-/// These are static methods that return configured SecureHeadersMiddlewareConfiguration objects
-/// that can be used directly with app.UseSecureHeadersMiddleware().
+/// Each is a configure delegate, so it can be handed straight to app.UseSecureHeadersMiddleware,
+/// and asserted on from a test via SecureHeadersBuilder.BuildAndValidate.
 /// </summary>
 public static class SecureHeadersLoggingExamples
 {
@@ -13,39 +13,35 @@ public static class SecureHeadersLoggingExamples
     /// Basic configuration with default Event IDs (1000-3999 range)
     /// Suitable for most applications that don't have Event ID conflicts
     /// </summary>
-    public static SecureHeadersMiddlewareConfiguration GetBasicConfiguration()
+    public static void ConfigureBasic(SecureHeadersBuilder opt)
     {
-        return SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        opt
             .UseHsts()
             .UseXFrameOptions()
             .UseContentTypeOptions()
-            .UseReferrerPolicy()
-            .Build();
+            .UseReferrerPolicy();
     }
 
     /// <summary>
     /// Configuration with custom base Event ID to avoid conflicts
     /// Use this when your application already uses Event IDs in the 1000-3999 range
     /// </summary>
-    public static SecureHeadersMiddlewareConfiguration GetCustomBaseConfiguration(int baseEventId = 5000)
+    public static void ConfigureCustomBase(SecureHeadersBuilder opt, int baseEventId = 5000)
     {
-        return SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        opt
             .UseHsts()
             .UseXFrameOptions()
             .UseContentTypeOptions()
             .UseReferrerPolicy()
             .UseCrossOriginResourcePolicy()
-            .WithLoggingEventIdBase(baseEventId)
-            .Build();
+            .WithLoggingEventIdBase(baseEventId);
     }
 
     /// <summary>
     /// Configuration with fully custom Event IDs for complete control
     /// Use this when you need specific Event ID values and names
     /// </summary>
-    public static SecureHeadersMiddlewareConfiguration GetFullyCustomConfiguration()
+    public static void ConfigureFullyCustom(SecureHeadersBuilder opt)
     {
         var customLoggingConfig = new SecureHeadersLoggingConfiguration
         {
@@ -61,25 +57,22 @@ public static class SecureHeadersLoggingExamples
             MiddlewareException = new Microsoft.Extensions.Logging.EventId(8302, "MiddlewareError")
         };
 
-        return SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        opt
             .UseHsts()
             .UseXFrameOptions()
             .UseContentTypeOptions()
             .UseReferrerPolicy()
             .UseCrossOriginResourcePolicy()
-            .WithLoggingEventIds(customLoggingConfig)
-            .Build();
+            .WithLoggingEventIds(customLoggingConfig);
     }
 
     /// <summary>
     /// Comprehensive security configuration with logging for production use
     /// Includes most OWASP recommended headers with custom Event IDs
     /// </summary>
-    public static SecureHeadersMiddlewareConfiguration GetProductionConfiguration()
+    public static void ConfigureProduction(SecureHeadersBuilder opt)
     {
-        return SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        opt
             .UseHsts()
             .UseXFrameOptions()
             .UseContentTypeOptions()
@@ -88,15 +81,14 @@ public static class SecureHeadersLoggingExamples
             .UseCrossOriginOpenerPolicy()
             .UseContentSecurityPolicy()
             .UseCacheControl()
-            .WithLoggingEventIdBase(6000) // Use 6000 range for production
-            .Build();
+            .WithLoggingEventIdBase(6000); // Use 6000 range for production
     }
 
     /// <summary>
     /// Development-friendly configuration with verbose logging
     /// Suitable for development environments where you want to see all activity
     /// </summary>
-    public static SecureHeadersMiddlewareConfiguration GetDevelopmentConfiguration()
+    public static void ConfigureDevelopment(SecureHeadersBuilder opt)
     {
         var devLoggingConfig = new SecureHeadersLoggingConfiguration
         {
@@ -112,14 +104,12 @@ public static class SecureHeadersLoggingExamples
             MiddlewareException = new Microsoft.Extensions.Logging.EventId(9302, "DEV_MiddlewareException")
         };
 
-        return SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        opt
             .UseHsts()
             .UseXFrameOptions()
             .UseContentTypeOptions()
             .UseReferrerPolicy()
-            .WithLoggingEventIds(devLoggingConfig)
-            .Build();
+            .WithLoggingEventIds(devLoggingConfig);
     }
 
     /// <summary>
@@ -135,8 +125,7 @@ public static class SecureHeadersLoggingExamples
             baseEventId += 1000;
         }
 
-        return SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        return new SecureHeadersBuilder()
             .UseHsts()
             .UseXFrameOptions()
             .UseContentTypeOptions()
@@ -149,14 +138,12 @@ public static class SecureHeadersLoggingExamples
     /// Use this when you want SecureHeaders functionality but no logging overhead
     /// Note: This still allows logging but uses null logger, so no performance impact
     /// </summary>
-    public static SecureHeadersMiddlewareConfiguration GetMinimalConfiguration()
+    public static void ConfigureMinimal(SecureHeadersBuilder opt)
     {
         // Note: When no logger is provided to middleware constructor, logging is automatically disabled
-        return SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        opt
             .UseHsts()
-            .UseXFrameOptions()
-            .Build();
+            .UseXFrameOptions();
     }
 }
 
@@ -170,7 +157,7 @@ public static class LoggingExampleExtensions
     /// </summary>
     public static IApplicationBuilder UseSecureHeadersWithBasicLogging(this IApplicationBuilder app)
     {
-        return app.UseSecureHeadersMiddleware(SecureHeadersLoggingExamples.GetBasicConfiguration());
+        return app.UseSecureHeadersMiddleware(SecureHeadersLoggingExamples.ConfigureBasic);
     }
 
     /// <summary>
@@ -178,7 +165,7 @@ public static class LoggingExampleExtensions
     /// </summary>
     public static IApplicationBuilder UseSecureHeadersWithCustomEventIds(this IApplicationBuilder app, int baseEventId)
     {
-        return app.UseSecureHeadersMiddleware(SecureHeadersLoggingExamples.GetCustomBaseConfiguration(baseEventId));
+        return app.UseSecureHeadersMiddleware(opt => SecureHeadersLoggingExamples.ConfigureCustomBase(opt, baseEventId));
     }
 
     /// <summary>
@@ -186,7 +173,7 @@ public static class LoggingExampleExtensions
     /// </summary>
     public static IApplicationBuilder UseSecureHeadersForProduction(this IApplicationBuilder app)
     {
-        return app.UseSecureHeadersMiddleware(SecureHeadersLoggingExamples.GetProductionConfiguration());
+        return app.UseSecureHeadersMiddleware(SecureHeadersLoggingExamples.ConfigureProduction);
     }
 
     /// <summary>
@@ -194,6 +181,6 @@ public static class LoggingExampleExtensions
     /// </summary>
     public static IApplicationBuilder UseSecureHeadersForDevelopment(this IApplicationBuilder app)
     {
-        return app.UseSecureHeadersMiddleware(SecureHeadersLoggingExamples.GetDevelopmentConfiguration());
+        return app.UseSecureHeadersMiddleware(SecureHeadersLoggingExamples.ConfigureDevelopment);
     }
 }

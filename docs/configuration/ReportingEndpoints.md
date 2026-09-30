@@ -1,6 +1,6 @@
 ---
 title: Reporting-Endpoints
-nav_order: 11
+nav_order: 13
 parent: Configuration
 layout: page
 ---

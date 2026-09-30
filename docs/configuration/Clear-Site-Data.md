@@ -1,6 +1,6 @@
 ---
 title: Clear-Site-Data
-nav_order: 11
+nav_order: 12
 parent: Configuration
 layout: page
 ---

@@ -1,6 +1,6 @@
 ---
 title: Cross-Origin-Embedder-Policy
-nav_order: 10
+nav_order: 11
 parent: Configuration
 layout: page
 ---

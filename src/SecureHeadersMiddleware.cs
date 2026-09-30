@@ -310,7 +310,9 @@ public class SecureHeadersMiddleware
             return false;
         }
 
+        // string.Equals rather than url.Equals, so that a null entry is skipped rather than
+        // throwing on every request (https://github.com/GaProgMan/OwaspHeaders.Core/issues/239)
         return requestedPath.HasValue &&
-               _config.UrlsToIgnore.Any(url => url.Equals(requestedPath.Value!, StringComparison.InvariantCulture));
+               _config.UrlsToIgnore.Any(url => string.Equals(url, requestedPath.Value, StringComparison.InvariantCulture));
     }
 }

@@ -91,10 +91,12 @@ public static class SecureHeadersMiddlewareBuilder
     /// Configures Content Security Policy Report Only mode.
     /// </summary>
     /// <remarks>
-    /// This method has been renamed to UseContentSecurityPolicyReportUriOnly for clarity.
-    /// Please update your code to use the new method name.
+    /// This method has been renamed to UseContentSecurityPolicyReportUriOnly for clarity,
+    /// and will be removed in version 12. Please update your code to use the new method name.
     /// </remarks>
-    [Obsolete("UseContentSecurityPolicyReportOnly has been renamed to UseContentSecurityPolicyReportUriOnly. Please use the new method name.", false)]
+    [Obsolete("UseContentSecurityPolicyReportOnly has been renamed to UseContentSecurityPolicyReportUriOnly " +
+              "and will be removed in version 12. Please use the new method name. See " +
+              "https://github.com/GaProgMan/OwaspHeaders.Core/issues/269", false)]
     public static SecureHeadersMiddlewareConfiguration UseContentSecurityPolicyReportOnly
     (this SecureHeadersMiddlewareConfiguration config, string reportUri,
         string? pluginTypes = null, bool blockAllMixedContent = true,

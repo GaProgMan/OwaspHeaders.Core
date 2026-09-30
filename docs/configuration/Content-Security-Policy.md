@@ -108,7 +108,7 @@ For testing CSP policies without enforcing them:
 This sends the `Content-Security-Policy-Report-Only` header instead of `Content-Security-Policy`, allowing you to test policies without breaking functionality.
 
 {: .note }
-> This method was previously called `UseContentSecurityPolicyReportOnly`. The old name is still available, but is marked `[Obsolete]`.
+> This method was previously called `UseContentSecurityPolicyReportOnly`. The old name is still available in version 11, but is marked `[Obsolete]` and will be removed in version 12.
 
 ## Content Security Policy Directives
 

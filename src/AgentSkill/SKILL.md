@@ -73,7 +73,7 @@ Code from version 10 or earlier needs changing:
 | `app.UseSecureHeadersMiddleware(config, urlIgnoreList)` | `[Obsolete]`, removed in 12 | The configure delegate, with `opt.SetUrlsToIgnore(...)` |
 | Assigning properties on `SecureHeadersMiddlewareConfiguration`, e.g. `config.UseHsts = true` | Does not compile (setters are `internal`) | The matching `opt.UseX(...)` builder method |
 | `.UseExpectCt(...)` or `ExpectCt` | Removed | Delete it; Expect-CT is obsolete and has no replacement |
-| `UseContentSecurityPolicyReportOnly(...)` | `[Obsolete]` | `opt.UseContentSecurityPolicyReportUriOnly(...)` |
+| `UseContentSecurityPolicyReportOnly(...)` | `[Obsolete]`, removed in 12 | `opt.UseContentSecurityPolicyReportUriOnly(...)` |
 
 Do not silence `CS0618` for these members. The warning is how the package points callers at the replacement.
 

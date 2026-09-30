@@ -1,6 +1,6 @@
 ---
 title: X-XSS-Protection
-nav_order: 8
+nav_order: 9
 parent: Configuration
 layout: page
 ---

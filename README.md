@@ -8,6 +8,9 @@ An ASP.NET Core middleware designed to increase web application security by adop
 
 Please note: this middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIONS**. This is because setting up secure HTTP headers in a WebAssembly context is a non-trivial task.
 
+> [!IMPORTANT]
+> Version 11 is a major release with breaking changes. If you are upgrading from version 10, read [Upgrading to version 11](https://gaprogman.github.io/OwaspHeaders.Core/upgrading-to-version-11) first: it lists the code to change, what to expect on the first build, and how to opt out of the agent skill install.
+
 > [!WARNING]
 > From version 11, **building a project which references OwaspHeaders.Core writes files into your repository.** It installs an agent skill for coding agents into `.agents/skills/owaspheaders-core/` and `.claude/skills/owaspheaders-core/`, hidden from git by a `.gitignore`. It is skipped on CI, and `<OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>` turns it off. See [Agent Skill](https://gaprogman.github.io/OwaspHeaders.Core/agent-skills) for what is written, why, and when it is not.
 

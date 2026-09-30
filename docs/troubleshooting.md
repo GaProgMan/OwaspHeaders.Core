@@ -1,7 +1,7 @@
 ---
 title: Troubleshooting
 layout: page
-nav_order: 8
+nav_order: 6
 ---
 
 # Troubleshooting

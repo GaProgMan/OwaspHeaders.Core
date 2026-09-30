@@ -1,7 +1,7 @@
 ---
 title: Changelog
 layout: page
-nav_order: 9
+nav_order: 7
 ---
 
 

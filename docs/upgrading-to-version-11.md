@@ -186,6 +186,8 @@ Three defects in report-only mode, present since it was added, are fixed. Two of
 
 `SetCspUris` and `SetCspSandBox` only affect policies which already exist, so call them after the method which sets up the policy.
 
+If you still call `UseContentSecurityPolicyReportOnly`, rename the call to `UseContentSecurityPolicyReportUriOnly`. The old name has been `[Obsolete]` since it was renamed, and its `CS0618` warning now says that it is removed in version 12.
+
 Changelog: [Report-only Content-Security-Policy fixes](./changelog#report-only-content-security-policy-fixes-issue-240).
 
 ### Invalid values are rejected when they are configured

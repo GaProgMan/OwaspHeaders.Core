@@ -2,4 +2,6 @@ Version 11 is a major release with breaking changes: .NET 8 and .NET 9 support i
 
 Building a project which references this package now writes an agent skill for coding agents into your repository, in .agents/skills/owaspheaders-core/ and .claude/skills/owaspheaders-core/, hidden from git by a .gitignore. It is skipped on CI, and <OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill> turns it off. Details: https://gaprogman.github.io/OwaspHeaders.Core/agent-skills
 
+Before upgrading from version 10, read: https://gaprogman.github.io/OwaspHeaders.Core/upgrading-to-version-11
+
 Full changelog: https://gaprogman.github.io/OwaspHeaders.Core/changelog

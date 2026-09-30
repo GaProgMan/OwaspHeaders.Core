@@ -234,6 +234,7 @@ From version 11, building a project which references OwaspHeaders.Core writes an
 - Report-only Content-Security-Policy fixes
 - Nullable reference types enabled and the public API fully annotated
 - Installs an agent skill for coding agents into the consuming repository on build (see Agent Skill above)
+- Upgrade guide, covering breaking API changes, behavioural changes and opt-outs: https://gaprogman.github.io/OwaspHeaders.Core/upgrading-to-version-11
 
 ### Version 10
 - Library now supports .NET 10 (by updating the TFM to include `net10.0`)
@@ -313,7 +314,7 @@ OwaspHeaders.Core minimizes security risk by:
 
 ### Supported Versions
 
-Support is scoped by .NET runtime, not by package version: any release of OwaspHeaders.Core running on a .NET version that Microsoft still supports is supported. A release targeting a .NET version that has reached end of support is unsupported, regardless of its version number.
+Support is scoped by .NET runtime, not by package version: any release of OwaspHeaders.Core running on a .NET version that Microsoft still supports is supported. A release targeting a .NET version that has reached end of support is unsupported, regardless of its version number. A release stops being supported on a given .NET version on the day that version leaves Microsoft's support lifecycle (https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle), and stops being supported altogether when the last of the .NET versions it targets does.
 
 - 11.x.x (targets .NET 10, 11): ✅ Supported until November 14, 2028
 - 10.x.x (targets .NET 8, 9, 10): ✅ Supported until November 14, 2028
@@ -323,6 +324,8 @@ Support is scoped by .NET runtime, not by package version: any release of OwaspH
 - .NET Framework version (targets .NET Framework, ASP .NET Core 2.2): ❌ Not supported
 
 .NET 8 and .NET 9 both reach end of support on November 10, 2026, so 8.x.x and 9.x.x become unsupported on the same date, leaving 10.x.x and 11.x.x supported by way of their .NET 10 target.
+
+At the time of writing, .NET 11 leaves support on November 9, 2028, five days before .NET 10 on November 14, 2028, so from November 9, 2028 11.x.x is supported on .NET 10 only. Microsoft's release lifecycle (https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle) explains why the two dates differ.
 
 Backporting features and fixes to unsupported releases is not provided.
 
@@ -359,13 +362,14 @@ To verify headers in production applications:
 - Cross-Origin-Resource-Policy: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Resource-Policy/
 - Cache-Control: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/
 - Clear-Site-Data: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Clear-Site-Data/
-- Reporting-Endpoints: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Reporting-Endpoints/
+- Reporting-Endpoints: https://gaprogman.github.io/OwaspHeaders.Core/configuration/ReportingEndpoints/
 - Cross-Origin-Opener-Policy: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/
 - Cross-Origin-Embedder-Policy: https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/
 - X-XSS-Protection: https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-XSS-Protection/
 
 ### Other Resources
 - Home/Quick Start: https://gaprogman.github.io/OwaspHeaders.Core/
+- Upgrading to version 11: https://gaprogman.github.io/OwaspHeaders.Core/upgrading-to-version-11
 - Logging Configuration: https://gaprogman.github.io/OwaspHeaders.Core/logging
 - Troubleshooting: https://gaprogman.github.io/OwaspHeaders.Core/troubleshooting
 - Agent Skill: https://gaprogman.github.io/OwaspHeaders.Core/agent-skills

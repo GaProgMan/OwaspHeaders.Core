@@ -1,6 +1,6 @@
 ---
 title: Clear-Site-Data
-nav_order: 11
+nav_order: 12
 parent: Configuration
 layout: page
 ---
@@ -22,12 +22,8 @@ Clear-Site-Data is **not** included in the default middleware configuration due 
 Add Clear-Site-Data to all responses with OWASP recommended defaults:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseClearSiteData() // Defaults to "cache","cookies","storage"
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+    opt.UseClearSiteData()); // Defaults to "cache","cookies","storage"
 ```
 
 The above adds the Clear-Site-Data header with `"cache","cookies","storage"` value to all responses.
@@ -37,13 +33,11 @@ The above adds the Clear-Site-Data header with `"cache","cookies","storage"` val
 Configure Clear-Site-Data for specific paths like logout endpoints:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard)
-    .AddClearSiteDataPath("/api/auth/signout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies)
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard);
+    opt.AddClearSiteDataPath("/api/auth/signout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies);
+});
 ```
 
 The above configuration will:
@@ -66,12 +60,7 @@ var pathConfig = new Dictionary<string, ClearSiteDataOptions[]>
     ["/admin/logout"] = [ClearSiteDataOptions.storage]
 };
 
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseClearSiteDataForPaths(pathConfig)
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt => opt.UseClearSiteDataForPaths(pathConfig));
 ```
 
 ## Directive Options
@@ -155,21 +144,19 @@ For request `/account/logout`, the longer path `/account/logout` takes precedenc
 Here's a comprehensive example showing Clear-Site-Data integration with other security headers:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .UseContentTypeOptions()
-    .UseDefaultContentSecurityPolicy()
-    .UsePermittedCrossDomainPolicies()
-    .UseReferrerPolicy()
-    .UseCacheControl()
-    .AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard)
-    .AddClearSiteDataPath("/api/auth/signout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies)
-    .AddClearSiteDataPath("/admin/logout", ClearSiteDataOptions.wildcard)
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    opt.UseContentTypeOptions();
+    opt.UseDefaultContentSecurityPolicy();
+    opt.UsePermittedCrossDomainPolicies();
+    opt.UseReferrerPolicy();
+    opt.UseCacheControl();
+    opt.AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard);
+    opt.AddClearSiteDataPath("/api/auth/signout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies);
+    opt.AddClearSiteDataPath("/admin/logout", ClearSiteDataOptions.wildcard);
+});
 ```
 
 ## Security Considerations

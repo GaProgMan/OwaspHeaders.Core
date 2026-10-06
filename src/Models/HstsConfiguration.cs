@@ -15,13 +15,6 @@ public class HstsConfiguration : IConfigurationBase
     /// </summary>
     public int MaxAge { get; }
 
-    /// <summary>
-    /// Protected constructor, we can no longer create instances of this
-    /// class without using the public constructor
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    protected HstsConfiguration() { }
-
     public HstsConfiguration(int maxAge, bool includeSubDomains)
     {
         MaxAge = maxAge;

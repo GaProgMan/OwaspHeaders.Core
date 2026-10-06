@@ -1,6 +1,6 @@
 ---
 title: Reporting-Endpoints
-nav_order: 11
+nav_order: 13
 parent: Configuration
 layout: page
 ---
@@ -21,17 +21,14 @@ The Mozilla Developer Network describes the Reporting-Endpoints (COEP) header li
 >
 > source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints
 
-A Reporting-Endpoints header can be added in one way, via an extension method on the `SecureHeadersMiddlewareBuilder` class called `UseReportingEndpointsPolicy`:
+A Reporting-Endpoints header can be added in one way, by calling the `UseReportingEndpointsPolicy` method on the `SecureHeadersBuilder` handed to the configure delegate:
 
 ```csharp
 var reportingEndpoints =
     new Dictionary<string, Uri> {
         { "standard", new Uri("https://localhost:5000/reporting-endpoint") }
     };
-var secureHeadersMiddlewareConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
-    .UseReportingEndpointsPolicy(reportingEndpoints)
-    .Build();
-app.UseSecureHeadersMiddleware(secureHeadersMiddlewareConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseReportingEndpointsPolicy(reportingEndpoints));
 ```
 
 The above adds the Reporting-Endpoint header with a value which maps the string "standard" to the URL "https://localhost:5000/reporting-endpoint".

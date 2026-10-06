@@ -6,7 +6,7 @@ public class PermittedCrossDomainPoliciesOptionsTests : SecureHeadersTests
     public async Task When_UsePermittedCrossDomainPoliciesCalled_Header_Not_Present()
     {
         // arrange
-        var headerNotPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerNotPresentConfig = new SecureHeadersBuilder()
             .Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerNotPresentConfig);
 

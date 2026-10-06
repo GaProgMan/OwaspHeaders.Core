@@ -25,15 +25,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the X-Permitted-Cross-Domain-Policies header with a `none` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UsePermittedCrossDomainPolicies()
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UsePermittedCrossDomainPolicies());
 ```
 
 The above adds the X-Permitted-Cross-Domain-Policies header with a `none` value.
@@ -52,4 +47,4 @@ The values available for the `XPermittedCrossDomainOptionValue` enum are:
 - `byFtpFileType`
 - `all`
 
-These values can be set when creating a new instance of the `XPermittedCrossDomainOptionValue` object, or by calling the `UsePermittedCrossDomainPolicies` extension method on the `SecureHeadersMiddlewareConfiguration` class.
+These values are set by calling the `UsePermittedCrossDomainPolicies` extension method on the `SecureHeadersMiddlewareConfiguration` class.

@@ -5,8 +5,9 @@
 ///
 /// A <c>null</c> entry in <see cref="SecureHeadersMiddlewareConfiguration.UrlsToIgnore"/> used to
 /// throw a <see cref="NullReferenceException"/> on every request which did not match an earlier
-/// entry, because the middleware called <c>Equals</c> on each entry. A null entry is now skipped,
-/// whichever of the three routes put it there.
+/// entry, because the middleware called <c>Equals</c> on each entry. In version 11,
+/// <see cref="SecureHeadersBuilder.SetUrlsToIgnore"/> rejects a null entry when the configuration
+/// is built, and the middleware still skips one which reaches the list some other way.
 /// </summary>
 public class Issue239RegressionTests
 {
@@ -16,78 +17,92 @@ public class Issue239RegressionTests
     private readonly RequestDelegate _onNext = _ => Task.CompletedTask;
 
     [Fact]
-    public async Task NullEntryFromBuilder_DoesNotThrow_AndHeadersAreAdded()
+    public void NullEntryFromBuilder_IsRejected()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
+        // null! because passing a null entry is the point of the test
+        var exception = Assert.Throws<ArgumentException>(() => new SecureHeadersBuilder()
             .UseHsts()
-            .SetUrlsToIgnore([IgnoredUrl, null])
-            .Build();
+            .SetUrlsToIgnore([IgnoredUrl, null!]));
 
-        var context = await Invoke(config, OtherUrl);
-
-        Assert.True(context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
+        Assert.Equal("urlsToIgnore", exception.ParamName);
     }
 
     [Fact]
-    public async Task NullEntryFromDirectAssignment_DoesNotThrow_AndHeadersAreAdded()
+    public async Task NullEntryFromConfigureDelegate_StopsTheHostFromStarting()
     {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
-            .UseHsts()
-            .Build();
-
-        // the public setter bypasses SetUrlsToIgnore entirely
-        config.UrlsToIgnore = [null];
-
-        var context = await Invoke(config, OtherUrl);
-
-        Assert.True(context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
-    }
-
-    [Fact]
-    public async Task NullEntryBeforeAMatch_DoesNotStopTheMatch()
-    {
-        var config = SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
-            .UseHsts()
-            .SetUrlsToIgnore([null, IgnoredUrl])
-            .Build();
-
-        var context = await Invoke(config, IgnoredUrl);
-
-        Assert.False(context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
-    }
-
-    [Theory]
-    [InlineData(OtherUrl, true)]
-    [InlineData(IgnoredUrl, false)]
-    public async Task NullEntryFromUrlIgnoreList_DoesNotThrow(string path, bool expectHeaders)
-    {
-        // app.UseSecureHeadersMiddleware(urlIgnoreList: ...) with no configuration passes the
-        // list through BuildDefaultConfiguration, so it reaches the middleware
-        using var host = await new HostBuilder()
+        var hostBuilder = new HostBuilder()
             .ConfigureWebHost(webBuilder =>
             {
                 webBuilder
                     .UseTestServer()
                     .Configure(app =>
                     {
-                        app.UseSecureHeadersMiddleware(urlIgnoreList: [null, IgnoredUrl]);
+                        app.UseSecureHeadersMiddleware(opt =>
+                        {
+                            opt.UseHsts();
+                            opt.SetUrlsToIgnore([null!, IgnoredUrl]);
+                        });
                         app.Run(async context => await context.Response.WriteAsync("Hello Tests"));
                     });
-            })
-            .StartAsync();
+            });
 
-        var context = await host.GetTestServer().SendAsync(c =>
-        {
-            c.Request.Path = path;
-            c.Request.Method = HttpMethods.Get;
-        });
+        await Assert.ThrowsAsync<ArgumentException>(() =>
+            hostBuilder.StartAsync(TestContext.Current.CancellationToken));
+    }
 
-        Assert.Equal(StatusCodes.Status200OK, context.Response.StatusCode);
-        Assert.Equal(expectHeaders,
-            context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
+    [Fact]
+    public async Task NullEntryFromDirectAssignment_DoesNotThrow_AndHeadersAreAdded()
+    {
+        var config = new SecureHeadersBuilder()
+            .UseHsts()
+            .Build();
+
+        // the setter is internal in version 11, so only code inside the assembly can do this.
+        // It is kept as the test of the middleware's null-safe comparison, which is the backstop
+        // for a null which reaches the list without going through SetUrlsToIgnore
+        config.UrlsToIgnore = [null!];
+
+        var context = await Invoke(config, OtherUrl);
+
+        Assert.True(context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
+    }
+
+    [Fact]
+    public async Task NullEntryFromDirectAssignment_DoesNotStopALaterMatch()
+    {
+        var config = new SecureHeadersBuilder()
+            .UseHsts()
+            .Build();
+
+        config.UrlsToIgnore = [null!, IgnoredUrl];
+
+        var context = await Invoke(config, IgnoredUrl);
+
+        Assert.False(context.Response.Headers.ContainsKey(Constants.StrictTransportSecurityHeaderName));
+    }
+
+    [Fact]
+    public async Task NullEntryFromUrlIgnoreList_StopsTheHostFromStarting()
+    {
+        // app.UseSecureHeadersMiddleware(urlIgnoreList: ...) with no configuration passes the
+        // list through BuildDefaultConfiguration and so through SetUrlsToIgnore. That overload is
+        // [Obsolete] in version 11 and removed in version 12 (#269), when this test goes with it
+        var hostBuilder = new HostBuilder()
+            .ConfigureWebHost(webBuilder =>
+            {
+                webBuilder
+                    .UseTestServer()
+                    .Configure(app =>
+                    {
+#pragma warning disable CS0618
+                        app.UseSecureHeadersMiddleware(urlIgnoreList: [null!, IgnoredUrl]);
+#pragma warning restore CS0618
+                        app.Run(async context => await context.Response.WriteAsync("Hello Tests"));
+                    });
+            });
+
+        await Assert.ThrowsAsync<ArgumentException>(() =>
+            hostBuilder.StartAsync(TestContext.Current.CancellationToken));
     }
 
     private async Task<HttpContext> Invoke(SecureHeadersMiddlewareConfiguration config, string path)

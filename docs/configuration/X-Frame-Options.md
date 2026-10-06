@@ -12,7 +12,7 @@ The Mozilla Developer Network describes the X-Frame-Options header like this:
 >
 > source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
-It's worth noting that the MDN states that the X-Frame-Options header has been deprecated and removed from most browsers, the OWASP Secure Headers Project still recommends it's use. The MDN-recommended replacement for X-Frame-Options is to use the `frame-ancestors` directive in a [Content-Security-Policy (CSP)](Content-Security-Policy.md) header. However, it's entirely possible to use this middleware without including a CSP header; which is one of the reasons for OWASP maintaining their recommendation on using the X-Frame-Options header.
+It's worth noting that the MDN states that the X-Frame-Options header has been deprecated and removed from most browsers, the OWASP Secure Headers Project still recommends it's use. The MDN-recommended replacement for X-Frame-Options is to use the `frame-ancestors` directive in a [Content-Security-Policy (CSP)](../Content-Security-Policy/) header. However, it's entirely possible to use this middleware without including a CSP header; which is one of the reasons for OWASP maintaining their recommendation on using the X-Frame-Options header.
 
 An X-Frame-Options header can be added in one of two ways, either using the default middleware options:
 
@@ -22,15 +22,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the X-Frame-Options header with a `deny` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseXFrameOptions(XFrameOptions.Sameorigin)
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseXFrameOptions(XFrameOptions.Sameorigin));
 ```
 
 The above adds the X-Frame-Options header with a `Sameorigin` value.
@@ -49,4 +44,4 @@ The values available for the `XFrameOptions` enum are:
 - `Deny`
 - `Sameorigin`
 
-These values can be set when creating a new instance of the `HstsConfiguration` object, or by calling the `UseHsts` extension method on the `SecureHeadersMiddlewareConfiguration` class.
+These values are set by calling the `UseXFrameOptions` extension method on the `SecureHeadersMiddlewareConfiguration` class.

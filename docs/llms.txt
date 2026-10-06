@@ -2,26 +2,31 @@
 
 > ASP.NET Core middleware for injecting OWASP-recommended HTTP security headers into all responses with a single line of code
 
-OwaspHeaders.Core is an open-source middleware library that enhances web application security by automatically adding the HTTP headers recommended by the OWASP Secure Headers Project. It supports .NET 8, .NET 9, and .NET 10, and is maintained by Jamie Taylor (GaProgMan) under the MIT License.
+OwaspHeaders.Core is an open-source middleware library that enhances web application security by automatically adding the HTTP headers recommended by the OWASP Secure Headers Project. It supports .NET 10 and .NET 11, and is maintained by Jamie Taylor (GaProgMan) under the MIT License.
 
 **Key Features:**
 - One-line setup: `app.UseSecureHeadersMiddleware();`
+- Custom setup via a configure delegate: `app.UseSecureHeadersMiddleware(opt => opt.UseRecommendedDefaults());`
+- Configuration is validated at application startup, not on the first request
 - 11 OWASP-recommended security headers included by default
 - Configurable header values using fluent builder pattern
 - Comprehensive logging support
 - OpenSSF Best Practices badge: passing
 - Does not support Blazor/WebAssembly applications
+- Installs an agent skill for coding agents into the consuming repository on build (skipped on CI; turned off with `<OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>`)
 
-**Current Version:** 10.5.0
+**Current Version:** 11.0.0
 
 **Installation:** `dotnet add package OwaspHeaders.Core`
 
 ## Getting Started
 
 - [Home](https://gaprogman.github.io/OwaspHeaders.Core/): Project overview and quick start guide
+- [Upgrading to version 11](https://gaprogman.github.io/OwaspHeaders.Core/upgrading-to-version-11): What to change when moving from version 10, covering breaking API changes, behavioural changes and opt-outs
 - [Configuration](https://gaprogman.github.io/OwaspHeaders.Core/configuration/): Detailed configuration instructions and examples
 - [Logging](https://gaprogman.github.io/OwaspHeaders.Core/logging): Logging configuration and best practices
 - [Troubleshooting](https://gaprogman.github.io/OwaspHeaders.Core/troubleshooting): Common issues and solutions
+- [Agent Skill](https://gaprogman.github.io/OwaspHeaders.Core/agent-skills): The agent skill written into consuming repositories on build, when it is not, and how to opt out
 
 ## Header Configuration Documentation
 
@@ -34,7 +39,7 @@ OwaspHeaders.Core is an open-source middleware library that enhances web applica
 - [Cross-Origin-Resource-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Resource-Policy/)
 - [Cache-Control](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cache-Control/)
 - [Clear-Site-Data](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Clear-Site-Data/)
-- [Reporting-Endpoints](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Reporting-Endpoints/) (experimental, not included in defaults)
+- [Reporting-Endpoints](https://gaprogman.github.io/OwaspHeaders.Core/configuration/ReportingEndpoints/) (experimental, not included in defaults)
 - [Cross-Origin-Opener-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Opener-Policy/)
 - [Cross-Origin-Embedder-Policy](https://gaprogman.github.io/OwaspHeaders.Core/configuration/Cross-Origin-Embedder-Policy/)
 - [X-XSS-Protection](https://gaprogman.github.io/OwaspHeaders.Core/configuration/X-XSS-Protection/)

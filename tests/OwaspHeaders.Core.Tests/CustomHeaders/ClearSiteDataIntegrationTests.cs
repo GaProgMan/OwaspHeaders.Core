@@ -12,15 +12,14 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/api/auth/signout"] = [ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer = CreateTestServer("/logout", config);
         var client = testServer.CreateClient();
 
         // act - test logout path
-        var logoutResponse = await client.GetAsync("/logout");
+        var logoutResponse = await client.GetAsync("/logout", TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(logoutResponse.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -30,7 +29,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         // act - test api path (need to configure endpoint)
         using var apiTestServer = CreateTestServer("/api/auth/signout", config);
         var apiClient = apiTestServer.CreateClient();
-        var apiResponse = await apiClient.GetAsync("/api/auth/signout");
+        var apiResponse = await apiClient.GetAsync("/api/auth/signout", TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(apiResponse.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -47,15 +46,14 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/logout"] = [ClearSiteDataOptions.wildcard]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer = CreateTestServer("/login", config);
         var client = testServer.CreateClient();
 
         // act
-        var response = await client.GetAsync("/login");
+        var response = await client.GetAsync("/login", TestContext.Current.CancellationToken);
 
         // assert
         Assert.False(response.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -65,15 +63,15 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
     public async Task IntegrationTest_ClearSiteData_WithDefaultConfiguration()
     {
         // arrange
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        Action<SecureHeadersBuilder> config = opt => opt
             .UseClearSiteData() // Uses default OWASP recommended options
-            .Build();
+        ;
 
         using var testServer = CreateTestServer("/any-path", config);
         var client = testServer.CreateClient();
 
         // act
-        var response = await client.GetAsync("/any-path");
+        var response = await client.GetAsync("/any-path", TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(response.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -85,17 +83,16 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
     public async Task IntegrationTest_ClearSiteData_WithFluentConfiguration()
     {
         // arrange
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        Action<SecureHeadersBuilder> config = opt => opt
             .AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard)
-            .AddClearSiteDataPath("/account/logout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies)
-            .Build();
+            .AddClearSiteDataPath("/account/logout", ClearSiteDataOptions.cache, ClearSiteDataOptions.cookies);
 
         // Test first path
         using var testServer1 = CreateTestServer("/logout", config);
         var client1 = testServer1.CreateClient();
 
         // act
-        var response1 = await client1.GetAsync("/logout");
+        var response1 = await client1.GetAsync("/logout", TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(response1.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -107,7 +104,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client2 = testServer2.CreateClient();
 
         // act
-        var response2 = await client2.GetAsync("/account/logout");
+        var response2 = await client2.GetAsync("/account/logout", TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(response2.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -125,15 +122,14 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/admin/logout"] = [ClearSiteDataOptions.wildcard]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer = CreateTestServer("/admin/logout", config);
         var client = testServer.CreateClient();
 
         // act
-        var response = await client.GetAsync("/admin/logout");
+        var response = await client.GetAsync("/admin/logout", TestContext.Current.CancellationToken);
 
         // assert - should match the longer, more specific path
         Assert.True(response.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -145,18 +141,17 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
     public async Task IntegrationTest_ClearSiteData_WithOtherSecurityHeaders()
     {
         // arrange - test that Clear-Site-Data works alongside other security headers
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        Action<SecureHeadersBuilder> config = opt => opt
             .UseHsts()
             .UseXFrameOptions()
             .UseContentTypeOptions()
-            .AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard)
-            .Build();
+            .AddClearSiteDataPath("/logout", ClearSiteDataOptions.wildcard);
 
         using var testServer = CreateTestServer("/logout", config);
         var client = testServer.CreateClient();
 
         // act
-        var response = await client.GetAsync("/logout");
+        var response = await client.GetAsync("/logout", TestContext.Current.CancellationToken);
 
         // assert - all headers should be present
         Assert.True(response.Headers.Contains(Constants.StrictTransportSecurityHeaderName));
@@ -177,9 +172,8 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/Logout"] = [ClearSiteDataOptions.wildcard] // Capital L
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer1 = CreateTestServer("/Logout", config);
         var client1 = testServer1.CreateClient();
@@ -188,8 +182,8 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         var client2 = testServer2.CreateClient();
 
         // act
-        var response1 = await client1.GetAsync("/Logout"); // Should match
-        var response2 = await client2.GetAsync("/logout"); // Should NOT match (case sensitive)
+        var response1 = await client1.GetAsync("/Logout", TestContext.Current.CancellationToken); // Should match
+        var response2 = await client2.GetAsync("/logout", TestContext.Current.CancellationToken); // Should NOT match (case sensitive)
 
         // assert
         Assert.True(response1.Headers.Contains(Constants.ClearSiteDataHeaderName));
@@ -201,7 +195,7 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
     [InlineData("/api/logout", "\"cache\",\"cookies\"")]
     [InlineData("/mobile/logout", "\"storage\"")]
     [InlineData("/other", null)]
-    public async Task IntegrationTest_ClearSiteData_MultiplePathConfigurations(string requestPath, string expectedHeader)
+    public async Task IntegrationTest_ClearSiteData_MultiplePathConfigurations(string requestPath, string? expectedHeader)
     {
         // arrange
         var pathConfig = new Dictionary<string, ClearSiteDataOptions[]>
@@ -211,15 +205,14 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/mobile/logout"] = [ClearSiteDataOptions.storage]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer = CreateTestServer(requestPath, config);
         var client = testServer.CreateClient();
 
         // act
-        var response = await client.GetAsync(requestPath);
+        var response = await client.GetAsync(requestPath, TestContext.Current.CancellationToken);
 
         // assert
         if (expectedHeader != null)
@@ -244,26 +237,36 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
             ["/logout"] = [ClearSiteDataOptions.wildcard]
         };
 
-        var config = SecureHeadersMiddlewareBuilder.CreateBuilder()
-            .UseClearSiteDataForPaths(pathConfig)
-            .Build();
+        Action<SecureHeadersBuilder> config = opt => opt
+            .UseClearSiteDataForPaths(pathConfig);
 
         using var testServer = CreateTestServer("/logout", config);
         var client = testServer.CreateClient();
 
-        // act - measure processing time for multiple requests
-        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        // The first request pays for JIT and first-request setup, which took 20-45ms on
+        // .NET 11 against ~0.03ms for a warm request, so it is sent before timing starts.
+        // It also checks that the timed path really adds the header.
+        // See https://github.com/GaProgMan/OwaspHeaders.Core/issues/247
+        var warmUpResponse = await client.GetAsync("/logout", TestContext.Current.CancellationToken);
+        Assert.True(warmUpResponse.Headers.Contains(Constants.ClearSiteDataHeaderName));
+
+        // act - time each request separately
         const int requestCount = 100;
+        var timingsMs = new double[requestCount];
 
         for (int i = 0; i < requestCount; i++)
         {
-            await client.GetAsync("/logout");
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            await client.GetAsync("/logout", TestContext.Current.CancellationToken);
+            stopwatch.Stop();
+            timingsMs[i] = stopwatch.Elapsed.TotalMilliseconds;
         }
 
-        stopwatch.Stop();
-
-        // assert - should be minimal overhead (less than 1ms per request on average)
-        var averageTimeMs = stopwatch.ElapsedMilliseconds / (double)requestCount;
-        Assert.True(averageTimeMs < 1.0, $"Average processing time {averageTimeMs}ms exceeds 1ms threshold");
+        // assert - should be minimal overhead (less than 1ms for a typical request). The median
+        // rather than the mean, so that a few requests stalled by the machine, rather than by
+        // the middleware, cannot fail the test on their own
+        Array.Sort(timingsMs);
+        var medianTimeMs = timingsMs[requestCount / 2];
+        Assert.True(medianTimeMs < 1.0, $"Median processing time {medianTimeMs}ms exceeds 1ms threshold");
     }
 }

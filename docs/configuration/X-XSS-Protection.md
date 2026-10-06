@@ -1,12 +1,12 @@
 ---
 title: X-XSS-Protection
-nav_order: 8
+nav_order: 9
 parent: Configuration
 layout: page
 ---
 
 {: .warning }
-Both the OWASP Secure Headers Project and MDN recommend not using this header with any value other than "0", which disabled the XSS Auditor. This is due to the X-XSS-Protection header having been dropped from most modern browsers and that using it (with a value other than "0") can cause additional security issues to present themselves. The recommended path forward is to use a [Content-Security-Policy (CSP)](Content-Security-Policy.md) header.
+Both the OWASP Secure Headers Project and MDN recommend not using this header with any value other than "0", which disabled the XSS Auditor. This is due to the X-XSS-Protection header having been dropped from most modern browsers and that using it (with a value other than "0") can cause additional security issues to present themselves. The recommended path forward is to use a [Content-Security-Policy (CSP)](../Content-Security-Policy/) header.
 
 The Mozilla Developer Network describes the X-XSS-Protection header like this:
 
@@ -23,15 +23,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the X-XSS-Protection header with a "0" value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseXssProtection()
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseXssProtection());
 ```
 
 The above adds the X-XSS-Protection header with a "0" value.

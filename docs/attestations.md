@@ -12,15 +12,17 @@ The information presented on this page is split between PR Builds and NuGet Rele
 
 All PRs are built using the [dotnet.yml](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/.github/workflows/dotnet.yml) file found in the .github/Workflows directory in the GitHub repo. Attestations for these builds are created in the step labelled "Generate Attestations":
 
+{% raw %}
 ```yaml
 # The following yml is correct as of Dec 23rd, 2024
 # For the latest version, please see:
 # https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/.github/workflows/dotnet.yml
 - name: Generate Attestations
-    uses: actions/attest-build-provenance@963f8a02f24ac90336362e63ca6730cf69ad102e # v2.1.0
-    with:
+  uses: actions/attest-build-provenance@963f8a02f24ac90336362e63ca6730cf69ad102e # v2.1.0
+  with:
     subject-path: ${{ github.workspace }}/**/*.nupkg
 ```
+{% endraw %}
 
 This step will provide an attestation for the commit which caused the PR build to run.
 
@@ -72,22 +74,24 @@ REPO                         PREDICATE_TYPE                  WORKFLOW
 GaProgMan/OwaspHeaders.Core  https://slsa.dev/provenance/v1  .github/workflows/dotnet.yml@refs/pull/148/merge
 ```
 
-> [!NOTE] NOTE
+{: .note }
 > The above output is specific to the version of OwaspHeaders.Core built using the first workflow run for [PR 148](https://github.com/GaProgMan/OwaspHeaders.Core/pull/148). The output you receive will differ slightly.
 
 ## NuGet Releases
 
 All NuGet releases are built using the [release.yml](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/.github/workflows/release.yml) file found in the .github/Workflows directory in the GitHub repo. Attestations for these builds are created in the step labelled "Generate Attestations":
 
+{% raw %}
 ```yaml
 # The following yml is correct as of Dec 23rd, 2024
 # For the latest version, please see:
-# https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/.github/release/dotnet.yml
+# https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/.github/workflows/release.yml
 - name: Generate Attestations
-    uses: actions/attest-build-provenance@963f8a02f24ac90336362e63ca6730cf69ad102e # v2.1.0
-    with:
+  uses: actions/attest-build-provenance@963f8a02f24ac90336362e63ca6730cf69ad102e # v2.1.0
+  with:
     subject-path: ${{ github.workspace }}/**/*.nupkg
 ```
+{% endraw %}
 
 This step will provide an attestation for the commit which caused the NuGet release to be created
 

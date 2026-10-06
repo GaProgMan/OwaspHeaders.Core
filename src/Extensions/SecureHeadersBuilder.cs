@@ -539,14 +539,27 @@ public sealed class SecureHeadersBuilder
     /// </param>
     /// <remarks>
     /// Supplying a null list is a no-op: the existing list is left alone rather than being
-    /// replaced with null.
+    /// replaced with null. The list is copied, so changing it after this call has no effect.
     /// </remarks>
+    /// <exception cref="ArgumentException">
+    /// Thrown when any entry in <paramref name="urlsToIgnore"/> is null, empty or whitespace
+    /// </exception>
     public SecureHeadersBuilder SetUrlsToIgnore(List<string>? urlsToIgnore = null)
     {
-        if (urlsToIgnore != null)
+        if (urlsToIgnore == null)
         {
-            _configuration.UrlsToIgnore = urlsToIgnore;
+            return this;
         }
+
+        if (urlsToIgnore.Any(string.IsNullOrWhiteSpace))
+        {
+            throw new ArgumentException("A URL to ignore cannot be null, empty or whitespace",
+                nameof(urlsToIgnore));
+        }
+
+        // Copied rather than stored by reference, as ReportingEndpointsPolicy does, so that
+        // changing the caller's list afterwards cannot get round the validation above.
+        _configuration.UrlsToIgnore = [.. urlsToIgnore];
 
         return this;
     }

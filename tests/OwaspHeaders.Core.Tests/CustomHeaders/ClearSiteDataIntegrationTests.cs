@@ -243,19 +243,30 @@ public class ClearSiteDataIntegrationTests : SecureHeadersTests
         using var testServer = CreateTestServer("/logout", config);
         var client = testServer.CreateClient();
 
-        // act - measure processing time for multiple requests
-        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        // The first request pays for JIT and first-request setup, which took 20-45ms on
+        // .NET 11 against ~0.03ms for a warm request, so it is sent before timing starts.
+        // It also checks that the timed path really adds the header.
+        // See https://github.com/GaProgMan/OwaspHeaders.Core/issues/247
+        var warmUpResponse = await client.GetAsync("/logout", TestContext.Current.CancellationToken);
+        Assert.True(warmUpResponse.Headers.Contains(Constants.ClearSiteDataHeaderName));
+
+        // act - time each request separately
         const int requestCount = 100;
+        var timingsMs = new double[requestCount];
 
         for (int i = 0; i < requestCount; i++)
         {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             await client.GetAsync("/logout", TestContext.Current.CancellationToken);
+            stopwatch.Stop();
+            timingsMs[i] = stopwatch.Elapsed.TotalMilliseconds;
         }
 
-        stopwatch.Stop();
-
-        // assert - should be minimal overhead (less than 1ms per request on average)
-        var averageTimeMs = stopwatch.ElapsedMilliseconds / (double)requestCount;
-        Assert.True(averageTimeMs < 1.0, $"Average processing time {averageTimeMs}ms exceeds 1ms threshold");
+        // assert - should be minimal overhead (less than 1ms for a typical request). The median
+        // rather than the mean, so that a few requests stalled by the machine, rather than by
+        // the middleware, cannot fail the test on their own
+        Array.Sort(timingsMs);
+        var medianTimeMs = timingsMs[requestCount / 2];
+        Assert.True(medianTimeMs < 1.0, $"Median processing time {medianTimeMs}ms exceeds 1ms threshold");
     }
 }

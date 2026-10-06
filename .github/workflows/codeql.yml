@@ -19,7 +19,10 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    # TEMPORARY (#258): feature/version-11-preview is listed so that this workflow runs on the
+    # PR which bumps codeql-action, rather than first running on #224. Remove it in a
+    # follow-up PR into feature/version-11-preview once that PR's run has passed.
+    branches: [ "main", "feature/version-11-preview" ]
   schedule:
     - cron: '21 6 * * 3'
 

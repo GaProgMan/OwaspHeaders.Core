@@ -18,6 +18,13 @@ on:
       - 'src/**'
       - 'tests/**'
       - 'example/**'
+  # TEMPORARY (#258): runs this workflow on PRs into feature/version-11-preview, so that the
+  # codeql-action bump is tested before #224 merges. scorecard-action allows pull_request on
+  # any branch and never publishes results from it. Remove in a follow-up PR into
+  # feature/version-11-preview once that PR's run has passed.
+  pull_request:
+    branches:
+      - feature/version-11-preview
 
 permissions: read-all
 

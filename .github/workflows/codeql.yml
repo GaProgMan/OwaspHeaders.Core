@@ -51,9 +51,11 @@ jobs:
       matrix:
         include:
         - language: csharp
-          # Using build-mode: none because CodeQL's build tracer doesn't support .NET 10 yet.
+          # Using build-mode: none because the package targets net10.0 and net11.0, and CodeQL
+          # does not support .NET 11 yet. It has supported .NET 10 since CodeQL 2.24.0, but a
+          # traced build ('autobuild' or 'manual') would have to handle the net11.0 target too.
           # With 'none' mode, CodeQL analyzes source code and compiled artifacts without tracing the build process.
-          # Once CodeQL adds .NET 10 support, consider switching to 'autobuild' or 'manual' mode.
+          # Whether to switch once CodeQL supports .NET 11 is tracked in #259.
           # See: https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
           build-mode: none
         # CodeQL supports the following values keywords for 'language': 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
@@ -72,7 +74,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@38697555549f1db7851b81482ff19f1fa5c4fedc # v4.34.1
+      uses: github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
@@ -85,8 +87,9 @@ jobs:
 
     # Build steps for build-mode: none
     # When using 'none' mode, we manually build the project and CodeQL analyzes the results
-    # without attempting to trace the build process. This is necessary because CodeQL's
-    # build tracer doesn't support .NET 10 yet (as of November 2025).
+    # without attempting to trace the build process. This is necessary because CodeQL does
+    # not support the net11.0 target yet (as of October 2026, CodeQL 2.27.1); .NET 10 has
+    # been supported since CodeQL 2.24.0. See the build-mode comment above, and #259.
     #
     # The following steps are based on the content from:
     # https://resources.github.com/learn/pathways/security/intermediate/codeql-advanced-setup/
@@ -119,6 +122,6 @@ jobs:
       run: dotnet test --solution OwaspHeaders.Core.sln --verbosity minimal --filter-not-trait "Category=Performance"
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@38697555549f1db7851b81482ff19f1fa5c4fedc # v4.34.1
+      uses: github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
       with:
         category: "/language:${{matrix.language}}"

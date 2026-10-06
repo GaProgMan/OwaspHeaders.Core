@@ -80,6 +80,53 @@ public class SecureHeadersBuilderTests
         Assert.Equal(["/skipthis"], config.UrlsToIgnore);
     }
 
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void SetUrlsToIgnore_WithAnInvalidEntry_Throws(string? invalidEntry)
+    {
+        // arrange
+        var builder = new SecureHeadersBuilder();
+
+        // act, assert
+        // null! because passing a null entry is the point of the test
+        var exception = Assert.Throws<ArgumentException>(() =>
+            builder.SetUrlsToIgnore(["/skipthis", invalidEntry!]));
+        Assert.Equal("urlsToIgnore", exception.ParamName);
+    }
+
+    [Fact]
+    public void SetUrlsToIgnore_WithAnInvalidEntry_LeavesTheExistingListAlone()
+    {
+        // arrange
+        var builder = new SecureHeadersBuilder().SetUrlsToIgnore(["/skipthis"]);
+
+        // act
+        Assert.Throws<ArgumentException>(() => builder.SetUrlsToIgnore(["/other", ""]));
+        var config = builder.Build();
+
+        // assert
+        Assert.Equal(["/skipthis"], config.UrlsToIgnore);
+    }
+
+    [Fact]
+    public void SetUrlsToIgnore_CopiesTheList()
+    {
+        // arrange
+        List<string> urlsToIgnore = ["/skipthis"];
+        var config = new SecureHeadersBuilder().SetUrlsToIgnore(urlsToIgnore).Build();
+
+        // act
+        // null! because getting a null past the validation is what the copy prevents
+        urlsToIgnore.Add(null!);
+        urlsToIgnore[0] = "/changed";
+
+        // assert
+        Assert.NotSame(urlsToIgnore, config.UrlsToIgnore);
+        Assert.Equal(["/skipthis"], config.UrlsToIgnore);
+    }
+
     [Fact]
     public void UseClearSiteData_WithNoOptions_UsesTheOwaspRecommendedDefaults()
     {

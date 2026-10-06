@@ -122,7 +122,7 @@ app.UseSecureHeadersMiddleware(opt =>
 });
 ```
 
-The sanctioned escape hatch for a route that genuinely cannot work with the headers is `opt.SetUrlsToIgnore([...])`. It skips **every** header for those paths, not just the CSP, and matches each path exactly and case-sensitively (there is no prefix or wildcard matching). Use it for a few named paths only, and say which paths you excluded and why.
+The sanctioned escape hatch for a route that genuinely cannot work with the headers is `opt.SetUrlsToIgnore([...])`. It skips **every** header for those paths, not just the CSP, and matches each path exactly and case-sensitively (there is no prefix or wildcard matching). A null, empty or whitespace entry throws an `ArgumentException` at startup. Use it for a few named paths only, and say which paths you excluded and why.
 
 ## 5. What this package does not do
 

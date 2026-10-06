@@ -192,12 +192,15 @@ Changelog: [Report-only Content-Security-Policy fixes](./changelog#report-only-c
 
 ### Invalid values are rejected when they are configured
 
-Two kinds of input which used to produce a malformed header, or a crash later on, now throw as soon as they are created. Inside the configure delegate, that means at startup:
+Three kinds of input which used to produce a malformed header, a crash later on, or no effect at all, now throw as soon as they are created. Inside the configure delegate, that means at startup:
 
 - A `ContentSecurityPolicyElement` whose `DirectiveOrUri` is empty or whitespace throws an `ArgumentException`.
 - `UseReportingEndpointsPolicy` rejects a null dictionary, an endpoint name which is empty or whitespace, and a null `Uri`.
+- `SetUrlsToIgnore` rejects a list containing a null, empty or whitespace entry with an `ArgumentException`. The same goes for the deprecated `urlIgnoreList` parameter of `UseSecureHeadersMiddleware`. Version 10.5.1 skipped a null entry, and earlier versions threw on every request because of one.
 
-Changelog: [Model constructors, required members and validation](./changelog#model-constructors-required-members-and-validation-issue-233).
+`SetUrlsToIgnore` and `UseReportingEndpointsPolicy` also copy what you pass them, so changing your list or dictionary afterwards has no effect on the middleware.
+
+Changelog: [Model constructors, required members and validation](./changelog#model-constructors-required-members-and-validation-issue-233) and [URLs to ignore are validated](./changelog#urls-to-ignore-are-validated-issue-239).
 
 ### New nullable warnings
 

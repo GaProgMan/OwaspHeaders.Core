@@ -15,9 +15,9 @@ The table below applies that rule to the current releases:
 | Version | Targets | Supported |
 | ------- | ------- | --------- |
 | 11.x.x | .NET 10, 11 | :white_check_mark: until 14 November 2028 |
-| 10.x.x | .NET 8, 9, 10 | :white_check_mark: until 14 November 2028 |
-| 9.x.x | .NET 8, 9 | :white_check_mark: until 10 November 2026 |
-| 8.x.x | .NET 6, 7, 8 | :white_check_mark: until 10 November 2026, **on .NET 8 only** |
+| 10.x.x | .NET 8, 9, 10 | :white_check_mark: until 14 November 2028, **on .NET 10 only** |
+| 9.x.x | .NET 8, 9 | :x: since 10 November 2026 |
+| 8.x.x | .NET 6, 7, 8 | :x: since 10 November 2026 |
 | < 8.0.0 | .NET 6 and earlier | :x: |
 | [framework](https://github.com/GaProgMan/OwaspHeaders.Core/releases/tag/framework) | .NET Framework, ASP .NET Core 2.2 | :x: |
 
@@ -25,8 +25,8 @@ If you are moving from 10.x.x to 11.x.x, [Upgrading to version 11](https://gapro
 
 Three consequences of the rule are worth calling out:
 
-- **8.x.x is only supported when run on .NET 8.** It also targets .NET 6 and .NET 7, both of which Microsoft has retired. If you are consuming 8.x.x on either of those runtimes, you are unsupported today, and the fix is to move to a supported .NET version rather than to a newer package version.
-- **.NET 8 and .NET 9 both reach end of support on 10 November 2026.** On that date, 8.x.x and 9.x.x become unsupported together, and both 10.x.x and 11.x.x continue by way of their .NET 10 target.
+- **10.x.x is only supported when run on .NET 10.** It also targets .NET 8 and .NET 9, both of which Microsoft retired on 10 November 2026. If you are consuming 10.x.x on either of those runtimes, you are unsupported, and the fix is to move to .NET 10 rather than to a newer package version. Once you are on .NET 10, [Upgrading to version 11](https://gaprogman.github.io/OwaspHeaders.Core/upgrading-to-version-11) covers the move to 11.x.x.
+- **8.x.x and 9.x.x became unsupported on 10 November 2026**, when .NET 8 and .NET 9 reached end of support. Every .NET version either release targets has now left Microsoft's support lifecycle, so neither is supported on any runtime.
 - **11.x.x on .NET 11 loses support five days before 11.x.x on .NET 10.** At the time of writing, .NET 11 leaves support on 9 November 2028 and .NET 10 on 14 November 2028, so from 9 November 2028 11.x.x is supported on .NET 10 only. Microsoft's [release lifecycle](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle) explains why the two dates differ.
 
 Backporting features and fixes to unsupported releases is not provided.

@@ -24,7 +24,7 @@ Version 11 brings six breaking changes together: the supported runtimes shift to
 
 #### Supported runtimes
 
-The library now targets `net10.0` and `net11.0` only. Support for .NET 8 and .NET 9 has been dropped — both reach end-of-support from Microsoft in November 2026 and are no longer worth carrying through the test matrix or the NuGet package. Consumers still running on .NET 8 or .NET 9 should stay on the 10.x release line.
+The library now targets `net10.0` and `net11.0` only. Support for .NET 8 and .NET 9 has been dropped — both reach end-of-support from Microsoft in November 2026 and are no longer worth carrying through the test matrix or the NuGet package. Consumers still running on .NET 8 or .NET 9 can stay on the 10.x release line as a stop-gap while they move to .NET 10 or .NET 11, but 10.x is not supported on either runtime once Microsoft ends support for them on 10 November 2026. See the [security policy](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md#supported-versions).
 
 #### Expect-CT removal
 

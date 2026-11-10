@@ -317,13 +317,13 @@ OwaspHeaders.Core minimizes security risk by:
 Support is scoped by .NET runtime, not by package version: any release of OwaspHeaders.Core running on a .NET version that Microsoft still supports is supported. A release targeting a .NET version that has reached end of support is unsupported, regardless of its version number. A release stops being supported on a given .NET version on the day that version leaves Microsoft's support lifecycle (https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle), and stops being supported altogether when the last of the .NET versions it targets does.
 
 - 11.x.x (targets .NET 10, 11): ✅ Supported until November 14, 2028
-- 10.x.x (targets .NET 8, 9, 10): ✅ Supported until November 14, 2028
-- 9.x.x (targets .NET 8, 9): ✅ Supported until November 10, 2026
-- 8.x.x (targets .NET 6, 7, 8): ✅ Supported until November 10, 2026, on .NET 8 only. Consuming 8.x.x on .NET 6 or .NET 7 is unsupported today, as Microsoft has retired both runtimes.
+- 10.x.x (targets .NET 8, 9, 10): ✅ Supported until November 14, 2028, on .NET 10 only. Consuming 10.x.x on .NET 8 or .NET 9 is unsupported, as Microsoft retired both runtimes on November 10, 2026.
+- 9.x.x (targets .NET 8, 9): ❌ Not supported since November 10, 2026
+- 8.x.x (targets .NET 6, 7, 8): ❌ Not supported since November 10, 2026
 - < 8.0.0 (targets .NET 6 and earlier): ❌ Not supported
 - .NET Framework version (targets .NET Framework, ASP .NET Core 2.2): ❌ Not supported
 
-.NET 8 and .NET 9 both reach end of support on November 10, 2026, so 8.x.x and 9.x.x become unsupported on the same date, leaving 10.x.x and 11.x.x supported by way of their .NET 10 target.
+.NET 8 and .NET 9 both reached end of support on November 10, 2026, so 8.x.x and 9.x.x became unsupported on that date. 10.x.x and 11.x.x remain supported by way of their .NET 10 target.
 
 At the time of writing, .NET 11 leaves support on November 9, 2028, five days before .NET 10 on November 14, 2028, so from November 9, 2028 11.x.x is supported on .NET 10 only. Microsoft's release lifecycle (https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core#lifecycle) explains why the two dates differ.
 

@@ -21,11 +21,9 @@ The above will use the default configuration for the OwaspHeaders.Core middlewar
 like this:
 
 ```csharp
-public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration() 
-{ 
-    return SecureHeadersMiddlewareBuilder 
-        .CreateBuilder()
-        .UseHsts()
+public SecureHeadersBuilder UseRecommendedDefaults()
+{
+    return UseHsts()
         .UseXFrameOptions()
         .UseContentTypeOptions()
         .UseDefaultContentSecurityPolicy()
@@ -35,9 +33,7 @@ public static SecureHeadersMiddlewareConfiguration BuildDefaultConfiguration()
         .UseXssProtection()
         .UseCrossOriginResourcePolicy()
         .UseCrossOriginOpenerPolicy()
-        .UseCrossOriginEmbedderPolicy()
-        .SetUrlsToIgnore(urlIgnoreList)
-        .Build();
+        .UseCrossOriginEmbedderPolicy();
 } 
 ```
 
@@ -78,14 +74,13 @@ header, and is an allowlist for sources of content for the rendered page.
 OwaspHeaders.Core includes built-in logging that can be configured independently of security headers:
 
 ```csharp
-var config = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .WithLoggingEventIdBase(5000)  // Avoid Event ID conflicts by seeding all logging events with 5000
-    .Build();
-
-app.UseSecureHeadersMiddleware(config);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    // Avoid Event ID conflicts by seeding all logging events with 5000
+    opt.WithLoggingEventIdBase(5000);
+});
 ```
 
 For detailed logging configuration options, see the [Logging](../logging) documentation.
@@ -97,8 +92,8 @@ custom configuration, follow the same pattern.
 We recommend creating your own extension method to encapsulate your custom configuration.
 
 In the following example, we've created a static method called `CustomConfiguration` within a static extensions class
-(called `CustomSecureHeaderExtensions`). This custom method returns an instance of the `SecureHeadersMiddlewareConfiguration`
-which contains all the configuration required for a fictional custom configuration:
+(called `CustomSecureHeaderExtensions`). This method configures the `SecureHeadersBuilder` it is handed, and describes
+all the configuration required for a fictional custom configuration:
 
 ``` csharp
 using OwaspHeaders.Core.Enums;
@@ -109,15 +104,12 @@ namespace OwaspHeaders.Core.Example.Helpers;
 
 public static class CustomSecureHeaderExtensions
 {
-    public static SecureHeadersMiddlewareConfiguration CustomConfiguration()
+    public static void CustomConfiguration(SecureHeadersBuilder opt)
     {
-        return SecureHeadersMiddlewareBuilder
-            .CreateBuilder()
-            .UseHsts(1200, false)
-            .UseContentDefaultSecurityPolicy()
-            .UsePermittedCrossDomainPolicies(XPermittedCrossDomainOptionValue.masterOnly)
-            .UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin)
-            .Build();
+        opt.UseHsts(1200, false);
+        opt.UseDefaultContentSecurityPolicy();
+        opt.UsePermittedCrossDomainPolicies(XPermittedCrossDomainOptionValue.masterOnly);
+        opt.UseReferrerPolicy(ReferrerPolicyOptions.sameOrigin);
     }
 }
 ```
@@ -128,9 +120,14 @@ This is an example configuration. It is recommended that you do NOT use this con
 Then consume it in the following manner, within your `Program.cs`'s Middleware pipeline:
 
 ```csharp
-app.UseSecureHeadersMiddleware(
-    CustomSecureHeaderExtensions.CustomConfiguration()
-);
+app.UseSecureHeadersMiddleware(CustomSecureHeaderExtensions.CustomConfiguration);
+```
+
+Because the configuration is a named method rather than an inline lambda, the same method can be asserted on from a
+test, without standing up your application:
+
+```csharp
+SecureHeadersBuilder.BuildAndValidate(CustomSecureHeaderExtensions.CustomConfiguration);
 ```
 
 This configuration will add the following headers to all server-generated responses:

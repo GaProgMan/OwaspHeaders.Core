@@ -21,7 +21,7 @@ public class CacheControlHeaderOptionsTests
     public async Task Invoke_CacheControl_IsPrivate_HeaderIsPresent()
     {
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseCacheControl(@private: true).Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
@@ -41,7 +41,7 @@ public class CacheControlHeaderOptionsTests
     public async Task Invoke_CacheControl_MustRevalidate_HeaderIsPresent()
     {
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseCacheControl(mustRevalidate: true).Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
@@ -61,7 +61,7 @@ public class CacheControlHeaderOptionsTests
     public async Task Invoke_CacheControl_NoCache_HeaderIsPresent()
     {
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseCacheControl(noCache: true).Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 
@@ -81,7 +81,7 @@ public class CacheControlHeaderOptionsTests
     public async Task Invoke_CacheControl_NoStore_HeaderIsPresent()
     {
         // arrange
-        var headerPresentConfig = SecureHeadersMiddlewareBuilder.CreateBuilder()
+        var headerPresentConfig = new SecureHeadersBuilder()
             .UseCacheControl(noStore: true).Build();
         var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, headerPresentConfig);
 

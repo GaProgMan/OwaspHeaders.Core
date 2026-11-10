@@ -20,15 +20,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the Referrer-Policy header with a `no-referrer` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseReferrerPolicy()
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseReferrerPolicy());
 ```
 
 The above adds the Referrer-Policy header with a `no-referrer` value.
@@ -50,4 +45,4 @@ The values available for the `ReferrerPolicyOptions` enum are:
 - `strictWhenCrossOrigin`
 - `unsafeUrl`
 
-These values can be set when creating a new instance of the `ReferrerPolicyOptions` object, or by calling the `UseReferrerPolicy` extension method on the `SecureHeadersMiddlewareConfiguration` class.
+These values are set by calling the `UseReferrerPolicy` extension method on the `SecureHeadersMiddlewareConfiguration` class.

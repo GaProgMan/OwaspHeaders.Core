@@ -29,7 +29,8 @@ public static class RealisticContentSecurityPolicyGenerators
     /// represent the Content-Security Policy taken from the OWASP website homepage on May 15th, 2023
     /// </returns>
     public static SecureHeadersMiddlewareConfiguration GenerateOwaspHomePageCsp() =>
-        SecureHeadersMiddlewareExtensions.BuildDefaultConfiguration()
+        new SecureHeadersBuilder()
+            .UseRecommendedDefaults()
             .UseContentSecurityPolicy()
             .SetCspUris(
             [
@@ -142,5 +143,6 @@ public static class RealisticContentSecurityPolicyGenerators
                 new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.google.com" },
                 new ContentSecurityPolicyElement { CommandType = CspCommandType.Uri, DirectiveOrUri = "https://*.gstatic.com" }
 
-            ], CspUriType.Img);
+            ], CspUriType.Img)
+            .Build();
 }

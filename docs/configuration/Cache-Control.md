@@ -20,15 +20,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the Cache-Control header with a `no-cache, no-store, max-age=0` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseCacheControl()
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseCacheControl());
 ```
 
 The above adds the Cache-Control header with a `no-cache, no-store, max-age=0` value.
@@ -45,15 +40,13 @@ The Cache-Control header object (known internally as `CacheControl`) has the fol
 | `MaxAge` | int | `0` | `max-age=<value>` (always included; a negative value is sent as `0`) |
 | `MustRevalidate` | bool | `false` | `must-revalidate` |
 
-These values can be set when creating a new instance of the `CacheControl` object, or by calling the `UseCacheControl` extension method on the `SecureHeadersMiddlewareConfiguration` class.
+These values are set by calling the `UseCacheControl` extension method on the `SecureHeadersMiddlewareConfiguration` class.
 
 Every directive whose option is set is included in the header, in the order shown above. For example:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseCacheControl(@private: true, maxAge: 60, noCache: false, noStore: false)
-    .Build();
+app.UseSecureHeadersMiddleware(opt =>
+    opt.UseCacheControl(@private: true, maxAge: 60, noCache: false, noStore: false));
 ```
 
 The above adds the Cache-Control header with a `private, max-age=60` value.

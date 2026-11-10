@@ -19,17 +19,20 @@ Listing and commenting on the default values that this middleware provides is ou
 {: .warning }
 This middleware **DOES NOT SUPPORT BLAZOR OR WEBASSEMBLY APPLICATIONS**. This is because setting up secure HTTP headers in a WebAssembly context is a non-trivial task.
 
+{: .warning }
+Version 11 is a major release with breaking changes. If you are upgrading from version 10, read [Upgrading to version 11](./upgrading-to-version-11) first: it lists the code to change, what to expect on the first build, and how to opt out of the agent skill install.
+
+{: .warning }
+From version 11, **building a project which references OwaspHeaders.Core writes files into your repository.** It installs an agent skill for coding agents into `.agents/skills/owaspheaders-core/` and `.claude/skills/owaspheaders-core/`, hidden from git by a `.gitignore`. It is skipped on CI, and `<OwaspHeadersCoreAgentSkill>false</OwaspHeadersCoreAgentSkill>` turns it off. See [Agent Skill](./agent-skills) for what is written, why, and when it is not.
+
 ## .NET Version Support
 
-OwaspHeaders.Core aims to keep in step with the official support lifecycle for .NET. The currently supported versions of .NET, and the dates on which Microsoft's support for them ends, are:
+OwaspHeaders.Core aims to keep in step with the official support lifecycle for .NET, as such the current (as of May 27th, 2026) supported versions of .NET are:
 
-- .NET 8 — 10 November 2026
-- .NET 9 — 10 November 2026
-- .NET 10 — 14 November 2028
+- .NET 10 (LTS)
+- .NET 11
 
-Support for this package is scoped by runtime rather than by package version: a release is supported for as long as the newest .NET version it targets is supported. See the [Security](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md) documentation for the full rule and a per-version breakdown.
-
-A number of previous releases remain available in the GitHub repository, and are listed here as historical markers:
+However, a number of previous releases can be found in the GitHub repository. Specifically:
 
 - [Removal of support for .NET 6 and 7](https://github.com/GaProgMan/OwaspHeaders.Core/releases/tag/v9.0.0)
 - [The final version which supports .NET 6](https://github.com/GaProgMan/OwaspHeaders.Core/releases/tag/v8.1.3)
@@ -57,6 +60,18 @@ app.UseSecureHeadersMiddleware();
 ```
 
 This will add a number of default HTTP headers to all responses from your server component.
+
+To choose the headers yourself, pass a configure delegate instead:
+
+```csharp
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseRecommendedDefaults();
+    opt.SetUrlsToIgnore(["/health"]);
+});
+```
+
+The configuration is validated as your application starts, so a mistake stops the host from starting rather than surfacing on the first request.
 
 {: .note }
 The middleware includes comprehensive logging functionality. To see logging output, ensure your application has logging configured. See the [Logging](./logging) section for detailed information.

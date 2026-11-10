@@ -25,15 +25,10 @@ The above adds the HSTS header with the following values:
 | max-age   | 31536000 |
 | includeSubDomains | (no value needed) |
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts(1200, false)
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseHsts(1200, false));
 ```
 
 The above adds the HSTS header with the following values:
@@ -52,4 +47,4 @@ The HSTS header object (known internally as `HstsConfiguration`) has the followi
 - int: `maxAge`
 - bool: `includeSubdomains`
 
-These values can be set when creating a new instance of the `HstsConfiguration` object, or by calling the `UseHsts` extension method on the `SecureHeadersMiddlewareConfiguration` class.
+These values are set by calling the `UseHsts` extension method on the `SecureHeadersMiddlewareConfiguration` class.

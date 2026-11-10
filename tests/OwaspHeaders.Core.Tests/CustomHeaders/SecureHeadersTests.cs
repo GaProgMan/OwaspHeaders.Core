@@ -6,7 +6,9 @@ public abstract class SecureHeadersTests
     private readonly Task _onNextResult = Task.FromResult(0);
     internal readonly RequestDelegate _onNext;
     internal readonly DefaultHttpContext _context;
-    internal TestServer TestServer;
+    // Assigned by a derived test method rather than by this constructor, so it is null until
+    // that test calls CreateTestServer.
+    internal TestServer? TestServer;
 
     protected SecureHeadersTests()
     {
@@ -19,11 +21,12 @@ public abstract class SecureHeadersTests
     }
 
     [Fact]
-    public async Task InvokeWith_NullConfig_ExceptionThrown()
+    public void ConstructWith_NullConfig_ExceptionThrown()
     {
-        var secureHeadersMiddleware = new SecureHeadersMiddleware(_onNext, null);
-
-        var exception = await Record.ExceptionAsync(() => secureHeadersMiddleware.InvokeAsync(_context));
+        // The configuration is checked when the middleware is constructed, which ASP.NET Core
+        // does while building the request pipeline, so this fails at application start rather
+        // than on the first request.
+        var exception = Record.Exception(() => new SecureHeadersMiddleware(_onNext, null!));
 
         Assert.NotNull(exception);
         Assert.IsAssignableFrom<ArgumentException>(exception);
@@ -33,8 +36,8 @@ public abstract class SecureHeadersTests
         Assert.Contains(nameof(SecureHeadersMiddlewareConfiguration), exception.Message);
     }
 
-    internal TestServer CreateTestServer(string urlToMap, SecureHeadersMiddlewareConfiguration config = null,
-        string urlToIgnore = null)
+    internal TestServer CreateTestServer(string urlToMap, Action<SecureHeadersBuilder>? configure = null,
+        string? urlToIgnore = null)
     {
         var host = new HostBuilder()
             .ConfigureWebHost(webBuilder =>
@@ -48,7 +51,27 @@ public abstract class SecureHeadersTests
                     .Configure(app =>
                     {
                         app.UseRouting();
-                        app.UseSecureHeadersMiddleware(config, urlIgnoreList: [urlToIgnore]);
+                        app.UseSecureHeadersMiddleware(opt =>
+                        {
+                            if (configure == null)
+                            {
+                                opt.UseRecommendedDefaults();
+                            }
+                            else
+                            {
+                                configure(opt);
+                            }
+
+                            // Deliberately conditional. The ignore list is now honoured whatever
+                            // else is configured, where the deprecated overload used to discard it
+                            // whenever a configuration was supplied. Passing [null] through would
+                            // put a null into UrlsToIgnore, which RequestShouldBeIgnored would
+                            // then call Equals on.
+                            if (!string.IsNullOrWhiteSpace(urlToIgnore))
+                            {
+                                opt.SetUrlsToIgnore([urlToIgnore]);
+                            }
+                        });
                         app.UseEndpoints(endpoints =>
                         {
                             if (!string.IsNullOrWhiteSpace(urlToIgnore))

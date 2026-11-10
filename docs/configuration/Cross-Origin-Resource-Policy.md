@@ -20,15 +20,10 @@ app.UseSecureHeadersMiddleware();
 
 The above adds the CORP header with a `same-origin` value.
 
-Or by creating an instance of the `SecureHeadersMiddlewareBuilder` class using the following code:
+Or by passing a configure delegate to `UseSecureHeadersMiddleware`, which is handed a `SecureHeadersBuilder`:
 
 ```csharp
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseCrossOriginResourcePolicy()
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt => opt.UseCrossOriginResourcePolicy());
 ```
 
 The above adds the CORP header with a `same-origin` value.

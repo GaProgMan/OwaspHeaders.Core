@@ -57,15 +57,13 @@ public class LoggingDemoController : ControllerBase
 
         var customConfigExample = @"
 // Example: Using custom base Event ID (offset all Event IDs by 5000)
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .UseContentTypeOptions()
-    .WithLoggingEventIdBase(5000)  // Event IDs will be 5001, 5002, 5003, etc.
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    opt.UseContentTypeOptions();
+    opt.WithLoggingEventIdBase(5000);  // Event IDs will be 5001, 5002, 5003, etc.
+});
 ";
 
         var response = new
@@ -106,14 +104,12 @@ var customLoggingConfig = new SecureHeadersLoggingConfiguration
     ConfigurationError = new EventId(9999, ""ConfigError"")
 };
 
-var customConfig = SecureHeadersMiddlewareBuilder
-    .CreateBuilder()
-    .UseHsts()
-    .UseXFrameOptions()
-    .WithLoggingEventIds(customLoggingConfig)
-    .Build();
-
-app.UseSecureHeadersMiddleware(customConfig);
+app.UseSecureHeadersMiddleware(opt =>
+{
+    opt.UseHsts();
+    opt.UseXFrameOptions();
+    opt.WithLoggingEventIds(customLoggingConfig);
+});
 ";
 
         var response = new

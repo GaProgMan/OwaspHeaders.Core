@@ -11,7 +11,7 @@ public class RemoveTrailingCharacterTests
     public void StringBuilder_Is_Null_Return_StringBuilder(char toRemove)
     {
         // arrange & act
-        var builder = ((StringBuilder)null).RemoveTrailingCharacter(toRemove);
+        var builder = ((StringBuilder?)null).RemoveTrailingCharacter(toRemove);
 
         // assert
         Assert.Null(builder);

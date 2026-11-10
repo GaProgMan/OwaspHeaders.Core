@@ -82,13 +82,13 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
     /// <summary>
     /// Specifies an HTML sandbox policy that the user agent applies to the protected resource.
     /// </summary>
-    public ContentSecurityPolicySandBox Sandbox { get; set; }
+    public ContentSecurityPolicySandBox? Sandbox { get; set; }
 
     /// <summary>
     /// Define the set of plugins that can be invoked by the protected resource by limiting
     /// the types of resources that can be embedded
     /// </summary>
-    public string PluginTypes { get; }
+    public string? PluginTypes { get; }
 
     /// <summary>
     /// Whether to include the block-all-mixed-content directive (prevents loading any assets
@@ -105,7 +105,7 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
     /// <summary>
     /// Define information user agent must send in Referer header
     /// </summary>
-    public string Referrer { get; }
+    public string? Referrer { get; }
 
     /// <summary>
     /// Whether to instruct the user agent to report attempts to violate the Content-Security
@@ -117,7 +117,7 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
     /// For details see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/report-uri 
     /// </remarks>
     [Obsolete("report-uri is deprecated; use report-to instead. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/report-uri", false)]
-    public string ReportUri { get; init; }
+    public string? ReportUri { get; init; }
 
     /// <summary>
     /// The name of the endpoint to use when reporting any Content-Security-Policy violations. Note: this is not the
@@ -127,21 +127,14 @@ public class ContentSecurityPolicyConfiguration : IConfigurationBase
     /// See the following link for the MDN documentation on this directive:
     /// https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Reporting-Endpoints
     /// </remarks>
-    public string ReportTo { get; init; }
-
-    /// <summary>
-    /// Protected constructor, we can no longer create instances of this class without
-    /// using the public constructor
-    /// </summary>
-    [ExcludeFromCodeCoverage]
-    protected ContentSecurityPolicyConfiguration() { }
+    public string? ReportTo { get; init; }
 
     // This is a _VERY_ temporary fix for marking the ReportUri property as deprecated
     // Because we're deprecating ReportUri but are using it throughout this class _AND_ we have warnings as errors, we need
     // to disable the CS0618 warning for the duration of this fix.
 #pragma warning disable CS0618
-    public ContentSecurityPolicyConfiguration(string pluginTypes, bool blockAllMixedContent,
-        bool upgradeInsecureRequests, string referrer, string reportUri, string reportTo)
+    public ContentSecurityPolicyConfiguration(string? pluginTypes, bool blockAllMixedContent,
+        bool upgradeInsecureRequests, string? referrer, string? reportUri, string? reportTo)
     {
         BaseUri = [];
         DefaultSrc = [];

@@ -2,7 +2,7 @@
 
 namespace OwaspHeaders.Core.Extensions;
 
-public static class StringBuilderExtensions
+internal static class StringBuilderExtensions
 {
     private const char EmptySpace = ' ';
 
@@ -12,8 +12,9 @@ public static class StringBuilderExtensions
     /// It trims empty spaces from the end of an instance of the <seealso cref="StringBuilder"/> class
     /// </summary>
     /// <param name="sb"></param>
-    /// <returns></returns>
-    public static StringBuilder TrimEnd(this StringBuilder sb)
+    /// <returns>The same instance, or null when given null.</returns>
+    [return: NotNullIfNotNull(nameof(sb))]
+    internal static StringBuilder? TrimEnd(this StringBuilder? sb)
     {
         if (sb == null || sb.Length == 0)
         {
@@ -37,7 +38,9 @@ public static class StringBuilderExtensions
         return sb;
     }
 
-    public static StringBuilder RemoveTrailingCharacter(this StringBuilder input, char toRemove)
+    /// <returns>The same instance, or null when given null.</returns>
+    [return: NotNullIfNotNull(nameof(input))]
+    internal static StringBuilder? RemoveTrailingCharacter(this StringBuilder? input, char toRemove)
     {
         if (input == null || input.Length == 0)
         {
@@ -58,7 +61,7 @@ public static class StringBuilderExtensions
     /// <param name="directiveName">The name of the CSP directive</param>
     /// <param name="directiveValues">A list of strings representing the directive values</param>
     /// <returns>The updated <see cref="StringBuilder" /> instance</returns>
-    public static StringBuilder BuildValuesForDirective(this StringBuilder stringBuilder,
+    internal static StringBuilder BuildValuesForDirective(this StringBuilder stringBuilder,
         string directiveName, List<ContentSecurityPolicyElement> directiveValues)
     {
         if (directiveValues.Count == 0)

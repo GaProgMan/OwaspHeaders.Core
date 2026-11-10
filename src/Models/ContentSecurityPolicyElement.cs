@@ -17,5 +17,22 @@ public class ContentSecurityPolicyElement
     /// For directives: "self", "unsafe-inline", "unsafe-eval", "none", etc. (without quotes)
     /// For URIs: "https://example.com", "data:", "blob:", "*.example.com", etc.
     /// </summary>
-    public string DirectiveOrUri { get; init; }
+    /// <remarks>
+    /// Required, because an element without a value renders as <c>''</c> for a directive or as an
+    /// empty token for a URI, either of which quietly produces a malformed header. The guard in
+    /// the initialiser covers what <c>required</c> cannot: an explicit null, a caller compiling
+    /// without nullable reference types, and the empty or whitespace strings.
+    /// </remarks>
+    /// <exception cref="ArgumentException">
+    /// Thrown when the value is null, empty or whitespace.
+    /// </exception>
+    public required string DirectiveOrUri
+    {
+        get;
+        init
+        {
+            HeaderValueGuardClauses.StringCannotBeNullOrWhiteSpace(value, nameof(DirectiveOrUri));
+            field = value;
+        }
+    }
 }

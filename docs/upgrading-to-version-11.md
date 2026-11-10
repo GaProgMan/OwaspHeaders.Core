@@ -17,7 +17,7 @@ If you are upgrading from a version earlier than 10.5.0, also read [Coming from 
 
 ## Before you start
 
-Version 11 targets .NET 10 and .NET 11 only. If your project cannot move off .NET 8 or .NET 9 yet, stay on version 10 for now. See the [security policy](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md#supported-versions) for how long each release is supported.
+Version 11 targets .NET 10 and .NET 11 only. If your project cannot move off .NET 8 or .NET 9 yet, version 10 will keep it building and running while you move to .NET 10 or .NET 11. Treat that as a stop-gap: Microsoft ended support for .NET 8 and .NET 9 on 10 November 2026, and version 10 is not supported on either of them. See the [security policy](https://github.com/GaProgMan/OwaspHeaders.Core/blob/main/SECURITY.md#supported-versions) for how long each release is supported.
 
 A suggested order of work:
 
@@ -32,7 +32,7 @@ Each of these fails to compile, or to restore, against version 11.
 
 ### Your project targets .NET 8 or .NET 9
 
-Restoring fails with `NU1202`, because the package no longer contains a build for your target framework. Change `<TargetFramework>` to `net10.0` or `net11.0`, or stay on version 10.
+Restoring fails with `NU1202`, because the package no longer contains a build for your target framework. Change `<TargetFramework>` to `net10.0` or `net11.0`. Staying on version 10 is a stop-gap only, as it is not supported on .NET 8 or .NET 9 (see [Before you start](#before-you-start)).
 
 Changelog: [Supported runtimes](./changelog#supported-runtimes).
 
